@@ -1,2 +1,5 @@
-# catalyst-finance
-Open-source portfolio analytics backend (Flask) with positions, P/L, and an optional Narrative Risk plugin. API-first.
+# Catalyst Finance
+
+An open-source portfolio analytics backend (Flask) for builders—transactions ledger (±shares), positions & cash, optional FIFO cost basis, provider-agnostic market-data adapters, and a pluggable **Narrative Risk** module.
+
+> **Disclaimer:** Educational software; not investment advice.
