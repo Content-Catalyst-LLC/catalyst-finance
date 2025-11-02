@@ -7,11 +7,13 @@ db = SQLAlchemy()
 def create_app():
     app = Flask(__name__)
 
-    # DB: explicit env or fallback to instance/app.db
+    # DB: env or default to instance/app.db
     db_url = os.getenv("DATABASE_URL") or os.getenv("SQLALCHEMY_DATABASE_URI")
     if not db_url:
-        os.makedirs(os.path.join(app.root_path, "..", "instance"), exist_ok=True)
-        db_url = "sqlite:///" + os.path.abspath(os.path.join(app.root_path, "..", "instance", "app.db"))
+        inst = os.path.abspath(os.path.join(app.root_path, "..", "instance"))
+        os.makedirs(inst, exist_ok=True)
+        db_url = "sqlite:///" + os.path.join(inst, "app.db")
+
     app.config["SQLALCHEMY_DATABASE_URI"] = db_url
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 

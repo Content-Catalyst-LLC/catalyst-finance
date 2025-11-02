@@ -1,16 +1,12 @@
+import math, json
+from datetime import date
 from flask import Blueprint, request, jsonify
 from sqlalchemy import text
 from app import db
-import math
-from datetime import date
 
 bp = Blueprint("pe", __name__, url_prefix="/v1/scenarios")
 
 def _percentile(sorted_vals, p):
-    """
-    p in [0, 100]. Linear interpolation between closest ranks.
-    For 5 values, p25=2nd, p50=3rd, p75=4th as expected.
-    """
     if not sorted_vals:
         return None
     if p <= 0: return sorted_vals[0]
@@ -24,68 +20,58 @@ def _percentile(sorted_vals, p):
 @bp.get("/pe")
 def get_pe_scenarios():
     ticker = request.args.get("ticker", type=str)
-    asof = request.args.get("asof", type=str)
-
+    asof = request.args.get("asof", type=str) or str(date.today())
     if not ticker:
         return jsonify({"error": "ticker required"}), 400
-    if not asof:
-        asof = str(date.today())
 
-    # 1) Fetch latest price_close and eps_trailing on/before asof
-    price_sql = text("""
+    # Latest price & eps on/before asof
+    price = db.session.execute(text("""
         SELECT value FROM metrics
         WHERE ticker=:t AND metric_type='price_close' AND asof <= :asof
         ORDER BY asof DESC LIMIT 1
-    """)
-    eps_sql = text("""
+    """), {"t": ticker, "asof": asof}).scalar()
+    eps = db.session.execute(text("""
         SELECT value FROM metrics
         WHERE ticker=:t AND metric_type='eps_trailing' AND asof <= :asof
         ORDER BY asof DESC LIMIT 1
-    """)
-    row_p = db.session.execute(price_sql, {"t": ticker, "asof": asof}).fetchone()
-    row_e = db.session.execute(eps_sql,   {"t": ticker, "asof": asof}).fetchone()
-    if not row_p or not row_e:
+    """), {"t": ticker, "asof": asof}).scalar()
+    if price is None or eps is None:
         return jsonify({"error": "insufficient inputs"}), 400
-
-    price = float(row_p[0])
-    eps   = float(row_e[0])
-    if eps <= 0:
+    if float(eps) <= 0:
         return jsonify({"error": "non-positive EPS"}), 400
 
-    current_pe = round(price/eps, 2)
+    current_pe = round(float(price) / float(eps), 2)
 
-    # 2) Gather peer P/Es for the same asof
-    peers_sql = text("""
-        SELECT value FROM peer_metrics
-        WHERE base_ticker=:t AND metric_type='pe_trailing' AND asof = :asof
-    """)
-    peer_vals = [float(r[0]) for r in db.session.execute(peers_sql, {"t": ticker, "asof": asof}).fetchall() if r[0] is not None]
-    if len(peer_vals) == 0:
+    # Peer P/Es (same date)
+    peer_vals = [
+        float(v) for (v,) in db.session.execute(text("""
+            SELECT value FROM peer_metrics
+            WHERE base_ticker=:t AND metric_type='pe_trailing' AND asof = :asof
+        """), {"t": ticker, "asof": asof}).all()
+        if v is not None
+    ]
+    if not peer_vals:
         return jsonify({"error": "no peer P/Es"}), 400
 
     peer_vals.sort()
-    # 25th / 50th / 75th percentiles to match earlier band values
     bear_pe = round(_percentile(peer_vals, 25), 2)
     base_pe = round(_percentile(peer_vals, 50), 2)
     bull_pe = round(_percentile(peer_vals, 75), 2)
-
-    # 3) Save a scenarios row and return payload + provenance id
     payload = {"bear": {"pe": bear_pe}, "base": {"pe": base_pe}, "bull": {"pe": bull_pe}}
-    ins = text("""
+
+    # Save scenario (SQLite)
+    db.session.execute(text("""
         INSERT INTO scenarios (ticker, scenario_type, asof, payload, method, version, source)
         VALUES (:t, 'pe_potential', :asof, :payload, :method, :version, 'catalyst-finance')
-    """)
-    db.session.execute(ins, {
-        "t": ticker,
-        "asof": asof,
-        "payload": jsonify(payload).data.decode("utf-8"),
+    """), {
+        "t": ticker, "asof": asof,
+        "payload": json.dumps(payload),
         "method": "sector-percentile",
         "version": "v1"
     })
     db.session.commit()
-
-    # fetch last rowid (SQLite specific)
     rid = db.session.execute(text("SELECT last_insert_rowid()")).scalar_one()
+
     return jsonify({
         "ticker": ticker,
         "asof": asof,
