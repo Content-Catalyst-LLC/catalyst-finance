@@ -1,0 +1,33 @@
+{
+  "name": "Catalyst Finance",
+  "repository": "https://github.com/Content-Catalyst-LLC/catalyst-finance",
+  "shortcode": "[catalyst_finance_demo]",
+  "module_type": "Sustainable Catalyst platform module",
+  "workflow": [
+    "initiative",
+    "cost",
+    "benefits",
+    "assumptions",
+    "risk adjustment",
+    "interpretation",
+    "review note",
+    "export"
+  ],
+  "artifacts": [
+    "WordPress demo plugin",
+    "Python scenario engine",
+    "JSON schema",
+    "sample data",
+    "example outputs",
+    "methodology docs",
+    "tests"
+  ],
+  "boundaries": [
+    "not investment advice",
+    "not tax advice",
+    "not legal advice",
+    "not accounting advice",
+    "not assurance",
+    "not guaranteed outcomes"
+  ]
+}

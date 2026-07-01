@@ -1,0 +1,42 @@
+{
+  "project": {
+    "name": "Building efficiency retrofit",
+    "category": "Energy efficiency"
+  },
+  "inputs": {
+    "capital_cost": 250000,
+    "external_funding": 40000,
+    "annual_savings": 52000,
+    "annual_operating_cost": 7000,
+    "time_horizon_years": 10,
+    "discount_rate_percent": 6,
+    "annual_emissions_reduced_tons": 180,
+    "carbon_price_per_ton": 35,
+    "confidence_percent": 72,
+    "implementation_risk_percent": 34
+  },
+  "results": {
+    "net_capital_cost": 210000,
+    "net_annual_benefit": 51300,
+    "present_value_benefits": 377572.47,
+    "npv": 167572.47,
+    "payback_years": 4.09,
+    "roi_percent": 144.29,
+    "benefit_cost_ratio": 1.8,
+    "carbon_cost_per_ton": 116.67,
+    "risk_adjusted_score": 65.5
+  },
+  "interpretation": {
+    "risk_level": "Moderate concern",
+    "flags": [
+      "No major screening flags under current assumptions"
+    ],
+    "decision_note": "Current assumptions support further review; validate inputs before making a decision."
+  },
+  "metadata": {
+    "generated_at": "2026-07-01T19:24:16.081750+00:00",
+    "tool": "Catalyst Finance scenario engine",
+    "version": "1.0.0",
+    "disclaimer": "Educational software only; not financial, investment, legal, accounting, tax, or assurance advice."
+  }
+}

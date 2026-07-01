@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Catalyst Finance Scenario",
+  "type": "object",
+  "required": [
+    "project",
+    "inputs",
+    "results",
+    "interpretation"
+  ],
+  "properties": {
+    "project": {
+      "type": "object",
+      "required": [
+        "name",
+        "category"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        }
+      }
+    },
+    "inputs": {
+      "type": "object",
+      "properties": {
+        "capital_cost": {
+          "type": "number"
+        },
+        "external_funding": {
+          "type": "number"
+        },
+        "annual_savings": {
+          "type": "number"
+        },
+        "annual_operating_cost": {
+          "type": "number"
+        },
+        "time_horizon_years": {
+          "type": "number"
+        },
+        "discount_rate_percent": {
+          "type": "number"
+        },
+        "annual_emissions_reduced_tons": {
+          "type": "number"
+        },
+        "carbon_price_per_ton": {
+          "type": "number"
+        },
+        "confidence_percent": {
+          "type": "number"
+        },
+        "implementation_risk_percent": {
+          "type": "number"
+        }
+      }
+    },
+    "results": {
+      "type": "object",
+      "properties": {
+        "net_capital_cost": {
+          "type": "number"
+        },
+        "net_annual_benefit": {
+          "type": "number"
+        },
+        "npv": {
+          "type": "number"
+        },
+        "payback_years": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "roi_percent": {
+          "type": "number"
+        },
+        "benefit_cost_ratio": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "carbon_cost_per_ton": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "risk_adjusted_score": {
+          "type": "number"
+        }
+      }
+    },
+    "interpretation": {
+      "type": "object",
+      "properties": {
+        "risk_level": {
+          "type": "string"
+        },
+        "flags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "decision_note": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
