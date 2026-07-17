@@ -34,9 +34,9 @@
     "decision_note": "Current assumptions support further review; validate inputs before making a decision."
   },
   "metadata": {
-    "generated_at": "2026-07-01T19:24:16.081750+00:00",
+    "generated_at": "2026-07-17T00:00:00+00:00",
     "tool": "Catalyst Finance scenario engine",
-    "version": "1.0.0",
-    "disclaimer": "Educational software only; not financial, investment, legal, accounting, tax, or assurance advice."
+    "version": "1.0.1",
+    "disclaimer": "Educational software only; not financial, investment, legal, accounting, tax, fiduciary, or assurance advice."
   }
 }

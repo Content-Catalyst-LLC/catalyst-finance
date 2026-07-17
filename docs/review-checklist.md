@@ -1,16 +1,13 @@
-# Finance Review Checklist
+# Review Checklist
 
-Before relying on a Catalyst Finance output, review:
+Before communicating a Catalyst Finance result, verify:
 
-- Are capital costs current and sourced?
-- Are recurring savings realistic?
-- Are operating costs included?
-- Is the discount rate justified?
-- Are grants, rebates, incentives, or financing assumptions documented?
-- Are emissions reductions measured or estimated?
-- Is confidence clearly stated?
-- Are implementation risks explicit?
-- Would a negative scenario materially change the decision?
-- Is qualified financial, accounting, legal, tax, or assurance review needed?
-
-The tool supports disciplined review; it does not replace review.
+- the initiative and comparison boundary are clear;
+- capital cost, external funding, annual savings, and operating cost have sources;
+- the time horizon and discount rate are appropriate and consistently applied;
+- emissions reductions and carbon value are not presented as realized cash unless they are realized cash;
+- confidence and implementation-risk values have written rationales;
+- NPV, payback, ROI-style, benefit-cost, and carbon-cost outputs are interpreted as screening metrics;
+- limitations, excluded costs, excluded benefits, and uncertainty are disclosed;
+- the JSON export reports the expected model version;
+- a qualified reviewer approves any real financial, accounting, tax, legal, lending, investment, or fiduciary use.

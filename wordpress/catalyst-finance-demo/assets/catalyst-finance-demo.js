@@ -79,7 +79,7 @@
       results: { net_capital_cost: Math.round(netCapitalCost), net_annual_benefit: Math.round(netAnnualBenefit), present_value_benefits: Math.round(presentValueBenefits), npv: Math.round(npv), payback_years: paybackYears === null ? null : Number(paybackYears.toFixed(2)), roi_percent: Number(roiPercent.toFixed(1)), benefit_cost_ratio: benefitCostRatio === null ? null : Number(benefitCostRatio.toFixed(2)), carbon_cost_per_ton: carbonCostPerTon === null ? null : Number(carbonCostPerTon.toFixed(2)), risk_adjusted_score: Number(riskAdjustedScore.toFixed(1)) },
       interpretation: { risk_level: riskLevel, flags: flags, decision_note: decisionNote },
       series: cumulative,
-      metadata: { generated_at: new Date().toISOString(), tool: 'Catalyst Finance Demo', disclaimer: 'Educational scenario tool only; not financial, investment, tax, accounting, legal, assurance, or fiduciary advice.' }
+      metadata: { generated_at: new Date().toISOString(), tool: 'Catalyst Finance Demo', version: '1.0.1', disclaimer: 'Educational scenario tool only; not financial, investment, tax, accounting, legal, assurance, or fiduciary advice.' }
     };
   }
   function drawChart(canvas, series) {

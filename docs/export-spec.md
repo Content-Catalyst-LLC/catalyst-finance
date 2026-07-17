@@ -1,15 +1,15 @@
 # Export Specification
 
-The Catalyst Finance export should preserve both calculated results and interpretive context.
+Catalyst Finance scenario exports conform to `schemas/finance_scenario.schema.json`.
 
-## Required sections
+The top-level records are:
 
-- `project`: initiative name and category
-- `inputs`: cost, benefit, time horizon, discount rate, emissions, confidence, risk
-- `results`: NPV, payback, ROI estimate, benefit-cost ratio, carbon cost per ton, risk-adjusted score
-- `interpretation`: risk level, review flags, decision note
-- `metadata`: generated timestamp and tool/version notes
+- `project`
+- `inputs`
+- `results`
+- `interpretation`
+- `metadata`
 
-## Why export matters
+The v1.0.1 metadata record includes a generation timestamp, tool name, release version, and educational-use disclaimer. The Python CLI accepts `--generated-at` only to reproduce fixtures and tests; ordinary exports use the current UTC time.
 
-Financial scenario work is often copied into slides or spreadsheets without the assumptions that produced it. The export is designed to keep the reasoning trail attached to the result.
+v1.0.1 validates repository examples and package integrity. A fully versioned cross-runtime contract, units policy, migration layer, and browser parity suite are scheduled for v1.1.0.

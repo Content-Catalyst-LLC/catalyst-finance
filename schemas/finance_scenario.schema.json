@@ -1,117 +1,99 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Catalyst Finance Scenario",
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/finance-scenario-1.0.1.schema.json",
+  "title": "Catalyst Finance Scenario Export",
   "type": "object",
-  "required": [
-    "project",
-    "inputs",
-    "results",
-    "interpretation"
-  ],
+  "additionalProperties": false,
+  "required": ["project", "inputs", "results", "interpretation", "metadata"],
   "properties": {
     "project": {
       "type": "object",
-      "required": [
-        "name",
-        "category"
-      ],
+      "additionalProperties": false,
+      "required": ["name", "category"],
       "properties": {
-        "name": {
-          "type": "string"
-        },
-        "category": {
-          "type": "string"
-        }
+        "name": {"type": "string", "minLength": 1},
+        "category": {"type": "string", "minLength": 1}
       }
     },
     "inputs": {
       "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "capital_cost",
+        "external_funding",
+        "annual_savings",
+        "annual_operating_cost",
+        "time_horizon_years",
+        "discount_rate_percent",
+        "annual_emissions_reduced_tons",
+        "carbon_price_per_ton",
+        "confidence_percent",
+        "implementation_risk_percent"
+      ],
       "properties": {
-        "capital_cost": {
-          "type": "number"
-        },
-        "external_funding": {
-          "type": "number"
-        },
-        "annual_savings": {
-          "type": "number"
-        },
-        "annual_operating_cost": {
-          "type": "number"
-        },
-        "time_horizon_years": {
-          "type": "number"
-        },
-        "discount_rate_percent": {
-          "type": "number"
-        },
-        "annual_emissions_reduced_tons": {
-          "type": "number"
-        },
-        "carbon_price_per_ton": {
-          "type": "number"
-        },
-        "confidence_percent": {
-          "type": "number"
-        },
-        "implementation_risk_percent": {
-          "type": "number"
-        }
+        "capital_cost": {"type": "number"},
+        "external_funding": {"type": "number"},
+        "annual_savings": {"type": "number"},
+        "annual_operating_cost": {"type": "number"},
+        "time_horizon_years": {"type": "number"},
+        "discount_rate_percent": {"type": "number"},
+        "annual_emissions_reduced_tons": {"type": "number"},
+        "carbon_price_per_ton": {"type": "number"},
+        "confidence_percent": {"type": "number"},
+        "implementation_risk_percent": {"type": "number"}
       }
     },
     "results": {
       "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "net_capital_cost",
+        "net_annual_benefit",
+        "present_value_benefits",
+        "npv",
+        "payback_years",
+        "roi_percent",
+        "benefit_cost_ratio",
+        "carbon_cost_per_ton",
+        "risk_adjusted_score"
+      ],
       "properties": {
-        "net_capital_cost": {
-          "type": "number"
-        },
-        "net_annual_benefit": {
-          "type": "number"
-        },
-        "npv": {
-          "type": "number"
-        },
-        "payback_years": {
-          "type": [
-            "number",
-            "null"
-          ]
-        },
-        "roi_percent": {
-          "type": "number"
-        },
-        "benefit_cost_ratio": {
-          "type": [
-            "number",
-            "null"
-          ]
-        },
-        "carbon_cost_per_ton": {
-          "type": [
-            "number",
-            "null"
-          ]
-        },
-        "risk_adjusted_score": {
-          "type": "number"
-        }
+        "net_capital_cost": {"type": "number"},
+        "net_annual_benefit": {"type": "number"},
+        "present_value_benefits": {"type": "number"},
+        "npv": {"type": "number"},
+        "payback_years": {"type": ["number", "null"]},
+        "roi_percent": {"type": "number"},
+        "benefit_cost_ratio": {"type": ["number", "null"]},
+        "carbon_cost_per_ton": {"type": ["number", "null"]},
+        "risk_adjusted_score": {"type": "number"}
       }
     },
     "interpretation": {
       "type": "object",
+      "additionalProperties": false,
+      "required": ["risk_level", "flags", "decision_note"],
       "properties": {
         "risk_level": {
-          "type": "string"
+          "enum": ["Lower concern", "Moderate concern", "High concern"]
         },
         "flags": {
           "type": "array",
-          "items": {
-            "type": "string"
-          }
+          "minItems": 1,
+          "items": {"type": "string"}
         },
-        "decision_note": {
-          "type": "string"
-        }
+        "decision_note": {"type": "string", "minLength": 1}
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["generated_at", "tool", "version", "disclaimer"],
+      "properties": {
+        "generated_at": {"type": "string", "format": "date-time"},
+        "tool": {"const": "Catalyst Finance scenario engine"},
+        "version": {"const": "1.0.1"},
+        "disclaimer": {"type": "string", "minLength": 1}
       }
     }
   }

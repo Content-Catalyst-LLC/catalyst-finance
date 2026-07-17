@@ -29,4 +29,4 @@ Current assumptions support further review; validate inputs before making a deci
 
 ## Boundary
 
-Educational scenario output only. Not financial, investment, tax, accounting, legal, or assurance advice.
+Educational scenario output only. Not financial, investment, tax, accounting, legal, fiduciary, or assurance advice.

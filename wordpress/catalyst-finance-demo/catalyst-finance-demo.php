@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Catalyst Finance Demo
  * Description: Browser-based Catalyst Finance scenario demo for Sustainable Catalyst.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Content Catalyst LLC
  * License: MIT
  */
@@ -11,6 +11,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+define('CATALYST_FINANCE_DEMO_VERSION', '1.0.1');
+
 function catalyst_finance_demo_assets() {
     $base = plugin_dir_url(__FILE__);
     $path = plugin_dir_path(__FILE__);
@@ -18,13 +20,13 @@ function catalyst_finance_demo_assets() {
         'catalyst-finance-demo',
         $base . 'assets/catalyst-finance-demo.css',
         array(),
-        filemtime($path . 'assets/catalyst-finance-demo.css')
+        CATALYST_FINANCE_DEMO_VERSION
     );
     wp_enqueue_script(
         'catalyst-finance-demo',
         $base . 'assets/catalyst-finance-demo.js',
         array(),
-        filemtime($path . 'assets/catalyst-finance-demo.js'),
+        CATALYST_FINANCE_DEMO_VERSION,
         true
     );
 }

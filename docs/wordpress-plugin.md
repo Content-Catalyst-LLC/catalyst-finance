@@ -1,23 +1,18 @@
 # WordPress Plugin
 
-The Catalyst Finance demo plugin provides a browser-based scenario calculator for the Catalyst Finance page.
+The plugin source is located at `wordpress/catalyst-finance-demo/`.
 
-## Shortcode
+Build it with:
 
-```text
-[catalyst_finance_demo]
+```bash
+python scripts/build_plugin.py --versioned-copy
 ```
 
-## Installation
+This creates:
 
-1. Upload `catalyst-finance-demo.zip` in WordPress.
-2. Activate the plugin.
-3. Add the shortcode to the Catalyst Finance page.
+- `dist/catalyst-finance.zip`
+- `dist/catalyst-finance-demo-v1.0.1.zip`
 
-## Privacy
+Both packages contain one top-level `catalyst-finance-demo/` directory. The plugin registers `[catalyst_finance_demo]`, performs calculations locally in the browser, and does not submit visitor inputs to Sustainable Catalyst.
 
-The demo runs in the browser and does not submit inputs to Sustainable Catalyst.
-
-## Boundaries
-
-The demo is educational and exploratory. It does not provide investment advice, financial advice, tax advice, legal advice, valuation, assurance, or guaranteed outcomes.
+The browser model remains a public demonstration surface. Cross-runtime calculation parity is scheduled for v1.1.0.

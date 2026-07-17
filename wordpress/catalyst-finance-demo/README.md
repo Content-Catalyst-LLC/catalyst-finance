@@ -1,13 +1,5 @@
-# Catalyst Finance Demo Plugin
+# Catalyst Finance Demo v1.0.1
 
-Shortcode:
+This WordPress plugin registers the `[catalyst_finance_demo]` shortcode.
 
-```text
-[catalyst_finance_demo]
-```
-
-This plugin provides a browser-based Catalyst Finance scenario demo. It estimates NPV, payback, ROI, benefit-cost ratio, carbon cost per ton, risk-adjusted score, review flags, and JSON export.
-
-The demo runs in the browser and does not submit visitor inputs to Sustainable Catalyst.
-
-Educational use only. Not financial, investment, legal, tax, accounting, assurance, or fiduciary advice.
+The calculator runs locally in the visitor's browser and does not submit scenario inputs to Sustainable Catalyst. It is an educational screening demonstration, not financial, investment, accounting, tax, legal, fiduciary, lending, or assurance advice.
