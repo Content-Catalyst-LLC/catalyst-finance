@@ -1,8 +1,8 @@
 (function () {
   'use strict';
 
-  const WORKSPACE_VERSION = '1.4.0';
-  const STORAGE_PREFIX = 'catalyst-finance-workspace-v1.4.0';
+  const WORKSPACE_VERSION = '1.5.0';
+  const STORAGE_PREFIX = 'catalyst-finance-workspace-v1.5.0';
 
   const TEMPLATES = {
     'capital-project': {
@@ -234,7 +234,7 @@
     return { workspace: defaultWorkspace(), recovered: false };
   }
   function validateWorkspace(workspace) {
-    if (!workspace || workspace.workspace_contract_version !== WORKSPACE_VERSION) throw new Error('Workspace contract_version must be 1.4.0.');
+    if (!workspace || workspace.workspace_contract_version !== WORKSPACE_VERSION) throw new Error('Workspace contract_version must be 1.5.0.');
     if (!workspace.workspace_id || !Array.isArray(workspace.scenarios)) throw new Error('Workspace ID and scenarios are required.');
     const scenarioIds = new Set();
     workspace.scenarios.forEach(record => {
@@ -259,7 +259,7 @@
         if (navigator.clipboard) navigator.clipboard.writeText(text);
       });
       root.querySelector('[data-scfin-download]').addEventListener('click', function () {
-        downloadJson('catalyst-finance-scenario-v1.4.0.json', root._scfinPayload);
+        downloadJson('catalyst-finance-scenario-v1.5.0.json', root._scfinPayload);
       });
       root.querySelector('[data-scfin-print]').addEventListener('click', function () { window.print(); });
       return;
@@ -347,7 +347,7 @@
     });
     root.querySelector('[data-scfin-export-workspace]').addEventListener('click', function () {
       const bundle = { export_contract_version: WORKSPACE_VERSION, exported_at: now(), workspace: state.workspace };
-      downloadJson('catalyst-finance-workspace-v1.4.0.json', bundle);
+      downloadJson('catalyst-finance-workspace-v1.5.0.json', bundle);
     });
     root.querySelector('[data-scfin-import-workspace]').addEventListener('change', function (event) {
       const file = event.target.files[0]; if (!file) return;
@@ -370,7 +370,7 @@
       if (navigator.clipboard) navigator.clipboard.writeText(text);
     });
     root.querySelector('[data-scfin-download]').addEventListener('click', function () {
-      downloadJson('catalyst-finance-scenario-v1.4.0.json', root._scfinPayload || CatalystFinanceEngine.evaluate(inputFromForm(form, state.workspace.defaults.currency)));
+      downloadJson('catalyst-finance-scenario-v1.5.0.json', root._scfinPayload || CatalystFinanceEngine.evaluate(inputFromForm(form, state.workspace.defaults.currency)));
     });
     root.querySelector('[data-scfin-print]').addEventListener('click', function () { window.print(); });
 
@@ -395,7 +395,7 @@
     ];
     if (value('phasedCapital') > 0) lines.push({ flow_id: 'phase-two', label: 'Phased capital', category: 'capital_cost', amount: value('phasedCapital'), start_period: Math.min(2, horizon), price_basis: basis });
     return {
-      contract_version: '1.4.0',
+      contract_version: '1.5.0',
       model_id: 'catalyst-finance.cash-flow',
       project: { name: 'Browser capital-budgeting scenario', category: 'Capital project' },
       context: {
@@ -478,7 +478,7 @@
       }
     }
     form.addEventListener('input', render); form.addEventListener('change', render);
-    section.querySelector('[data-scfin-cf-download]').addEventListener('click', function () { downloadJson('catalyst-finance-cash-flow-v1.4.0.json', root._scfinCashFlowPayload); });
+    section.querySelector('[data-scfin-cf-download]').addEventListener('click', function () { downloadJson('catalyst-finance-cash-flow-v1.5.0.json', root._scfinCashFlowPayload); });
     section.querySelector('[data-scfin-cf-copy]').addEventListener('click', function () {
       if (navigator.clipboard) navigator.clipboard.writeText(JSON.stringify(root._scfinCashFlowPayload, null, 2));
     });
@@ -521,7 +521,7 @@
       values: [line(base, 'benefit').amount * 0.65, line(base, 'benefit').amount * 0.8, line(base, 'benefit').amount, line(base, 'benefit').amount * 1.2, line(base, 'benefit').amount * 1.35]
     }; };
     return {
-      contract_version: '1.4.0', model_id: 'catalyst-finance.comparison', comparison_id: 'browser-options',
+      contract_version: '1.5.0', model_id: 'catalyst-finance.comparison', comparison_id: 'browser-options',
       name: 'Browser capital project alternatives', description: 'Live downside, base, and upside comparison generated from the capital-budgeting form.', baseline_alternative_id: 'base',
       alternatives: [
         { alternative_id: 'downside', label: 'Downside', kind: 'downside', source: source('downside'), scenario: downside, non_financial_caveats: ['Higher disruption and delivery risk', 'Benefits begin later'] },
@@ -596,8 +596,87 @@
     let timer = null; function schedule() { window.clearTimeout(timer); timer = window.setTimeout(render, 120); }
     cashForm.addEventListener('input', schedule); cashForm.addEventListener('change', schedule);
     section.querySelector('[data-scfin-comparison-refresh]').addEventListener('click', render);
-    section.querySelector('[data-scfin-comparison-download]').addEventListener('click', function () { downloadJson('catalyst-finance-comparison-v1.4.0.json', root._scfinComparisonPayload); });
+    section.querySelector('[data-scfin-comparison-download]').addEventListener('click', function () { downloadJson('catalyst-finance-comparison-v1.5.0.json', root._scfinComparisonPayload); });
     render();
+  }
+
+
+  function uncertaintyDefinition(root) {
+    const scenario = cashFlowScenario(root.querySelector('[data-scfin-cf-form]'));
+    const section = root.querySelector('[data-scfin-uncertainty-studio]');
+    const capital = scenario.lines.find(function (line) { return line.flow_id === 'capital'; }).amount;
+    const benefit = scenario.lines.find(function (line) { return line.flow_id === 'benefit'; }).amount;
+    const operations = scenario.lines.find(function (line) { return line.flow_id === 'operations'; }).amount;
+    const capitalRange = Number(section.querySelector('[data-scfin-uncertainty-capital]').value || 20) / 100;
+    const benefitStd = Number(section.querySelector('[data-scfin-uncertainty-benefit]').value || 15) / 100;
+    const rate = scenario.discount_rate_percent_annual;
+    return {
+      contract_version: '1.5.0', model_id: 'catalyst-finance.uncertainty', uncertainty_id: 'browser-risk-analysis',
+      name: 'Browser uncertainty and stress analysis', description: 'Seeded simulation generated from the live capital-budgeting form.',
+      source: { workspace_id: 'workspace_browser', scenario_id: 'scenario_cashflow', revision_id: 'revision_browser_001', revision_number: 1 },
+      scenario: scenario, metric_ids: ['npv', 'mirr_percent_annual', 'discounted_payback_periods'],
+      variables: [
+        { variable_id: 'capital-cost', label: 'Initial capital cost', parameter: { parameter_id: 'capital-cost', label: 'Initial capital cost', path: 'line:capital:amount', operation: 'set', value_kind: 'continuous', unit: 'USD' }, distribution: { kind: 'triangular', minimum: Math.max(0, capital * (1 - capitalRange)), mode: capital, maximum: capital * (1 + capitalRange), truncate_minimum: 0 } },
+        { variable_id: 'recurring-benefit', label: 'Recurring benefit', parameter: { parameter_id: 'recurring-benefit', label: 'Recurring benefit', path: 'line:benefit:amount', operation: 'set', value_kind: 'continuous', unit: 'USD/period' }, distribution: { kind: 'normal', mean: benefit, standard_deviation: Math.max(1, benefit * benefitStd), truncate_minimum: 0 } },
+        { variable_id: 'operating-cost', label: 'Operating cost', parameter: { parameter_id: 'operating-cost', label: 'Operating cost', path: 'line:operations:amount', operation: 'set', value_kind: 'continuous', unit: 'USD/period' }, distribution: { kind: 'triangular', minimum: Math.max(0, operations * 0.8), mode: operations, maximum: operations * 1.4, truncate_minimum: 0 } },
+        { variable_id: 'discount-rate', label: 'Discount rate', parameter: { parameter_id: 'discount-rate', label: 'Discount rate', path: 'discount_rate_percent_annual', operation: 'set', value_kind: 'continuous', unit: 'percent/year' }, distribution: { kind: 'uniform', minimum: Math.max(-99, rate - 2), maximum: rate + 4 } },
+        { variable_id: 'implementation-delay', label: 'Implementation delay', parameter: { parameter_id: 'implementation-delay', label: 'Implementation delay', path: 'all', operation: 'shift_periods', value_kind: 'integer', unit: 'periods' }, distribution: { kind: 'discrete', values: [0, 1, 2], probabilities: [0.65, 0.25, 0.1] } }
+      ],
+      correlations: [
+        { left_variable_id: 'capital-cost', right_variable_id: 'implementation-delay', coefficient: 0.35 },
+        { left_variable_id: 'recurring-benefit', right_variable_id: 'operating-cost', coefficient: 0.2 }
+      ],
+      stress_cases: [
+        { stress_id: 'cost-overrun-delay', label: 'Cost overrun and delay', description: 'Capital costs rise and implementation is delayed.', adjustments: [
+          { parameter: { parameter_id: 'capital-multiplier', label: 'Capital multiplier', path: 'line:capital:amount', operation: 'multiply', value_kind: 'continuous', unit: 'factor' }, value: 1.2 },
+          { parameter: { parameter_id: 'delay', label: 'Implementation delay', path: 'all', operation: 'shift_periods', value_kind: 'integer', unit: 'periods' }, value: 2 }
+        ] },
+        { stress_id: 'benefit-shortfall', label: 'Benefit shortfall', description: 'Recurring benefits are thirty percent below the base case.', adjustments: [
+          { parameter: { parameter_id: 'benefit-multiplier', label: 'Benefit multiplier', path: 'line:benefit:amount', operation: 'multiply', value_kind: 'continuous', unit: 'factor' }, value: 0.7 }
+        ] },
+        { stress_id: 'combined-downside', label: 'Combined downside', description: 'Costs rise, benefits fall, and the discount rate increases.', adjustments: [
+          { parameter: { parameter_id: 'capital-multiplier', label: 'Capital multiplier', path: 'line:capital:amount', operation: 'multiply', value_kind: 'continuous', unit: 'factor' }, value: 1.15 },
+          { parameter: { parameter_id: 'benefit-multiplier', label: 'Benefit multiplier', path: 'line:benefit:amount', operation: 'multiply', value_kind: 'continuous', unit: 'factor' }, value: 0.8 },
+          { parameter: { parameter_id: 'discount-rate', label: 'Discount rate', path: 'discount_rate_percent_annual', operation: 'set', value_kind: 'continuous', unit: 'percent/year' }, value: rate + 4 }
+        ] }
+      ],
+      downside_thresholds: { npv: 0, mirr_percent_annual: rate },
+      monte_carlo: { iterations: Math.max(100, Math.min(5000, Math.floor(Number(section.querySelector('[data-scfin-uncertainty-iterations]').value || 500)))), seed: Number(section.querySelector('[data-scfin-uncertainty-seed]').value || 20260717), percentiles: [5, 10, 25, 50, 75, 90, 95], retain_samples: 25, histogram_bins: 12 }
+    };
+  }
+
+  function drawHistogram(canvas, bins) {
+    const context = canvas.getContext('2d'); const width = canvas.width; const height = canvas.height; const pad = 34;
+    context.clearRect(0, 0, width, height); if (!bins.length) return;
+    const maximum = Math.max(1, ...bins.map(function (item) { return item.count; })); const slot = (width - pad * 2) / bins.length;
+    context.strokeStyle = '#777'; context.beginPath(); context.moveTo(pad, height - pad); context.lineTo(width - pad, height - pad); context.stroke();
+    bins.forEach(function (item, index) { const barHeight = (height - pad * 2) * item.count / maximum; context.fillStyle = '#5a2635'; context.fillRect(pad + index * slot + 1, height - pad - barHeight, Math.max(2, slot - 2), barHeight); });
+  }
+
+  function initializeUncertainty(root) {
+    const section = root.querySelector('[data-scfin-uncertainty-studio]');
+    if (!section || typeof CatalystFinanceUncertaintyEngine === 'undefined') return;
+    function run() {
+      try {
+        const result = CatalystFinanceUncertaintyEngine.evaluate(uncertaintyDefinition(root)); root._scfinUncertaintyPayload = result;
+        const npv = result.summaries.find(function (item) { return item.metric_id === 'npv'; });
+        const p5 = npv.percentiles.find(function (item) { return item.percentile === 5; });
+        section.querySelector('[data-scfin-uncertainty-mean]').textContent = money(npv.mean, 'USD');
+        section.querySelector('[data-scfin-uncertainty-p5]').textContent = money(p5.value, 'USD');
+        section.querySelector('[data-scfin-uncertainty-positive]').textContent = (npv.probability_above_zero * 100).toFixed(1) + '%';
+        section.querySelector('[data-scfin-uncertainty-shortfall]').textContent = money(npv.expected_shortfall_5, 'USD');
+        drawHistogram(section.querySelector('[data-scfin-uncertainty-histogram]'), result.histograms.filter(function (item) { return item.metric_id === 'npv'; }));
+        const influence = section.querySelector('[data-scfin-uncertainty-influence]'); influence.innerHTML = '';
+        result.variable_influences.filter(function (item) { return item.metric_id === 'npv'; }).forEach(function (item) { const li = document.createElement('li'); li.textContent = item.label + ': ' + (item.pearson_correlation === null ? 'not estimable' : item.pearson_correlation.toFixed(3)); influence.appendChild(li); });
+        const stress = section.querySelector('[data-scfin-uncertainty-stress]'); stress.innerHTML = '';
+        result.stress_results.forEach(function (item) { const li = document.createElement('li'); li.textContent = item.label + ': NPV ' + money(item.metrics.npv, 'USD') + ' (' + (item.deltas_from_base.npv >= 0 ? '+' : '') + money(item.deltas_from_base.npv, 'USD') + ' vs. base)'; stress.appendChild(li); });
+        section.querySelector('[data-scfin-uncertainty-meta]').textContent = 'Seed ' + result.metadata.seed + ' · ' + result.metadata.completed_iterations + ' completed · ' + result.metadata.rejected_iterations + ' rejected draws';
+        section.querySelector('[data-scfin-uncertainty-json]').textContent = JSON.stringify(result, null, 2);
+      } catch (error) { section.querySelector('[data-scfin-uncertainty-json]').textContent = String(error.message || error); }
+    }
+    section.querySelector('[data-scfin-uncertainty-run]').addEventListener('click', run);
+    section.querySelector('[data-scfin-uncertainty-download]').addEventListener('click', function () { if (root._scfinUncertaintyPayload) downloadJson('catalyst-finance-uncertainty-v1.5.0.json', root._scfinUncertaintyPayload); });
+    run();
   }
 
   document.addEventListener('DOMContentLoaded', function () {
@@ -605,6 +684,7 @@
       initializeWorkspace(root, index);
       initializeCapitalBudgeting(root);
       initializeComparison(root);
+      initializeUncertainty(root);
     });
   });
 })();

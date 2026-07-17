@@ -7,6 +7,7 @@ from typing import Any
 from .cashflow_models import CASHFLOW_CONTRACT_VERSION, CASHFLOW_MODEL_ID
 from .comparison_models import COMPARISON_CONTRACT_VERSION, COMPARISON_MODEL_ID
 from .models import CONTRACT_VERSION, METHODOLOGY_VERSION, MODEL_ID
+from .uncertainty_models import UNCERTAINTY_CONTRACT_VERSION, UNCERTAINTY_MODEL_ID
 
 MODEL_REGISTRY: dict[str, dict[str, Any]] = {
     MODEL_ID: {
@@ -66,6 +67,23 @@ MODEL_REGISTRY: dict[str, dict[str, Any]] = {
             "tornado and crossover data",
             "assumption-driver explanations",
             "revision traceability",
+        ],
+    },
+    UNCERTAINTY_MODEL_ID: {
+        "model_id": UNCERTAINTY_MODEL_ID,
+        "name": "Catalyst Finance uncertainty, Monte Carlo, and stress model",
+        "model_version": UNCERTAINTY_CONTRACT_VERSION,
+        "contract_version": UNCERTAINTY_CONTRACT_VERSION,
+        "status": "stable",
+        "period_frequency": ["monthly", "quarterly", "annual"],
+        "capabilities": [
+            "seeded Monte Carlo simulation",
+            "uniform, triangular, normal, lognormal, and discrete distributions",
+            "Gaussian-copula correlation",
+            "percentiles, downside probabilities, VaR, and expected shortfall",
+            "histograms and variable influence",
+            "deterministic multi-factor stress testing",
+            "reproducibility keys and retained samples",
         ],
     },
 }

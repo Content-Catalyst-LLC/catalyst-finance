@@ -1,4 +1,4 @@
-"""Scenario comparison, sensitivity, and threshold contracts for v1.4.0."""
+"""Scenario comparison, sensitivity, and threshold contracts for v1.5.0."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from pydantic import Field, model_validator
 from .cashflow_models import CashFlowPublication, CashFlowScenarioInput
 from .models import ContractModel
 
-COMPARISON_CONTRACT_VERSION: Literal["1.4.0"] = "1.4.0"
+COMPARISON_CONTRACT_VERSION: Literal["1.5.0"] = "1.5.0"
 COMPARISON_MODEL_ID: Literal["catalyst-finance.comparison"] = (
     "catalyst-finance.comparison"
 )
@@ -124,7 +124,7 @@ class BreakEvenDefinition(ContractModel):
 
 
 class ComparisonDefinition(ContractModel):
-    contract_version: Literal["1.4.0"] = COMPARISON_CONTRACT_VERSION
+    contract_version: Literal["1.5.0"] = COMPARISON_CONTRACT_VERSION
     model_id: Literal["catalyst-finance.comparison"] = COMPARISON_MODEL_ID
     comparison_id: str = Field(
         min_length=1, max_length=100, pattern=r"^[A-Za-z0-9_-]+$"
@@ -304,7 +304,7 @@ class CrossoverPoint(ContractModel):
 
 class ComparisonMethodology(ContractModel):
     model_id: Literal["catalyst-finance.comparison"] = COMPARISON_MODEL_ID
-    model_version: Literal["1.4.0"] = COMPARISON_CONTRACT_VERSION
+    model_version: Literal["1.5.0"] = COMPARISON_CONTRACT_VERSION
     ranking_policy: Literal["weighted_min_max_normalization"] = (
         "weighted_min_max_normalization"
     )
@@ -327,12 +327,12 @@ class ComparisonMetadata(ContractModel):
     tool: Literal["Catalyst Finance comparison engine"] = (
         "Catalyst Finance comparison engine"
     )
-    version: Literal["1.4.0"] = COMPARISON_CONTRACT_VERSION
+    version: Literal["1.5.0"] = COMPARISON_CONTRACT_VERSION
     disclaimer: str
 
 
 class ComparisonPublication(ContractModel):
-    contract_version: Literal["1.4.0"] = COMPARISON_CONTRACT_VERSION
+    contract_version: Literal["1.5.0"] = COMPARISON_CONTRACT_VERSION
     model_id: Literal["catalyst-finance.comparison"] = COMPARISON_MODEL_ID
     definition: ComparisonDefinition
     alternatives: list[AlternativeEvaluation]

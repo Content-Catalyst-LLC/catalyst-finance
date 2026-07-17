@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.5.0 — 2026-07-17
+
+- Added seeded Monte Carlo simulation with uniform, triangular, normal, lognormal, and discrete distributions.
+- Added Gaussian-copula correlation with Cholesky validation, deterministic Python/JavaScript parity, and reproducibility keys.
+- Added percentiles, downside probabilities, lower-tail value-at-risk, expected shortfall, histograms, retained samples, and variable influence rankings.
+- Added named multi-factor stress cases, uncertainty API/CLI surfaces, schemas, examples, workspace revisions, and a WordPress uncertainty studio.
+- Added v1.4.0 scenario, comparison, and workspace migration support.
+
 ## 1.4.0 — 2026-07-17
 
 - Added revision-linked alternative comparison with aligned metrics, deltas, weighted rankings, and financial Pareto dominance.
@@ -7,7 +15,7 @@
 - Added versioned workspace comparison artifacts, comparison API/CLI surfaces, four export formats, browser parity, and a WordPress comparison studio.
 - Added v1.3.0 screening and cash-flow migration support.
 
-## 1.4.0 — 2026-07-17
+## 1.3.0 — 2026-07-17
 
 - Added monthly, quarterly, and annual period cash-flow contracts and calculation services.
 - Added phased and irregular capital, operating, benefit, grant, rebate, working-capital, residual, and decommissioning schedules.

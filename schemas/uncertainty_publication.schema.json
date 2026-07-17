@@ -1,0 +1,1293 @@
+{
+  "$defs": {
+    "CashFlowContext": {
+      "additionalProperties": false,
+      "properties": {
+        "currency": {
+          "default": "USD",
+          "pattern": "^[A-Z]{3}$",
+          "title": "Currency",
+          "type": "string"
+        },
+        "price_basis": {
+          "default": "nominal",
+          "enum": [
+            "nominal",
+            "real"
+          ],
+          "title": "Price Basis",
+          "type": "string"
+        },
+        "discount_rate_basis": {
+          "default": "nominal",
+          "enum": [
+            "nominal",
+            "real"
+          ],
+          "title": "Discount Rate Basis",
+          "type": "string"
+        },
+        "period_frequency": {
+          "default": "annual",
+          "enum": [
+            "monthly",
+            "quarterly",
+            "annual"
+          ],
+          "title": "Period Frequency",
+          "type": "string"
+        },
+        "time_basis": {
+          "const": "end_of_period",
+          "default": "end_of_period",
+          "title": "Time Basis",
+          "type": "string"
+        },
+        "rounding_policy": {
+          "const": "half_up",
+          "default": "half_up",
+          "title": "Rounding Policy",
+          "type": "string"
+        },
+        "monetary_decimals": {
+          "default": 2,
+          "maximum": 6,
+          "minimum": 0,
+          "title": "Monetary Decimals",
+          "type": "integer"
+        },
+        "ratio_decimals": {
+          "default": 4,
+          "maximum": 6,
+          "minimum": 0,
+          "title": "Ratio Decimals",
+          "type": "integer"
+        }
+      },
+      "title": "CashFlowContext",
+      "type": "object"
+    },
+    "CashFlowLine": {
+      "additionalProperties": false,
+      "properties": {
+        "flow_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Flow Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "capital_cost",
+            "operating_cost",
+            "revenue",
+            "savings",
+            "avoided_cost",
+            "grant",
+            "rebate",
+            "residual_value",
+            "decommissioning_cost",
+            "working_capital",
+            "working_capital_recovery",
+            "other_benefit",
+            "other_cost"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "amount": {
+          "minimum": 0,
+          "title": "Amount",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "start_period": {
+          "minimum": 0,
+          "title": "Start Period",
+          "type": "integer"
+        },
+        "end_period": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "End Period"
+        },
+        "interval_periods": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Interval Periods",
+          "type": "integer"
+        },
+        "escalation_rate_percent_annual": {
+          "default": 0,
+          "exclusiveMinimum": -100,
+          "maximum": 1000,
+          "title": "Escalation Rate Percent Annual",
+          "type": "number",
+          "x-unit": "percent_per_year"
+        },
+        "price_basis": {
+          "default": "nominal",
+          "enum": [
+            "nominal",
+            "real"
+          ],
+          "title": "Price Basis",
+          "type": "string"
+        },
+        "notes": {
+          "default": "",
+          "maxLength": 4000,
+          "title": "Notes",
+          "type": "string"
+        }
+      },
+      "required": [
+        "flow_id",
+        "label",
+        "category",
+        "amount",
+        "start_period"
+      ],
+      "title": "CashFlowLine",
+      "type": "object"
+    },
+    "CashFlowScenarioInput": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": "1.5.0",
+          "default": "1.5.0",
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "model_id": {
+          "const": "catalyst-finance.cash-flow",
+          "default": "catalyst-finance.cash-flow",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "project": {
+          "$ref": "#/$defs/FinanceProject"
+        },
+        "context": {
+          "$ref": "#/$defs/CashFlowContext"
+        },
+        "analysis_horizon_periods": {
+          "maximum": 1200,
+          "minimum": 1,
+          "title": "Analysis Horizon Periods",
+          "type": "integer"
+        },
+        "discount_rate_percent_annual": {
+          "exclusiveMinimum": -100,
+          "maximum": 1000,
+          "title": "Discount Rate Percent Annual",
+          "type": "number",
+          "x-unit": "percent_per_year"
+        },
+        "finance_rate_percent_annual": {
+          "default": 0,
+          "exclusiveMinimum": -100,
+          "maximum": 1000,
+          "title": "Finance Rate Percent Annual",
+          "type": "number",
+          "x-unit": "percent_per_year"
+        },
+        "reinvestment_rate_percent_annual": {
+          "default": 0,
+          "exclusiveMinimum": -100,
+          "maximum": 1000,
+          "title": "Reinvestment Rate Percent Annual",
+          "type": "number",
+          "x-unit": "percent_per_year"
+        },
+        "lines": {
+          "items": {
+            "$ref": "#/$defs/CashFlowLine"
+          },
+          "maxItems": 1000,
+          "minItems": 1,
+          "title": "Lines",
+          "type": "array"
+        }
+      },
+      "required": [
+        "project",
+        "analysis_horizon_periods",
+        "discount_rate_percent_annual",
+        "lines"
+      ],
+      "title": "CashFlowScenarioInput",
+      "type": "object"
+    },
+    "CorrelationPair": {
+      "additionalProperties": false,
+      "properties": {
+        "left_variable_id": {
+          "title": "Left Variable Id",
+          "type": "string"
+        },
+        "right_variable_id": {
+          "title": "Right Variable Id",
+          "type": "string"
+        },
+        "coefficient": {
+          "exclusiveMaximum": 1,
+          "exclusiveMinimum": -1,
+          "title": "Coefficient",
+          "type": "number"
+        }
+      },
+      "required": [
+        "left_variable_id",
+        "right_variable_id",
+        "coefficient"
+      ],
+      "title": "CorrelationPair",
+      "type": "object"
+    },
+    "DistributionSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "uniform",
+            "triangular",
+            "normal",
+            "lognormal",
+            "discrete"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "minimum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Minimum"
+        },
+        "mode": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mode"
+        },
+        "maximum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Maximum"
+        },
+        "mean": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mean"
+        },
+        "standard_deviation": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Standard Deviation"
+        },
+        "log_mean": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Log Mean"
+        },
+        "log_standard_deviation": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Log Standard Deviation"
+        },
+        "values": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 100,
+          "title": "Values",
+          "type": "array"
+        },
+        "probabilities": {
+          "items": {
+            "exclusiveMinimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "maxItems": 100,
+          "title": "Probabilities",
+          "type": "array"
+        },
+        "truncate_minimum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Truncate Minimum"
+        },
+        "truncate_maximum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Truncate Maximum"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "DistributionSpec",
+      "type": "object"
+    },
+    "FinanceProject": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "category": {
+          "default": "Sustainability finance",
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Category",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "FinanceProject",
+      "type": "object"
+    },
+    "HistogramBin": {
+      "additionalProperties": false,
+      "properties": {
+        "metric_id": {
+          "enum": [
+            "npv",
+            "net_cash_flow",
+            "discounted_payback_periods",
+            "irr_percent_annual",
+            "mirr_percent_annual",
+            "profitability_index",
+            "benefit_cost_ratio",
+            "equivalent_annual_value"
+          ],
+          "title": "Metric Id",
+          "type": "string"
+        },
+        "lower_bound": {
+          "title": "Lower Bound",
+          "type": "number"
+        },
+        "upper_bound": {
+          "title": "Upper Bound",
+          "type": "number"
+        },
+        "count": {
+          "title": "Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "metric_id",
+        "lower_bound",
+        "upper_bound",
+        "count"
+      ],
+      "title": "HistogramBin",
+      "type": "object"
+    },
+    "MetricDistributionSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "metric_id": {
+          "enum": [
+            "npv",
+            "net_cash_flow",
+            "discounted_payback_periods",
+            "irr_percent_annual",
+            "mirr_percent_annual",
+            "profitability_index",
+            "benefit_cost_ratio",
+            "equivalent_annual_value"
+          ],
+          "title": "Metric Id",
+          "type": "string"
+        },
+        "sample_count": {
+          "title": "Sample Count",
+          "type": "integer"
+        },
+        "mean": {
+          "title": "Mean",
+          "type": "number"
+        },
+        "median": {
+          "title": "Median",
+          "type": "number"
+        },
+        "standard_deviation": {
+          "title": "Standard Deviation",
+          "type": "number"
+        },
+        "minimum": {
+          "title": "Minimum",
+          "type": "number"
+        },
+        "maximum": {
+          "title": "Maximum",
+          "type": "number"
+        },
+        "percentiles": {
+          "items": {
+            "$ref": "#/$defs/PercentileValue"
+          },
+          "title": "Percentiles",
+          "type": "array"
+        },
+        "downside_threshold": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Downside Threshold"
+        },
+        "probability_above_zero": {
+          "title": "Probability Above Zero",
+          "type": "number"
+        },
+        "probability_below_threshold": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Probability Below Threshold"
+        },
+        "value_at_risk_95": {
+          "title": "Value At Risk 95",
+          "type": "number"
+        },
+        "expected_shortfall_5": {
+          "title": "Expected Shortfall 5",
+          "type": "number"
+        }
+      },
+      "required": [
+        "metric_id",
+        "sample_count",
+        "mean",
+        "median",
+        "standard_deviation",
+        "minimum",
+        "maximum",
+        "percentiles",
+        "downside_threshold",
+        "probability_above_zero",
+        "probability_below_threshold",
+        "value_at_risk_95",
+        "expected_shortfall_5"
+      ],
+      "title": "MetricDistributionSummary",
+      "type": "object"
+    },
+    "MonteCarloConfiguration": {
+      "additionalProperties": false,
+      "properties": {
+        "iterations": {
+          "default": 1000,
+          "maximum": 100000,
+          "minimum": 100,
+          "title": "Iterations",
+          "type": "integer"
+        },
+        "seed": {
+          "default": 20260717,
+          "maximum": 4294967295,
+          "minimum": 0,
+          "title": "Seed",
+          "type": "integer"
+        },
+        "percentiles": {
+          "items": {
+            "exclusiveMaximum": 100,
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          "maxItems": 19,
+          "minItems": 1,
+          "title": "Percentiles",
+          "type": "array"
+        },
+        "retain_samples": {
+          "default": 100,
+          "maximum": 1000,
+          "minimum": 0,
+          "title": "Retain Samples",
+          "type": "integer"
+        },
+        "histogram_bins": {
+          "default": 12,
+          "maximum": 50,
+          "minimum": 5,
+          "title": "Histogram Bins",
+          "type": "integer"
+        }
+      },
+      "title": "MonteCarloConfiguration",
+      "type": "object"
+    },
+    "PercentileValue": {
+      "additionalProperties": false,
+      "properties": {
+        "percentile": {
+          "title": "Percentile",
+          "type": "number"
+        },
+        "value": {
+          "title": "Value",
+          "type": "number"
+        }
+      },
+      "required": [
+        "percentile",
+        "value"
+      ],
+      "title": "PercentileValue",
+      "type": "object"
+    },
+    "RetainedSimulationSample": {
+      "additionalProperties": false,
+      "properties": {
+        "iteration": {
+          "title": "Iteration",
+          "type": "integer"
+        },
+        "variable_values": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Variable Values",
+          "type": "object"
+        },
+        "metrics": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Metrics",
+          "type": "object"
+        }
+      },
+      "required": [
+        "iteration",
+        "variable_values",
+        "metrics"
+      ],
+      "title": "RetainedSimulationSample",
+      "type": "object"
+    },
+    "SensitivityParameter": {
+      "additionalProperties": false,
+      "properties": {
+        "parameter_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Parameter Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "path": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        },
+        "operation": {
+          "default": "set",
+          "enum": [
+            "set",
+            "multiply",
+            "shift_periods"
+          ],
+          "title": "Operation",
+          "type": "string"
+        },
+        "value_kind": {
+          "default": "continuous",
+          "enum": [
+            "continuous",
+            "integer"
+          ],
+          "title": "Value Kind",
+          "type": "string"
+        },
+        "unit": {
+          "default": "",
+          "maxLength": 80,
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "parameter_id",
+        "label",
+        "path"
+      ],
+      "title": "SensitivityParameter",
+      "type": "object"
+    },
+    "SourceRevision": {
+      "additionalProperties": false,
+      "properties": {
+        "workspace_id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Workspace Id",
+          "type": "string"
+        },
+        "scenario_id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Scenario Id",
+          "type": "string"
+        },
+        "revision_id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Revision Id",
+          "type": "string"
+        },
+        "revision_number": {
+          "minimum": 1,
+          "title": "Revision Number",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "workspace_id",
+        "scenario_id",
+        "revision_id",
+        "revision_number"
+      ],
+      "title": "SourceRevision",
+      "type": "object"
+    },
+    "StressAdjustment": {
+      "additionalProperties": false,
+      "properties": {
+        "parameter": {
+          "$ref": "#/$defs/SensitivityParameter"
+        },
+        "value": {
+          "title": "Value",
+          "type": "number"
+        }
+      },
+      "required": [
+        "parameter",
+        "value"
+      ],
+      "title": "StressAdjustment",
+      "type": "object"
+    },
+    "StressCase": {
+      "additionalProperties": false,
+      "properties": {
+        "stress_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Stress Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "maxLength": 2000,
+          "title": "Description",
+          "type": "string"
+        },
+        "adjustments": {
+          "items": {
+            "$ref": "#/$defs/StressAdjustment"
+          },
+          "maxItems": 50,
+          "minItems": 1,
+          "title": "Adjustments",
+          "type": "array"
+        }
+      },
+      "required": [
+        "stress_id",
+        "label",
+        "adjustments"
+      ],
+      "title": "StressCase",
+      "type": "object"
+    },
+    "StressCaseResult": {
+      "additionalProperties": false,
+      "properties": {
+        "stress_id": {
+          "title": "Stress Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        },
+        "metrics": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Metrics",
+          "type": "object"
+        },
+        "deltas_from_base": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Deltas From Base",
+          "type": "object"
+        },
+        "adjustments": {
+          "items": {
+            "$ref": "#/$defs/StressAdjustment"
+          },
+          "title": "Adjustments",
+          "type": "array"
+        },
+        "flags": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Flags",
+          "type": "array"
+        }
+      },
+      "required": [
+        "stress_id",
+        "label",
+        "description",
+        "metrics",
+        "deltas_from_base",
+        "adjustments",
+        "flags"
+      ],
+      "title": "StressCaseResult",
+      "type": "object"
+    },
+    "UncertaintyDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": "1.5.0",
+          "default": "1.5.0",
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "model_id": {
+          "const": "catalyst-finance.uncertainty",
+          "default": "catalyst-finance.uncertainty",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "uncertainty_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Uncertainty Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "maxLength": 4000,
+          "title": "Description",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/SourceRevision"
+        },
+        "scenario": {
+          "$ref": "#/$defs/CashFlowScenarioInput"
+        },
+        "metric_ids": {
+          "items": {
+            "enum": [
+              "npv",
+              "net_cash_flow",
+              "discounted_payback_periods",
+              "irr_percent_annual",
+              "mirr_percent_annual",
+              "profitability_index",
+              "benefit_cost_ratio",
+              "equivalent_annual_value"
+            ],
+            "type": "string"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Metric Ids",
+          "type": "array"
+        },
+        "variables": {
+          "items": {
+            "$ref": "#/$defs/UncertaintyVariable"
+          },
+          "maxItems": 50,
+          "minItems": 1,
+          "title": "Variables",
+          "type": "array"
+        },
+        "correlations": {
+          "items": {
+            "$ref": "#/$defs/CorrelationPair"
+          },
+          "maxItems": 1225,
+          "title": "Correlations",
+          "type": "array"
+        },
+        "stress_cases": {
+          "items": {
+            "$ref": "#/$defs/StressCase"
+          },
+          "maxItems": 50,
+          "title": "Stress Cases",
+          "type": "array"
+        },
+        "downside_thresholds": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "propertyNames": {
+            "enum": [
+              "npv",
+              "net_cash_flow",
+              "discounted_payback_periods",
+              "irr_percent_annual",
+              "mirr_percent_annual",
+              "profitability_index",
+              "benefit_cost_ratio",
+              "equivalent_annual_value"
+            ]
+          },
+          "title": "Downside Thresholds",
+          "type": "object"
+        },
+        "monte_carlo": {
+          "$ref": "#/$defs/MonteCarloConfiguration"
+        }
+      },
+      "required": [
+        "uncertainty_id",
+        "name",
+        "source",
+        "scenario",
+        "variables"
+      ],
+      "title": "UncertaintyDefinition",
+      "type": "object"
+    },
+    "UncertaintyMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "generated_at": {
+          "title": "Generated At",
+          "type": "string"
+        },
+        "version": {
+          "const": "1.5.0",
+          "default": "1.5.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "configured_iterations": {
+          "title": "Configured Iterations",
+          "type": "integer"
+        },
+        "completed_iterations": {
+          "title": "Completed Iterations",
+          "type": "integer"
+        },
+        "rejected_iterations": {
+          "title": "Rejected Iterations",
+          "type": "integer"
+        },
+        "seed": {
+          "title": "Seed",
+          "type": "integer"
+        },
+        "reproducibility_key": {
+          "title": "Reproducibility Key",
+          "type": "string"
+        },
+        "disclaimer": {
+          "title": "Disclaimer",
+          "type": "string"
+        }
+      },
+      "required": [
+        "generated_at",
+        "configured_iterations",
+        "completed_iterations",
+        "rejected_iterations",
+        "seed",
+        "reproducibility_key",
+        "disclaimer"
+      ],
+      "title": "UncertaintyMetadata",
+      "type": "object"
+    },
+    "UncertaintyMethodology": {
+      "additionalProperties": false,
+      "properties": {
+        "model_id": {
+          "const": "catalyst-finance.uncertainty",
+          "default": "catalyst-finance.uncertainty",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "model_version": {
+          "const": "1.5.0",
+          "default": "1.5.0",
+          "title": "Model Version",
+          "type": "string"
+        },
+        "random_generator": {
+          "const": "xorshift32_box_muller",
+          "default": "xorshift32_box_muller",
+          "title": "Random Generator",
+          "type": "string"
+        },
+        "correlation_policy": {
+          "const": "gaussian_copula_cholesky",
+          "default": "gaussian_copula_cholesky",
+          "title": "Correlation Policy",
+          "type": "string"
+        },
+        "percentile_policy": {
+          "const": "linear_interpolation",
+          "default": "linear_interpolation",
+          "title": "Percentile Policy",
+          "type": "string"
+        },
+        "risk_policy": {
+          "const": "lower_tail_var95_and_expected_shortfall5",
+          "default": "lower_tail_var95_and_expected_shortfall5",
+          "title": "Risk Policy",
+          "type": "string"
+        },
+        "stress_policy": {
+          "const": "deterministic_parameter_substitution",
+          "default": "deterministic_parameter_substitution",
+          "title": "Stress Policy",
+          "type": "string"
+        }
+      },
+      "title": "UncertaintyMethodology",
+      "type": "object"
+    },
+    "UncertaintyVariable": {
+      "additionalProperties": false,
+      "properties": {
+        "variable_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Variable Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "parameter": {
+          "$ref": "#/$defs/SensitivityParameter"
+        },
+        "distribution": {
+          "$ref": "#/$defs/DistributionSpec"
+        }
+      },
+      "required": [
+        "variable_id",
+        "label",
+        "parameter",
+        "distribution"
+      ],
+      "title": "UncertaintyVariable",
+      "type": "object"
+    },
+    "VariableInfluence": {
+      "additionalProperties": false,
+      "properties": {
+        "variable_id": {
+          "title": "Variable Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "metric_id": {
+          "enum": [
+            "npv",
+            "net_cash_flow",
+            "discounted_payback_periods",
+            "irr_percent_annual",
+            "mirr_percent_annual",
+            "profitability_index",
+            "benefit_cost_ratio",
+            "equivalent_annual_value"
+          ],
+          "title": "Metric Id",
+          "type": "string"
+        },
+        "pearson_correlation": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Pearson Correlation"
+        },
+        "absolute_correlation": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Absolute Correlation"
+        }
+      },
+      "required": [
+        "variable_id",
+        "label",
+        "metric_id",
+        "pearson_correlation",
+        "absolute_correlation"
+      ],
+      "title": "VariableInfluence",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "const": "1.5.0",
+      "default": "1.5.0",
+      "title": "Contract Version",
+      "type": "string"
+    },
+    "model_id": {
+      "const": "catalyst-finance.uncertainty",
+      "default": "catalyst-finance.uncertainty",
+      "title": "Model Id",
+      "type": "string"
+    },
+    "definition": {
+      "$ref": "#/$defs/UncertaintyDefinition"
+    },
+    "base_metrics": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "title": "Base Metrics",
+      "type": "object"
+    },
+    "summaries": {
+      "items": {
+        "$ref": "#/$defs/MetricDistributionSummary"
+      },
+      "title": "Summaries",
+      "type": "array"
+    },
+    "histograms": {
+      "items": {
+        "$ref": "#/$defs/HistogramBin"
+      },
+      "title": "Histograms",
+      "type": "array"
+    },
+    "variable_influences": {
+      "items": {
+        "$ref": "#/$defs/VariableInfluence"
+      },
+      "title": "Variable Influences",
+      "type": "array"
+    },
+    "retained_samples": {
+      "items": {
+        "$ref": "#/$defs/RetainedSimulationSample"
+      },
+      "title": "Retained Samples",
+      "type": "array"
+    },
+    "stress_results": {
+      "items": {
+        "$ref": "#/$defs/StressCaseResult"
+      },
+      "title": "Stress Results",
+      "type": "array"
+    },
+    "methodology": {
+      "$ref": "#/$defs/UncertaintyMethodology"
+    },
+    "metadata": {
+      "$ref": "#/$defs/UncertaintyMetadata"
+    }
+  },
+  "required": [
+    "definition",
+    "base_metrics",
+    "summaries",
+    "histograms",
+    "variable_influences",
+    "retained_samples",
+    "stress_results",
+    "methodology",
+    "metadata"
+  ],
+  "title": "UncertaintyPublication",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.5.0/uncertainty_publication.schema.json"
+}

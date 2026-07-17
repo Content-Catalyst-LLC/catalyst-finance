@@ -34,8 +34,9 @@ def test_model_registry_endpoint() -> None:
         "catalyst-finance.screening",
         "catalyst-finance.cash-flow",
         "catalyst-finance.comparison",
+        "catalyst-finance.uncertainty",
     ]
-    assert all(model["model_version"] == "1.4.0" for model in models)
+    assert all(model["model_version"] == "1.5.0" for model in models)
 
 
 def test_evaluate_endpoint_uses_canonical_contract() -> None:
@@ -43,7 +44,7 @@ def test_evaluate_endpoint_uses_canonical_contract() -> None:
     response = CLIENT.post("/api/v1/evaluate", json=payload)
     assert response.status_code == 200
     result = response.json()
-    assert result["contract_version"] == "1.4.0"
+    assert result["contract_version"] == "1.5.0"
     assert result["results"]["score_components"]
 
 
@@ -161,3 +162,23 @@ def test_comparison_api_and_workspace_revision_endpoints(tmp_path: Path) -> None
     )
     assert revised.status_code == 200
     assert len(revised.json()["comparisons"][0]["revisions"]) == 2
+
+
+def test_uncertainty_endpoint() -> None:
+    payload = json.loads((ROOT / "data/sample_uncertainty.json").read_text())
+    payload["monte_carlo"]["iterations"] = 100
+    payload["monte_carlo"]["retain_samples"] = 5
+    response = CLIENT.post("/api/v1/uncertainty/evaluate", json=payload)
+    assert response.status_code == 200
+    body = response.json()
+    assert body["model_id"] == "catalyst-finance.uncertainty"
+    assert body["metadata"]["completed_iterations"] == 100
+
+
+def test_uncertainty_endpoint_rejects_invalid_payload() -> None:
+    response = CLIENT.post(
+        "/api/v1/uncertainty/evaluate",
+        json={"contract_version": "1.5.0", "model_id": "catalyst-finance.uncertainty"},
+    )
+    assert response.status_code == 422
+    assert response.json()["detail"]["error"] == "invalid_uncertainty_definition"

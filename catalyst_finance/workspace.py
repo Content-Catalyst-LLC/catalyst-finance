@@ -1,4 +1,4 @@
-"""Workspace lifecycle and revision services for Catalyst Finance v1.4.0."""
+"""Workspace lifecycle and revision services for Catalyst Finance v1.5.0."""
 
 from __future__ import annotations
 
@@ -16,16 +16,20 @@ from .migration import normalize_scenario
 from .models import FinanceScenarioInput
 from .repositories import WorkspaceNotFoundError, WorkspaceRepository
 from .templates import get_template
+from .uncertainty_models import UncertaintyDefinition
+from .workspace_migration import migrate_workspace_payload
 from .workspace_models import (
     ComparisonRevision,
     FinanceWorkspace,
     ScenarioPayload,
     ScenarioRevision,
+    UncertaintyRevision,
     WorkspaceComparison,
     WorkspaceDefaults,
     WorkspaceExport,
     WorkspaceProject,
     WorkspaceScenario,
+    WorkspaceUncertaintyAnalysis,
 )
 
 Clock = Callable[[], datetime]
@@ -545,6 +549,108 @@ class WorkspaceService:
             )
         )
 
+    def create_uncertainty_analysis(
+        self,
+        workspace_id: str,
+        definition: UncertaintyDefinition | dict[str, Any],
+        *,
+        name: str | None = None,
+    ) -> FinanceWorkspace:
+        workspace = self.repository.get(workspace_id)
+        uncertainty_definition = (
+            definition
+            if isinstance(definition, UncertaintyDefinition)
+            else UncertaintyDefinition.model_validate(definition)
+        )
+        now = self.clock()
+        revision = UncertaintyRevision(
+            revision_id=self.id_factory("revision"),
+            revision_number=1,
+            created_at=now,
+            change_note="Initial uncertainty definition",
+            definition=uncertainty_definition,
+        )
+        record = WorkspaceUncertaintyAnalysis(
+            analysis_id=self.id_factory("analysis"),
+            name=name or uncertainty_definition.name,
+            created_at=now,
+            updated_at=now,
+            current_revision_id=revision.revision_id,
+            revisions=[revision],
+        )
+        return self.repository.save(
+            workspace.model_copy(
+                update={
+                    "uncertainty_analyses": [*workspace.uncertainty_analyses, record],
+                    "updated_at": now,
+                }
+            )
+        )
+
+    def save_uncertainty_revision(
+        self,
+        workspace_id: str,
+        analysis_id: str,
+        definition: UncertaintyDefinition | dict[str, Any],
+        *,
+        change_note: str = "Saved uncertainty revision",
+    ) -> FinanceWorkspace:
+        workspace = self.repository.get(workspace_id)
+        uncertainty_definition = (
+            definition
+            if isinstance(definition, UncertaintyDefinition)
+            else UncertaintyDefinition.model_validate(definition)
+        )
+        now = self.clock()
+        found = False
+        records: list[WorkspaceUncertaintyAnalysis] = []
+        for record in workspace.uncertainty_analyses:
+            if record.analysis_id != analysis_id:
+                records.append(record)
+                continue
+            found = True
+            revision = UncertaintyRevision(
+                revision_id=self.id_factory("revision"),
+                revision_number=len(record.revisions) + 1,
+                created_at=now,
+                change_note=change_note,
+                definition=uncertainty_definition,
+            )
+            records.append(
+                record.model_copy(
+                    update={
+                        "name": uncertainty_definition.name,
+                        "updated_at": now,
+                        "current_revision_id": revision.revision_id,
+                        "revisions": [*record.revisions, revision],
+                    }
+                )
+            )
+        if not found:
+            raise WorkspaceNotFoundError(analysis_id)
+        return self.repository.save(
+            workspace.model_copy(
+                update={"uncertainty_analyses": records, "updated_at": now}
+            )
+        )
+
+    def delete_uncertainty_analysis(
+        self, workspace_id: str, analysis_id: str
+    ) -> FinanceWorkspace:
+        workspace = self.repository.get(workspace_id)
+        records = [
+            record
+            for record in workspace.uncertainty_analyses
+            if record.analysis_id != analysis_id
+        ]
+        if len(records) == len(workspace.uncertainty_analyses):
+            raise WorkspaceNotFoundError(analysis_id)
+        return self.repository.save(
+            workspace.model_copy(
+                update={"uncertainty_analyses": records, "updated_at": self.clock()}
+            )
+        )
+
     def export_workspace(self, workspace_id: str, path: Path) -> WorkspaceExport:
         export = WorkspaceExport(
             exported_at=self.clock(), workspace=self.repository.get(workspace_id)
@@ -567,9 +673,13 @@ class WorkspaceService:
         elif isinstance(payload, FinanceWorkspace):
             workspace = payload
         elif "workspace" in payload:
-            workspace = WorkspaceExport.model_validate(payload).workspace
+            workspace = WorkspaceExport.model_validate(
+                migrate_workspace_payload(payload)
+            ).workspace
         else:
-            workspace = FinanceWorkspace.model_validate(payload)
+            workspace = FinanceWorkspace.model_validate(
+                migrate_workspace_payload(payload)
+            )
         try:
             self.repository.get(workspace.workspace_id)
         except WorkspaceNotFoundError:

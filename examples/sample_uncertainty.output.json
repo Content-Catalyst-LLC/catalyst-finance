@@ -1,0 +1,1390 @@
+{
+  "contract_version": "1.5.0",
+  "model_id": "catalyst-finance.uncertainty",
+  "definition": {
+    "contract_version": "1.5.0",
+    "model_id": "catalyst-finance.uncertainty",
+    "uncertainty_id": "retrofit-risk-analysis",
+    "name": "Building efficiency retrofit uncertainty analysis",
+    "description": "Seeded Monte Carlo analysis of capital cost, savings, operating cost, discount rate, and implementation timing.",
+    "source": {
+      "workspace_id": "workspace_sample",
+      "scenario_id": "scenario_cashflow",
+      "revision_id": "revision_1",
+      "revision_number": 1
+    },
+    "scenario": {
+      "contract_version": "1.5.0",
+      "model_id": "catalyst-finance.cash-flow",
+      "project": {
+        "name": "Building efficiency retrofit",
+        "category": "Capital project"
+      },
+      "context": {
+        "currency": "USD",
+        "price_basis": "nominal",
+        "discount_rate_basis": "nominal",
+        "period_frequency": "annual",
+        "time_basis": "end_of_period",
+        "rounding_policy": "half_up",
+        "monetary_decimals": 2,
+        "ratio_decimals": 4
+      },
+      "analysis_horizon_periods": 10,
+      "discount_rate_percent_annual": 6.0,
+      "finance_rate_percent_annual": 6.0,
+      "reinvestment_rate_percent_annual": 3.0,
+      "lines": [
+        {
+          "flow_id": "capex",
+          "label": "Initial capital cost",
+          "category": "capital_cost",
+          "amount": 250000.0,
+          "start_period": 0,
+          "end_period": null,
+          "interval_periods": 1,
+          "escalation_rate_percent_annual": 0.0,
+          "price_basis": "nominal",
+          "notes": ""
+        },
+        {
+          "flow_id": "grant",
+          "label": "Implementation grant",
+          "category": "grant",
+          "amount": 40000.0,
+          "start_period": 0,
+          "end_period": null,
+          "interval_periods": 1,
+          "escalation_rate_percent_annual": 0.0,
+          "price_basis": "nominal",
+          "notes": ""
+        },
+        {
+          "flow_id": "working-capital",
+          "label": "Initial working capital",
+          "category": "working_capital",
+          "amount": 15000.0,
+          "start_period": 0,
+          "end_period": null,
+          "interval_periods": 1,
+          "escalation_rate_percent_annual": 0.0,
+          "price_basis": "nominal",
+          "notes": ""
+        },
+        {
+          "flow_id": "savings",
+          "label": "Annual energy savings",
+          "category": "savings",
+          "amount": 60000.0,
+          "start_period": 1,
+          "end_period": 10,
+          "interval_periods": 1,
+          "escalation_rate_percent_annual": 2.0,
+          "price_basis": "nominal",
+          "notes": ""
+        },
+        {
+          "flow_id": "operations",
+          "label": "Annual operating cost",
+          "category": "operating_cost",
+          "amount": 10000.0,
+          "start_period": 1,
+          "end_period": 10,
+          "interval_periods": 1,
+          "escalation_rate_percent_annual": 2.0,
+          "price_basis": "nominal",
+          "notes": ""
+        },
+        {
+          "flow_id": "residual",
+          "label": "Residual equipment value",
+          "category": "residual_value",
+          "amount": 20000.0,
+          "start_period": 10,
+          "end_period": null,
+          "interval_periods": 1,
+          "escalation_rate_percent_annual": 0.0,
+          "price_basis": "nominal",
+          "notes": ""
+        },
+        {
+          "flow_id": "working-capital-recovery",
+          "label": "Working capital recovery",
+          "category": "working_capital_recovery",
+          "amount": 15000.0,
+          "start_period": 10,
+          "end_period": null,
+          "interval_periods": 1,
+          "escalation_rate_percent_annual": 0.0,
+          "price_basis": "nominal",
+          "notes": ""
+        },
+        {
+          "flow_id": "decommission",
+          "label": "Decommissioning cost",
+          "category": "decommissioning_cost",
+          "amount": 5000.0,
+          "start_period": 10,
+          "end_period": null,
+          "interval_periods": 1,
+          "escalation_rate_percent_annual": 0.0,
+          "price_basis": "nominal",
+          "notes": ""
+        }
+      ]
+    },
+    "metric_ids": [
+      "npv",
+      "mirr_percent_annual",
+      "discounted_payback_periods"
+    ],
+    "variables": [
+      {
+        "variable_id": "capital-cost",
+        "label": "Initial capital cost",
+        "parameter": {
+          "parameter_id": "capital-cost",
+          "label": "Initial capital cost",
+          "path": "line:capex:amount",
+          "operation": "set",
+          "value_kind": "continuous",
+          "unit": "USD"
+        },
+        "distribution": {
+          "kind": "triangular",
+          "minimum": 220000.0,
+          "mode": 250000.0,
+          "maximum": 310000.0,
+          "mean": null,
+          "standard_deviation": null,
+          "log_mean": null,
+          "log_standard_deviation": null,
+          "values": [],
+          "probabilities": [],
+          "truncate_minimum": 0.0,
+          "truncate_maximum": null
+        }
+      },
+      {
+        "variable_id": "annual-savings",
+        "label": "Annual energy savings",
+        "parameter": {
+          "parameter_id": "annual-savings",
+          "label": "Annual energy savings",
+          "path": "line:savings:amount",
+          "operation": "set",
+          "value_kind": "continuous",
+          "unit": "USD/year"
+        },
+        "distribution": {
+          "kind": "normal",
+          "minimum": null,
+          "mode": null,
+          "maximum": null,
+          "mean": 60000.0,
+          "standard_deviation": 9000.0,
+          "log_mean": null,
+          "log_standard_deviation": null,
+          "values": [],
+          "probabilities": [],
+          "truncate_minimum": 0.0,
+          "truncate_maximum": null
+        }
+      },
+      {
+        "variable_id": "operating-cost",
+        "label": "Annual operating cost",
+        "parameter": {
+          "parameter_id": "operating-cost",
+          "label": "Annual operating cost",
+          "path": "line:operations:amount",
+          "operation": "set",
+          "value_kind": "continuous",
+          "unit": "USD/year"
+        },
+        "distribution": {
+          "kind": "triangular",
+          "minimum": 8000.0,
+          "mode": 10000.0,
+          "maximum": 16000.0,
+          "mean": null,
+          "standard_deviation": null,
+          "log_mean": null,
+          "log_standard_deviation": null,
+          "values": [],
+          "probabilities": [],
+          "truncate_minimum": 0.0,
+          "truncate_maximum": null
+        }
+      },
+      {
+        "variable_id": "discount-rate",
+        "label": "Annual discount rate",
+        "parameter": {
+          "parameter_id": "discount-rate",
+          "label": "Annual discount rate",
+          "path": "discount_rate_percent_annual",
+          "operation": "set",
+          "value_kind": "continuous",
+          "unit": "percent/year"
+        },
+        "distribution": {
+          "kind": "uniform",
+          "minimum": 4.0,
+          "mode": null,
+          "maximum": 10.0,
+          "mean": null,
+          "standard_deviation": null,
+          "log_mean": null,
+          "log_standard_deviation": null,
+          "values": [],
+          "probabilities": [],
+          "truncate_minimum": null,
+          "truncate_maximum": null
+        }
+      },
+      {
+        "variable_id": "implementation-delay",
+        "label": "Implementation delay",
+        "parameter": {
+          "parameter_id": "implementation-delay",
+          "label": "Implementation delay",
+          "path": "all",
+          "operation": "shift_periods",
+          "value_kind": "integer",
+          "unit": "periods"
+        },
+        "distribution": {
+          "kind": "discrete",
+          "minimum": null,
+          "mode": null,
+          "maximum": null,
+          "mean": null,
+          "standard_deviation": null,
+          "log_mean": null,
+          "log_standard_deviation": null,
+          "values": [
+            0.0,
+            1.0,
+            2.0
+          ],
+          "probabilities": [
+            0.65,
+            0.25,
+            0.1
+          ],
+          "truncate_minimum": null,
+          "truncate_maximum": null
+        }
+      }
+    ],
+    "correlations": [
+      {
+        "left_variable_id": "capital-cost",
+        "right_variable_id": "implementation-delay",
+        "coefficient": 0.35
+      },
+      {
+        "left_variable_id": "annual-savings",
+        "right_variable_id": "operating-cost",
+        "coefficient": 0.25
+      }
+    ],
+    "stress_cases": [
+      {
+        "stress_id": "cost-overrun-delay",
+        "label": "Cost overrun and delay",
+        "description": "Capital costs rise 20 percent and non-terminal operating flows shift by two periods.",
+        "adjustments": [
+          {
+            "parameter": {
+              "parameter_id": "capital-cost-multiplier",
+              "label": "Capital cost multiplier",
+              "path": "line:capex:amount",
+              "operation": "multiply",
+              "value_kind": "continuous",
+              "unit": "factor"
+            },
+            "value": 1.2
+          },
+          {
+            "parameter": {
+              "parameter_id": "delay",
+              "label": "Implementation delay",
+              "path": "all",
+              "operation": "shift_periods",
+              "value_kind": "integer",
+              "unit": "periods"
+            },
+            "value": 2.0
+          }
+        ]
+      },
+      {
+        "stress_id": "benefit-shortfall",
+        "label": "Benefit shortfall",
+        "description": "Annual savings are 30 percent below the base estimate.",
+        "adjustments": [
+          {
+            "parameter": {
+              "parameter_id": "savings-multiplier",
+              "label": "Savings multiplier",
+              "path": "line:savings:amount",
+              "operation": "multiply",
+              "value_kind": "continuous",
+              "unit": "factor"
+            },
+            "value": 0.7
+          }
+        ]
+      },
+      {
+        "stress_id": "combined-downside",
+        "label": "Combined downside",
+        "description": "Higher costs, lower benefits, and a higher discount rate occur together.",
+        "adjustments": [
+          {
+            "parameter": {
+              "parameter_id": "capital-cost-multiplier",
+              "label": "Capital cost multiplier",
+              "path": "line:capex:amount",
+              "operation": "multiply",
+              "value_kind": "continuous",
+              "unit": "factor"
+            },
+            "value": 1.15
+          },
+          {
+            "parameter": {
+              "parameter_id": "savings-multiplier",
+              "label": "Savings multiplier",
+              "path": "line:savings:amount",
+              "operation": "multiply",
+              "value_kind": "continuous",
+              "unit": "factor"
+            },
+            "value": 0.8
+          },
+          {
+            "parameter": {
+              "parameter_id": "discount-rate",
+              "label": "Discount rate",
+              "path": "discount_rate_percent_annual",
+              "operation": "set",
+              "value_kind": "continuous",
+              "unit": "percent/year"
+            },
+            "value": 10.0
+          }
+        ]
+      }
+    ],
+    "downside_thresholds": {
+      "npv": 0.0,
+      "mirr_percent_annual": 6.0
+    },
+    "monte_carlo": {
+      "iterations": 500,
+      "seed": 20260717,
+      "percentiles": [
+        5.0,
+        10.0,
+        25.0,
+        50.0,
+        75.0,
+        90.0,
+        95.0
+      ],
+      "retain_samples": 25,
+      "histogram_bins": 12
+    }
+  },
+  "base_metrics": {
+    "npv": 198884.69,
+    "mirr_percent_annual": 11.481,
+    "discounted_payback_periods": 5.0483
+  },
+  "summaries": [
+    {
+      "metric_id": "npv",
+      "sample_count": 500,
+      "mean": 142707.50594,
+      "median": 139250.945,
+      "standard_deviation": 77430.549899,
+      "minimum": 5657.46,
+      "maximum": 429265.39,
+      "percentiles": [
+        {
+          "percentile": 5.0,
+          "value": 23836.916
+        },
+        {
+          "percentile": 10.0,
+          "value": 41420.254
+        },
+        {
+          "percentile": 25.0,
+          "value": 84381.2075
+        },
+        {
+          "percentile": 50.0,
+          "value": 139250.945
+        },
+        {
+          "percentile": 75.0,
+          "value": 193124.1675
+        },
+        {
+          "percentile": 90.0,
+          "value": 239872.429
+        },
+        {
+          "percentile": 95.0,
+          "value": 277079.5885
+        }
+      ],
+      "downside_threshold": 0.0,
+      "probability_above_zero": 1.0,
+      "probability_below_threshold": 0.0,
+      "value_at_risk_95": 23836.916,
+      "expected_shortfall_5": 14823.8412
+    },
+    {
+      "metric_id": "mirr_percent_annual",
+      "sample_count": 500,
+      "mean": 10.13292,
+      "median": 10.1389,
+      "standard_deviation": 2.057609,
+      "minimum": 4.7121,
+      "maximum": 15.7568,
+      "percentiles": [
+        {
+          "percentile": 5.0,
+          "value": 6.659965
+        },
+        {
+          "percentile": 10.0,
+          "value": 7.33612
+        },
+        {
+          "percentile": 25.0,
+          "value": 8.75215
+        },
+        {
+          "percentile": 50.0,
+          "value": 10.1389
+        },
+        {
+          "percentile": 75.0,
+          "value": 11.636725
+        },
+        {
+          "percentile": 90.0,
+          "value": 12.76637
+        },
+        {
+          "percentile": 95.0,
+          "value": 13.502345
+        }
+      ],
+      "downside_threshold": 6.0,
+      "probability_above_zero": 1.0,
+      "probability_below_threshold": 0.016,
+      "value_at_risk_95": 6.659965,
+      "expected_shortfall_5": 6.15644
+    },
+    {
+      "metric_id": "discounted_payback_periods",
+      "sample_count": 500,
+      "mean": 6.410695,
+      "median": 6.21065,
+      "standard_deviation": 1.557295,
+      "minimum": 3.4051,
+      "maximum": 9.8578,
+      "percentiles": [
+        {
+          "percentile": 5.0,
+          "value": 4.221565
+        },
+        {
+          "percentile": 10.0,
+          "value": 4.50648
+        },
+        {
+          "percentile": 25.0,
+          "value": 5.1963
+        },
+        {
+          "percentile": 50.0,
+          "value": 6.21065
+        },
+        {
+          "percentile": 75.0,
+          "value": 7.483775
+        },
+        {
+          "percentile": 90.0,
+          "value": 8.82123
+        },
+        {
+          "percentile": 95.0,
+          "value": 9.3305
+        }
+      ],
+      "downside_threshold": null,
+      "probability_above_zero": 1.0,
+      "probability_below_threshold": null,
+      "value_at_risk_95": 4.221565,
+      "expected_shortfall_5": 3.87156
+    }
+  ],
+  "histograms": [
+    {
+      "metric_id": "npv",
+      "lower_bound": 5657.46,
+      "upper_bound": 40958.120833,
+      "count": 50
+    },
+    {
+      "metric_id": "npv",
+      "lower_bound": 40958.120833,
+      "upper_bound": 76258.781667,
+      "count": 58
+    },
+    {
+      "metric_id": "npv",
+      "lower_bound": 76258.781667,
+      "upper_bound": 111559.4425,
+      "count": 75
+    },
+    {
+      "metric_id": "npv",
+      "lower_bound": 111559.4425,
+      "upper_bound": 146860.103333,
+      "count": 88
+    },
+    {
+      "metric_id": "npv",
+      "lower_bound": 146860.103333,
+      "upper_bound": 182160.764167,
+      "count": 84
+    },
+    {
+      "metric_id": "npv",
+      "lower_bound": 182160.764167,
+      "upper_bound": 217461.425,
+      "count": 62
+    },
+    {
+      "metric_id": "npv",
+      "lower_bound": 217461.425,
+      "upper_bound": 252762.085833,
+      "count": 47
+    },
+    {
+      "metric_id": "npv",
+      "lower_bound": 252762.085833,
+      "upper_bound": 288062.746667,
+      "count": 16
+    },
+    {
+      "metric_id": "npv",
+      "lower_bound": 288062.746667,
+      "upper_bound": 323363.4075,
+      "count": 10
+    },
+    {
+      "metric_id": "npv",
+      "lower_bound": 323363.4075,
+      "upper_bound": 358664.068333,
+      "count": 5
+    },
+    {
+      "metric_id": "npv",
+      "lower_bound": 358664.068333,
+      "upper_bound": 393964.729167,
+      "count": 4
+    },
+    {
+      "metric_id": "npv",
+      "lower_bound": 393964.729167,
+      "upper_bound": 429265.39,
+      "count": 1
+    },
+    {
+      "metric_id": "mirr_percent_annual",
+      "lower_bound": 4.7121,
+      "upper_bound": 5.632492,
+      "count": 3
+    },
+    {
+      "metric_id": "mirr_percent_annual",
+      "lower_bound": 5.632492,
+      "upper_bound": 6.552883,
+      "count": 17
+    },
+    {
+      "metric_id": "mirr_percent_annual",
+      "lower_bound": 6.552883,
+      "upper_bound": 7.473275,
+      "count": 37
+    },
+    {
+      "metric_id": "mirr_percent_annual",
+      "lower_bound": 7.473275,
+      "upper_bound": 8.393667,
+      "count": 45
+    },
+    {
+      "metric_id": "mirr_percent_annual",
+      "lower_bound": 8.393667,
+      "upper_bound": 9.314058,
+      "count": 76
+    },
+    {
+      "metric_id": "mirr_percent_annual",
+      "lower_bound": 9.314058,
+      "upper_bound": 10.23445,
+      "count": 83
+    },
+    {
+      "metric_id": "mirr_percent_annual",
+      "lower_bound": 10.23445,
+      "upper_bound": 11.154842,
+      "count": 76
+    },
+    {
+      "metric_id": "mirr_percent_annual",
+      "lower_bound": 11.154842,
+      "upper_bound": 12.075233,
+      "count": 68
+    },
+    {
+      "metric_id": "mirr_percent_annual",
+      "lower_bound": 12.075233,
+      "upper_bound": 12.995625,
+      "count": 53
+    },
+    {
+      "metric_id": "mirr_percent_annual",
+      "lower_bound": 12.995625,
+      "upper_bound": 13.916017,
+      "count": 26
+    },
+    {
+      "metric_id": "mirr_percent_annual",
+      "lower_bound": 13.916017,
+      "upper_bound": 14.836408,
+      "count": 11
+    },
+    {
+      "metric_id": "mirr_percent_annual",
+      "lower_bound": 14.836408,
+      "upper_bound": 15.7568,
+      "count": 5
+    },
+    {
+      "metric_id": "discounted_payback_periods",
+      "lower_bound": 3.4051,
+      "upper_bound": 3.942825,
+      "count": 14
+    },
+    {
+      "metric_id": "discounted_payback_periods",
+      "lower_bound": 3.942825,
+      "upper_bound": 4.48055,
+      "count": 33
+    },
+    {
+      "metric_id": "discounted_payback_periods",
+      "lower_bound": 4.48055,
+      "upper_bound": 5.018275,
+      "count": 54
+    },
+    {
+      "metric_id": "discounted_payback_periods",
+      "lower_bound": 5.018275,
+      "upper_bound": 5.556,
+      "count": 74
+    },
+    {
+      "metric_id": "discounted_payback_periods",
+      "lower_bound": 5.556,
+      "upper_bound": 6.093725,
+      "count": 71
+    },
+    {
+      "metric_id": "discounted_payback_periods",
+      "lower_bound": 6.093725,
+      "upper_bound": 6.63145,
+      "count": 52
+    },
+    {
+      "metric_id": "discounted_payback_periods",
+      "lower_bound": 6.63145,
+      "upper_bound": 7.169175,
+      "count": 56
+    },
+    {
+      "metric_id": "discounted_payback_periods",
+      "lower_bound": 7.169175,
+      "upper_bound": 7.7069,
+      "count": 40
+    },
+    {
+      "metric_id": "discounted_payback_periods",
+      "lower_bound": 7.7069,
+      "upper_bound": 8.244625,
+      "count": 28
+    },
+    {
+      "metric_id": "discounted_payback_periods",
+      "lower_bound": 8.244625,
+      "upper_bound": 8.78235,
+      "count": 26
+    },
+    {
+      "metric_id": "discounted_payback_periods",
+      "lower_bound": 8.78235,
+      "upper_bound": 9.320075,
+      "count": 26
+    },
+    {
+      "metric_id": "discounted_payback_periods",
+      "lower_bound": 9.320075,
+      "upper_bound": 9.8578,
+      "count": 26
+    }
+  ],
+  "variable_influences": [
+    {
+      "variable_id": "annual-savings",
+      "label": "Annual energy savings",
+      "metric_id": "discounted_payback_periods",
+      "pearson_correlation": -0.63712,
+      "absolute_correlation": 0.63712
+    },
+    {
+      "variable_id": "implementation-delay",
+      "label": "Implementation delay",
+      "metric_id": "discounted_payback_periods",
+      "pearson_correlation": 0.567224,
+      "absolute_correlation": 0.567224
+    },
+    {
+      "variable_id": "capital-cost",
+      "label": "Initial capital cost",
+      "metric_id": "discounted_payback_periods",
+      "pearson_correlation": 0.363119,
+      "absolute_correlation": 0.363119
+    },
+    {
+      "variable_id": "discount-rate",
+      "label": "Annual discount rate",
+      "metric_id": "discounted_payback_periods",
+      "pearson_correlation": 0.254769,
+      "absolute_correlation": 0.254769
+    },
+    {
+      "variable_id": "operating-cost",
+      "label": "Annual operating cost",
+      "metric_id": "discounted_payback_periods",
+      "pearson_correlation": 0.019597,
+      "absolute_correlation": 0.019597
+    },
+    {
+      "variable_id": "annual-savings",
+      "label": "Annual energy savings",
+      "metric_id": "mirr_percent_annual",
+      "pearson_correlation": 0.763621,
+      "absolute_correlation": 0.763621
+    },
+    {
+      "variable_id": "implementation-delay",
+      "label": "Implementation delay",
+      "metric_id": "mirr_percent_annual",
+      "pearson_correlation": -0.425839,
+      "absolute_correlation": 0.425839
+    },
+    {
+      "variable_id": "capital-cost",
+      "label": "Initial capital cost",
+      "metric_id": "mirr_percent_annual",
+      "pearson_correlation": -0.398796,
+      "absolute_correlation": 0.398796
+    },
+    {
+      "variable_id": "operating-cost",
+      "label": "Annual operating cost",
+      "metric_id": "mirr_percent_annual",
+      "pearson_correlation": -0.026801,
+      "absolute_correlation": 0.026801
+    },
+    {
+      "variable_id": "discount-rate",
+      "label": "Annual discount rate",
+      "metric_id": "mirr_percent_annual",
+      "pearson_correlation": 0.019974,
+      "absolute_correlation": 0.019974
+    },
+    {
+      "variable_id": "annual-savings",
+      "label": "Annual energy savings",
+      "metric_id": "npv",
+      "pearson_correlation": 0.723435,
+      "absolute_correlation": 0.723435
+    },
+    {
+      "variable_id": "discount-rate",
+      "label": "Annual discount rate",
+      "metric_id": "npv",
+      "pearson_correlation": -0.427263,
+      "absolute_correlation": 0.427263
+    },
+    {
+      "variable_id": "implementation-delay",
+      "label": "Implementation delay",
+      "metric_id": "npv",
+      "pearson_correlation": -0.410725,
+      "absolute_correlation": 0.410725
+    },
+    {
+      "variable_id": "capital-cost",
+      "label": "Initial capital cost",
+      "metric_id": "npv",
+      "pearson_correlation": -0.227102,
+      "absolute_correlation": 0.227102
+    },
+    {
+      "variable_id": "operating-cost",
+      "label": "Annual operating cost",
+      "metric_id": "npv",
+      "pearson_correlation": -0.006278,
+      "absolute_correlation": 0.006278
+    }
+  ],
+  "retained_samples": [
+    {
+      "iteration": 1,
+      "variable_values": {
+        "capital-cost": 292227.42892235,
+        "annual-savings": 72010.06268212,
+        "operating-cost": 10291.74088508,
+        "discount-rate": 9.94482043,
+        "implementation-delay": 0.0
+      },
+      "metrics": {
+        "npv": 162501.74,
+        "mirr_percent_annual": 11.8158,
+        "discounted_payback_periods": 5.4937
+      }
+    },
+    {
+      "iteration": 2,
+      "variable_values": {
+        "capital-cost": 259967.81734128,
+        "annual-savings": 54311.18161795,
+        "operating-cost": 11937.68154503,
+        "discount-rate": 5.88823597,
+        "implementation-delay": 1.0
+      },
+      "metrics": {
+        "npv": 88070.48,
+        "mirr_percent_annual": 8.1324,
+        "discounted_payback_periods": 7.6265
+      }
+    },
+    {
+      "iteration": 3,
+      "variable_values": {
+        "capital-cost": 275558.32852682,
+        "annual-savings": 61671.72150149,
+        "operating-cost": 9599.52762342,
+        "discount-rate": 9.18204839,
+        "implementation-delay": 2.0
+      },
+      "metrics": {
+        "npv": 32847.96,
+        "mirr_percent_annual": 8.2888,
+        "discounted_payback_periods": 9.1541
+      }
+    },
+    {
+      "iteration": 4,
+      "variable_values": {
+        "capital-cost": 258521.77246607,
+        "annual-savings": 67386.84242191,
+        "operating-cost": 10265.94829242,
+        "discount-rate": 5.66147787,
+        "implementation-delay": 0.0
+      },
+      "metrics": {
+        "npv": 256686.32,
+        "mirr_percent_annual": 12.4928,
+        "discounted_payback_periods": 4.5045
+      }
+    },
+    {
+      "iteration": 5,
+      "variable_values": {
+        "capital-cost": 290592.14487468,
+        "annual-savings": 55116.75591112,
+        "operating-cost": 10910.85226216,
+        "discount-rate": 9.53341896,
+        "implementation-delay": 0.0
+      },
+      "metrics": {
+        "npv": 51499.23,
+        "mirr_percent_annual": 8.3687,
+        "discounted_payback_periods": 8.2374
+      }
+    },
+    {
+      "iteration": 6,
+      "variable_values": {
+        "capital-cost": 243632.97310812,
+        "annual-savings": 63634.59436133,
+        "operating-cost": 10518.2710394,
+        "discount-rate": 4.83736832,
+        "implementation-delay": 1.0
+      },
+      "metrics": {
+        "npv": 206575.49,
+        "mirr_percent_annual": 11.2711,
+        "discounted_payback_periods": 5.5667
+      }
+    },
+    {
+      "iteration": 7,
+      "variable_values": {
+        "capital-cost": 231252.34267731,
+        "annual-savings": 44379.48704359,
+        "operating-cost": 12653.30361508,
+        "discount-rate": 6.72026811,
+        "implementation-delay": 1.0
+      },
+      "metrics": {
+        "npv": 28551.08,
+        "mirr_percent_annual": 6.6332,
+        "discounted_payback_periods": 9.2033
+      }
+    },
+    {
+      "iteration": 8,
+      "variable_values": {
+        "capital-cost": 249834.05458114,
+        "annual-savings": 53219.26637793,
+        "operating-cost": 12561.58818705,
+        "discount-rate": 5.21455549,
+        "implementation-delay": 0.0
+      },
+      "metrics": {
+        "npv": 137362.88,
+        "mirr_percent_annual": 9.3193,
+        "discounted_payback_periods": 6.1738
+      }
+    },
+    {
+      "iteration": 9,
+      "variable_values": {
+        "capital-cost": 262904.54911164,
+        "annual-savings": 58760.51187446,
+        "operating-cost": 15006.59351056,
+        "discount-rate": 9.99609054,
+        "implementation-delay": 0.0
+      },
+      "metrics": {
+        "npv": 69398.17,
+        "mirr_percent_annual": 9.4615,
+        "discounted_payback_periods": 7.3699
+      }
+    },
+    {
+      "iteration": 10,
+      "variable_values": {
+        "capital-cost": 263839.01553215,
+        "annual-savings": 54935.01282193,
+        "operating-cost": 12993.9585535,
+        "discount-rate": 8.96851246,
+        "implementation-delay": 1.0
+      },
+      "metrics": {
+        "npv": 31490.47,
+        "mirr_percent_annual": 7.8517,
+        "discounted_payback_periods": 9.0837
+      }
+    },
+    {
+      "iteration": 11,
+      "variable_values": {
+        "capital-cost": 271269.77970663,
+        "annual-savings": 56576.07932225,
+        "operating-cost": 8645.98697473,
+        "discount-rate": 9.03588256,
+        "implementation-delay": 0.0
+      },
+      "metrics": {
+        "npv": 104596.0,
+        "mirr_percent_annual": 10.0338,
+        "discounted_payback_periods": 6.5687
+      }
+    },
+    {
+      "iteration": 12,
+      "variable_values": {
+        "capital-cost": 248651.93145247,
+        "annual-savings": 62423.09290219,
+        "operating-cost": 14671.0810555,
+        "discount-rate": 4.19020844,
+        "implementation-delay": 0.0
+      },
+      "metrics": {
+        "npv": 221898.31,
+        "mirr_percent_annual": 11.0596,
+        "discounted_payback_periods": 4.9891
+      }
+    },
+    {
+      "iteration": 13,
+      "variable_values": {
+        "capital-cost": 250363.45922668,
+        "annual-savings": 45726.91701102,
+        "operating-cost": 9291.43389017,
+        "discount-rate": 8.90162262,
+        "implementation-delay": 1.0
+      },
+      "metrics": {
+        "npv": 11992.59,
+        "mirr_percent_annual": 7.0589,
+        "discounted_payback_periods": 9.6219
+      }
+    },
+    {
+      "iteration": 14,
+      "variable_values": {
+        "capital-cost": 238294.73404877,
+        "annual-savings": 49494.45955036,
+        "operating-cost": 9982.01241979,
+        "discount-rate": 7.55208173,
+        "implementation-delay": 0.0
+      },
+      "metrics": {
+        "npv": 99833.65,
+        "mirr_percent_annual": 9.6006,
+        "discounted_payback_periods": 6.5705
+      }
+    },
+    {
+      "iteration": 15,
+      "variable_values": {
+        "capital-cost": 279602.06380528,
+        "annual-savings": 79976.39003827,
+        "operating-cost": 9922.94900916,
+        "discount-rate": 9.65891291,
+        "implementation-delay": 0.0
+      },
+      "metrics": {
+        "npv": 237989.77,
+        "mirr_percent_annual": 13.7408,
+        "discounted_payback_periods": 4.4104
+      }
+    },
+    {
+      "iteration": 16,
+      "variable_values": {
+        "capital-cost": 229868.62614789,
+        "annual-savings": 58924.54620027,
+        "operating-cost": 10721.21337617,
+        "discount-rate": 8.94110598,
+        "implementation-delay": 0.0
+      },
+      "metrics": {
+        "npv": 149505.24,
+        "mirr_percent_annual": 12.1386,
+        "discounted_payback_periods": 5.1906
+      }
+    },
+    {
+      "iteration": 17,
+      "variable_values": {
+        "capital-cost": 254997.03346324,
+        "annual-savings": 60801.15318479,
+        "operating-cost": 10287.78499188,
+        "discount-rate": 8.05222051,
+        "implementation-delay": 1.0
+      },
+      "metrics": {
+        "npv": 109103.81,
+        "mirr_percent_annual": 10.1805,
+        "discounted_payback_periods": 6.8527
+      }
+    },
+    {
+      "iteration": 18,
+      "variable_values": {
+        "capital-cost": 264957.89717062,
+        "annual-savings": 66488.95039945,
+        "operating-cost": 9331.27222244,
+        "discount-rate": 4.27645375,
+        "implementation-delay": 0.0
+      },
+      "metrics": {
+        "npv": 287029.87,
+        "mirr_percent_annual": 12.1943,
+        "discounted_payback_periods": 4.4598
+      }
+    },
+    {
+      "iteration": 19,
+      "variable_values": {
+        "capital-cost": 241141.44062707,
+        "annual-savings": 46845.56973322,
+        "operating-cost": 9556.91596284,
+        "discount-rate": 9.75336769,
+        "implementation-delay": 0.0
+      },
+      "metrics": {
+        "npv": 50459.58,
+        "mirr_percent_annual": 8.8596,
+        "discounted_payback_periods": 7.9314
+      }
+    },
+    {
+      "iteration": 20,
+      "variable_values": {
+        "capital-cost": 239111.58078067,
+        "annual-savings": 71693.78007989,
+        "operating-cost": 12425.70262095,
+        "discount-rate": 8.9996769,
+        "implementation-delay": 0.0
+      },
+      "metrics": {
+        "npv": 217495.43,
+        "mirr_percent_annual": 13.8764,
+        "discounted_payback_periods": 4.2994
+      }
+    },
+    {
+      "iteration": 21,
+      "variable_values": {
+        "capital-cost": 248292.25386971,
+        "annual-savings": 52938.71923378,
+        "operating-cost": 11437.54413623,
+        "discount-rate": 7.90766958,
+        "implementation-delay": 0.0
+      },
+      "metrics": {
+        "npv": 99210.4,
+        "mirr_percent_annual": 9.6072,
+        "discounted_payback_periods": 6.6388
+      }
+    },
+    {
+      "iteration": 22,
+      "variable_values": {
+        "capital-cost": 264805.47516496,
+        "annual-savings": 56638.6808233,
+        "operating-cost": 10727.8152729,
+        "discount-rate": 7.96758753,
+        "implementation-delay": 1.0
+      },
+      "metrics": {
+        "npv": 71071.88,
+        "mirr_percent_annual": 8.7319,
+        "discounted_payback_periods": 7.876
+      }
+    },
+    {
+      "iteration": 23,
+      "variable_values": {
+        "capital-cost": 247437.66736193,
+        "annual-savings": 48412.79665894,
+        "operating-cost": 11996.44491967,
+        "discount-rate": 8.56266544,
+        "implementation-delay": 0.0
+      },
+      "metrics": {
+        "npv": 53356.13,
+        "mirr_percent_annual": 8.3062,
+        "discounted_payback_periods": 8.0064
+      }
+    },
+    {
+      "iteration": 24,
+      "variable_values": {
+        "capital-cost": 231208.56053485,
+        "annual-savings": 51636.41919555,
+        "operating-cost": 10060.51770043,
+        "discount-rate": 6.0987366,
+        "implementation-delay": 0.0
+      },
+      "metrics": {
+        "npv": 147297.69,
+        "mirr_percent_annual": 10.5019,
+        "discounted_payback_periods": 5.6464
+      }
+    },
+    {
+      "iteration": 25,
+      "variable_values": {
+        "capital-cost": 262582.40298482,
+        "annual-savings": 66940.61321018,
+        "operating-cost": 12975.83295987,
+        "discount-rate": 8.10741932,
+        "implementation-delay": 1.0
+      },
+      "metrics": {
+        "npv": 122677.53,
+        "mirr_percent_annual": 10.5168,
+        "discounted_payback_periods": 6.6413
+      }
+    }
+  ],
+  "stress_results": [
+    {
+      "stress_id": "cost-overrun-delay",
+      "label": "Cost overrun and delay",
+      "description": "Capital costs rise 20 percent and non-terminal operating flows shift by two periods.",
+      "metrics": {
+        "npv": 54473.87,
+        "mirr_percent_annual": 6.8746,
+        "discounted_payback_periods": 8.8957
+      },
+      "deltas_from_base": {
+        "npv": -144410.82,
+        "mirr_percent_annual": -4.6064,
+        "discounted_payback_periods": 3.8474
+      },
+      "adjustments": [
+        {
+          "parameter": {
+            "parameter_id": "capital-cost-multiplier",
+            "label": "Capital cost multiplier",
+            "path": "line:capex:amount",
+            "operation": "multiply",
+            "value_kind": "continuous",
+            "unit": "factor"
+          },
+          "value": 1.2
+        },
+        {
+          "parameter": {
+            "parameter_id": "delay",
+            "label": "Implementation delay",
+            "path": "all",
+            "operation": "shift_periods",
+            "value_kind": "integer",
+            "unit": "periods"
+          },
+          "value": 2.0
+        }
+      ],
+      "flags": [
+        "No configured downside threshold is breached."
+      ]
+    },
+    {
+      "stress_id": "benefit-shortfall",
+      "label": "Benefit shortfall",
+      "description": "Annual savings are 30 percent below the base estimate.",
+      "metrics": {
+        "npv": 52316.87,
+        "mirr_percent_annual": 6.8818,
+        "discounted_payback_periods": 8.3911
+      },
+      "deltas_from_base": {
+        "npv": -146567.82,
+        "mirr_percent_annual": -4.5992,
+        "discounted_payback_periods": 3.3428
+      },
+      "adjustments": [
+        {
+          "parameter": {
+            "parameter_id": "savings-multiplier",
+            "label": "Savings multiplier",
+            "path": "line:savings:amount",
+            "operation": "multiply",
+            "value_kind": "continuous",
+            "unit": "factor"
+          },
+          "value": 0.7
+        }
+      ],
+      "flags": [
+        "No configured downside threshold is breached."
+      ]
+    },
+    {
+      "stress_id": "combined-downside",
+      "label": "Combined downside",
+      "description": "Higher costs, lower benefits, and a higher discount rate occur together.",
+      "metrics": {
+        "npv": 5863.35,
+        "mirr_percent_annual": 6.9547,
+        "discounted_payback_periods": 9.8007
+      },
+      "deltas_from_base": {
+        "npv": -193021.34,
+        "mirr_percent_annual": -4.5263,
+        "discounted_payback_periods": 4.7524
+      },
+      "adjustments": [
+        {
+          "parameter": {
+            "parameter_id": "capital-cost-multiplier",
+            "label": "Capital cost multiplier",
+            "path": "line:capex:amount",
+            "operation": "multiply",
+            "value_kind": "continuous",
+            "unit": "factor"
+          },
+          "value": 1.15
+        },
+        {
+          "parameter": {
+            "parameter_id": "savings-multiplier",
+            "label": "Savings multiplier",
+            "path": "line:savings:amount",
+            "operation": "multiply",
+            "value_kind": "continuous",
+            "unit": "factor"
+          },
+          "value": 0.8
+        },
+        {
+          "parameter": {
+            "parameter_id": "discount-rate",
+            "label": "Discount rate",
+            "path": "discount_rate_percent_annual",
+            "operation": "set",
+            "value_kind": "continuous",
+            "unit": "percent/year"
+          },
+          "value": 10.0
+        }
+      ],
+      "flags": [
+        "No configured downside threshold is breached."
+      ]
+    }
+  ],
+  "methodology": {
+    "model_id": "catalyst-finance.uncertainty",
+    "model_version": "1.5.0",
+    "random_generator": "xorshift32_box_muller",
+    "correlation_policy": "gaussian_copula_cholesky",
+    "percentile_policy": "linear_interpolation",
+    "risk_policy": "lower_tail_var95_and_expected_shortfall5",
+    "stress_policy": "deterministic_parameter_substitution"
+  },
+  "metadata": {
+    "generated_at": "2026-07-17T00:00:00+00:00",
+    "version": "1.5.0",
+    "configured_iterations": 500,
+    "completed_iterations": 500,
+    "rejected_iterations": 24,
+    "seed": 20260717,
+    "reproducibility_key": "f4cc843722c32caa3483bdab189227c55262e3d03ba2b98cace84e187c0773a8",
+    "disclaimer": "Catalyst Finance provides transparent analytical support, not investment, accounting, tax, legal, or fiduciary advice. Probability estimates depend on the stated distributions, correlations, model structure, and evidence."
+  }
+}

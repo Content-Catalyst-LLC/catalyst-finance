@@ -1,4 +1,4 @@
-# Catalyst Finance Workspace v1.4.0
+# Catalyst Finance Workspace v1.5.0
 
 Shortcodes:
 

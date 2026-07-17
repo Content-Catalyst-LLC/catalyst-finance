@@ -239,8 +239,8 @@
       "additionalProperties": false,
       "properties": {
         "contract_version": {
-          "const": "1.4.0",
-          "default": "1.4.0",
+          "const": "1.5.0",
+          "default": "1.5.0",
           "title": "Contract Version",
           "type": "string"
         },
@@ -359,8 +359,8 @@
       "additionalProperties": false,
       "properties": {
         "contract_version": {
-          "const": "1.4.0",
-          "default": "1.4.0",
+          "const": "1.5.0",
+          "default": "1.5.0",
           "title": "Contract Version",
           "type": "string"
         },
@@ -483,6 +483,181 @@
         "definition"
       ],
       "title": "ComparisonRevision",
+      "type": "object"
+    },
+    "CorrelationPair": {
+      "additionalProperties": false,
+      "properties": {
+        "left_variable_id": {
+          "title": "Left Variable Id",
+          "type": "string"
+        },
+        "right_variable_id": {
+          "title": "Right Variable Id",
+          "type": "string"
+        },
+        "coefficient": {
+          "exclusiveMaximum": 1,
+          "exclusiveMinimum": -1,
+          "title": "Coefficient",
+          "type": "number"
+        }
+      },
+      "required": [
+        "left_variable_id",
+        "right_variable_id",
+        "coefficient"
+      ],
+      "title": "CorrelationPair",
+      "type": "object"
+    },
+    "DistributionSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "uniform",
+            "triangular",
+            "normal",
+            "lognormal",
+            "discrete"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "minimum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Minimum"
+        },
+        "mode": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mode"
+        },
+        "maximum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Maximum"
+        },
+        "mean": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mean"
+        },
+        "standard_deviation": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Standard Deviation"
+        },
+        "log_mean": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Log Mean"
+        },
+        "log_standard_deviation": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Log Standard Deviation"
+        },
+        "values": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 100,
+          "title": "Values",
+          "type": "array"
+        },
+        "probabilities": {
+          "items": {
+            "exclusiveMinimum": 0,
+            "maximum": 1,
+            "type": "number"
+          },
+          "maxItems": 100,
+          "title": "Probabilities",
+          "type": "array"
+        },
+        "truncate_minimum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Truncate Minimum"
+        },
+        "truncate_maximum": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Truncate Maximum"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "DistributionSpec",
       "type": "object"
     },
     "FinanceContext": {
@@ -669,8 +844,8 @@
       "additionalProperties": false,
       "properties": {
         "contract_version": {
-          "const": "1.4.0",
-          "default": "1.4.0",
+          "const": "1.5.0",
+          "default": "1.5.0",
           "title": "Contract Version",
           "type": "string"
         },
@@ -701,8 +876,8 @@
       "additionalProperties": false,
       "properties": {
         "workspace_contract_version": {
-          "const": "1.4.0",
-          "default": "1.4.0",
+          "const": "1.5.0",
+          "default": "1.5.0",
           "title": "Workspace Contract Version",
           "type": "string"
         },
@@ -767,6 +942,13 @@
           },
           "title": "Comparisons",
           "type": "array"
+        },
+        "uncertainty_analyses": {
+          "items": {
+            "$ref": "#/$defs/WorkspaceUncertaintyAnalysis"
+          },
+          "title": "Uncertainty Analyses",
+          "type": "array"
         }
       },
       "required": [
@@ -816,6 +998,52 @@
         "metric_id"
       ],
       "title": "MetricSelection",
+      "type": "object"
+    },
+    "MonteCarloConfiguration": {
+      "additionalProperties": false,
+      "properties": {
+        "iterations": {
+          "default": 1000,
+          "maximum": 100000,
+          "minimum": 100,
+          "title": "Iterations",
+          "type": "integer"
+        },
+        "seed": {
+          "default": 20260717,
+          "maximum": 4294967295,
+          "minimum": 0,
+          "title": "Seed",
+          "type": "integer"
+        },
+        "percentiles": {
+          "items": {
+            "exclusiveMaximum": 100,
+            "exclusiveMinimum": 0,
+            "type": "number"
+          },
+          "maxItems": 19,
+          "minItems": 1,
+          "title": "Percentiles",
+          "type": "array"
+        },
+        "retain_samples": {
+          "default": 100,
+          "maximum": 1000,
+          "minimum": 0,
+          "title": "Retain Samples",
+          "type": "integer"
+        },
+        "histogram_bins": {
+          "default": 12,
+          "maximum": 50,
+          "minimum": 5,
+          "title": "Histogram Bins",
+          "type": "integer"
+        }
+      },
+      "title": "MonteCarloConfiguration",
       "type": "object"
     },
     "OneWaySensitivityDefinition": {
@@ -899,8 +1127,8 @@
           "type": "string"
         },
         "model_version": {
-          "const": "1.4.0",
-          "default": "1.4.0",
+          "const": "1.5.0",
+          "default": "1.5.0",
           "title": "Model Version",
           "type": "string"
         },
@@ -1023,6 +1251,64 @@
       "title": "SourceRevision",
       "type": "object"
     },
+    "StressAdjustment": {
+      "additionalProperties": false,
+      "properties": {
+        "parameter": {
+          "$ref": "#/$defs/SensitivityParameter"
+        },
+        "value": {
+          "title": "Value",
+          "type": "number"
+        }
+      },
+      "required": [
+        "parameter",
+        "value"
+      ],
+      "title": "StressAdjustment",
+      "type": "object"
+    },
+    "StressCase": {
+      "additionalProperties": false,
+      "properties": {
+        "stress_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Stress Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "maxLength": 2000,
+          "title": "Description",
+          "type": "string"
+        },
+        "adjustments": {
+          "items": {
+            "$ref": "#/$defs/StressAdjustment"
+          },
+          "maxItems": 50,
+          "minItems": 1,
+          "title": "Adjustments",
+          "type": "array"
+        }
+      },
+      "required": [
+        "stress_id",
+        "label",
+        "adjustments"
+      ],
+      "title": "StressCase",
+      "type": "object"
+    },
     "TwoWaySensitivityDefinition": {
       "additionalProperties": false,
       "properties": {
@@ -1086,6 +1372,194 @@
         "column_values"
       ],
       "title": "TwoWaySensitivityDefinition",
+      "type": "object"
+    },
+    "UncertaintyDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": "1.5.0",
+          "default": "1.5.0",
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "model_id": {
+          "const": "catalyst-finance.uncertainty",
+          "default": "catalyst-finance.uncertainty",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "uncertainty_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Uncertainty Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "maxLength": 4000,
+          "title": "Description",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/SourceRevision"
+        },
+        "scenario": {
+          "$ref": "#/$defs/CashFlowScenarioInput"
+        },
+        "metric_ids": {
+          "items": {
+            "enum": [
+              "npv",
+              "net_cash_flow",
+              "discounted_payback_periods",
+              "irr_percent_annual",
+              "mirr_percent_annual",
+              "profitability_index",
+              "benefit_cost_ratio",
+              "equivalent_annual_value"
+            ],
+            "type": "string"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Metric Ids",
+          "type": "array"
+        },
+        "variables": {
+          "items": {
+            "$ref": "#/$defs/UncertaintyVariable"
+          },
+          "maxItems": 50,
+          "minItems": 1,
+          "title": "Variables",
+          "type": "array"
+        },
+        "correlations": {
+          "items": {
+            "$ref": "#/$defs/CorrelationPair"
+          },
+          "maxItems": 1225,
+          "title": "Correlations",
+          "type": "array"
+        },
+        "stress_cases": {
+          "items": {
+            "$ref": "#/$defs/StressCase"
+          },
+          "maxItems": 50,
+          "title": "Stress Cases",
+          "type": "array"
+        },
+        "downside_thresholds": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "propertyNames": {
+            "enum": [
+              "npv",
+              "net_cash_flow",
+              "discounted_payback_periods",
+              "irr_percent_annual",
+              "mirr_percent_annual",
+              "profitability_index",
+              "benefit_cost_ratio",
+              "equivalent_annual_value"
+            ]
+          },
+          "title": "Downside Thresholds",
+          "type": "object"
+        },
+        "monte_carlo": {
+          "$ref": "#/$defs/MonteCarloConfiguration"
+        }
+      },
+      "required": [
+        "uncertainty_id",
+        "name",
+        "source",
+        "scenario",
+        "variables"
+      ],
+      "title": "UncertaintyDefinition",
+      "type": "object"
+    },
+    "UncertaintyRevision": {
+      "additionalProperties": false,
+      "properties": {
+        "revision_id": {
+          "maxLength": 100,
+          "minLength": 5,
+          "pattern": "^[a-z]+_[A-Za-z0-9_-]+$",
+          "title": "Revision Id",
+          "type": "string"
+        },
+        "revision_number": {
+          "minimum": 1,
+          "title": "Revision Number",
+          "type": "integer"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "change_note": {
+          "default": "",
+          "maxLength": 1000,
+          "title": "Change Note",
+          "type": "string"
+        },
+        "definition": {
+          "$ref": "#/$defs/UncertaintyDefinition"
+        }
+      },
+      "required": [
+        "revision_id",
+        "revision_number",
+        "created_at",
+        "definition"
+      ],
+      "title": "UncertaintyRevision",
+      "type": "object"
+    },
+    "UncertaintyVariable": {
+      "additionalProperties": false,
+      "properties": {
+        "variable_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Variable Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "parameter": {
+          "$ref": "#/$defs/SensitivityParameter"
+        },
+        "distribution": {
+          "$ref": "#/$defs/DistributionSpec"
+        }
+      },
+      "required": [
+        "variable_id",
+        "label",
+        "parameter",
+        "distribution"
+      ],
+      "title": "UncertaintyVariable",
       "type": "object"
     },
     "WorkspaceComparison": {
@@ -1202,8 +1676,8 @@
           "type": "string"
         },
         "default_model_version": {
-          "const": "1.4.0",
-          "default": "1.4.0",
+          "const": "1.5.0",
+          "default": "1.5.0",
           "title": "Default Model Version",
           "type": "string"
         }
@@ -1398,13 +1872,76 @@
       ],
       "title": "WorkspaceScenario",
       "type": "object"
+    },
+    "WorkspaceUncertaintyAnalysis": {
+      "additionalProperties": false,
+      "properties": {
+        "analysis_id": {
+          "maxLength": 100,
+          "minLength": 5,
+          "pattern": "^[a-z]+_[A-Za-z0-9_-]+$",
+          "title": "Analysis Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "status": {
+          "default": "active",
+          "enum": [
+            "draft",
+            "active",
+            "archived"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        },
+        "current_revision_id": {
+          "maxLength": 100,
+          "minLength": 5,
+          "pattern": "^[a-z]+_[A-Za-z0-9_-]+$",
+          "title": "Current Revision Id",
+          "type": "string"
+        },
+        "revisions": {
+          "items": {
+            "$ref": "#/$defs/UncertaintyRevision"
+          },
+          "minItems": 1,
+          "title": "Revisions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "analysis_id",
+        "name",
+        "created_at",
+        "updated_at",
+        "current_revision_id",
+        "revisions"
+      ],
+      "title": "WorkspaceUncertaintyAnalysis",
+      "type": "object"
     }
   },
   "additionalProperties": false,
   "properties": {
     "export_contract_version": {
-      "const": "1.4.0",
-      "default": "1.4.0",
+      "const": "1.5.0",
+      "default": "1.5.0",
       "title": "Export Contract Version",
       "type": "string"
     },
@@ -1424,5 +1961,5 @@
   "title": "WorkspaceExport",
   "type": "object",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.4.0/finance_workspace_export.schema.json"
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.5.0/finance_workspace_export.schema.json"
 }

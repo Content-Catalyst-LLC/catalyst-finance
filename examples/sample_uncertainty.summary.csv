@@ -1,0 +1,4 @@
+metric_id,mean,median,standard_deviation,minimum,maximum,probability_above_zero,probability_below_threshold,value_at_risk_95,expected_shortfall_5
+npv,142707.50594,139250.945,77430.549899,5657.46,429265.39,1.0,0.0,23836.916,14823.8412
+mirr_percent_annual,10.13292,10.1389,2.057609,4.7121,15.7568,1.0,0.016,6.659965,6.15644
+discounted_payback_periods,6.410695,6.21065,1.557295,3.4051,9.8578,1.0,,4.221565,3.87156

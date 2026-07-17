@@ -9,6 +9,7 @@ import tempfile
 from pathlib import Path
 from typing import Protocol, cast
 
+from .workspace_migration import migrate_workspace_payload
 from .workspace_models import FinanceWorkspace
 
 
@@ -53,9 +54,12 @@ class JsonWorkspaceRepository:
 
     @staticmethod
     def _read(path: Path) -> FinanceWorkspace:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(payload, dict):
+            raise ValueError("workspace payload must be a JSON object")
         return cast(
             FinanceWorkspace,
-            FinanceWorkspace.model_validate_json(path.read_text(encoding="utf-8")),
+            FinanceWorkspace.model_validate(migrate_workspace_payload(payload)),
         )
 
     @staticmethod
@@ -167,7 +171,13 @@ class SQLiteWorkspaceRepository:
         value = row["payload_json"]
         if not isinstance(value, str):
             raise ValueError("workspace payload_json must be text")
-        return cast(FinanceWorkspace, FinanceWorkspace.model_validate_json(value))
+        payload = json.loads(value)
+        if not isinstance(payload, dict):
+            raise ValueError("workspace payload_json must contain an object")
+        return cast(
+            FinanceWorkspace,
+            FinanceWorkspace.model_validate(migrate_workspace_payload(payload)),
+        )
 
     def list(self) -> list[FinanceWorkspace]:
         with self._connect() as connection:

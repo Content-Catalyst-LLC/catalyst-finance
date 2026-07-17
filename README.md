@@ -4,19 +4,17 @@ Catalyst Finance is an open-source financial scenario, cash-flow, and decision-s
 
 > Educational software only. This repository does not provide investment, legal, tax, accounting, fiduciary, assurance, lending, procurement, funding, or financial advice.
 
-## v1.4.0 — Scenario Comparison, Sensitivity, and Break-Even
+## v1.5.0 — Uncertainty, Monte Carlo, and Stress Testing
 
-Catalyst Finance now compares complete, revision-linked cash-flow alternatives. The comparison model provides aligned metrics and deltas, weighted rankings, financial Pareto dominance, one-way and two-way sensitivity, bounded break-even thresholds, tornado and crossover data, assumption-driver explanations, and JSON/CSV/Markdown/printable-HTML exports.
+Catalyst Finance now adds a transparent probability and adverse-case layer to the canonical cash-flow engine. The uncertainty model supports seeded Monte Carlo simulation, five distribution types, explicit correlation, percentiles, downside probabilities, lower-tail value-at-risk, expected shortfall, histograms, variable influence, named multi-factor stress cases, reproducibility keys, workspace revisions, API/CLI execution, and exact Python/JavaScript parity.
 
 ```bash
-catalyst-finance-compare data/sample_comparison.json \
-  --json-output outputs/comparison.json \
-  --csv-output outputs/comparison.csv \
-  --markdown-output outputs/comparison.md \
-  --html-output outputs/comparison.html
+catalyst-finance-uncertainty data/sample_uncertainty.json \
+  --output outputs/sample_uncertainty.output.json \
+  --summary-csv outputs/sample_uncertainty.summary.csv
 ```
 
-The API endpoint is `POST /api/v1/compare`. The WordPress shortcode remains `[catalyst_finance_workspace]` and now includes the comparison studio.
+The API endpoint is `POST /api/v1/uncertainty/evaluate`. The WordPress shortcode remains `[catalyst_finance_workspace]` and now includes the uncertainty and stress-testing studio.
 
 ## Install for development
 
@@ -88,6 +86,8 @@ GET  /api/v1/version
 GET  /api/v1/models
 POST /api/v1/evaluate
 POST /api/v1/cash-flow/evaluate
+POST /api/v1/compare
+POST /api/v1/uncertainty/evaluate
 GET  /api/v1/templates
 GET  /api/v1/workspaces
 POST /api/v1/workspaces
@@ -116,7 +116,7 @@ Packages:
 
 ```text
 dist/catalyst-finance.zip
-dist/catalyst-finance-demo-v1.4.0.zip
+dist/catalyst-finance-demo-v1.5.0.zip
 ```
 
 Shortcodes:
@@ -137,9 +137,16 @@ The module includes the persistent screening workspace and a capital-budgeting s
 - `schemas/cash_flow_publication.schema.json`
 - `schemas/finance_workspace.schema.json`
 - `schemas/finance_workspace_export.schema.json`
+- `schemas/comparison_definition.schema.json`
+- `schemas/comparison_publication.schema.json`
+- `schemas/uncertainty_definition.schema.json`
+- `schemas/uncertainty_publication.schema.json`
 - `examples/sample_cash_flow_scenario.output.json`
 - `examples/sample_cash_flow_scenario.periods.csv`
 - `examples/sample_finance_workspace.export.json`
+- `examples/sample_comparison.output.json`
+- `examples/sample_uncertainty.output.json`
+- `examples/sample_uncertainty.summary.csv`
 
 ## Validation
 
@@ -147,7 +154,7 @@ The module includes the persistent screening workspace and a capital-budgeting s
 python scripts/check_release.py
 ```
 
-The release gate checks synchronized versions, generated schemas, reproducible screening and cash-flow fixtures, all three screening migration paths, JSON/SQLite workspace behavior, API lifecycle operations, exact Python/JavaScript parity for both models, Ruff, formatting, strict Mypy, PHP, JavaScript, and deterministic ZIP integrity.
+The release gate checks synchronized versions, generated schemas, reproducible screening and cash-flow fixtures, all three screening migration paths, JSON/SQLite workspace behavior, API lifecycle operations, exact Python/JavaScript parity for screening, cash-flow, comparison, and uncertainty models, Ruff, formatting, strict Mypy, PHP, JavaScript, and deterministic ZIP integrity.
 
 ## Product boundary
 

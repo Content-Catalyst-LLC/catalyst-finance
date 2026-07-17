@@ -1,5 +1,5 @@
 {
-  "contract_version": "1.4.0",
+  "contract_version": "1.5.0",
   "model_id": "catalyst-finance.cash-flow",
   "project": {"name": "Negative case", "category": "Benchmark"},
   "context": {"currency": "USD", "price_basis": "nominal", "discount_rate_basis": "nominal", "period_frequency": "annual", "time_basis": "end_of_period", "rounding_policy": "half_up", "monetary_decimals": 2, "ratio_decimals": 4},

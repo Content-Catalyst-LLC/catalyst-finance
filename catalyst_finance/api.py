@@ -12,6 +12,7 @@ from pydantic import Field, ValidationError
 from .cashflow import evaluate_cash_flow
 from .cashflow_migration import normalize_cash_flow
 from .comparison import evaluate_comparison
+from .comparison_migration import normalize_comparison
 from .comparison_models import ComparisonDefinition
 from .engine import evaluate_payload
 from .models import ContractModel, validation_issues
@@ -22,6 +23,8 @@ from .repositories import (
     WorkspaceRepository,
 )
 from .templates import list_templates
+from .uncertainty import evaluate_uncertainty
+from .uncertainty_models import UncertaintyDefinition
 from .version import __version__
 from .workspace import WorkspaceConflictError, WorkspaceService
 from .workspace_models import FinanceWorkspace, WorkspaceDefaults, WorkspaceExport
@@ -62,6 +65,16 @@ class CreateComparisonRequest(ContractModel):
 class ComparisonRevisionRequest(ContractModel):
     definition: ComparisonDefinition
     change_note: str = Field(default="Saved comparison revision", max_length=1000)
+
+
+class CreateUncertaintyRequest(ContractModel):
+    definition: UncertaintyDefinition
+    name: str | None = Field(default=None, max_length=240)
+
+
+class UncertaintyRevisionRequest(ContractModel):
+    definition: UncertaintyDefinition
+    change_note: str = Field(default="Saved uncertainty revision", max_length=1000)
 
 
 class RenameRequest(ContractModel):
@@ -135,7 +148,7 @@ def create_app(repository: WorkspaceRepository | None = None) -> FastAPI:
     @application.post("/api/v1/compare", tags=["comparison"])
     def compare_endpoint(payload: dict[str, Any]) -> dict[str, Any]:
         try:
-            definition = ComparisonDefinition.model_validate(payload)
+            definition = normalize_comparison(payload)
             return cast(
                 dict[str, Any],
                 evaluate_comparison(definition).model_dump(mode="json"),
@@ -145,6 +158,23 @@ def create_app(repository: WorkspaceRepository | None = None) -> FastAPI:
                 status_code=422,
                 detail={
                     "error": "invalid_comparison",
+                    "issues": validation_issues(exc),
+                },
+            ) from exc
+
+    @application.post("/api/v1/uncertainty/evaluate", tags=["uncertainty"])
+    def evaluate_uncertainty_endpoint(payload: dict[str, Any]) -> dict[str, Any]:
+        try:
+            definition = UncertaintyDefinition.model_validate(payload)
+            return cast(
+                dict[str, Any],
+                evaluate_uncertainty(definition).model_dump(mode="json"),
+            )
+        except (ValidationError, ValueError) as exc:
+            raise HTTPException(
+                status_code=422,
+                detail={
+                    "error": "invalid_uncertainty_definition",
                     "issues": validation_issues(exc),
                 },
             ) from exc
@@ -408,6 +438,63 @@ def create_app(repository: WorkspaceRepository | None = None) -> FastAPI:
                 service.delete_comparison(workspace_id, comparison_id).model_dump(
                     mode="json"
                 ),
+            )
+        except WorkspaceNotFoundError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    @application.post(
+        "/api/v1/workspaces/{workspace_id}/uncertainty-analyses",
+        tags=["uncertainty"],
+        status_code=201,
+    )
+    def create_uncertainty_endpoint(
+        workspace_id: str, payload: CreateUncertaintyRequest
+    ) -> dict[str, Any]:
+        try:
+            return cast(
+                dict[str, Any],
+                service.create_uncertainty_analysis(
+                    workspace_id, payload.definition, name=payload.name
+                ).model_dump(mode="json"),
+            )
+        except WorkspaceNotFoundError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    @application.post(
+        "/api/v1/workspaces/{workspace_id}/uncertainty-analyses/{analysis_id}/revisions",
+        tags=["uncertainty"],
+    )
+    def save_uncertainty_revision_endpoint(
+        workspace_id: str,
+        analysis_id: str,
+        payload: UncertaintyRevisionRequest,
+    ) -> dict[str, Any]:
+        try:
+            return cast(
+                dict[str, Any],
+                service.save_uncertainty_revision(
+                    workspace_id,
+                    analysis_id,
+                    payload.definition,
+                    change_note=payload.change_note,
+                ).model_dump(mode="json"),
+            )
+        except WorkspaceNotFoundError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    @application.delete(
+        "/api/v1/workspaces/{workspace_id}/uncertainty-analyses/{analysis_id}",
+        tags=["uncertainty"],
+    )
+    def delete_uncertainty_endpoint(
+        workspace_id: str, analysis_id: str
+    ) -> dict[str, Any]:
+        try:
+            return cast(
+                dict[str, Any],
+                service.delete_uncertainty_analysis(
+                    workspace_id, analysis_id
+                ).model_dump(mode="json"),
             )
         except WorkspaceNotFoundError as exc:
             raise HTTPException(status_code=404, detail=str(exc)) from exc

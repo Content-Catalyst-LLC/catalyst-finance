@@ -1,5 +1,5 @@
 {
-  "contract_version": "1.4.0",
+  "contract_version": "1.5.0",
   "model_id": "catalyst-finance.cash-flow",
   "project": {
     "name": "Building efficiency retrofit",
@@ -16,7 +16,7 @@
     "ratio_decimals": 4
   },
   "assumptions": {
-    "contract_version": "1.4.0",
+    "contract_version": "1.5.0",
     "model_id": "catalyst-finance.cash-flow",
     "project": {
       "name": "Building efficiency retrofit",
@@ -828,7 +828,7 @@
   },
   "methodology": {
     "model_id": "catalyst-finance.cash-flow",
-    "model_version": "1.4.0",
+    "model_version": "1.5.0",
     "timing_policy": "period_zero_then_end_of_period",
     "annual_to_period_rate_policy": "effective_rate_conversion",
     "escalation_policy": "effective_annual_compounding",
@@ -839,7 +839,7 @@
   "metadata": {
     "generated_at": "2026-07-17T00:00:00+00:00",
     "tool": "Catalyst Finance cash-flow engine",
-    "version": "1.4.0",
+    "version": "1.5.0",
     "disclaimer": "Educational software only; not financial, investment, legal, accounting, tax, fiduciary, procurement, funding, lending, or assurance advice."
   }
 }

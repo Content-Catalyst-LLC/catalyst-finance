@@ -1,6 +1,6 @@
 # Scenario Comparison, Sensitivity, and Break-Even
 
-Catalyst Finance v1.4.0 compares complete cash-flow scenario revisions rather than untracked spreadsheet columns. Every alternative includes its workspace ID, scenario ID, revision ID, revision number, classification, cash-flow snapshot, and non-financial caveats.
+Catalyst Finance v1.5.0 compares complete cash-flow scenario revisions rather than untracked spreadsheet columns. Every alternative includes its workspace ID, scenario ID, revision ID, revision number, classification, cash-flow snapshot, and non-financial caveats.
 
 ## Aligned comparison
 

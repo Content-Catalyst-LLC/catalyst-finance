@@ -7,6 +7,8 @@ from .comparison_models import ComparisonDefinition, ComparisonPublication
 from .engine import evaluate_payload, evaluate_scenario
 from .models import FinanceScenarioInput
 from .repositories import JsonWorkspaceRepository, SQLiteWorkspaceRepository
+from .uncertainty import evaluate_uncertainty
+from .uncertainty_models import UncertaintyDefinition, UncertaintyPublication
 from .version import __version__
 from .workspace import WorkspaceService
 from .workspace_models import FinanceWorkspace
@@ -20,10 +22,13 @@ __all__ = [
     "FinanceWorkspace",
     "JsonWorkspaceRepository",
     "SQLiteWorkspaceRepository",
+    "UncertaintyDefinition",
+    "UncertaintyPublication",
     "WorkspaceService",
     "__version__",
     "evaluate_cash_flow",
     "evaluate_comparison",
     "evaluate_payload",
     "evaluate_scenario",
+    "evaluate_uncertainty",
 ]

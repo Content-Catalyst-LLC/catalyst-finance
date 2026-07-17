@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Catalyst Finance Demo
- * Description: Persistent finance workspace with screening and capital-budgeting models for Sustainable Catalyst.
- * Version: 1.4.0
+ * Description: Persistent finance workspace with screening, capital budgeting, comparison, uncertainty, and stress testing for Sustainable Catalyst.
+ * Version: 1.5.0
  * Author: Content Catalyst LLC
  * License: MIT
  */
@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('CATALYST_FINANCE_DEMO_VERSION', '1.4.0');
+define('CATALYST_FINANCE_DEMO_VERSION', '1.5.0');
 
 function catalyst_finance_demo_assets() {
     $base = plugin_dir_url(__FILE__);
@@ -43,9 +43,16 @@ function catalyst_finance_demo_assets() {
         true
     );
     wp_enqueue_script(
+        'catalyst-finance-uncertainty-engine',
+        $base . 'assets/catalyst-finance-uncertainty-engine.js',
+        array('catalyst-finance-cashflow-engine', 'catalyst-finance-comparison-engine'),
+        CATALYST_FINANCE_DEMO_VERSION,
+        true
+    );
+    wp_enqueue_script(
         'catalyst-finance-demo',
         $base . 'assets/catalyst-finance-demo.js',
-        array('catalyst-finance-engine', 'catalyst-finance-cashflow-engine', 'catalyst-finance-comparison-engine'),
+        array('catalyst-finance-engine', 'catalyst-finance-cashflow-engine', 'catalyst-finance-comparison-engine', 'catalyst-finance-uncertainty-engine'),
         CATALYST_FINANCE_DEMO_VERSION,
         true
     );
@@ -63,7 +70,7 @@ function catalyst_finance_demo_shortcode($atts = array()) {
     ?>
     <section class="scfin-demo" data-scfin-demo data-scfin-mode="<?php echo esc_attr($mode); ?>">
       <div class="scfin-demo__header">
-        <p class="scfin-demo__eyebrow">Catalyst Finance v1.4.0</p>
+        <p class="scfin-demo__eyebrow">Catalyst Finance v1.5.0</p>
         <h3><?php echo $mode === 'public' ? 'Explore a finance scenario' : 'Persistent finance scenario workspace'; ?></h3>
         <p><?php echo $mode === 'public'
             ? 'Review a read-only example using the canonical finance screening model.'
@@ -335,6 +342,47 @@ function catalyst_finance_demo_shortcode($atts = array()) {
           </div>
         </div>
         <details class="scfin-demo__details"><summary>Versioned comparison artifact</summary><pre data-scfin-comparison-json></pre></details>
+      </section>
+
+      <section class="scfin-uncertainty" data-scfin-uncertainty-studio>
+        <div class="scfin-capital__header">
+          <p class="scfin-demo__eyebrow">Probability and adverse cases</p>
+          <h3>Uncertainty, Monte Carlo, and stress-testing studio</h3>
+          <p>Run a seeded simulation around the live capital-budgeting case, inspect downside probabilities and variable influence, and compare named multi-factor stress cases.</p>
+        </div>
+        <div class="scfin-uncertainty__controls">
+          <label><span>Iterations</span><input type="number" min="100" max="5000" step="100" value="500" data-scfin-uncertainty-iterations></label>
+          <label><span>Seed</span><input type="number" min="0" max="4294967295" step="1" value="20260717" data-scfin-uncertainty-seed></label>
+          <label><span>Capital range (%)</span><input type="number" min="1" max="100" step="1" value="20" data-scfin-uncertainty-capital></label>
+          <label><span>Benefit standard deviation (%)</span><input type="number" min="1" max="100" step="1" value="15" data-scfin-uncertainty-benefit></label>
+          <button type="button" data-scfin-uncertainty-run>Run seeded simulation</button>
+          <button type="button" data-scfin-uncertainty-download>Download uncertainty bundle</button>
+        </div>
+        <div class="scfin-uncertainty__metrics">
+          <div><span>Mean NPV</span><strong data-scfin-uncertainty-mean>—</strong></div>
+          <div><span>NPV P5</span><strong data-scfin-uncertainty-p5>—</strong></div>
+          <div><span>Probability NPV &gt; 0</span><strong data-scfin-uncertainty-positive>—</strong></div>
+          <div><span>Expected shortfall</span><strong data-scfin-uncertainty-shortfall>—</strong></div>
+        </div>
+        <div class="scfin-uncertainty__grid">
+          <div class="scfin-comparison__panel">
+            <h4>NPV distribution</h4>
+            <canvas width="760" height="280" data-scfin-uncertainty-histogram aria-label="Monte Carlo NPV histogram"></canvas>
+          </div>
+          <div class="scfin-comparison__panel">
+            <h4>Variable influence</h4>
+            <ol data-scfin-uncertainty-influence></ol>
+          </div>
+          <div class="scfin-comparison__panel">
+            <h4>Stress cases</h4>
+            <ul data-scfin-uncertainty-stress></ul>
+          </div>
+          <div class="scfin-comparison__panel">
+            <h4>Reproducibility</h4>
+            <p data-scfin-uncertainty-meta>Run the simulation to record the seed and completed iterations.</p>
+          </div>
+        </div>
+        <details class="scfin-demo__details"><summary>Versioned uncertainty publication</summary><pre data-scfin-uncertainty-json></pre></details>
       </section>
       <p class="scfin-demo__disclaimer">Educational scenario tool only. Not financial, investment, tax, accounting, legal, assurance, or fiduciary advice. Browser workspace data remains in this browser until exported or deleted.</p>
     </section>

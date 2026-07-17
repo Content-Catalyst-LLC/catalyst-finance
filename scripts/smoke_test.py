@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Portable v1.4.0 smoke tests that do not require a running server."""
+"""Portable v1.5.0 smoke tests that do not require a running server."""
 
 from __future__ import annotations
 
@@ -31,6 +31,7 @@ def main() -> int:
             "catalyst-finance.screening",
             "catalyst-finance.cash-flow",
             "catalyst-finance.comparison",
+            "catalyst-finance.uncertainty",
         ]
         assert len(client.get("/api/v1/templates").json()["templates"]) == 5
 
@@ -72,13 +73,29 @@ def main() -> int:
             for result in comparison_publication["break_even_results"]
         )
 
+        uncertainty = json.loads(
+            (ROOT / "data" / "sample_uncertainty.json").read_text(encoding="utf-8")
+        )
+        uncertainty["monte_carlo"]["iterations"] = 100
+        uncertainty["monte_carlo"]["retain_samples"] = 5
+        uncertainty_response = client.post(
+            "/api/v1/uncertainty/evaluate", json=uncertainty
+        )
+        assert uncertainty_response.status_code == 200
+        uncertainty_publication = uncertainty_response.json()
+        assert uncertainty_publication["model_id"] == "catalyst-finance.uncertainty"
+        assert uncertainty_publication["metadata"]["version"] == __version__
+        assert uncertainty_publication["metadata"]["configured_iterations"] == 100
+        assert uncertainty_publication["metadata"]["completed_iterations"] > 0
+        assert len(uncertainty_publication["stress_results"]) == 3
+
         service = WorkspaceService(repository)
         workspace = service.create_workspace("Smoke workspace")
         workspace = service.create_scenario(workspace.workspace_id, "Smoke scenario")
         reopened = service.get_workspace(workspace.workspace_id)
         assert reopened.scenarios[0].revisions[0].model_version == __version__
 
-    print("Catalyst Finance v1.4.0 smoke tests passed.")
+    print("Catalyst Finance v1.5.0 smoke tests passed.")
     return 0
 
 

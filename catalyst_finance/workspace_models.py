@@ -1,4 +1,4 @@
-"""Versioned workspace records for Catalyst Finance v1.4.0."""
+"""Versioned workspace records for Catalyst Finance v1.5.0."""
 
 from __future__ import annotations
 
@@ -18,8 +18,9 @@ from .models import (
     FinanceContext,
     FinanceScenarioInput,
 )
+from .uncertainty_models import UncertaintyDefinition
 
-WORKSPACE_CONTRACT_VERSION: Literal["1.4.0"] = "1.4.0"
+WORKSPACE_CONTRACT_VERSION: Literal["1.5.0"] = "1.5.0"
 
 Identifier = Annotated[
     str, Field(min_length=5, max_length=100, pattern=r"^[a-z]+_[A-Za-z0-9_-]+$")
@@ -38,7 +39,7 @@ class WorkspaceDefaults(ContractModel):
     default_model_id: Literal[
         "catalyst-finance.screening", "catalyst-finance.cash-flow"
     ] = MODEL_ID
-    default_model_version: Literal["1.4.0"] = CONTRACT_VERSION
+    default_model_version: Literal["1.5.0"] = CONTRACT_VERSION
 
     @model_validator(mode="after")
     def matching_basis(self) -> WorkspaceDefaults:
@@ -77,7 +78,7 @@ class ScenarioRevision(ContractModel):
     model_id: Literal["catalyst-finance.screening", "catalyst-finance.cash-flow"] = (
         MODEL_ID
     )
-    model_version: Literal["1.4.0"] = CONTRACT_VERSION
+    model_version: Literal["1.5.0"] = CONTRACT_VERSION
     change_note: str = Field(default="", max_length=1000)
     scenario: ScenarioPayload
 
@@ -158,8 +159,47 @@ class WorkspaceComparison(ContractModel):
         return self.revisions[-1]
 
 
+class UncertaintyRevision(ContractModel):
+    revision_id: Identifier
+    revision_number: Annotated[int, Field(ge=1)]
+    created_at: datetime
+    change_note: str = Field(default="", max_length=1000)
+    definition: UncertaintyDefinition
+
+
+class WorkspaceUncertaintyAnalysis(ContractModel):
+    analysis_id: Identifier
+    name: str = Field(min_length=1, max_length=240)
+    status: Literal["draft", "active", "archived"] = "active"
+    created_at: datetime
+    updated_at: datetime
+    current_revision_id: Identifier
+    revisions: list[UncertaintyRevision] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def valid_revision_chain(self) -> WorkspaceUncertaintyAnalysis:
+        revision_ids = [item.revision_id for item in self.revisions]
+        if len(revision_ids) != len(set(revision_ids)):
+            raise ValueError("uncertainty revision IDs must be unique")
+        if [item.revision_number for item in self.revisions] != list(
+            range(1, len(self.revisions) + 1)
+        ):
+            raise ValueError(
+                "uncertainty revision numbers must be contiguous and ordered"
+            )
+        if self.current_revision_id != self.revisions[-1].revision_id:
+            raise ValueError(
+                "uncertainty current_revision_id must reference the latest revision"
+            )
+        return self
+
+    @property
+    def current_revision(self) -> UncertaintyRevision:
+        return self.revisions[-1]
+
+
 class FinanceWorkspace(ContractModel):
-    workspace_contract_version: Literal["1.4.0"] = WORKSPACE_CONTRACT_VERSION
+    workspace_contract_version: Literal["1.5.0"] = WORKSPACE_CONTRACT_VERSION
     workspace_id: Identifier
     name: str = Field(min_length=1, max_length=200)
     description: str = Field(default="", max_length=4000)
@@ -170,18 +210,24 @@ class FinanceWorkspace(ContractModel):
     projects: list[WorkspaceProject] = Field(default_factory=list)
     scenarios: list[WorkspaceScenario] = Field(default_factory=list)
     comparisons: list[WorkspaceComparison] = Field(default_factory=list)
+    uncertainty_analyses: list[WorkspaceUncertaintyAnalysis] = Field(
+        default_factory=list
+    )
 
     @model_validator(mode="after")
     def unique_identifiers(self) -> FinanceWorkspace:
         project_ids = [item.project_id for item in self.projects]
         scenario_ids = [item.scenario_id for item in self.scenarios]
         comparison_ids = [item.comparison_id for item in self.comparisons]
+        analysis_ids = [item.analysis_id for item in self.uncertainty_analyses]
         if len(project_ids) != len(set(project_ids)):
             raise ValueError("workspace project IDs must be unique")
         if len(scenario_ids) != len(set(scenario_ids)):
             raise ValueError("workspace scenario IDs must be unique")
         if len(comparison_ids) != len(set(comparison_ids)):
             raise ValueError("workspace comparison IDs must be unique")
+        if len(analysis_ids) != len(set(analysis_ids)):
+            raise ValueError("workspace uncertainty analysis IDs must be unique")
         known_projects = set(project_ids)
         for scenario in self.scenarios:
             if (
@@ -195,7 +241,7 @@ class FinanceWorkspace(ContractModel):
 
 
 class WorkspaceExport(ContractModel):
-    export_contract_version: Literal["1.4.0"] = WORKSPACE_CONTRACT_VERSION
+    export_contract_version: Literal["1.5.0"] = WORKSPACE_CONTRACT_VERSION
     exported_at: datetime
     workspace: FinanceWorkspace
 

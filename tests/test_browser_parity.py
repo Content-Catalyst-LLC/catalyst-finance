@@ -7,6 +7,8 @@ import pytest
 
 from catalyst_finance.engine import evaluate_scenario
 from catalyst_finance.io import load_scenario
+from catalyst_finance.uncertainty import evaluate_uncertainty
+from catalyst_finance.uncertainty_models import UncertaintyDefinition
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXED = "2026-07-17T00:00:00+00:00"
@@ -115,3 +117,36 @@ def test_comparison_browser_engine_matches_python_core() -> None:
     )
     browser_payload = json.loads(completed.stdout)
     assert _comparison_core(python_payload) == _comparison_core(browser_payload)
+
+
+def test_uncertainty_browser_parity(tmp_path: Path) -> None:
+    payload = json.loads((ROOT / "data/sample_uncertainty.json").read_text())
+    payload["monte_carlo"]["iterations"] = 100
+    payload["monte_carlo"]["retain_samples"] = 5
+    input_path = tmp_path / "uncertainty.json"
+    input_path.write_text(json.dumps(payload), encoding="utf-8")
+    definition = UncertaintyDefinition.model_validate(payload)
+    python_result = evaluate_uncertainty(
+        definition, generated_at="2026-07-17T00:00:00+00:00"
+    ).model_dump(mode="json")
+    completed = subprocess.run(
+        [
+            "node",
+            str(ROOT / "scripts/browser_uncertainty_parity.js"),
+            str(input_path),
+            "2026-07-17T00:00:00+00:00",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    browser_result = json.loads(completed.stdout)
+    assert browser_result["summaries"] == python_result["summaries"]
+    assert browser_result["histograms"] == python_result["histograms"]
+    assert browser_result["variable_influences"] == python_result["variable_influences"]
+    assert browser_result["retained_samples"] == python_result["retained_samples"]
+    assert browser_result["stress_results"] == python_result["stress_results"]
+    assert (
+        browser_result["metadata"]["rejected_iterations"]
+        == python_result["metadata"]["rejected_iterations"]
+    )
