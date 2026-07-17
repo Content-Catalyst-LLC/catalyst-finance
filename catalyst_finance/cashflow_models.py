@@ -1,4 +1,4 @@
-"""Typed cash-flow and capital-budgeting contracts for Catalyst Finance v1.8.0."""
+"""Typed cash-flow and capital-budgeting contracts for Catalyst Finance v1.9.0."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from pydantic import Field, model_validator
 
 from .models import ContractModel, FinanceProject
 
-CASHFLOW_CONTRACT_VERSION: Literal["1.8.0"] = "1.8.0"
+CASHFLOW_CONTRACT_VERSION: Literal["1.9.0"] = "1.9.0"
 CASHFLOW_MODEL_ID: Literal["catalyst-finance.cash-flow"] = "catalyst-finance.cash-flow"
 
 PeriodFrequency = Literal["monthly", "quarterly", "annual"]
@@ -93,7 +93,7 @@ class CashFlowLine(ContractModel):
 
 
 class CashFlowScenarioInput(ContractModel):
-    contract_version: Literal["1.8.0"] = CASHFLOW_CONTRACT_VERSION
+    contract_version: Literal["1.9.0"] = CASHFLOW_CONTRACT_VERSION
     model_id: Literal["catalyst-finance.cash-flow"] = CASHFLOW_MODEL_ID
     project: FinanceProject
     context: CashFlowContext = Field(default_factory=CashFlowContext)
@@ -184,7 +184,7 @@ class CashFlowInterpretation(ContractModel):
 
 class CashFlowMethodology(ContractModel):
     model_id: Literal["catalyst-finance.cash-flow"] = CASHFLOW_MODEL_ID
-    model_version: Literal["1.8.0"] = CASHFLOW_CONTRACT_VERSION
+    model_version: Literal["1.9.0"] = CASHFLOW_CONTRACT_VERSION
     timing_policy: Literal["period_zero_then_end_of_period"] = (
         "period_zero_then_end_of_period"
     )
@@ -210,12 +210,12 @@ class CashFlowMetadata(ContractModel):
     tool: Literal["Catalyst Finance cash-flow engine"] = (
         "Catalyst Finance cash-flow engine"
     )
-    version: Literal["1.8.0"] = CASHFLOW_CONTRACT_VERSION
+    version: Literal["1.9.0"] = CASHFLOW_CONTRACT_VERSION
     disclaimer: str
 
 
 class CashFlowPublication(ContractModel):
-    contract_version: Literal["1.8.0"] = CASHFLOW_CONTRACT_VERSION
+    contract_version: Literal["1.9.0"] = CASHFLOW_CONTRACT_VERSION
     model_id: Literal["catalyst-finance.cash-flow"] = CASHFLOW_MODEL_ID
     project: FinanceProject
     context: CashFlowContext

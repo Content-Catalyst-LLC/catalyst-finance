@@ -1,6 +1,6 @@
 # Uncertainty and Stress Review Checklist
 
-Before relying on a v1.8.0 uncertainty publication, confirm:
+Before relying on a v1.9.0 uncertainty publication, confirm:
 
 1. The source workspace, scenario, and revision identifiers match the reviewed base case.
 2. Every variable path resolves to the intended assumption and does not duplicate another variable unintentionally.

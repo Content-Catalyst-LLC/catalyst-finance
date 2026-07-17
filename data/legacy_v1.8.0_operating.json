@@ -1,0 +1,88 @@
+{
+  "contract_version": "1.8.0",
+  "model_id": "catalyst-finance.operating",
+  "operating_id": "sample-operations",
+  "name": "Community retrofit operating plan",
+  "description": "Budget-to-actual operating economics for implementation and support services.",
+  "source": {
+    "workspace_id": "workspace_demo",
+    "scenario_id": "scenario_operations",
+    "revision_id": "revision_operating_001",
+    "revision_number": 1
+  },
+  "currency": "USD",
+  "period_frequency": "monthly",
+  "target_operating_profit": 25000,
+  "units": [
+    {
+      "unit_id": "implementation",
+      "label": "Implementation services",
+      "cost_center": "Delivery",
+      "periods": [
+        {
+          "period": 1,
+          "label": "January",
+          "budget_units": 120,
+          "actual_units": 130,
+          "budget_unit_price": 600,
+          "actual_unit_price": 620,
+          "budget_variable_cost_per_unit": 280,
+          "actual_variable_cost_per_unit": 290,
+          "budget_direct_fixed_cost": 18000,
+          "actual_direct_fixed_cost": 18500,
+          "budget_allocated_overhead": 7000,
+          "actual_allocated_overhead": 7200
+        },
+        {
+          "period": 2,
+          "label": "February",
+          "budget_units": 125,
+          "actual_units": 118,
+          "budget_unit_price": 600,
+          "actual_unit_price": 590,
+          "budget_variable_cost_per_unit": 280,
+          "actual_variable_cost_per_unit": 300,
+          "budget_direct_fixed_cost": 18000,
+          "actual_direct_fixed_cost": 18100,
+          "budget_allocated_overhead": 7000,
+          "actual_allocated_overhead": 7350
+        }
+      ]
+    },
+    {
+      "unit_id": "support",
+      "label": "Ongoing support",
+      "cost_center": "Client Success",
+      "periods": [
+        {
+          "period": 1,
+          "label": "January",
+          "budget_units": 300,
+          "actual_units": 315,
+          "budget_unit_price": 140,
+          "actual_unit_price": 145,
+          "budget_variable_cost_per_unit": 45,
+          "actual_variable_cost_per_unit": 44,
+          "budget_direct_fixed_cost": 9000,
+          "actual_direct_fixed_cost": 9200,
+          "budget_allocated_overhead": 4000,
+          "actual_allocated_overhead": 4100
+        },
+        {
+          "period": 2,
+          "label": "February",
+          "budget_units": 310,
+          "actual_units": 325,
+          "budget_unit_price": 140,
+          "actual_unit_price": 142,
+          "budget_variable_cost_per_unit": 45,
+          "actual_variable_cost_per_unit": 46,
+          "budget_direct_fixed_cost": 9000,
+          "actual_direct_fixed_cost": 9100,
+          "budget_allocated_overhead": 4000,
+          "actual_allocated_overhead": 4050
+        }
+      ]
+    }
+  ]
+}

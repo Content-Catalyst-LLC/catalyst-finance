@@ -1,6 +1,6 @@
 # Operating Economics Review Checklist
 
-Before relying on a v1.8.0 operating publication, confirm:
+Before relying on a v1.9.0 operating publication, confirm:
 
 - budget and actual units refer to the same output measure;
 - prices and variable costs use the same currency and period basis;

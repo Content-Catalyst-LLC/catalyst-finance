@@ -1,5 +1,5 @@
 {
-  "contract_version": "1.8.0",
+  "contract_version": "1.9.0",
   "model_id": "catalyst-finance.comparison",
   "comparison_id": "retrofit-options",
   "name": "Building retrofit alternatives",
@@ -17,7 +17,7 @@
         "revision_number": 3
       },
       "scenario": {
-        "contract_version": "1.8.0",
+        "contract_version": "1.9.0",
         "model_id": "catalyst-finance.cash-flow",
         "project": {
           "name": "Building efficiency retrofit",
@@ -134,7 +134,7 @@
         "revision_number": 3
       },
       "scenario": {
-        "contract_version": "1.8.0",
+        "contract_version": "1.9.0",
         "model_id": "catalyst-finance.cash-flow",
         "project": {
           "name": "Building efficiency retrofit",
@@ -250,7 +250,7 @@
         "revision_number": 3
       },
       "scenario": {
-        "contract_version": "1.8.0",
+        "contract_version": "1.9.0",
         "model_id": "catalyst-finance.cash-flow",
         "project": {
           "name": "Building efficiency retrofit",

@@ -1,4 +1,4 @@
-"""Workspace lifecycle and revision services for Catalyst Finance v1.8.0."""
+"""Workspace lifecycle and revision services for Catalyst Finance v1.9.0."""
 
 from __future__ import annotations
 
@@ -12,6 +12,7 @@ from typing import Any, cast
 from .cashflow_migration import normalize_cash_flow
 from .cashflow_models import CashFlowScenarioInput
 from .comparison_models import ComparisonDefinition
+from .governance_models import GovernanceDefinition
 from .migration import normalize_scenario
 from .models import FinanceScenarioInput
 from .operating_models import OperatingDefinition
@@ -24,6 +25,7 @@ from .workspace_migration import migrate_workspace_payload
 from .workspace_models import (
     ComparisonRevision,
     FinanceWorkspace,
+    GovernanceRevision,
     OperatingRevision,
     PricingRevision,
     ScenarioPayload,
@@ -33,6 +35,7 @@ from .workspace_models import (
     WorkspaceComparison,
     WorkspaceDefaults,
     WorkspaceExport,
+    WorkspaceGovernanceAnalysis,
     WorkspaceOperatingAnalysis,
     WorkspacePricingAnalysis,
     WorkspaceProject,
@@ -963,6 +966,108 @@ class WorkspaceService:
         return self.repository.save(
             workspace.model_copy(
                 update={"sustainable_analyses": records, "updated_at": self.clock()}
+            )
+        )
+
+    def create_governance_analysis(
+        self,
+        workspace_id: str,
+        definition: GovernanceDefinition | dict[str, Any],
+        *,
+        name: str | None = None,
+    ) -> FinanceWorkspace:
+        workspace = self.repository.get(workspace_id)
+        governance_definition = (
+            definition
+            if isinstance(definition, GovernanceDefinition)
+            else GovernanceDefinition.model_validate(definition)
+        )
+        now = self.clock()
+        revision = GovernanceRevision(
+            revision_id=self.id_factory("revision"),
+            revision_number=1,
+            created_at=now,
+            change_note="Initial governance definition",
+            definition=governance_definition,
+        )
+        record = WorkspaceGovernanceAnalysis(
+            analysis_id=self.id_factory("governance"),
+            name=name or governance_definition.name,
+            created_at=now,
+            updated_at=now,
+            current_revision_id=revision.revision_id,
+            revisions=[revision],
+        )
+        return self.repository.save(
+            workspace.model_copy(
+                update={
+                    "governance_analyses": [*workspace.governance_analyses, record],
+                    "updated_at": now,
+                }
+            )
+        )
+
+    def save_governance_revision(
+        self,
+        workspace_id: str,
+        analysis_id: str,
+        definition: GovernanceDefinition | dict[str, Any],
+        *,
+        change_note: str = "Saved governance revision",
+    ) -> FinanceWorkspace:
+        workspace = self.repository.get(workspace_id)
+        governance_definition = (
+            definition
+            if isinstance(definition, GovernanceDefinition)
+            else GovernanceDefinition.model_validate(definition)
+        )
+        now = self.clock()
+        found = False
+        records: list[WorkspaceGovernanceAnalysis] = []
+        for record in workspace.governance_analyses:
+            if record.analysis_id != analysis_id:
+                records.append(record)
+                continue
+            found = True
+            revision = GovernanceRevision(
+                revision_id=self.id_factory("revision"),
+                revision_number=len(record.revisions) + 1,
+                created_at=now,
+                change_note=change_note,
+                definition=governance_definition,
+            )
+            records.append(
+                record.model_copy(
+                    update={
+                        "name": governance_definition.name,
+                        "updated_at": now,
+                        "current_revision_id": revision.revision_id,
+                        "revisions": [*record.revisions, revision],
+                    }
+                )
+            )
+        if not found:
+            raise WorkspaceNotFoundError(analysis_id)
+        return self.repository.save(
+            workspace.model_copy(
+                update={"governance_analyses": records, "updated_at": now}
+            )
+        )
+
+    def delete_governance_analysis(
+        self, workspace_id: str, analysis_id: str
+    ) -> FinanceWorkspace:
+        workspace = self.repository.get(workspace_id)
+        records = [
+            item
+            for item in workspace.governance_analyses
+            if item.analysis_id != analysis_id
+        ]
+        if len(records) == len(workspace.governance_analyses):
+            raise WorkspaceNotFoundError(analysis_id)
+        return self.repository.save(
+            workspace.model_copy(
+                update={"governance_analyses": records, "updated_at": self.clock()}
             )
         )
 

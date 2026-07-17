@@ -1,6 +1,6 @@
 # Cost, Budget, and Operating Economics
 
-Catalyst Finance v1.8.0 evaluates operating performance using a reconciled static-budget, flexible-budget, and actual statement. Every operating row is tied to a unit, cost center, period, and source workspace revision.
+Catalyst Finance v1.9.0 evaluates operating performance using a reconciled static-budget, flexible-budget, and actual statement. Every operating row is tied to a unit, cost center, period, and source workspace revision.
 
 ## Statement structure
 

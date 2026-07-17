@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Catalyst Finance Demo
- * Description: Persistent finance workspace with screening, capital budgeting, comparison, uncertainty, pricing, budgets, variances, and operating economics for Sustainable Catalyst.
- * Version: 1.8.0
+ * Description: Persistent finance workspace with modeling, evidence, review, governance, redaction, and publication workflows for Sustainable Catalyst.
+ * Version: 1.9.0
  * Author: Content Catalyst LLC
  * License: MIT
  */
@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('CATALYST_FINANCE_DEMO_VERSION', '1.8.0');
+define('CATALYST_FINANCE_DEMO_VERSION', '1.9.0');
 
 function catalyst_finance_demo_assets() {
     $base = plugin_dir_url(__FILE__);
@@ -71,9 +71,16 @@ function catalyst_finance_demo_assets() {
         true
     );
     wp_enqueue_script(
+        'catalyst-finance-governance-engine',
+        $base . 'assets/catalyst-finance-governance-engine.js',
+        array(),
+        CATALYST_FINANCE_DEMO_VERSION,
+        true
+    );
+    wp_enqueue_script(
         'catalyst-finance-demo',
         $base . 'assets/catalyst-finance-demo.js',
-        array('catalyst-finance-engine', 'catalyst-finance-cashflow-engine', 'catalyst-finance-comparison-engine', 'catalyst-finance-uncertainty-engine', 'catalyst-finance-pricing-engine', 'catalyst-finance-operating-engine', 'catalyst-finance-sustainable-engine'),
+        array('catalyst-finance-engine', 'catalyst-finance-cashflow-engine', 'catalyst-finance-comparison-engine', 'catalyst-finance-uncertainty-engine', 'catalyst-finance-pricing-engine', 'catalyst-finance-operating-engine', 'catalyst-finance-sustainable-engine', 'catalyst-finance-governance-engine'),
         CATALYST_FINANCE_DEMO_VERSION,
         true
     );
@@ -91,7 +98,7 @@ function catalyst_finance_demo_shortcode($atts = array()) {
     ?>
     <section class="scfin-demo" data-scfin-demo data-scfin-mode="<?php echo esc_attr($mode); ?>">
       <div class="scfin-demo__header">
-        <p class="scfin-demo__eyebrow">Catalyst Finance v1.8.0</p>
+        <p class="scfin-demo__eyebrow">Catalyst Finance v1.9.0</p>
         <h3><?php echo $mode === 'public' ? 'Explore a finance scenario' : 'Persistent finance scenario workspace'; ?></h3>
         <p><?php echo $mode === 'public'
             ? 'Review a read-only example using the canonical finance screening model.'
@@ -551,6 +558,46 @@ function catalyst_finance_demo_shortcode($atts = array()) {
             <div class="scfin-capital__table-wrap"><table class="scfin-capital__table"><thead><tr><th>Component</th><th>Value</th></tr></thead><tbody data-scfin-sustainable-table></tbody></table></div>
             <ul data-scfin-sustainable-flags></ul>
             <details class="scfin-demo__details"><summary>Versioned sustainable-finance publication</summary><pre data-scfin-sustainable-json></pre></details>
+          </div>
+        </div>
+      </section>
+
+      <section class="scfin-governance" data-scfin-governance-studio>
+        <div class="scfin-capital__header">
+          <p class="scfin-demo__eyebrow">Evidence and institutional review</p>
+          <h3>Governance and publication studio</h3>
+          <p>Compile assumptions, sources, evidence, claims, methodology, reviews, approvals, redactions, audit records, and platform handoffs into a reproducible finance brief.</p>
+        </div>
+        <div class="scfin-sustainable__layout">
+          <form class="scfin-sustainable__form" data-scfin-governance-form>
+            <label><span>Publication title</span><input name="publicationTitle" type="text" value="Efficiency Retrofit Finance Brief"></label>
+            <div class="scfin-demo__two">
+              <label><span>Publication state</span><select name="publicationState"><option value="draft">Draft</option><option value="in_review">In review</option><option value="approved">Approved</option><option value="published" selected>Published</option></select></label>
+              <label><span>Audience</span><select name="audience"><option value="private">Private</option><option value="internal">Internal</option><option value="public" selected>Public</option></select></label>
+            </div>
+            <label><span>Brief summary</span><textarea name="publicationSummary" rows="4">A governed finance brief linking headline value claims to assumptions, sources, evidence, methodology, and review history.</textarea></label>
+            <div class="scfin-demo__two">
+              <label><span>Headline adjusted NPV</span><input name="adjustedNpv" type="number" step="1000" value="1526250.90"></label>
+              <label><span>Avoided emissions</span><input name="avoidedEmissions" type="number" step="100" value="4500"></label>
+            </div>
+            <label><input name="includeObjection" type="checkbox"> Add unresolved reviewer objection</label>
+            <div class="scfin-demo__actions">
+              <button type="button" data-scfin-governance-run>Compile governed brief</button>
+              <button type="button" data-scfin-governance-download>Download publication</button>
+              <button type="button" data-scfin-governance-public>Download public view</button>
+            </div>
+          </form>
+          <div class="scfin-sustainable__output" aria-live="polite">
+            <div class="scfin-demo__metrics">
+              <div><span>Readiness</span><strong data-scfin-governance-status>—</strong></div>
+              <div><span>Traced headline claims</span><strong data-scfin-governance-trace>—</strong></div>
+              <div><span>Approvals</span><strong data-scfin-governance-approvals>—</strong></div>
+              <div><span>Private records excluded</span><strong data-scfin-governance-private>—</strong></div>
+            </div>
+            <div class="scfin-capital__table-wrap"><table class="scfin-capital__table"><thead><tr><th>Claim</th><th>Metrics</th><th>Sources</th><th>Complete</th></tr></thead><tbody data-scfin-governance-table></tbody></table></div>
+            <ul data-scfin-governance-flags></ul>
+            <details class="scfin-demo__details"><summary>Decision brief</summary><pre data-scfin-governance-brief></pre></details>
+            <details class="scfin-demo__details"><summary>Versioned governance publication</summary><pre data-scfin-governance-json></pre></details>
           </div>
         </div>
       </section>

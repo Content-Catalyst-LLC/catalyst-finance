@@ -65,7 +65,12 @@ def test_invalid_green_rate_and_duplicate_assets_are_rejected() -> None:
 
 def test_v170_sustainable_definition_migrates() -> None:
     payload = json.loads((ROOT / "data/legacy_v1.7.0_sustainable.json").read_text())
-    assert normalize_sustainable(payload).contract_version == "1.8.0"
+    assert normalize_sustainable(payload).contract_version == "1.9.0"
+
+
+def test_v180_sustainable_definition_migrates() -> None:
+    payload = json.loads((ROOT / "data/legacy_v1.8.0_sustainable.json").read_text())
+    assert normalize_sustainable(payload).contract_version == "1.9.0"
 
 
 def test_browser_sustainable_parity() -> None:

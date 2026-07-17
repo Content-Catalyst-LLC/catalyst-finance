@@ -1,0 +1,17 @@
+{
+  "contract_version": "1.8.0",
+  "model_id": "catalyst-finance.governance",
+  "governance_id": "gov_legacy",
+  "name": "Legacy governed case",
+  "description": "Migration fixture.",
+  "source": {"workspace_id": "workspace_demo", "scenario_id": "scenario_demo", "revision_id": "revision_7", "revision_number": 7},
+  "artifact": {"artifact_id": "artifact_legacy", "model_id": "catalyst-finance.sustainable", "model_version": "1.8.0", "revision_id": "revision_7", "title": "Legacy artifact", "headline_metrics": {"npv": 1000}},
+  "assumptions": [],
+  "sources": [],
+  "evidence": [],
+  "claims": [],
+  "methodologies": [{"methodology_id": "method_legacy", "name": "Legacy method", "version": "1.8.0", "purpose": "Migration test.", "model_ids": ["catalyst-finance.sustainable"], "data_quality_notes": [], "conflicts": [], "limitations": [], "excluded_factors": []}],
+  "review_events": [],
+  "attachments": [],
+  "publication": {"state": "draft", "audience": "private", "title": "Legacy brief", "summary": "Migration fixture.", "redaction_policy": "exclude_private", "knowledge_library_collection_id": null, "decision_studio_packet_id": null}
+}

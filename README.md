@@ -4,19 +4,22 @@ Catalyst Finance is an open-source financial scenario, cash-flow, and decision-s
 
 > Educational software only. This repository does not provide investment, legal, tax, accounting, fiduciary, assurance, lending, procurement, funding, or financial advice.
 
-## v1.8.0 — Sustainable Finance, Carbon, and Natural-Capital Accounting
+## v1.9.0 — Evidence, Review, Governance, and Publication
 
-The v1.8.0 release adds a seventh canonical engine for non-double-counted carbon valuation, natural-capital stock and ecosystem-service value, probability-adjusted transition effects, green-financing savings, and adjusted project NPV.
+The v1.9.0 release adds an eighth canonical engine that turns a versioned finance artifact into a governed institutional publication. Assumptions, sources, evidence, claims, methodologies, comments, findings, objections, approvals, attachments, and publication controls remain explicit and portable.
 
-Catalyst Finance now includes a canonical operating model with static, flexible, and actual budgets; reconciled favorable and unfavorable variances; unit and cost-center rollups; contribution margins; break-even and margin-of-safety analysis; operating leverage; and target-profit volume.
+Headline claims must trace to calculations, assumptions, sources, and evidence. Unresolved review issues block approval and publication. Review history is append-only and hash chained. Public exports exclude private records and claims that depend on them without altering the private workspace record.
 
 ```bash
-catalyst-finance-operating data/sample_operating.json \
-  --output outputs/sample_operating.output.json \
-  --csv outputs/sample_operating.summary.csv
+catalyst-finance-governance data/sample_governance.json \
+  --output outputs/sample_governance.output.json \
+  --csv outputs/sample_governance.trace.csv \
+  --markdown outputs/sample_governance.brief.md \
+  --html outputs/sample_governance.brief.html \
+  --public-json outputs/sample_governance.public.json
 ```
 
-The API endpoint is `POST /api/v1/operating/evaluate`. The WordPress shortcode remains `[catalyst_finance_workspace]` and now includes the Operating Economics Studio.
+The API endpoint is `POST /api/v1/governance/evaluate`. The WordPress shortcode remains `[catalyst_finance_workspace]` and now includes the Governance and Publication Studio. Knowledge Library and Decision Studio handoff manifests preserve artifact, revision, evidence, review, and methodology identifiers.
 
 ## Install for development
 
@@ -92,6 +95,8 @@ POST /api/v1/compare
 POST /api/v1/uncertainty/evaluate
 POST /api/v1/pricing/evaluate
 POST /api/v1/operating/evaluate
+POST /api/v1/sustainable/evaluate
+POST /api/v1/governance/evaluate
 GET  /api/v1/templates
 GET  /api/v1/workspaces
 POST /api/v1/workspaces
@@ -120,7 +125,7 @@ Packages:
 
 ```text
 dist/catalyst-finance.zip
-dist/catalyst-finance-demo-v1.8.0.zip
+dist/catalyst-finance-demo-v1.9.0.zip
 ```
 
 Shortcodes:
@@ -131,7 +136,7 @@ Shortcodes:
 [catalyst_finance_demo mode="public"]
 ```
 
-The module includes persistent screening, capital budgeting, comparison, uncertainty, pricing, and operating-economics studios with contract-valid local exports.
+The module includes persistent screening, capital budgeting, comparison, uncertainty, pricing, operating-economics, sustainable-finance, and governance/publication studios with contract-valid local exports.
 
 ## Contracts and examples
 
@@ -149,6 +154,10 @@ The module includes persistent screening, capital budgeting, comparison, uncerta
 - `schemas/pricing_publication.schema.json`
 - `schemas/operating_definition.schema.json`
 - `schemas/operating_publication.schema.json`
+- `schemas/sustainable_definition.schema.json`
+- `schemas/sustainable_publication.schema.json`
+- `schemas/governance_definition.schema.json`
+- `schemas/governance_publication.schema.json`
 - `examples/sample_cash_flow_scenario.output.json`
 - `examples/sample_cash_flow_scenario.periods.csv`
 - `examples/sample_finance_workspace.export.json`

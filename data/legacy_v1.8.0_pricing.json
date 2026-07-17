@@ -1,0 +1,81 @@
+{
+  "contract_version": "1.8.0",
+  "model_id": "catalyst-finance.pricing",
+  "pricing_id": "pricing_transit_pass",
+  "name": "Regional transit pass pricing",
+  "description": "Evaluate demand, revenue, contribution, and operating profit across three customer segments.",
+  "source": {
+    "workspace_id": "workspace_demo",
+    "scenario_id": "scenario_pricing",
+    "revision_id": "revision_001",
+    "revision_number": 1
+  },
+  "currency": "USD",
+  "objective": "profit",
+  "current_price": 50,
+  "segments": [
+    {
+      "segment_id": "commuter",
+      "label": "Daily commuters",
+      "quantity_multiplier": 1,
+      "curve": {
+        "kind": "linear",
+        "intercept": 18000,
+        "slope": 180,
+        "reference_price": null,
+        "reference_quantity": null,
+        "elasticity": null,
+        "observed_points": []
+      }
+    },
+    {
+      "segment_id": "hybrid",
+      "label": "Hybrid workers",
+      "quantity_multiplier": 1,
+      "curve": {
+        "kind": "constant_elasticity",
+        "intercept": null,
+        "slope": null,
+        "reference_price": 50,
+        "reference_quantity": 7000,
+        "elasticity": -1.35,
+        "observed_points": []
+      }
+    },
+    {
+      "segment_id": "student",
+      "label": "Students",
+      "quantity_multiplier": 1,
+      "curve": {
+        "kind": "observed",
+        "intercept": null,
+        "slope": null,
+        "reference_price": null,
+        "reference_quantity": null,
+        "elasticity": null,
+        "observed_points": [
+          {"price": 30, "quantity": 5500},
+          {"price": 45, "quantity": 4200},
+          {"price": 60, "quantity": 3000},
+          {"price": 80, "quantity": 1800}
+        ]
+      }
+    }
+  ],
+  "costs": {
+    "fixed_cost": 350000,
+    "unit_variable_cost": 9,
+    "unit_fulfillment_cost": 2.5,
+    "channel_fee_percent": 2.5
+  },
+  "grid": {
+    "minimum_price": 30,
+    "maximum_price": 80,
+    "steps": 51
+  },
+  "constraints": {
+    "capacity_units": 22000,
+    "minimum_volume_units": 9000,
+    "maximum_price_change_percent": 20
+  }
+}

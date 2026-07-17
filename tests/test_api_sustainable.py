@@ -41,7 +41,7 @@ def test_sustainable_api_rejects_invalid_payload(tmp_path: Path) -> None:
     client = TestClient(create_app(JsonWorkspaceRepository(tmp_path)))
     response = client.post(
         "/api/v1/sustainable/evaluate",
-        json={"contract_version": "1.8.0", "model_id": "catalyst-finance.sustainable"},
+        json={"contract_version": "1.9.0", "model_id": "catalyst-finance.sustainable"},
     )
     assert response.status_code == 422
     assert response.json()["detail"]["error"] == "invalid_sustainable_definition"

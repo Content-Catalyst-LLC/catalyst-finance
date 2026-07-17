@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Portable v1.8.0 smoke tests that do not require a running server."""
+"""Portable v1.9.0 smoke tests that do not require a running server."""
 
 from __future__ import annotations
 
@@ -34,6 +34,7 @@ def main() -> int:
             "catalyst-finance.uncertainty",
             "catalyst-finance.pricing",
             "catalyst-finance.operating",
+            "catalyst-finance.governance",
             "catalyst-finance.sustainable",
         ]
         assert len(client.get("/api/v1/templates").json()["templates"]) == 5
@@ -130,13 +131,27 @@ def main() -> int:
         assert sustainable_publication["carbon"]["avoided_emissions_tco2e"] == 4500.0
         assert sustainable_publication["summary"]["adjusted_project_npv"] == 1526250.9
 
+        governance = json.loads(
+            (ROOT / "data" / "sample_governance.json").read_text(encoding="utf-8")
+        )
+        governance_response = client.post(
+            "/api/v1/governance/evaluate", json=governance
+        )
+        assert governance_response.status_code == 200
+        governance_publication = governance_response.json()
+        assert governance_publication["model_id"] == "catalyst-finance.governance"
+        assert governance_publication["metadata"]["version"] == __version__
+        assert governance_publication["readiness"]["status"] == "published"
+        assert governance_publication["readiness"]["fully_traced_headline_count"] == 2
+        assert len(governance_publication["public_payload"]["sources"]) == 2
+
         service = WorkspaceService(repository)
         workspace = service.create_workspace("Smoke workspace")
         workspace = service.create_scenario(workspace.workspace_id, "Smoke scenario")
         reopened = service.get_workspace(workspace.workspace_id)
         assert reopened.scenarios[0].revisions[0].model_version == __version__
 
-    print("Catalyst Finance v1.8.0 smoke tests passed.")
+    print("Catalyst Finance v1.9.0 smoke tests passed.")
     return 0
 
 

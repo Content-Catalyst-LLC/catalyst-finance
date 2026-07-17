@@ -1,6 +1,6 @@
 # Sustainable Finance, Carbon, and Natural-Capital Accounting
 
-Catalyst Finance v1.8.0 adds a transparent sustainable-value layer that remains separate from the base project NPV until the final reconciliation.
+Catalyst Finance v1.9.0 adds a transparent sustainable-value layer that remains separate from the base project NPV until the final reconciliation.
 
 ## Carbon accounting
 

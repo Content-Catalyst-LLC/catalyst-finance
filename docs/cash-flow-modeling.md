@@ -1,6 +1,6 @@
 # Cash-Flow Modeling and Capital Budgeting
 
-Catalyst Finance v1.8.0 models cash flows from period 0 through a declared analysis horizon. Period 0 is undiscounted; later flows occur at the end of each selected monthly, quarterly, or annual period.
+Catalyst Finance v1.9.0 models cash flows from period 0 through a declared analysis horizon. Period 0 is undiscounted; later flows occur at the end of each selected monthly, quarterly, or annual period.
 
 ## Sign convention
 

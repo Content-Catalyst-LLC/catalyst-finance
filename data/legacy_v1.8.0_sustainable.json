@@ -1,0 +1,82 @@
+{
+  "contract_version": "1.8.0",
+  "model_id": "catalyst-finance.sustainable",
+  "analysis_id": "sample-sustainable",
+  "name": "Community retrofit sustainable value",
+  "description": "Carbon, natural-capital, transition, and green-financing value for a community retrofit program.",
+  "source": {
+    "workspace_id": "workspace_demo",
+    "scenario_id": "scenario_sustainable",
+    "revision_id": "revision_sustainable_001",
+    "revision_number": 1
+  },
+  "currency": "USD",
+  "reporting_period": "2027 investment case",
+  "horizon_years": 10,
+  "discount_rate_percent": 5,
+  "base_project_npv": 125000,
+  "baseline_emissions_tco2e": 12000,
+  "project_emissions_tco2e": 7500,
+  "carbon_price_per_tco2e": 85,
+  "carbon_credit_quantity_tco2e": 4200,
+  "carbon_credit_price_per_tco2e": 42,
+  "carbon_credit_discount_percent": 12,
+  "verification_cost": 18000,
+  "carbon_valuation_method": "higher_of",
+  "natural_capital_assets": [
+    {
+      "asset_id": "urban-canopy",
+      "label": "Urban tree canopy",
+      "category": "forest",
+      "quantity": 180,
+      "unit": "hectares",
+      "baseline_unit_value": 4200,
+      "projected_unit_value": 6100,
+      "annual_service_value": 48000,
+      "restoration_cost": 150000,
+      "confidence_percent": 80
+    },
+    {
+      "asset_id": "stormwater",
+      "label": "Stormwater retention",
+      "category": "water",
+      "quantity": 12,
+      "unit": "million gallons/year",
+      "baseline_unit_value": 18000,
+      "projected_unit_value": 24000,
+      "annual_service_value": 30000,
+      "restoration_cost": 45000,
+      "confidence_percent": 70
+    }
+  ],
+  "transition_items": [
+    {
+      "item_id": "energy-incentive",
+      "label": "Performance incentive",
+      "kind": "benefit",
+      "amount": 220000,
+      "probability_percent": 80,
+      "timing_years": 2
+    },
+    {
+      "item_id": "compliance-upgrade",
+      "label": "Future compliance upgrade avoided",
+      "kind": "benefit",
+      "amount": 160000,
+      "probability_percent": 65,
+      "timing_years": 4
+    },
+    {
+      "item_id": "assurance-cost",
+      "label": "Measurement and assurance program",
+      "kind": "cost",
+      "amount": 90000,
+      "probability_percent": 100,
+      "timing_years": 1
+    }
+  ],
+  "green_financing_principal": 1800000,
+  "conventional_interest_rate_percent": 6.2,
+  "green_interest_rate_percent": 5.1,
+  "financing_term_years": 8
+}

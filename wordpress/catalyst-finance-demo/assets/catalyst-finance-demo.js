@@ -1,8 +1,8 @@
 (function () {
   'use strict';
 
-  const WORKSPACE_VERSION = '1.8.0';
-  const STORAGE_PREFIX = 'catalyst-finance-workspace-v1.8.0';
+  const WORKSPACE_VERSION = '1.9.0';
+  const STORAGE_PREFIX = 'catalyst-finance-workspace-v1.9.0';
 
   const TEMPLATES = {
     'capital-project': {
@@ -234,7 +234,7 @@
     return { workspace: defaultWorkspace(), recovered: false };
   }
   function validateWorkspace(workspace) {
-    if (!workspace || workspace.workspace_contract_version !== WORKSPACE_VERSION) throw new Error('Workspace contract_version must be 1.8.0.');
+    if (!workspace || workspace.workspace_contract_version !== WORKSPACE_VERSION) throw new Error('Workspace contract_version must be 1.9.0.');
     if (!workspace.workspace_id || !Array.isArray(workspace.scenarios)) throw new Error('Workspace ID and scenarios are required.');
     const scenarioIds = new Set();
     workspace.scenarios.forEach(record => {
@@ -259,7 +259,7 @@
         if (navigator.clipboard) navigator.clipboard.writeText(text);
       });
       root.querySelector('[data-scfin-download]').addEventListener('click', function () {
-        downloadJson('catalyst-finance-scenario-v1.8.0.json', root._scfinPayload);
+        downloadJson('catalyst-finance-scenario-v1.9.0.json', root._scfinPayload);
       });
       root.querySelector('[data-scfin-print]').addEventListener('click', function () { window.print(); });
       return;
@@ -347,7 +347,7 @@
     });
     root.querySelector('[data-scfin-export-workspace]').addEventListener('click', function () {
       const bundle = { export_contract_version: WORKSPACE_VERSION, exported_at: now(), workspace: state.workspace };
-      downloadJson('catalyst-finance-workspace-v1.8.0.json', bundle);
+      downloadJson('catalyst-finance-workspace-v1.9.0.json', bundle);
     });
     root.querySelector('[data-scfin-import-workspace]').addEventListener('change', function (event) {
       const file = event.target.files[0]; if (!file) return;
@@ -370,7 +370,7 @@
       if (navigator.clipboard) navigator.clipboard.writeText(text);
     });
     root.querySelector('[data-scfin-download]').addEventListener('click', function () {
-      downloadJson('catalyst-finance-scenario-v1.8.0.json', root._scfinPayload || CatalystFinanceEngine.evaluate(inputFromForm(form, state.workspace.defaults.currency)));
+      downloadJson('catalyst-finance-scenario-v1.9.0.json', root._scfinPayload || CatalystFinanceEngine.evaluate(inputFromForm(form, state.workspace.defaults.currency)));
     });
     root.querySelector('[data-scfin-print]').addEventListener('click', function () { window.print(); });
 
@@ -395,7 +395,7 @@
     ];
     if (value('phasedCapital') > 0) lines.push({ flow_id: 'phase-two', label: 'Phased capital', category: 'capital_cost', amount: value('phasedCapital'), start_period: Math.min(2, horizon), price_basis: basis });
     return {
-      contract_version: '1.8.0',
+      contract_version: '1.9.0',
       model_id: 'catalyst-finance.cash-flow',
       project: { name: 'Browser capital-budgeting scenario', category: 'Capital project' },
       context: {
@@ -478,7 +478,7 @@
       }
     }
     form.addEventListener('input', render); form.addEventListener('change', render);
-    section.querySelector('[data-scfin-cf-download]').addEventListener('click', function () { downloadJson('catalyst-finance-cash-flow-v1.8.0.json', root._scfinCashFlowPayload); });
+    section.querySelector('[data-scfin-cf-download]').addEventListener('click', function () { downloadJson('catalyst-finance-cash-flow-v1.9.0.json', root._scfinCashFlowPayload); });
     section.querySelector('[data-scfin-cf-copy]').addEventListener('click', function () {
       if (navigator.clipboard) navigator.clipboard.writeText(JSON.stringify(root._scfinCashFlowPayload, null, 2));
     });
@@ -521,7 +521,7 @@
       values: [line(base, 'benefit').amount * 0.65, line(base, 'benefit').amount * 0.8, line(base, 'benefit').amount, line(base, 'benefit').amount * 1.2, line(base, 'benefit').amount * 1.35]
     }; };
     return {
-      contract_version: '1.8.0', model_id: 'catalyst-finance.comparison', comparison_id: 'browser-options',
+      contract_version: '1.9.0', model_id: 'catalyst-finance.comparison', comparison_id: 'browser-options',
       name: 'Browser capital project alternatives', description: 'Live downside, base, and upside comparison generated from the capital-budgeting form.', baseline_alternative_id: 'base',
       alternatives: [
         { alternative_id: 'downside', label: 'Downside', kind: 'downside', source: source('downside'), scenario: downside, non_financial_caveats: ['Higher disruption and delivery risk', 'Benefits begin later'] },
@@ -596,7 +596,7 @@
     let timer = null; function schedule() { window.clearTimeout(timer); timer = window.setTimeout(render, 120); }
     cashForm.addEventListener('input', schedule); cashForm.addEventListener('change', schedule);
     section.querySelector('[data-scfin-comparison-refresh]').addEventListener('click', render);
-    section.querySelector('[data-scfin-comparison-download]').addEventListener('click', function () { downloadJson('catalyst-finance-comparison-v1.8.0.json', root._scfinComparisonPayload); });
+    section.querySelector('[data-scfin-comparison-download]').addEventListener('click', function () { downloadJson('catalyst-finance-comparison-v1.9.0.json', root._scfinComparisonPayload); });
     render();
   }
 
@@ -611,7 +611,7 @@
     const benefitStd = Number(section.querySelector('[data-scfin-uncertainty-benefit]').value || 15) / 100;
     const rate = scenario.discount_rate_percent_annual;
     return {
-      contract_version: '1.8.0', model_id: 'catalyst-finance.uncertainty', uncertainty_id: 'browser-risk-analysis',
+      contract_version: '1.9.0', model_id: 'catalyst-finance.uncertainty', uncertainty_id: 'browser-risk-analysis',
       name: 'Browser uncertainty and stress analysis', description: 'Seeded simulation generated from the live capital-budgeting form.',
       source: { workspace_id: 'workspace_browser', scenario_id: 'scenario_cashflow', revision_id: 'revision_browser_001', revision_number: 1 },
       scenario: scenario, metric_ids: ['npv', 'mirr_percent_annual', 'discounted_payback_periods'],
@@ -675,7 +675,7 @@
       } catch (error) { section.querySelector('[data-scfin-uncertainty-json]').textContent = String(error.message || error); }
     }
     section.querySelector('[data-scfin-uncertainty-run]').addEventListener('click', run);
-    section.querySelector('[data-scfin-uncertainty-download]').addEventListener('click', function () { if (root._scfinUncertaintyPayload) downloadJson('catalyst-finance-uncertainty-v1.8.0.json', root._scfinUncertaintyPayload); });
+    section.querySelector('[data-scfin-uncertainty-download]').addEventListener('click', function () { if (root._scfinUncertaintyPayload) downloadJson('catalyst-finance-uncertainty-v1.9.0.json', root._scfinUncertaintyPayload); });
     run();
   }
 
@@ -685,7 +685,7 @@
     const value = function (name) { return Number(form.elements[name].value); };
     const current = value('currentPrice');
     return {
-      contract_version: '1.8.0', model_id: 'catalyst-finance.pricing', pricing_id: 'browser-pricing',
+      contract_version: '1.9.0', model_id: 'catalyst-finance.pricing', pricing_id: 'browser-pricing',
       name: 'Browser pricing analysis', description: 'Interactive segmented demand and pricing analysis.',
       source: { workspace_id: 'workspace_browser', scenario_id: 'scenario_pricing', revision_id: 'revision_browser', revision_number: 1 },
       currency: 'USD', objective: form.elements.objective.value, current_price: current,
@@ -733,7 +733,7 @@
       } catch(error) { section.querySelector('[data-scfin-pricing-json]').textContent=String(error.message||error); }
     }
     section.querySelector('[data-scfin-pricing-run]').addEventListener('click', run);
-    section.querySelector('[data-scfin-pricing-download]').addEventListener('click', function(){ if(root._scfinPricingPayload) downloadJson('catalyst-finance-pricing-v1.8.0.json', root._scfinPricingPayload); });
+    section.querySelector('[data-scfin-pricing-download]').addEventListener('click', function(){ if(root._scfinPricingPayload) downloadJson('catalyst-finance-pricing-v1.9.0.json', root._scfinPricingPayload); });
     run();
   }
 
@@ -742,7 +742,7 @@
     const value = function (name) { return Number(form.elements[name].value); };
     const budgetFixed = value('budgetFixed'), actualFixed = value('actualFixed');
     return {
-      contract_version: '1.8.0', model_id: 'catalyst-finance.operating', operating_id: 'browser-operations',
+      contract_version: '1.9.0', model_id: 'catalyst-finance.operating', operating_id: 'browser-operations',
       name: 'Browser operating analysis', description: 'Interactive budget, variance, and operating-economics analysis.',
       source: { workspace_id: 'workspace_browser', scenario_id: 'scenario_operations', revision_id: 'revision_browser', revision_number: 1 },
       currency: 'USD', period_frequency: 'monthly', target_operating_profit: value('targetProfit'),
@@ -776,7 +776,7 @@
       } catch (error) { section.querySelector('[data-scfin-operating-json]').textContent = String(error.message || error); }
     }
     section.querySelector('[data-scfin-operating-run]').addEventListener('click', run);
-    section.querySelector('[data-scfin-operating-download]').addEventListener('click', function () { if (root._scfinOperatingPayload) downloadJson('catalyst-finance-operating-v1.8.0.json', root._scfinOperatingPayload); });
+    section.querySelector('[data-scfin-operating-download]').addEventListener('click', function () { if (root._scfinOperatingPayload) downloadJson('catalyst-finance-operating-v1.9.0.json', root._scfinOperatingPayload); });
     run();
   }
 
@@ -787,7 +787,7 @@
     const baseline = value('baselineEmissions'), project = value('projectEmissions');
     const uplift = value('naturalUplift');
     return {
-      contract_version:'1.8.0', model_id:'catalyst-finance.sustainable', analysis_id:'browser-sustainable',
+      contract_version:'1.9.0', model_id:'catalyst-finance.sustainable', analysis_id:'browser-sustainable',
       name:'Browser sustainable-value analysis', description:'Interactive carbon, natural-capital, transition, and financing analysis.',
       source:{workspace_id:'workspace_browser',scenario_id:'scenario_sustainable',revision_id:'revision_browser',revision_number:1},
       currency:'USD', reporting_period:'Interactive case', horizon_years:10, discount_rate_percent:5, base_project_npv:value('baseNpv'),
@@ -816,7 +816,52 @@
       }catch(error){section.querySelector('[data-scfin-sustainable-json]').textContent=String(error.message||error);}
     }
     section.querySelector('[data-scfin-sustainable-run]').addEventListener('click',run);
-    section.querySelector('[data-scfin-sustainable-download]').addEventListener('click',function(){if(root._scfinSustainablePayload)downloadJson('catalyst-finance-sustainable-v1.8.0.json',root._scfinSustainablePayload);});
+    section.querySelector('[data-scfin-sustainable-download]').addEventListener('click',function(){if(root._scfinSustainablePayload)downloadJson('catalyst-finance-sustainable-v1.9.0.json',root._scfinSustainablePayload);});
+    run();
+  }
+
+
+  function governanceDefinition(section) {
+    const form=section.querySelector('[data-scfin-governance-form]');
+    const objection=form.elements.includeObjection.checked;
+    const events=[
+      {event_id:'event_review',reviewer_id:'user_reviewer',reviewer_name:'Independent Reviewer',role:'reviewer',action:'comment',subject_id:'gov_browser',created_at:'2026-07-16T09:00:00+00:00',comment:'Reviewed metric and evidence links.',resolves_event_id:null,private:false},
+      {event_id:'event_approval',reviewer_id:'user_approver',reviewer_name:'Finance Approver',role:'approver',action:'approve',subject_id:'gov_browser',created_at:'2026-07-16T16:00:00+00:00',comment:'Approved with configured redactions.',resolves_event_id:null,private:false}
+    ];
+    if(objection) events.push({event_id:'event_objection',reviewer_id:'user_reviewer',reviewer_name:'Independent Reviewer',role:'reviewer',action:'object',subject_id:'claim_adjusted_npv',created_at:'2026-07-17T08:00:00+00:00',comment:'Additional cost evidence is required.',resolves_event_id:null,private:false});
+    return {
+      contract_version:'1.9.0',model_id:'catalyst-finance.governance',governance_id:'gov_browser',name:'Browser governed finance case',description:'Interactive evidence, review, and publication example.',
+      source:{workspace_id:'workspace_browser',scenario_id:'scenario_sustainable',revision_id:'revision_browser',revision_number:1},
+      artifact:{artifact_id:'artifact_browser',model_id:'catalyst-finance.sustainable',model_version:'1.9.0',revision_id:'revision_browser',title:'Browser sustainable-value analysis',headline_metrics:{adjusted_project_npv:Number(form.elements.adjustedNpv.value),avoided_emissions_tco2e:Number(form.elements.avoidedEmissions.value)}},
+      assumptions:[{assumption_id:'assumption_carbon',label:'Shadow carbon price',value:'75',unit:'USD/tCO2e',owner:'Finance team',confidence_percent:85,applicability:'Applied to avoided emissions.',review_status:'verified',source_ids:['source_policy'],evidence_ids:['evidence_policy'],private:false,rationale:'Approved planning value.'},{assumption_id:'assumption_private',label:'Confidential vendor cost',value:'Confidential',unit:'USD',owner:'Procurement',confidence_percent:90,applicability:'Internal estimate.',review_status:'verified',source_ids:['source_private'],evidence_ids:['evidence_private'],private:true,rationale:'Commercially sensitive.'}],
+      sources:[{source_id:'source_policy',title:'Carbon valuation policy',source_type:'policy',citation:'Institutional carbon valuation policy, 2026.',url:null,published_date:'2026-03-01',accessed_date:'2026-07-17',owner:'Finance governance',confidence_percent:95,applicability:'Approved internal planning value.',review_status:'verified',private:false,attachment_ids:[],notes:''},{source_id:'source_private',title:'Vendor quotation',source_type:'document',citation:'Confidential vendor quotation, 2026.',url:null,published_date:'2026-06-30',accessed_date:'2026-07-17',owner:'Procurement',confidence_percent:90,applicability:'Current implementation scope.',review_status:'verified',private:true,attachment_ids:['attachment_private'],notes:'Do not publish.'}],
+      evidence:[{evidence_id:'evidence_policy',source_id:'source_policy',evidence_type:'methodology',summary:'Policy supports the carbon valuation assumption.',locator:'Section 4.2',confidence_percent:95,private:false},{evidence_id:'evidence_private',source_id:'source_private',evidence_type:'quantitative',summary:'Quotation supports internal costs.',locator:'Commercial schedule',confidence_percent:90,private:true}],
+      claims:[{claim_id:'claim_adjusted_npv',text:'The governed analysis reports the displayed adjusted project NPV.',classification:'headline',metric_paths:['summary.adjusted_project_npv'],calculation_ids:['calculation_total'],assumption_ids:['assumption_carbon'],source_ids:['source_policy'],evidence_ids:['evidence_policy'],review_status:'verified',public:true},{claim_id:'claim_private_cost',text:'A confidential quotation supports internal project costs.',classification:'supporting',metric_paths:['definition.base_project_npv'],calculation_ids:['calculation_base'],assumption_ids:['assumption_private'],source_ids:['source_private'],evidence_ids:['evidence_private'],review_status:'verified',public:false}],
+      methodologies:[{methodology_id:'method_browser',name:'Catalyst Finance governed publication',version:'1.9.0',purpose:'Connect finance claims to evidence and review.',model_ids:['catalyst-finance.sustainable','catalyst-finance.governance'],data_quality_notes:['Public source is verified.'],conflicts:['Procurement owns a confidential source.'],limitations:['Illustrative browser data.'],excluded_factors:['Tax effects.']}],
+      review_events:events,attachments:[{attachment_id:'attachment_private',filename:'vendor-quote.pdf',media_type:'application/pdf',checksum_sha256:'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',owner:'Procurement',private:true,retention_note:'Internal only.'}],
+      publication:{state:form.elements.publicationState.value,audience:form.elements.audience.value,title:form.elements.publicationTitle.value,summary:form.elements.publicationSummary.value,redaction_policy:'exclude_private',knowledge_library_collection_id:'collection_finance_briefs',decision_studio_packet_id:'packet_browser'}
+    };
+  }
+
+  function initializeGovernance(root) {
+    const section=root.querySelector('[data-scfin-governance-studio]');
+    if(!section||typeof CatalystFinanceGovernanceEngine==='undefined')return;
+    function run(){
+      try{
+        const result=CatalystFinanceGovernanceEngine.evaluate(governanceDefinition(section));root._scfinGovernancePayload=result;
+        section.querySelector('[data-scfin-governance-status]').textContent=result.readiness.status.replaceAll('_',' ');
+        section.querySelector('[data-scfin-governance-trace]').textContent=result.readiness.fully_traced_headline_count+' / '+result.readiness.headline_claim_count;
+        section.querySelector('[data-scfin-governance-approvals]').textContent=String(result.readiness.approval_count);
+        section.querySelector('[data-scfin-governance-private]').textContent=String(result.readiness.private_record_count);
+        const table=section.querySelector('[data-scfin-governance-table]');table.innerHTML='';result.trace_matrix.forEach(function(item){const tr=document.createElement('tr');tr.innerHTML='<td>'+item.claim_text+'</td><td>'+item.metric_paths.join(', ')+'</td><td>'+item.source_ids.join(', ')+'</td><td>'+(item.complete?'Yes':'No')+'</td>';table.appendChild(tr);});
+        const flags=section.querySelector('[data-scfin-governance-flags]');flags.innerHTML='';result.flags.forEach(function(item){const li=document.createElement('li');li.textContent=item;flags.appendChild(li);});
+        section.querySelector('[data-scfin-governance-brief]').textContent=result.decision_brief_markdown;
+        section.querySelector('[data-scfin-governance-json]').textContent=JSON.stringify(result,null,2);
+      }catch(error){section.querySelector('[data-scfin-governance-json]').textContent=String(error.message||error);}
+    }
+    section.querySelector('[data-scfin-governance-run]').addEventListener('click',run);
+    section.querySelector('[data-scfin-governance-download]').addEventListener('click',function(){if(root._scfinGovernancePayload)downloadJson('catalyst-finance-governance-v1.9.0.json',root._scfinGovernancePayload);});
+    section.querySelector('[data-scfin-governance-public]').addEventListener('click',function(){if(root._scfinGovernancePayload)downloadJson('catalyst-finance-governance-public-v1.9.0.json',root._scfinGovernancePayload.public_payload);});
     run();
   }
 
@@ -829,6 +874,7 @@
       initializePricing(root);
       initializeOperating(root);
       initializeSustainable(root);
+      initializeGovernance(root);
     });
   });
 })();

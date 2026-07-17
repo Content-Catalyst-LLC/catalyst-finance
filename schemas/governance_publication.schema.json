@@ -1,0 +1,1465 @@
+{
+  "$defs": {
+    "AssumptionRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "assumption_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Assumption Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "value": {
+          "maxLength": 1000,
+          "minLength": 1,
+          "title": "Value",
+          "type": "string"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unit"
+        },
+        "owner": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Owner",
+          "type": "string"
+        },
+        "confidence_percent": {
+          "default": 100,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Confidence Percent",
+          "type": "number"
+        },
+        "applicability": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Applicability",
+          "type": "string"
+        },
+        "review_status": {
+          "default": "draft",
+          "enum": [
+            "draft",
+            "in_review",
+            "verified",
+            "rejected"
+          ],
+          "title": "Review Status",
+          "type": "string"
+        },
+        "source_ids": {
+          "items": {
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Source Ids",
+          "type": "array"
+        },
+        "evidence_ids": {
+          "items": {
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "private": {
+          "default": false,
+          "title": "Private",
+          "type": "boolean"
+        },
+        "rationale": {
+          "default": "",
+          "maxLength": 4000,
+          "title": "Rationale",
+          "type": "string"
+        }
+      },
+      "required": [
+        "assumption_id",
+        "label",
+        "value",
+        "owner",
+        "applicability"
+      ],
+      "title": "AssumptionRecord",
+      "type": "object"
+    },
+    "AttachmentRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "attachment_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Attachment Id",
+          "type": "string"
+        },
+        "filename": {
+          "maxLength": 300,
+          "minLength": 1,
+          "title": "Filename",
+          "type": "string"
+        },
+        "media_type": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Media Type",
+          "type": "string"
+        },
+        "checksum_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Checksum Sha256",
+          "type": "string"
+        },
+        "owner": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Owner",
+          "type": "string"
+        },
+        "private": {
+          "default": true,
+          "title": "Private",
+          "type": "boolean"
+        },
+        "retention_note": {
+          "default": "",
+          "maxLength": 1000,
+          "title": "Retention Note",
+          "type": "string"
+        }
+      },
+      "required": [
+        "attachment_id",
+        "filename",
+        "media_type",
+        "checksum_sha256",
+        "owner"
+      ],
+      "title": "AttachmentRecord",
+      "type": "object"
+    },
+    "AuditEntry": {
+      "additionalProperties": false,
+      "properties": {
+        "sequence": {
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "event_id": {
+          "title": "Event Id",
+          "type": "string"
+        },
+        "action": {
+          "title": "Action",
+          "type": "string"
+        },
+        "actor_id": {
+          "title": "Actor Id",
+          "type": "string"
+        },
+        "subject_id": {
+          "title": "Subject Id",
+          "type": "string"
+        },
+        "created_at": {
+          "title": "Created At",
+          "type": "string"
+        },
+        "previous_hash": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Previous Hash"
+        },
+        "entry_hash": {
+          "title": "Entry Hash",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sequence",
+        "event_id",
+        "action",
+        "actor_id",
+        "subject_id",
+        "created_at",
+        "previous_hash",
+        "entry_hash"
+      ],
+      "title": "AuditEntry",
+      "type": "object"
+    },
+    "ClaimRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "claim_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Claim Id",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 3000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "classification": {
+          "default": "supporting",
+          "enum": [
+            "headline",
+            "supporting",
+            "limitation"
+          ],
+          "title": "Classification",
+          "type": "string"
+        },
+        "metric_paths": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Metric Paths",
+          "type": "array"
+        },
+        "calculation_ids": {
+          "items": {
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Calculation Ids",
+          "type": "array"
+        },
+        "assumption_ids": {
+          "items": {
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Assumption Ids",
+          "type": "array"
+        },
+        "source_ids": {
+          "items": {
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Source Ids",
+          "type": "array"
+        },
+        "evidence_ids": {
+          "items": {
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "review_status": {
+          "default": "draft",
+          "enum": [
+            "draft",
+            "in_review",
+            "verified",
+            "rejected"
+          ],
+          "title": "Review Status",
+          "type": "string"
+        },
+        "public": {
+          "default": true,
+          "title": "Public",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "claim_id",
+        "text"
+      ],
+      "title": "ClaimRecord",
+      "type": "object"
+    },
+    "EvidenceRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "source_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Source Id",
+          "type": "string"
+        },
+        "evidence_type": {
+          "enum": [
+            "quantitative",
+            "qualitative",
+            "methodology",
+            "assurance",
+            "limitation"
+          ],
+          "title": "Evidence Type",
+          "type": "string"
+        },
+        "summary": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "locator": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Locator",
+          "type": "string"
+        },
+        "confidence_percent": {
+          "default": 100,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Confidence Percent",
+          "type": "number"
+        },
+        "private": {
+          "default": false,
+          "title": "Private",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "source_id",
+        "evidence_type",
+        "summary",
+        "locator"
+      ],
+      "title": "EvidenceRecord",
+      "type": "object"
+    },
+    "GovernanceDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": "1.9.0",
+          "default": "1.9.0",
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "model_id": {
+          "const": "catalyst-finance.governance",
+          "default": "catalyst-finance.governance",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "governance_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Governance Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "maxLength": 4000,
+          "title": "Description",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/SourceRevision"
+        },
+        "artifact": {
+          "$ref": "#/$defs/GovernedArtifactReference"
+        },
+        "assumptions": {
+          "items": {
+            "$ref": "#/$defs/AssumptionRecord"
+          },
+          "maxItems": 500,
+          "title": "Assumptions",
+          "type": "array"
+        },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/SourceRecord"
+          },
+          "maxItems": 500,
+          "title": "Sources",
+          "type": "array"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceRecord"
+          },
+          "maxItems": 1000,
+          "title": "Evidence",
+          "type": "array"
+        },
+        "claims": {
+          "items": {
+            "$ref": "#/$defs/ClaimRecord"
+          },
+          "maxItems": 500,
+          "title": "Claims",
+          "type": "array"
+        },
+        "methodologies": {
+          "items": {
+            "$ref": "#/$defs/MethodologyDeclaration"
+          },
+          "maxItems": 100,
+          "title": "Methodologies",
+          "type": "array"
+        },
+        "review_events": {
+          "items": {
+            "$ref": "#/$defs/ReviewEvent"
+          },
+          "maxItems": 2000,
+          "title": "Review Events",
+          "type": "array"
+        },
+        "attachments": {
+          "items": {
+            "$ref": "#/$defs/AttachmentRecord"
+          },
+          "maxItems": 200,
+          "title": "Attachments",
+          "type": "array"
+        },
+        "publication": {
+          "$ref": "#/$defs/PublicationControls"
+        }
+      },
+      "required": [
+        "governance_id",
+        "name",
+        "source",
+        "artifact",
+        "publication"
+      ],
+      "title": "GovernanceDefinition",
+      "type": "object"
+    },
+    "GovernanceMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "generated_at": {
+          "title": "Generated At",
+          "type": "string"
+        },
+        "version": {
+          "const": "1.9.0",
+          "default": "1.9.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "disclaimer": {
+          "title": "Disclaimer",
+          "type": "string"
+        }
+      },
+      "required": [
+        "generated_at",
+        "disclaimer"
+      ],
+      "title": "GovernanceMetadata",
+      "type": "object"
+    },
+    "GovernanceMethodology": {
+      "additionalProperties": false,
+      "properties": {
+        "model_id": {
+          "const": "catalyst-finance.governance",
+          "default": "catalyst-finance.governance",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "model_version": {
+          "const": "1.9.0",
+          "default": "1.9.0",
+          "title": "Model Version",
+          "type": "string"
+        },
+        "trace_policy": {
+          "const": "headline_metric_to_assumption_and_evidence",
+          "default": "headline_metric_to_assumption_and_evidence",
+          "title": "Trace Policy",
+          "type": "string"
+        },
+        "review_policy": {
+          "const": "append_only_events_and_unresolved_issue_gate",
+          "default": "append_only_events_and_unresolved_issue_gate",
+          "title": "Review Policy",
+          "type": "string"
+        },
+        "redaction_policy": {
+          "const": "private_records_excluded_from_public_payload",
+          "default": "private_records_excluded_from_public_payload",
+          "title": "Redaction Policy",
+          "type": "string"
+        },
+        "audit_policy": {
+          "const": "sha256_hash_chained_events",
+          "default": "sha256_hash_chained_events",
+          "title": "Audit Policy",
+          "type": "string"
+        }
+      },
+      "title": "GovernanceMethodology",
+      "type": "object"
+    },
+    "GovernedArtifactReference": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "model_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "model_version": {
+          "maxLength": 40,
+          "minLength": 1,
+          "title": "Model Version",
+          "type": "string"
+        },
+        "revision_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Revision Id",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "headline_metrics": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "maxProperties": 100,
+          "title": "Headline Metrics",
+          "type": "object"
+        }
+      },
+      "required": [
+        "artifact_id",
+        "model_id",
+        "model_version",
+        "revision_id",
+        "title"
+      ],
+      "title": "GovernedArtifactReference",
+      "type": "object"
+    },
+    "HandoffRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "target": {
+          "enum": [
+            "knowledge_library",
+            "decision_studio"
+          ],
+          "title": "Target",
+          "type": "string"
+        },
+        "contract_version": {
+          "const": "1.9.0",
+          "default": "1.9.0",
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "handoff_id": {
+          "title": "Handoff Id",
+          "type": "string"
+        },
+        "source_governance_id": {
+          "title": "Source Governance Id",
+          "type": "string"
+        },
+        "artifact_id": {
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "artifact_revision_id": {
+          "title": "Artifact Revision Id",
+          "type": "string"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "review_event_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Review Event Ids",
+          "type": "array"
+        },
+        "methodology_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Methodology Ids",
+          "type": "array"
+        },
+        "destination_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Destination Id"
+        },
+        "audience": {
+          "enum": [
+            "private",
+            "internal",
+            "public"
+          ],
+          "title": "Audience",
+          "type": "string"
+        }
+      },
+      "required": [
+        "target",
+        "handoff_id",
+        "source_governance_id",
+        "artifact_id",
+        "artifact_revision_id",
+        "evidence_ids",
+        "review_event_ids",
+        "methodology_ids",
+        "destination_id",
+        "audience"
+      ],
+      "title": "HandoffRecord",
+      "type": "object"
+    },
+    "ImmutableRunRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "generated_at": {
+          "title": "Generated At",
+          "type": "string"
+        },
+        "input_hash": {
+          "title": "Input Hash",
+          "type": "string"
+        },
+        "public_payload_hash": {
+          "title": "Public Payload Hash",
+          "type": "string"
+        },
+        "audit_head_hash": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Audit Head Hash"
+        },
+        "artifact_id": {
+          "title": "Artifact Id",
+          "type": "string"
+        },
+        "artifact_revision_id": {
+          "title": "Artifact Revision Id",
+          "type": "string"
+        },
+        "model_id": {
+          "title": "Model Id",
+          "type": "string"
+        },
+        "model_version": {
+          "title": "Model Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "generated_at",
+        "input_hash",
+        "public_payload_hash",
+        "audit_head_hash",
+        "artifact_id",
+        "artifact_revision_id",
+        "model_id",
+        "model_version"
+      ],
+      "title": "ImmutableRunRecord",
+      "type": "object"
+    },
+    "MethodologyDeclaration": {
+      "additionalProperties": false,
+      "properties": {
+        "methodology_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Methodology Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        },
+        "purpose": {
+          "maxLength": 3000,
+          "minLength": 1,
+          "title": "Purpose",
+          "type": "string"
+        },
+        "model_ids": {
+          "items": {
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "type": "string"
+          },
+          "maxItems": 50,
+          "minItems": 1,
+          "title": "Model Ids",
+          "type": "array"
+        },
+        "data_quality_notes": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Data Quality Notes",
+          "type": "array"
+        },
+        "conflicts": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Conflicts",
+          "type": "array"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Limitations",
+          "type": "array"
+        },
+        "excluded_factors": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 100,
+          "title": "Excluded Factors",
+          "type": "array"
+        }
+      },
+      "required": [
+        "methodology_id",
+        "name",
+        "version",
+        "purpose",
+        "model_ids"
+      ],
+      "title": "MethodologyDeclaration",
+      "type": "object"
+    },
+    "PublicationControls": {
+      "additionalProperties": false,
+      "properties": {
+        "state": {
+          "default": "draft",
+          "enum": [
+            "draft",
+            "in_review",
+            "approved",
+            "published",
+            "withdrawn"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "audience": {
+          "default": "private",
+          "enum": [
+            "private",
+            "internal",
+            "public"
+          ],
+          "title": "Audience",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "summary": {
+          "maxLength": 4000,
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        },
+        "redaction_policy": {
+          "default": "exclude_private",
+          "enum": [
+            "exclude_private",
+            "none"
+          ],
+          "title": "Redaction Policy",
+          "type": "string"
+        },
+        "knowledge_library_collection_id": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Knowledge Library Collection Id"
+        },
+        "decision_studio_packet_id": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Decision Studio Packet Id"
+        }
+      },
+      "required": [
+        "title",
+        "summary"
+      ],
+      "title": "PublicationControls",
+      "type": "object"
+    },
+    "ReadinessSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "blocked",
+            "ready_for_review",
+            "approved",
+            "published"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "source_count": {
+          "title": "Source Count",
+          "type": "integer"
+        },
+        "verified_source_count": {
+          "title": "Verified Source Count",
+          "type": "integer"
+        },
+        "evidence_count": {
+          "title": "Evidence Count",
+          "type": "integer"
+        },
+        "claim_count": {
+          "title": "Claim Count",
+          "type": "integer"
+        },
+        "fully_traced_claim_count": {
+          "title": "Fully Traced Claim Count",
+          "type": "integer"
+        },
+        "headline_claim_count": {
+          "title": "Headline Claim Count",
+          "type": "integer"
+        },
+        "fully_traced_headline_count": {
+          "title": "Fully Traced Headline Count",
+          "type": "integer"
+        },
+        "approval_count": {
+          "title": "Approval Count",
+          "type": "integer"
+        },
+        "unresolved_issue_count": {
+          "title": "Unresolved Issue Count",
+          "type": "integer"
+        },
+        "private_record_count": {
+          "title": "Private Record Count",
+          "type": "integer"
+        },
+        "publication_allowed": {
+          "title": "Publication Allowed",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "status",
+        "source_count",
+        "verified_source_count",
+        "evidence_count",
+        "claim_count",
+        "fully_traced_claim_count",
+        "headline_claim_count",
+        "fully_traced_headline_count",
+        "approval_count",
+        "unresolved_issue_count",
+        "private_record_count",
+        "publication_allowed"
+      ],
+      "title": "ReadinessSummary",
+      "type": "object"
+    },
+    "ReviewEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "event_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Event Id",
+          "type": "string"
+        },
+        "reviewer_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Reviewer Id",
+          "type": "string"
+        },
+        "reviewer_name": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Reviewer Name",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "author",
+            "analyst",
+            "reviewer",
+            "approver",
+            "auditor",
+            "publisher"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "action": {
+          "enum": [
+            "request",
+            "comment",
+            "finding",
+            "approve",
+            "object",
+            "revision_required",
+            "resolve",
+            "publish",
+            "withdraw"
+          ],
+          "title": "Action",
+          "type": "string"
+        },
+        "subject_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Subject Id",
+          "type": "string"
+        },
+        "created_at": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Created At",
+          "type": "string"
+        },
+        "comment": {
+          "default": "",
+          "maxLength": 4000,
+          "title": "Comment",
+          "type": "string"
+        },
+        "resolves_event_id": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "minLength": 1,
+              "pattern": "^[A-Za-z0-9_.:-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Resolves Event Id"
+        },
+        "private": {
+          "default": false,
+          "title": "Private",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "event_id",
+        "reviewer_id",
+        "reviewer_name",
+        "role",
+        "action",
+        "subject_id",
+        "created_at"
+      ],
+      "title": "ReviewEvent",
+      "type": "object"
+    },
+    "SourceRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "source_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_.:-]+$",
+          "title": "Source Id",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 300,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "source_type": {
+          "enum": [
+            "document",
+            "dataset",
+            "interview",
+            "model",
+            "policy",
+            "website",
+            "other"
+          ],
+          "title": "Source Type",
+          "type": "string"
+        },
+        "citation": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Citation",
+          "type": "string"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 2083,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        },
+        "published_date": {
+          "anyOf": [
+            {
+              "maxLength": 40,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Published Date"
+        },
+        "accessed_date": {
+          "anyOf": [
+            {
+              "maxLength": 40,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Accessed Date"
+        },
+        "owner": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Owner",
+          "type": "string"
+        },
+        "confidence_percent": {
+          "default": 100,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Confidence Percent",
+          "type": "number"
+        },
+        "applicability": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Applicability",
+          "type": "string"
+        },
+        "review_status": {
+          "default": "draft",
+          "enum": [
+            "draft",
+            "in_review",
+            "verified",
+            "rejected"
+          ],
+          "title": "Review Status",
+          "type": "string"
+        },
+        "private": {
+          "default": false,
+          "title": "Private",
+          "type": "boolean"
+        },
+        "attachment_ids": {
+          "items": {
+            "maxLength": 100,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_.:-]+$",
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Attachment Ids",
+          "type": "array"
+        },
+        "notes": {
+          "default": "",
+          "maxLength": 4000,
+          "title": "Notes",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "title",
+        "source_type",
+        "citation",
+        "owner",
+        "applicability"
+      ],
+      "title": "SourceRecord",
+      "type": "object"
+    },
+    "SourceRevision": {
+      "additionalProperties": false,
+      "properties": {
+        "workspace_id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Workspace Id",
+          "type": "string"
+        },
+        "scenario_id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Scenario Id",
+          "type": "string"
+        },
+        "revision_id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Revision Id",
+          "type": "string"
+        },
+        "revision_number": {
+          "minimum": 1,
+          "title": "Revision Number",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "workspace_id",
+        "scenario_id",
+        "revision_id",
+        "revision_number"
+      ],
+      "title": "SourceRevision",
+      "type": "object"
+    },
+    "TraceRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "claim_id": {
+          "title": "Claim Id",
+          "type": "string"
+        },
+        "claim_text": {
+          "title": "Claim Text",
+          "type": "string"
+        },
+        "classification": {
+          "title": "Classification",
+          "type": "string"
+        },
+        "metric_paths": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Metric Paths",
+          "type": "array"
+        },
+        "calculation_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Calculation Ids",
+          "type": "array"
+        },
+        "assumption_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Assumption Ids",
+          "type": "array"
+        },
+        "source_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Source Ids",
+          "type": "array"
+        },
+        "evidence_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence Ids",
+          "type": "array"
+        },
+        "complete": {
+          "title": "Complete",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "claim_id",
+        "claim_text",
+        "classification",
+        "metric_paths",
+        "calculation_ids",
+        "assumption_ids",
+        "source_ids",
+        "evidence_ids",
+        "complete"
+      ],
+      "title": "TraceRecord",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "const": "1.9.0",
+      "default": "1.9.0",
+      "title": "Contract Version",
+      "type": "string"
+    },
+    "model_id": {
+      "const": "catalyst-finance.governance",
+      "default": "catalyst-finance.governance",
+      "title": "Model Id",
+      "type": "string"
+    },
+    "definition": {
+      "$ref": "#/$defs/GovernanceDefinition"
+    },
+    "readiness": {
+      "$ref": "#/$defs/ReadinessSummary"
+    },
+    "trace_matrix": {
+      "items": {
+        "$ref": "#/$defs/TraceRecord"
+      },
+      "title": "Trace Matrix",
+      "type": "array"
+    },
+    "audit_history": {
+      "items": {
+        "$ref": "#/$defs/AuditEntry"
+      },
+      "title": "Audit History",
+      "type": "array"
+    },
+    "run_record": {
+      "$ref": "#/$defs/ImmutableRunRecord"
+    },
+    "public_payload": {
+      "additionalProperties": true,
+      "title": "Public Payload",
+      "type": "object"
+    },
+    "decision_brief_markdown": {
+      "title": "Decision Brief Markdown",
+      "type": "string"
+    },
+    "decision_brief_html": {
+      "title": "Decision Brief Html",
+      "type": "string"
+    },
+    "handoffs": {
+      "items": {
+        "$ref": "#/$defs/HandoffRecord"
+      },
+      "title": "Handoffs",
+      "type": "array"
+    },
+    "flags": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Flags",
+      "type": "array"
+    },
+    "methodology": {
+      "$ref": "#/$defs/GovernanceMethodology"
+    },
+    "metadata": {
+      "$ref": "#/$defs/GovernanceMetadata"
+    }
+  },
+  "required": [
+    "definition",
+    "readiness",
+    "trace_matrix",
+    "audit_history",
+    "run_record",
+    "public_payload",
+    "decision_brief_markdown",
+    "decision_brief_html",
+    "handoffs",
+    "flags",
+    "methodology",
+    "metadata"
+  ],
+  "title": "GovernancePublication",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.9.0/governance_publication.schema.json"
+}

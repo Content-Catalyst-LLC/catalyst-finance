@@ -1,12 +1,15 @@
 # Changelog
 
-## 1.8.0 — 2026-07-17
+## 1.9.0 — 2026-07-17
 
-- Added the sustainable-finance, carbon, and natural-capital accounting engine.
-- Added one-basis carbon valuation to prevent shadow-price and credit double counting.
-- Added confidence-adjusted natural-capital stock and ecosystem-service valuation.
-- Added transition-value and green-financing savings calculations.
-- Added API, CLI, workspace revisions, migrations, schemas, reproducible examples, browser parity, and WordPress studio support.
+- Added assumption, source, evidence, claim, methodology, review, attachment, and publication contracts.
+- Added complete headline claim-to-metric, calculation, assumption, source, and evidence traceability.
+- Added append-only review findings, objections, resolutions, approvals, publication, and withdrawal events.
+- Added SHA-256 hash-chained audit history and immutable reproducible run records.
+- Added publication-readiness gates, confidential-record redaction, and public read-only payloads.
+- Added JSON, CSV, Markdown, accessible HTML, Knowledge Library, and Decision Studio publication outputs.
+- Added governance API, CLI, workspace revisions, schemas, examples, browser parity, and WordPress studio support.
+- Added complete v1.8.0 migration coverage across all models and workspace records.
 
 ## 1.5.0 — 2026-07-17
 

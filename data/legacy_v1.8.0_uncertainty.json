@@ -1,0 +1,330 @@
+{
+  "contract_version": "1.8.0",
+  "model_id": "catalyst-finance.uncertainty",
+  "uncertainty_id": "retrofit-risk-analysis",
+  "name": "Building efficiency retrofit uncertainty analysis",
+  "description": "Seeded Monte Carlo analysis of capital cost, savings, operating cost, discount rate, and implementation timing.",
+  "source": {
+    "workspace_id": "workspace_sample",
+    "scenario_id": "scenario_cashflow",
+    "revision_id": "revision_1",
+    "revision_number": 1
+  },
+  "scenario": {
+    "contract_version": "1.8.0",
+    "model_id": "catalyst-finance.cash-flow",
+    "project": {
+      "name": "Building efficiency retrofit",
+      "category": "Capital project"
+    },
+    "context": {
+      "currency": "USD",
+      "price_basis": "nominal",
+      "discount_rate_basis": "nominal",
+      "period_frequency": "annual",
+      "time_basis": "end_of_period",
+      "rounding_policy": "half_up",
+      "monetary_decimals": 2,
+      "ratio_decimals": 4
+    },
+    "analysis_horizon_periods": 10,
+    "discount_rate_percent_annual": 6,
+    "finance_rate_percent_annual": 6,
+    "reinvestment_rate_percent_annual": 3,
+    "lines": [
+      {
+        "flow_id": "capex",
+        "label": "Initial capital cost",
+        "category": "capital_cost",
+        "amount": 250000,
+        "start_period": 0,
+        "price_basis": "nominal"
+      },
+      {
+        "flow_id": "grant",
+        "label": "Implementation grant",
+        "category": "grant",
+        "amount": 40000,
+        "start_period": 0,
+        "price_basis": "nominal"
+      },
+      {
+        "flow_id": "working-capital",
+        "label": "Initial working capital",
+        "category": "working_capital",
+        "amount": 15000,
+        "start_period": 0,
+        "price_basis": "nominal"
+      },
+      {
+        "flow_id": "savings",
+        "label": "Annual energy savings",
+        "category": "savings",
+        "amount": 60000,
+        "start_period": 1,
+        "end_period": 10,
+        "escalation_rate_percent_annual": 2,
+        "price_basis": "nominal"
+      },
+      {
+        "flow_id": "operations",
+        "label": "Annual operating cost",
+        "category": "operating_cost",
+        "amount": 10000,
+        "start_period": 1,
+        "end_period": 10,
+        "escalation_rate_percent_annual": 2,
+        "price_basis": "nominal"
+      },
+      {
+        "flow_id": "residual",
+        "label": "Residual equipment value",
+        "category": "residual_value",
+        "amount": 20000,
+        "start_period": 10,
+        "price_basis": "nominal"
+      },
+      {
+        "flow_id": "working-capital-recovery",
+        "label": "Working capital recovery",
+        "category": "working_capital_recovery",
+        "amount": 15000,
+        "start_period": 10,
+        "price_basis": "nominal"
+      },
+      {
+        "flow_id": "decommission",
+        "label": "Decommissioning cost",
+        "category": "decommissioning_cost",
+        "amount": 5000,
+        "start_period": 10,
+        "price_basis": "nominal"
+      }
+    ]
+  },
+  "metric_ids": [
+    "npv",
+    "mirr_percent_annual",
+    "discounted_payback_periods"
+  ],
+  "variables": [
+    {
+      "variable_id": "capital-cost",
+      "label": "Initial capital cost",
+      "parameter": {
+        "parameter_id": "capital-cost",
+        "label": "Initial capital cost",
+        "path": "line:capex:amount",
+        "operation": "set",
+        "value_kind": "continuous",
+        "unit": "USD"
+      },
+      "distribution": {
+        "kind": "triangular",
+        "minimum": 220000,
+        "mode": 250000,
+        "maximum": 310000,
+        "truncate_minimum": 0
+      }
+    },
+    {
+      "variable_id": "annual-savings",
+      "label": "Annual energy savings",
+      "parameter": {
+        "parameter_id": "annual-savings",
+        "label": "Annual energy savings",
+        "path": "line:savings:amount",
+        "operation": "set",
+        "value_kind": "continuous",
+        "unit": "USD/year"
+      },
+      "distribution": {
+        "kind": "normal",
+        "mean": 60000,
+        "standard_deviation": 9000,
+        "truncate_minimum": 0
+      }
+    },
+    {
+      "variable_id": "operating-cost",
+      "label": "Annual operating cost",
+      "parameter": {
+        "parameter_id": "operating-cost",
+        "label": "Annual operating cost",
+        "path": "line:operations:amount",
+        "operation": "set",
+        "value_kind": "continuous",
+        "unit": "USD/year"
+      },
+      "distribution": {
+        "kind": "triangular",
+        "minimum": 8000,
+        "mode": 10000,
+        "maximum": 16000,
+        "truncate_minimum": 0
+      }
+    },
+    {
+      "variable_id": "discount-rate",
+      "label": "Annual discount rate",
+      "parameter": {
+        "parameter_id": "discount-rate",
+        "label": "Annual discount rate",
+        "path": "discount_rate_percent_annual",
+        "operation": "set",
+        "value_kind": "continuous",
+        "unit": "percent/year"
+      },
+      "distribution": {
+        "kind": "uniform",
+        "minimum": 4,
+        "maximum": 10
+      }
+    },
+    {
+      "variable_id": "implementation-delay",
+      "label": "Implementation delay",
+      "parameter": {
+        "parameter_id": "implementation-delay",
+        "label": "Implementation delay",
+        "path": "all",
+        "operation": "shift_periods",
+        "value_kind": "integer",
+        "unit": "periods"
+      },
+      "distribution": {
+        "kind": "discrete",
+        "values": [
+          0,
+          1,
+          2
+        ],
+        "probabilities": [
+          0.65,
+          0.25,
+          0.1
+        ]
+      }
+    }
+  ],
+  "correlations": [
+    {
+      "left_variable_id": "capital-cost",
+      "right_variable_id": "implementation-delay",
+      "coefficient": 0.35
+    },
+    {
+      "left_variable_id": "annual-savings",
+      "right_variable_id": "operating-cost",
+      "coefficient": 0.25
+    }
+  ],
+  "stress_cases": [
+    {
+      "stress_id": "cost-overrun-delay",
+      "label": "Cost overrun and delay",
+      "description": "Capital costs rise 20 percent and non-terminal operating flows shift by two periods.",
+      "adjustments": [
+        {
+          "parameter": {
+            "parameter_id": "capital-cost-multiplier",
+            "label": "Capital cost multiplier",
+            "path": "line:capex:amount",
+            "operation": "multiply",
+            "value_kind": "continuous",
+            "unit": "factor"
+          },
+          "value": 1.2
+        },
+        {
+          "parameter": {
+            "parameter_id": "delay",
+            "label": "Implementation delay",
+            "path": "all",
+            "operation": "shift_periods",
+            "value_kind": "integer",
+            "unit": "periods"
+          },
+          "value": 2
+        }
+      ]
+    },
+    {
+      "stress_id": "benefit-shortfall",
+      "label": "Benefit shortfall",
+      "description": "Annual savings are 30 percent below the base estimate.",
+      "adjustments": [
+        {
+          "parameter": {
+            "parameter_id": "savings-multiplier",
+            "label": "Savings multiplier",
+            "path": "line:savings:amount",
+            "operation": "multiply",
+            "value_kind": "continuous",
+            "unit": "factor"
+          },
+          "value": 0.7
+        }
+      ]
+    },
+    {
+      "stress_id": "combined-downside",
+      "label": "Combined downside",
+      "description": "Higher costs, lower benefits, and a higher discount rate occur together.",
+      "adjustments": [
+        {
+          "parameter": {
+            "parameter_id": "capital-cost-multiplier",
+            "label": "Capital cost multiplier",
+            "path": "line:capex:amount",
+            "operation": "multiply",
+            "value_kind": "continuous",
+            "unit": "factor"
+          },
+          "value": 1.15
+        },
+        {
+          "parameter": {
+            "parameter_id": "savings-multiplier",
+            "label": "Savings multiplier",
+            "path": "line:savings:amount",
+            "operation": "multiply",
+            "value_kind": "continuous",
+            "unit": "factor"
+          },
+          "value": 0.8
+        },
+        {
+          "parameter": {
+            "parameter_id": "discount-rate",
+            "label": "Discount rate",
+            "path": "discount_rate_percent_annual",
+            "operation": "set",
+            "value_kind": "continuous",
+            "unit": "percent/year"
+          },
+          "value": 10
+        }
+      ]
+    }
+  ],
+  "downside_thresholds": {
+    "npv": 0,
+    "mirr_percent_annual": 6
+  },
+  "monte_carlo": {
+    "iterations": 500,
+    "seed": 20260717,
+    "percentiles": [
+      5,
+      10,
+      25,
+      50,
+      75,
+      90,
+      95
+    ],
+    "retain_samples": 25,
+    "histogram_bins": 12
+  }
+}

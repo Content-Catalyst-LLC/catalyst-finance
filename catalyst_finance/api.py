@@ -15,6 +15,9 @@ from .comparison import evaluate_comparison
 from .comparison_migration import normalize_comparison
 from .comparison_models import ComparisonDefinition
 from .engine import evaluate_payload
+from .governance import evaluate_governance
+from .governance_migration import normalize_governance
+from .governance_models import GovernanceDefinition
 from .models import ContractModel, validation_issues
 from .operating import evaluate_operating
 from .operating_migration import normalize_operating
@@ -117,6 +120,16 @@ class SustainableRevisionRequest(ContractModel):
     change_note: str = Field(
         default="Saved sustainable-finance revision", max_length=1000
     )
+
+
+class CreateGovernanceRequest(ContractModel):
+    definition: GovernanceDefinition
+    name: str | None = Field(default=None, max_length=240)
+
+
+class GovernanceRevisionRequest(ContractModel):
+    definition: GovernanceDefinition
+    change_note: str = Field(default="Saved governance revision", max_length=1000)
 
 
 class RenameRequest(ContractModel):
@@ -267,6 +280,22 @@ def create_app(repository: WorkspaceRepository | None = None) -> FastAPI:
                 status_code=422,
                 detail={
                     "error": "invalid_sustainable_definition",
+                    "issues": validation_issues(exc),
+                },
+            ) from exc
+
+    @application.post("/api/v1/governance/evaluate", tags=["governance"])
+    def evaluate_governance_endpoint(payload: dict[str, Any]) -> dict[str, Any]:
+        try:
+            definition = normalize_governance(payload)
+            return cast(
+                dict[str, Any], evaluate_governance(definition).model_dump(mode="json")
+            )
+        except (ValidationError, ValueError) as exc:
+            raise HTTPException(
+                status_code=422,
+                detail={
+                    "error": "invalid_governance_definition",
                     "issues": validation_issues(exc),
                 },
             ) from exc
@@ -748,6 +777,61 @@ def create_app(repository: WorkspaceRepository | None = None) -> FastAPI:
             return cast(
                 dict[str, Any],
                 service.delete_sustainable_analysis(
+                    workspace_id, analysis_id
+                ).model_dump(mode="json"),
+            )
+        except WorkspaceNotFoundError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    @application.post(
+        "/api/v1/workspaces/{workspace_id}/governance-analyses",
+        tags=["governance"],
+        status_code=201,
+    )
+    def create_governance_endpoint(
+        workspace_id: str, payload: CreateGovernanceRequest
+    ) -> dict[str, Any]:
+        try:
+            return cast(
+                dict[str, Any],
+                service.create_governance_analysis(
+                    workspace_id, payload.definition, name=payload.name
+                ).model_dump(mode="json"),
+            )
+        except WorkspaceNotFoundError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    @application.post(
+        "/api/v1/workspaces/{workspace_id}/governance-analyses/{analysis_id}/revisions",
+        tags=["governance"],
+    )
+    def save_governance_revision_endpoint(
+        workspace_id: str, analysis_id: str, payload: GovernanceRevisionRequest
+    ) -> dict[str, Any]:
+        try:
+            return cast(
+                dict[str, Any],
+                service.save_governance_revision(
+                    workspace_id,
+                    analysis_id,
+                    payload.definition,
+                    change_note=payload.change_note,
+                ).model_dump(mode="json"),
+            )
+        except WorkspaceNotFoundError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    @application.delete(
+        "/api/v1/workspaces/{workspace_id}/governance-analyses/{analysis_id}",
+        tags=["governance"],
+    )
+    def delete_governance_endpoint(
+        workspace_id: str, analysis_id: str
+    ) -> dict[str, Any]:
+        try:
+            return cast(
+                dict[str, Any],
+                service.delete_governance_analysis(
                     workspace_id, analysis_id
                 ).model_dump(mode="json"),
             )

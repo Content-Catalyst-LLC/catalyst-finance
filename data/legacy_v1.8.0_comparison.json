@@ -1,0 +1,574 @@
+{
+  "contract_version": "1.8.0",
+  "model_id": "catalyst-finance.comparison",
+  "comparison_id": "retrofit-options",
+  "name": "Building retrofit alternatives",
+  "description": "Compare a downside, base, and upside implementation case with reproducible sensitivity and threshold analysis.",
+  "baseline_alternative_id": "base",
+  "alternatives": [
+    {
+      "alternative_id": "downside",
+      "label": "Downside case",
+      "kind": "downside",
+      "source": {
+        "workspace_id": "workspace_demo",
+        "scenario_id": "scenario_downside",
+        "revision_id": "revision_downside_003",
+        "revision_number": 3
+      },
+      "scenario": {
+        "contract_version": "1.8.0",
+        "model_id": "catalyst-finance.cash-flow",
+        "project": {
+          "name": "Building efficiency retrofit",
+          "category": "Capital project"
+        },
+        "context": {
+          "currency": "USD",
+          "price_basis": "nominal",
+          "discount_rate_basis": "nominal",
+          "period_frequency": "annual",
+          "time_basis": "end_of_period",
+          "rounding_policy": "half_up",
+          "monetary_decimals": 2,
+          "ratio_decimals": 4
+        },
+        "analysis_horizon_periods": 10,
+        "discount_rate_percent_annual": 8,
+        "finance_rate_percent_annual": 8,
+        "reinvestment_rate_percent_annual": 3,
+        "lines": [
+          {
+            "flow_id": "capex",
+            "label": "Initial capital cost",
+            "category": "capital_cost",
+            "amount": 290000,
+            "start_period": 0,
+            "price_basis": "nominal"
+          },
+          {
+            "flow_id": "grant",
+            "label": "Implementation grant",
+            "category": "grant",
+            "amount": 40000,
+            "start_period": 0,
+            "price_basis": "nominal"
+          },
+          {
+            "flow_id": "working-capital",
+            "label": "Initial working capital",
+            "category": "working_capital",
+            "amount": 15000,
+            "start_period": 0,
+            "price_basis": "nominal"
+          },
+          {
+            "flow_id": "savings",
+            "label": "Annual energy savings",
+            "category": "savings",
+            "amount": 50000,
+            "start_period": 2,
+            "end_period": 10,
+            "escalation_rate_percent_annual": 2,
+            "price_basis": "nominal"
+          },
+          {
+            "flow_id": "operations",
+            "label": "Annual operating cost",
+            "category": "operating_cost",
+            "amount": 12500,
+            "start_period": 1,
+            "end_period": 10,
+            "escalation_rate_percent_annual": 2,
+            "price_basis": "nominal"
+          },
+          {
+            "flow_id": "carbon-value",
+            "label": "Annual carbon value",
+            "category": "other_benefit",
+            "amount": 4500,
+            "start_period": 1,
+            "end_period": 10,
+            "escalation_rate_percent_annual": 2,
+            "price_basis": "nominal"
+          },
+          {
+            "flow_id": "residual",
+            "label": "Residual equipment value",
+            "category": "residual_value",
+            "amount": 20000,
+            "start_period": 10,
+            "price_basis": "nominal"
+          },
+          {
+            "flow_id": "working-capital-recovery",
+            "label": "Working capital recovery",
+            "category": "working_capital_recovery",
+            "amount": 15000,
+            "start_period": 10,
+            "price_basis": "nominal"
+          },
+          {
+            "flow_id": "decommission",
+            "label": "Decommissioning cost",
+            "category": "decommissioning_cost",
+            "amount": 5000,
+            "start_period": 10,
+            "price_basis": "nominal"
+          }
+        ]
+      },
+      "non_financial_caveats": [
+        "Higher disruption risk",
+        "Benefits begin one year later"
+      ]
+    },
+    {
+      "alternative_id": "base",
+      "label": "Base case",
+      "kind": "base",
+      "source": {
+        "workspace_id": "workspace_demo",
+        "scenario_id": "scenario_base",
+        "revision_id": "revision_base_003",
+        "revision_number": 3
+      },
+      "scenario": {
+        "contract_version": "1.8.0",
+        "model_id": "catalyst-finance.cash-flow",
+        "project": {
+          "name": "Building efficiency retrofit",
+          "category": "Capital project"
+        },
+        "context": {
+          "currency": "USD",
+          "price_basis": "nominal",
+          "discount_rate_basis": "nominal",
+          "period_frequency": "annual",
+          "time_basis": "end_of_period",
+          "rounding_policy": "half_up",
+          "monetary_decimals": 2,
+          "ratio_decimals": 4
+        },
+        "analysis_horizon_periods": 10,
+        "discount_rate_percent_annual": 6,
+        "finance_rate_percent_annual": 6,
+        "reinvestment_rate_percent_annual": 3,
+        "lines": [
+          {
+            "flow_id": "capex",
+            "label": "Initial capital cost",
+            "category": "capital_cost",
+            "amount": 250000,
+            "start_period": 0,
+            "price_basis": "nominal"
+          },
+          {
+            "flow_id": "grant",
+            "label": "Implementation grant",
+            "category": "grant",
+            "amount": 40000,
+            "start_period": 0,
+            "price_basis": "nominal"
+          },
+          {
+            "flow_id": "working-capital",
+            "label": "Initial working capital",
+            "category": "working_capital",
+            "amount": 15000,
+            "start_period": 0,
+            "price_basis": "nominal"
+          },
+          {
+            "flow_id": "savings",
+            "label": "Annual energy savings",
+            "category": "savings",
+            "amount": 60000,
+            "start_period": 1,
+            "end_period": 10,
+            "escalation_rate_percent_annual": 2,
+            "price_basis": "nominal"
+          },
+          {
+            "flow_id": "operations",
+            "label": "Annual operating cost",
+            "category": "operating_cost",
+            "amount": 10000,
+            "start_period": 1,
+            "end_period": 10,
+            "escalation_rate_percent_annual": 2,
+            "price_basis": "nominal"
+          },
+          {
+            "flow_id": "carbon-value",
+            "label": "Annual carbon value",
+            "category": "other_benefit",
+            "amount": 6300,
+            "start_period": 1,
+            "end_period": 10,
+            "escalation_rate_percent_annual": 2,
+            "price_basis": "nominal"
+          },
+          {
+            "flow_id": "residual",
+            "label": "Residual equipment value",
+            "category": "residual_value",
+            "amount": 20000,
+            "start_period": 10,
+            "price_basis": "nominal"
+          },
+          {
+            "flow_id": "working-capital-recovery",
+            "label": "Working capital recovery",
+            "category": "working_capital_recovery",
+            "amount": 15000,
+            "start_period": 10,
+            "price_basis": "nominal"
+          },
+          {
+            "flow_id": "decommission",
+            "label": "Decommissioning cost",
+            "category": "decommissioning_cost",
+            "amount": 5000,
+            "start_period": 10,
+            "price_basis": "nominal"
+          }
+        ]
+      },
+      "non_financial_caveats": [
+        "Requires coordinated building access"
+      ]
+    },
+    {
+      "alternative_id": "upside",
+      "label": "Upside case",
+      "kind": "upside",
+      "source": {
+        "workspace_id": "workspace_demo",
+        "scenario_id": "scenario_upside",
+        "revision_id": "revision_upside_003",
+        "revision_number": 3
+      },
+      "scenario": {
+        "contract_version": "1.8.0",
+        "model_id": "catalyst-finance.cash-flow",
+        "project": {
+          "name": "Building efficiency retrofit",
+          "category": "Capital project"
+        },
+        "context": {
+          "currency": "USD",
+          "price_basis": "nominal",
+          "discount_rate_basis": "nominal",
+          "period_frequency": "annual",
+          "time_basis": "end_of_period",
+          "rounding_policy": "half_up",
+          "monetary_decimals": 2,
+          "ratio_decimals": 4
+        },
+        "analysis_horizon_periods": 10,
+        "discount_rate_percent_annual": 5,
+        "finance_rate_percent_annual": 5,
+        "reinvestment_rate_percent_annual": 3,
+        "lines": [
+          {
+            "flow_id": "capex",
+            "label": "Initial capital cost",
+            "category": "capital_cost",
+            "amount": 235000,
+            "start_period": 0,
+            "price_basis": "nominal"
+          },
+          {
+            "flow_id": "grant",
+            "label": "Implementation grant",
+            "category": "grant",
+            "amount": 60000,
+            "start_period": 0,
+            "price_basis": "nominal"
+          },
+          {
+            "flow_id": "working-capital",
+            "label": "Initial working capital",
+            "category": "working_capital",
+            "amount": 15000,
+            "start_period": 0,
+            "price_basis": "nominal"
+          },
+          {
+            "flow_id": "savings",
+            "label": "Annual energy savings",
+            "category": "savings",
+            "amount": 70000,
+            "start_period": 1,
+            "end_period": 10,
+            "escalation_rate_percent_annual": 2,
+            "price_basis": "nominal"
+          },
+          {
+            "flow_id": "operations",
+            "label": "Annual operating cost",
+            "category": "operating_cost",
+            "amount": 8500,
+            "start_period": 1,
+            "end_period": 10,
+            "escalation_rate_percent_annual": 2,
+            "price_basis": "nominal"
+          },
+          {
+            "flow_id": "carbon-value",
+            "label": "Annual carbon value",
+            "category": "other_benefit",
+            "amount": 9000,
+            "start_period": 1,
+            "end_period": 10,
+            "escalation_rate_percent_annual": 2,
+            "price_basis": "nominal"
+          },
+          {
+            "flow_id": "residual",
+            "label": "Residual equipment value",
+            "category": "residual_value",
+            "amount": 20000,
+            "start_period": 10,
+            "price_basis": "nominal"
+          },
+          {
+            "flow_id": "working-capital-recovery",
+            "label": "Working capital recovery",
+            "category": "working_capital_recovery",
+            "amount": 15000,
+            "start_period": 10,
+            "price_basis": "nominal"
+          },
+          {
+            "flow_id": "decommission",
+            "label": "Decommissioning cost",
+            "category": "decommissioning_cost",
+            "amount": 5000,
+            "start_period": 10,
+            "price_basis": "nominal"
+          }
+        ]
+      },
+      "non_financial_caveats": [
+        "Grant award is not yet confirmed",
+        "Aggressive savings verification required"
+      ]
+    }
+  ],
+  "selected_metrics": [
+    {
+      "metric_id": "npv",
+      "objective": "maximize",
+      "weight": 0.45
+    },
+    {
+      "metric_id": "discounted_payback_periods",
+      "objective": "minimize",
+      "weight": 0.2
+    },
+    {
+      "metric_id": "mirr_percent_annual",
+      "objective": "maximize",
+      "weight": 0.2
+    },
+    {
+      "metric_id": "benefit_cost_ratio",
+      "objective": "maximize",
+      "weight": 0.15
+    }
+  ],
+  "one_way_sensitivities": [
+    {
+      "sensitivity_id": "base-savings",
+      "alternative_id": "base",
+      "metric_id": "npv",
+      "parameter": {
+        "parameter_id": "annual-savings",
+        "label": "Annual energy savings",
+        "path": "line:savings:amount",
+        "operation": "set",
+        "value_kind": "continuous",
+        "unit": "USD/year"
+      },
+      "values": [
+        40000,
+        50000,
+        60000,
+        70000,
+        80000
+      ]
+    },
+    {
+      "sensitivity_id": "base-discount-rate",
+      "alternative_id": "base",
+      "metric_id": "npv",
+      "parameter": {
+        "parameter_id": "discount-rate",
+        "label": "Annual discount rate",
+        "path": "discount_rate_percent_annual",
+        "operation": "set",
+        "value_kind": "continuous",
+        "unit": "percent/year"
+      },
+      "values": [
+        2,
+        4,
+        6,
+        8,
+        10,
+        12
+      ]
+    },
+    {
+      "sensitivity_id": "upside-capex",
+      "alternative_id": "upside",
+      "metric_id": "npv",
+      "parameter": {
+        "parameter_id": "capital-cost",
+        "label": "Initial capital cost",
+        "path": "line:capex:amount",
+        "operation": "set",
+        "value_kind": "continuous",
+        "unit": "USD"
+      },
+      "values": [
+        200000,
+        225000,
+        250000,
+        275000,
+        300000
+      ]
+    },
+    {
+      "sensitivity_id": "downside-delay",
+      "alternative_id": "downside",
+      "metric_id": "npv",
+      "parameter": {
+        "parameter_id": "implementation-delay",
+        "label": "Implementation delay",
+        "path": "all",
+        "operation": "shift_periods",
+        "value_kind": "integer",
+        "unit": "periods"
+      },
+      "values": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "sensitivity_id": "base-carbon",
+      "alternative_id": "base",
+      "metric_id": "npv",
+      "parameter": {
+        "parameter_id": "carbon-value",
+        "label": "Annual carbon value",
+        "path": "line:carbon-value:amount",
+        "operation": "set",
+        "value_kind": "continuous",
+        "unit": "USD/year"
+      },
+      "values": [
+        0,
+        3000,
+        6300,
+        9000,
+        12000
+      ]
+    }
+  ],
+  "two_way_sensitivities": [
+    {
+      "sensitivity_id": "savings-vs-rate",
+      "alternative_id": "base",
+      "metric_id": "npv",
+      "row_parameter": {
+        "parameter_id": "annual-savings",
+        "label": "Annual energy savings",
+        "path": "line:savings:amount",
+        "operation": "set",
+        "value_kind": "continuous",
+        "unit": "USD/year"
+      },
+      "row_values": [
+        45000,
+        60000,
+        75000
+      ],
+      "column_parameter": {
+        "parameter_id": "discount-rate",
+        "label": "Annual discount rate",
+        "path": "discount_rate_percent_annual",
+        "operation": "set",
+        "value_kind": "continuous",
+        "unit": "percent/year"
+      },
+      "column_values": [
+        4,
+        6,
+        8,
+        10
+      ]
+    }
+  ],
+  "break_even_definitions": [
+    {
+      "threshold_id": "savings-break-even",
+      "alternative_id": "base",
+      "metric_id": "npv",
+      "parameter": {
+        "parameter_id": "annual-savings",
+        "label": "Annual energy savings",
+        "path": "line:savings:amount",
+        "operation": "set",
+        "value_kind": "continuous",
+        "unit": "USD/year"
+      },
+      "target_value": 0,
+      "lower_bound": 0,
+      "upper_bound": 100000,
+      "tolerance": 0.01,
+      "max_iterations": 100
+    },
+    {
+      "threshold_id": "capital-cost-threshold",
+      "alternative_id": "base",
+      "metric_id": "npv",
+      "parameter": {
+        "parameter_id": "capital-cost",
+        "label": "Initial capital cost",
+        "path": "line:capex:amount",
+        "operation": "set",
+        "value_kind": "continuous",
+        "unit": "USD"
+      },
+      "target_value": 0,
+      "lower_bound": 100000,
+      "upper_bound": 700000,
+      "tolerance": 0.01,
+      "max_iterations": 100
+    },
+    {
+      "threshold_id": "delay-threshold",
+      "alternative_id": "base",
+      "metric_id": "npv",
+      "parameter": {
+        "parameter_id": "implementation-delay",
+        "label": "Implementation delay",
+        "path": "all",
+        "operation": "shift_periods",
+        "value_kind": "integer",
+        "unit": "periods"
+      },
+      "target_value": 0,
+      "lower_bound": 0,
+      "upper_bound": 10,
+      "tolerance": 0.01,
+      "max_iterations": 100
+    }
+  ]
+}

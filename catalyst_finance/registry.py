@@ -6,6 +6,7 @@ from typing import Any
 
 from .cashflow_models import CASHFLOW_CONTRACT_VERSION, CASHFLOW_MODEL_ID
 from .comparison_models import COMPARISON_CONTRACT_VERSION, COMPARISON_MODEL_ID
+from .governance_models import GOVERNANCE_CONTRACT_VERSION, GOVERNANCE_MODEL_ID
 from .models import CONTRACT_VERSION, METHODOLOGY_VERSION, MODEL_ID
 from .operating_models import OPERATING_CONTRACT_VERSION, OPERATING_MODEL_ID
 from .pricing_models import PRICING_CONTRACT_VERSION, PRICING_MODEL_ID
@@ -123,6 +124,23 @@ MODEL_REGISTRY: dict[str, dict[str, Any]] = {
             "target-profit volume",
             "cost-center and unit rollups",
             "variance reconciliation",
+        ],
+    },
+    GOVERNANCE_MODEL_ID: {
+        "model_id": GOVERNANCE_MODEL_ID,
+        "name": "Catalyst Finance evidence, review, governance, and publication model",
+        "model_version": GOVERNANCE_CONTRACT_VERSION,
+        "contract_version": GOVERNANCE_CONTRACT_VERSION,
+        "status": "stable",
+        "period_frequency": "review lifecycle",
+        "capabilities": [
+            "assumption and evidence ledgers",
+            "claim-to-calculation and calculation-to-source traceability",
+            "append-only review events and approvals",
+            "methodology, limitation, conflict, and exclusion declarations",
+            "hash-chained audit history and immutable run records",
+            "private-record redaction and public read-only payloads",
+            "decision briefs and platform handoffs",
         ],
     },
     SUSTAINABLE_MODEL_ID: {

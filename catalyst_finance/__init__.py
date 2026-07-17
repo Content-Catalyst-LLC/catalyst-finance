@@ -5,6 +5,8 @@ from .cashflow_models import CashFlowPublication, CashFlowScenarioInput
 from .comparison import evaluate_comparison
 from .comparison_models import ComparisonDefinition, ComparisonPublication
 from .engine import evaluate_payload, evaluate_scenario
+from .governance import evaluate_governance
+from .governance_models import GovernanceDefinition, GovernancePublication
 from .models import FinanceScenarioInput
 from .pricing import evaluate_pricing
 from .pricing_models import PricingDefinition, PricingPublication
@@ -24,6 +26,8 @@ __all__ = [
     "ComparisonPublication",
     "FinanceScenarioInput",
     "FinanceWorkspace",
+    "GovernanceDefinition",
+    "GovernancePublication",
     "JsonWorkspaceRepository",
     "PricingDefinition",
     "PricingPublication",
@@ -36,6 +40,7 @@ __all__ = [
     "__version__",
     "evaluate_cash_flow",
     "evaluate_comparison",
+    "evaluate_governance",
     "evaluate_payload",
     "evaluate_pricing",
     "evaluate_scenario",

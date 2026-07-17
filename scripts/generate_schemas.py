@@ -19,6 +19,10 @@ from catalyst_finance.comparison_models import (  # noqa: E402
     ComparisonDefinition,
     ComparisonPublication,
 )
+from catalyst_finance.governance_models import (  # noqa: E402
+    GovernanceDefinition,
+    GovernancePublication,
+)
 from catalyst_finance.models import (  # noqa: E402
     FinanceInterpretation,
     FinanceMetadata,
@@ -50,6 +54,8 @@ from catalyst_finance.workspace_models import (  # noqa: E402
 )
 
 SCHEMAS: list[tuple[str, type[Any]]] = [
+    ("governance_definition.schema.json", GovernanceDefinition),
+    ("governance_publication.schema.json", GovernancePublication),
     ("sustainable_definition.schema.json", SustainableDefinition),
     ("sustainable_publication.schema.json", SustainablePublication),
     ("operating_definition.schema.json", OperatingDefinition),
@@ -81,7 +87,7 @@ def generate(output_dir: Path | None = None) -> None:
         schema = model.model_json_schema(ref_template="#/$defs/{model}")
         schema["$schema"] = "https://json-schema.org/draft/2020-12/schema"
         schema["$id"] = (
-            "https://sustainablecatalyst.com/schemas/catalyst-finance/1.8.0/" + filename
+            "https://sustainablecatalyst.com/schemas/catalyst-finance/1.9.0/" + filename
         )
         path = output_dir / filename
         path.write_text(json.dumps(schema, indent=2) + "\n", encoding="utf-8")

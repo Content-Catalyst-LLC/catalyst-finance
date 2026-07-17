@@ -1,4 +1,4 @@
-"""Sustainable-finance, carbon, and natural-capital contracts for v1.8.0."""
+"""Sustainable-finance, carbon, and natural-capital contracts for v1.9.0."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from pydantic import Field, model_validator
 from .comparison_models import SourceRevision
 from .models import ContractModel
 
-SUSTAINABLE_CONTRACT_VERSION: Literal["1.8.0"] = "1.8.0"
+SUSTAINABLE_CONTRACT_VERSION: Literal["1.9.0"] = "1.9.0"
 SUSTAINABLE_MODEL_ID: Literal["catalyst-finance.sustainable"] = (
     "catalyst-finance.sustainable"
 )
@@ -48,7 +48,7 @@ class TransitionItemInput(ContractModel):
 
 
 class SustainableDefinition(ContractModel):
-    contract_version: Literal["1.8.0"] = SUSTAINABLE_CONTRACT_VERSION
+    contract_version: Literal["1.9.0"] = SUSTAINABLE_CONTRACT_VERSION
     model_id: Literal["catalyst-finance.sustainable"] = SUSTAINABLE_MODEL_ID
     analysis_id: str = Field(min_length=1, max_length=100, pattern=r"^[A-Za-z0-9_-]+$")
     name: str = Field(min_length=1, max_length=240)
@@ -154,7 +154,7 @@ class SustainableSummary(ContractModel):
 
 class SustainableMethodology(ContractModel):
     model_id: Literal["catalyst-finance.sustainable"] = SUSTAINABLE_MODEL_ID
-    model_version: Literal["1.8.0"] = SUSTAINABLE_CONTRACT_VERSION
+    model_version: Literal["1.9.0"] = SUSTAINABLE_CONTRACT_VERSION
     carbon_double_count_policy: Literal["select_one_valuation_basis"] = (
         "select_one_valuation_basis"
     )
@@ -174,14 +174,14 @@ class SustainableMethodology(ContractModel):
 
 class SustainableMetadata(ContractModel):
     generated_at: str
-    version: Literal["1.8.0"] = SUSTAINABLE_CONTRACT_VERSION
+    version: Literal["1.9.0"] = SUSTAINABLE_CONTRACT_VERSION
     asset_count: int
     transition_item_count: int
     disclaimer: str
 
 
 class SustainablePublication(ContractModel):
-    contract_version: Literal["1.8.0"] = SUSTAINABLE_CONTRACT_VERSION
+    contract_version: Literal["1.9.0"] = SUSTAINABLE_CONTRACT_VERSION
     model_id: Literal["catalyst-finance.sustainable"] = SUSTAINABLE_MODEL_ID
     definition: SustainableDefinition
     carbon: CarbonResult

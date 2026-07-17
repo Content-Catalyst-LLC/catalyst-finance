@@ -152,5 +152,5 @@
   "title": "FinanceResults",
   "type": "object",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.8.0/finance_result.schema.json"
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.9.0/finance_result.schema.json"
 }

@@ -4,7 +4,7 @@
   else root.CatalystFinanceOperatingEngine = api;
 })(typeof self !== 'undefined' ? self : this, function () {
   'use strict';
-  const CONTRACT_VERSION = '1.8.0';
+  const CONTRACT_VERSION = '1.9.0';
   const MODEL_ID = 'catalyst-finance.operating';
   const DISCLAIMER = 'Decision-support output only. Validate accounting classifications, allocation bases, taxes, timing, capacity, and source-system controls before operational use.';
   function round(value, digits) {

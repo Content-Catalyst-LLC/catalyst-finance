@@ -170,8 +170,8 @@
       "additionalProperties": false,
       "properties": {
         "contract_version": {
-          "const": "1.8.0",
-          "default": "1.8.0",
+          "const": "1.9.0",
+          "default": "1.9.0",
           "title": "Contract Version",
           "type": "string"
         },
@@ -899,8 +899,8 @@
       "additionalProperties": false,
       "properties": {
         "contract_version": {
-          "const": "1.8.0",
-          "default": "1.8.0",
+          "const": "1.9.0",
+          "default": "1.9.0",
           "title": "Contract Version",
           "type": "string"
         },
@@ -1020,8 +1020,8 @@
           "type": "string"
         },
         "version": {
-          "const": "1.8.0",
-          "default": "1.8.0",
+          "const": "1.9.0",
+          "default": "1.9.0",
           "title": "Version",
           "type": "string"
         },
@@ -1072,8 +1072,8 @@
           "type": "string"
         },
         "model_version": {
-          "const": "1.8.0",
-          "default": "1.8.0",
+          "const": "1.9.0",
+          "default": "1.9.0",
           "title": "Model Version",
           "type": "string"
         },
@@ -1205,8 +1205,8 @@
   "additionalProperties": false,
   "properties": {
     "contract_version": {
-      "const": "1.8.0",
-      "default": "1.8.0",
+      "const": "1.9.0",
+      "default": "1.9.0",
       "title": "Contract Version",
       "type": "string"
     },
@@ -1289,5 +1289,5 @@
   "title": "UncertaintyPublication",
   "type": "object",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.8.0/uncertainty_publication.schema.json"
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.9.0/uncertainty_publication.schema.json"
 }

@@ -4,7 +4,7 @@
   root.CatalystFinancePricingEngine = engine;
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
-  const CONTRACT_VERSION = '1.8.0';
+  const CONTRACT_VERSION = '1.9.0';
   const MODEL_ID = 'catalyst-finance.pricing';
   const DISCLAIMER = 'Decision-support output only. Validate demand assumptions, cost-to-serve, market response, legal constraints, taxes, and implementation effects before use.';
   function round(value, decimals) {

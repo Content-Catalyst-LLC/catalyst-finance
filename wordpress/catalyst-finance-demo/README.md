@@ -1,4 +1,4 @@
-# Catalyst Finance Workspace v1.8.0
+# Catalyst Finance Workspace v1.9.0
 
 Shortcodes:
 
@@ -10,4 +10,8 @@ The browser module includes annual screening, period cash-flow capital budgeting
 
 ## Sustainable finance studio
 
-The v1.8.0 studio evaluates avoided emissions, a selected carbon-value basis, natural-capital value, transition effects, green-financing savings, and adjusted project NPV with explicit double-counting flags.
+The v1.9.0 studio evaluates avoided emissions, a selected carbon-value basis, natural-capital value, transition effects, green-financing savings, and adjusted project NPV with explicit double-counting flags.
+
+## Evidence, review, governance, and publication
+
+The workspace includes a governed-publication studio with claim traceability, approvals, audit records, redaction, public JSON, and Decision Studio / Knowledge Library handoffs.

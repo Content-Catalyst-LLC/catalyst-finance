@@ -1,0 +1,279 @@
+{
+  "contract_version": "1.9.0",
+  "model_id": "catalyst-finance.governance",
+  "governance_id": "gov_efficiency_case",
+  "name": "Efficiency retrofit governed finance case",
+  "description": "Evidence, review, and publication record for the sustainable-finance analysis.",
+  "source": {
+    "workspace_id": "workspace_demo",
+    "scenario_id": "scenario_efficiency",
+    "revision_id": "revision_8",
+    "revision_number": 8
+  },
+  "artifact": {
+    "artifact_id": "sustainable_efficiency",
+    "model_id": "catalyst-finance.sustainable",
+    "model_version": "1.9.0",
+    "revision_id": "revision_8",
+    "title": "Efficiency retrofit sustainable value analysis",
+    "headline_metrics": {
+      "base_project_npv": 525000.0,
+      "total_sustainable_value": 1001250.9,
+      "adjusted_project_npv": 1526250.9,
+      "avoided_emissions_tco2e": 4500.0
+    }
+  },
+  "assumptions": [
+    {
+      "assumption_id": "assumption_carbon_price",
+      "label": "Shadow carbon price",
+      "value": "75",
+      "unit": "USD/tCO2e",
+      "owner": "Finance team",
+      "confidence_percent": 85.0,
+      "applicability": "Applied to avoided operational emissions over the reporting boundary.",
+      "review_status": "verified",
+      "source_ids": [
+        "source_carbon_policy"
+      ],
+      "evidence_ids": [
+        "evidence_carbon_price"
+      ],
+      "private": false,
+      "rationale": "Uses the institution's approved planning value."
+    },
+    {
+      "assumption_id": "assumption_service_value",
+      "label": "Annual ecosystem-service value",
+      "value": "12000",
+      "unit": "USD/year",
+      "owner": "Sustainability team",
+      "confidence_percent": 70.0,
+      "applicability": "Applies to the restored site during the ten-year horizon.",
+      "review_status": "verified",
+      "source_ids": [
+        "source_ecosystem_study"
+      ],
+      "evidence_ids": [
+        "evidence_service_value"
+      ],
+      "private": false,
+      "rationale": "Conservative value from the cited regional study."
+    }
+  ],
+  "sources": [
+    {
+      "source_id": "source_carbon_policy",
+      "title": "Institutional carbon valuation policy",
+      "source_type": "policy",
+      "citation": "Content Catalyst LLC. Institutional carbon valuation policy, 2026.",
+      "url": "https://sustainablecatalyst.com/policies/carbon-value",
+      "published_date": "2026-03-01",
+      "accessed_date": "2026-07-17",
+      "owner": "Finance governance",
+      "confidence_percent": 95.0,
+      "applicability": "Approved planning value for internal capital cases.",
+      "review_status": "verified",
+      "private": false,
+      "attachment_ids": [],
+      "notes": ""
+    },
+    {
+      "source_id": "source_ecosystem_study",
+      "title": "Regional ecosystem-service valuation study",
+      "source_type": "document",
+      "citation": "Regional Ecology Institute. Ecosystem services valuation study, 2025.",
+      "url": "https://example.org/ecosystem-study",
+      "published_date": "2025-10-15",
+      "accessed_date": "2026-07-17",
+      "owner": "Sustainability team",
+      "confidence_percent": 80.0,
+      "applicability": "Comparable regional habitat and service categories.",
+      "review_status": "verified",
+      "private": false,
+      "attachment_ids": [],
+      "notes": "Transferability limitations are disclosed."
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "evidence_carbon_price",
+      "source_id": "source_carbon_policy",
+      "evidence_type": "methodology",
+      "summary": "The approved shadow carbon value is USD 75 per tCO2e.",
+      "locator": "Section 4.2",
+      "confidence_percent": 95.0,
+      "private": false
+    },
+    {
+      "evidence_id": "evidence_service_value",
+      "source_id": "source_ecosystem_study",
+      "evidence_type": "quantitative",
+      "summary": "Comparable restored habitat produces annual services near USD 12,000.",
+      "locator": "Table 7",
+      "confidence_percent": 75.0,
+      "private": false
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "claim_adjusted_npv",
+      "text": "The governed analysis reports an adjusted project NPV of USD 1,526,250.90.",
+      "classification": "headline",
+      "metric_paths": [
+        "summary.adjusted_project_npv"
+      ],
+      "calculation_ids": [
+        "calculation_sustainable_total"
+      ],
+      "assumption_ids": [
+        "assumption_carbon_price",
+        "assumption_service_value"
+      ],
+      "source_ids": [
+        "source_carbon_policy",
+        "source_ecosystem_study"
+      ],
+      "evidence_ids": [
+        "evidence_carbon_price",
+        "evidence_service_value"
+      ],
+      "review_status": "verified",
+      "public": true
+    },
+    {
+      "claim_id": "claim_emissions",
+      "text": "The project avoids 4,500 tCO2e against the stated baseline.",
+      "classification": "headline",
+      "metric_paths": [
+        "carbon.avoided_emissions_tco2e"
+      ],
+      "calculation_ids": [
+        "calculation_avoided_emissions"
+      ],
+      "assumption_ids": [
+        "assumption_carbon_price"
+      ],
+      "source_ids": [
+        "source_carbon_policy"
+      ],
+      "evidence_ids": [
+        "evidence_carbon_price"
+      ],
+      "review_status": "verified",
+      "public": true
+    },
+    {
+      "claim_id": "claim_transferability",
+      "text": "Natural-capital estimates depend on transferability from a regional study.",
+      "classification": "limitation",
+      "metric_paths": [],
+      "calculation_ids": [],
+      "assumption_ids": [],
+      "source_ids": [
+        "source_ecosystem_study"
+      ],
+      "evidence_ids": [
+        "evidence_service_value"
+      ],
+      "review_status": "verified",
+      "public": true
+    }
+  ],
+  "methodologies": [
+    {
+      "methodology_id": "method_sustainable_v190",
+      "name": "Catalyst Finance sustainable-value methodology",
+      "version": "1.9.0",
+      "purpose": "Reconcile financial and sustainable value without double counting.",
+      "model_ids": [
+        "catalyst-finance.sustainable",
+        "catalyst-finance.governance"
+      ],
+      "data_quality_notes": [
+        "Carbon policy source is institutionally approved."
+      ],
+      "conflicts": [
+        "Procurement owns a confidential quotation used in the internal case."
+      ],
+      "limitations": [
+        "Regional ecosystem-service values may not fully transfer to the project site."
+      ],
+      "excluded_factors": [
+        "Tax incentives not yet confirmed."
+      ]
+    }
+  ],
+  "review_events": [
+    {
+      "event_id": "event_review_request",
+      "reviewer_id": "user_analyst",
+      "reviewer_name": "Finance Analyst",
+      "role": "analyst",
+      "action": "request",
+      "subject_id": "gov_efficiency_case",
+      "created_at": "2026-07-15T10:00:00+00:00",
+      "comment": "Requesting evidence and methodology review.",
+      "resolves_event_id": null,
+      "private": false
+    },
+    {
+      "event_id": "event_finding_transfer",
+      "reviewer_id": "user_reviewer",
+      "reviewer_name": "Independent Reviewer",
+      "role": "reviewer",
+      "action": "finding",
+      "subject_id": "claim_transferability",
+      "created_at": "2026-07-15T14:00:00+00:00",
+      "comment": "Disclose transferability limitations in the public brief.",
+      "resolves_event_id": null,
+      "private": false
+    },
+    {
+      "event_id": "event_resolve_transfer",
+      "reviewer_id": "user_analyst",
+      "reviewer_name": "Finance Analyst",
+      "role": "analyst",
+      "action": "resolve",
+      "subject_id": "claim_transferability",
+      "created_at": "2026-07-16T09:00:00+00:00",
+      "comment": "Limitation added to methodology and decision brief.",
+      "resolves_event_id": "event_finding_transfer",
+      "private": false
+    },
+    {
+      "event_id": "event_approval",
+      "reviewer_id": "user_approver",
+      "reviewer_name": "Finance Approver",
+      "role": "approver",
+      "action": "approve",
+      "subject_id": "gov_efficiency_case",
+      "created_at": "2026-07-16T16:00:00+00:00",
+      "comment": "Approved for public publication with configured redactions.",
+      "resolves_event_id": null,
+      "private": false
+    },
+    {
+      "event_id": "event_publish",
+      "reviewer_id": "user_publisher",
+      "reviewer_name": "Publication Manager",
+      "role": "publisher",
+      "action": "publish",
+      "subject_id": "gov_efficiency_case",
+      "created_at": "2026-07-17T09:00:00+00:00",
+      "comment": "Published to the public knowledge pathway.",
+      "resolves_event_id": null,
+      "private": false
+    }
+  ],
+  "attachments": [],
+  "publication": {
+    "state": "published",
+    "audience": "public",
+    "title": "Efficiency Retrofit Finance Brief",
+    "summary": "A governed finance brief linking headline value claims to assumptions, sources, evidence, methodology, and review history.",
+    "redaction_policy": "exclude_private",
+    "knowledge_library_collection_id": "collection_finance_briefs",
+    "decision_studio_packet_id": "packet_efficiency_retrofit"
+  }
+}

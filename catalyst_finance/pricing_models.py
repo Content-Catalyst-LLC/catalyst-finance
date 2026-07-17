@@ -1,4 +1,4 @@
-"""Demand, elasticity, pricing, and revenue contracts for v1.8.0."""
+"""Demand, elasticity, pricing, and revenue contracts for v1.9.0."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from pydantic import Field, model_validator
 from .comparison_models import SourceRevision
 from .models import ContractModel
 
-PRICING_CONTRACT_VERSION: Literal["1.8.0"] = "1.8.0"
+PRICING_CONTRACT_VERSION: Literal["1.9.0"] = "1.9.0"
 PRICING_MODEL_ID: Literal["catalyst-finance.pricing"] = "catalyst-finance.pricing"
 FiniteNumber = Annotated[float, Field(allow_inf_nan=False)]
 DemandKind = Literal["linear", "constant_elasticity", "observed"]
@@ -104,7 +104,7 @@ class PricingConstraints(ContractModel):
 
 
 class PricingDefinition(ContractModel):
-    contract_version: Literal["1.8.0"] = PRICING_CONTRACT_VERSION
+    contract_version: Literal["1.9.0"] = PRICING_CONTRACT_VERSION
     model_id: Literal["catalyst-finance.pricing"] = PRICING_MODEL_ID
     pricing_id: str = Field(min_length=1, max_length=100, pattern=r"^[A-Za-z0-9_-]+$")
     name: str = Field(min_length=1, max_length=240)
@@ -178,7 +178,7 @@ class PricingRecommendation(ContractModel):
 
 class PricingMethodology(ContractModel):
     model_id: Literal["catalyst-finance.pricing"] = PRICING_MODEL_ID
-    model_version: Literal["1.8.0"] = PRICING_CONTRACT_VERSION
+    model_version: Literal["1.9.0"] = PRICING_CONTRACT_VERSION
     grid_policy: Literal["inclusive_even_price_grid"] = "inclusive_even_price_grid"
     observed_policy: Literal["piecewise_linear_with_endpoint_clamping"] = (
         "piecewise_linear_with_endpoint_clamping"
@@ -194,14 +194,14 @@ class PricingMethodology(ContractModel):
 
 class PricingMetadata(ContractModel):
     generated_at: str
-    version: Literal["1.8.0"] = PRICING_CONTRACT_VERSION
+    version: Literal["1.9.0"] = PRICING_CONTRACT_VERSION
     grid_rows: int
     constrained_rows: int
     disclaimer: str
 
 
 class PricingPublication(ContractModel):
-    contract_version: Literal["1.8.0"] = PRICING_CONTRACT_VERSION
+    contract_version: Literal["1.9.0"] = PRICING_CONTRACT_VERSION
     model_id: Literal["catalyst-finance.pricing"] = PRICING_MODEL_ID
     definition: PricingDefinition
     rows: list[PriceResult] = Field(min_length=3)

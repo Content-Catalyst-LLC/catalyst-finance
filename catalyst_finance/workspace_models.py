@@ -1,4 +1,4 @@
-"""Versioned workspace records for Catalyst Finance v1.8.0."""
+"""Versioned workspace records for Catalyst Finance v1.9.0."""
 
 from __future__ import annotations
 
@@ -11,6 +11,7 @@ from .cashflow_models import (
     CashFlowScenarioInput,
 )
 from .comparison_models import ComparisonDefinition
+from .governance_models import GovernanceDefinition
 from .models import (
     CONTRACT_VERSION,
     MODEL_ID,
@@ -23,7 +24,7 @@ from .pricing_models import PricingDefinition
 from .sustainable_models import SustainableDefinition
 from .uncertainty_models import UncertaintyDefinition
 
-WORKSPACE_CONTRACT_VERSION: Literal["1.8.0"] = "1.8.0"
+WORKSPACE_CONTRACT_VERSION: Literal["1.9.0"] = "1.9.0"
 
 Identifier = Annotated[
     str, Field(min_length=5, max_length=100, pattern=r"^[a-z]+_[A-Za-z0-9_-]+$")
@@ -42,7 +43,7 @@ class WorkspaceDefaults(ContractModel):
     default_model_id: Literal[
         "catalyst-finance.screening", "catalyst-finance.cash-flow"
     ] = MODEL_ID
-    default_model_version: Literal["1.8.0"] = CONTRACT_VERSION
+    default_model_version: Literal["1.9.0"] = CONTRACT_VERSION
 
     @model_validator(mode="after")
     def matching_basis(self) -> WorkspaceDefaults:
@@ -81,7 +82,7 @@ class ScenarioRevision(ContractModel):
     model_id: Literal["catalyst-finance.screening", "catalyst-finance.cash-flow"] = (
         MODEL_ID
     )
-    model_version: Literal["1.8.0"] = CONTRACT_VERSION
+    model_version: Literal["1.9.0"] = CONTRACT_VERSION
     change_note: str = Field(default="", max_length=1000)
     scenario: ScenarioPayload
 
@@ -316,8 +317,47 @@ class WorkspaceSustainableAnalysis(ContractModel):
         return self.revisions[-1]
 
 
+class GovernanceRevision(ContractModel):
+    revision_id: Identifier
+    revision_number: Annotated[int, Field(ge=1)]
+    created_at: datetime
+    change_note: str = Field(default="", max_length=1000)
+    definition: GovernanceDefinition
+
+
+class WorkspaceGovernanceAnalysis(ContractModel):
+    analysis_id: Identifier
+    name: str = Field(min_length=1, max_length=240)
+    status: Literal["draft", "active", "archived"] = "active"
+    created_at: datetime
+    updated_at: datetime
+    current_revision_id: Identifier
+    revisions: list[GovernanceRevision] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def valid_revision_chain(self) -> WorkspaceGovernanceAnalysis:
+        revision_ids = [item.revision_id for item in self.revisions]
+        if len(revision_ids) != len(set(revision_ids)):
+            raise ValueError("governance revision IDs must be unique")
+        if [item.revision_number for item in self.revisions] != list(
+            range(1, len(self.revisions) + 1)
+        ):
+            raise ValueError(
+                "governance revision numbers must be contiguous and ordered"
+            )
+        if self.current_revision_id != self.revisions[-1].revision_id:
+            raise ValueError(
+                "governance current_revision_id must reference the latest revision"
+            )
+        return self
+
+    @property
+    def current_revision(self) -> GovernanceRevision:
+        return self.revisions[-1]
+
+
 class FinanceWorkspace(ContractModel):
-    workspace_contract_version: Literal["1.8.0"] = WORKSPACE_CONTRACT_VERSION
+    workspace_contract_version: Literal["1.9.0"] = WORKSPACE_CONTRACT_VERSION
     workspace_id: Identifier
     name: str = Field(min_length=1, max_length=200)
     description: str = Field(default="", max_length=4000)
@@ -336,6 +376,7 @@ class FinanceWorkspace(ContractModel):
     sustainable_analyses: list[WorkspaceSustainableAnalysis] = Field(
         default_factory=list
     )
+    governance_analyses: list[WorkspaceGovernanceAnalysis] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def unique_identifiers(self) -> FinanceWorkspace:
@@ -346,6 +387,7 @@ class FinanceWorkspace(ContractModel):
         pricing_ids = [item.analysis_id for item in self.pricing_analyses]
         operating_ids = [item.analysis_id for item in self.operating_analyses]
         sustainable_ids = [item.analysis_id for item in self.sustainable_analyses]
+        governance_ids = [item.analysis_id for item in self.governance_analyses]
         if len(project_ids) != len(set(project_ids)):
             raise ValueError("workspace project IDs must be unique")
         if len(scenario_ids) != len(set(scenario_ids)):
@@ -362,6 +404,8 @@ class FinanceWorkspace(ContractModel):
             raise ValueError(
                 "workspace sustainable-finance analysis IDs must be unique"
             )
+        if len(governance_ids) != len(set(governance_ids)):
+            raise ValueError("workspace governance analysis IDs must be unique")
         known_projects = set(project_ids)
         for scenario in self.scenarios:
             if (
@@ -375,7 +419,7 @@ class FinanceWorkspace(ContractModel):
 
 
 class WorkspaceExport(ContractModel):
-    export_contract_version: Literal["1.8.0"] = WORKSPACE_CONTRACT_VERSION
+    export_contract_version: Literal["1.9.0"] = WORKSPACE_CONTRACT_VERSION
     exported_at: datetime
     workspace: FinanceWorkspace
 
