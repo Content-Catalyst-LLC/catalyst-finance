@@ -31,7 +31,7 @@ jobs:
         run: |
           python -m ruff check .
           python -m ruff format --check .
-          python -m mypy catalyst_finance/__init__.py catalyst_finance/api.py catalyst_finance/cli.py catalyst_finance/domain.py catalyst_finance/io.py catalyst_finance/serve.py catalyst_finance/version.py
+          python -m mypy
       - name: Tests
         run: python -m pytest -q
       - name: Release validation

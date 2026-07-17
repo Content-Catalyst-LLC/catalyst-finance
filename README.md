@@ -1,21 +1,22 @@
 # Catalyst Finance
 
-Catalyst Finance is an open-source financial scenario and decision-support workspace for Sustainable Catalyst. It keeps costs, benefits, assumptions, risk, emissions value, interpretation, and review boundaries visible and reproducible.
+Catalyst Finance is an open-source financial scenario and decision-support workspace for Sustainable Catalyst. It keeps costs, benefits, assumptions, methodology, risk, interpretation, narrative, and review boundaries visible and reproducible.
 
-> Educational software only. This repository does not provide investment, legal, tax, accounting, fiduciary, assurance, lending, or financial advice.
+> Educational software only. This repository does not provide investment, legal, tax, accounting, fiduciary, assurance, lending, procurement, funding, or financial advice.
 
-## v1.0.1 release foundation
+## v1.1.0 — Canonical Finance Contract and Shared Calculation Engine
 
-Catalyst Finance v1.0.1 repairs the prototype repository before new finance models are added. The release provides:
+This release establishes one authoritative annual screening model shared by Python, FastAPI, the command line, WordPress, fixtures, and exports.
 
-- one installable Python package and version contract;
-- a canonical scenario CLI;
-- a named demand and elasticity compatibility CLI;
-- a FastAPI application boundary with `/healthz` and `/api/v1/version`;
-- one Python 3.10–3.13 CI workflow;
-- deterministic scenario examples and WordPress packaging;
-- JSON, Python, PHP, JavaScript, package, and release-contract checks;
-- a clean separation between source files and generated elasticity artifacts.
+- Strict v1.1.0 input and publication contracts with explicit currency, price basis, discount-rate basis, frequency, timing, and rounding policy.
+- Validated Pydantic records with structured validation issues.
+- Stable model identifier `catalyst-finance.screening` and methodology version `1.1.0`.
+- Separate calculation, interpretation, and narrative modules.
+- A transparent four-component review score with disclosed weights and contributions.
+- Explicit policies for fractional horizons, overfunding, zero-cost ratios, negative rates, missing emissions, and non-positive benefits.
+- Automatic migration of the original v1.0.0 `{project, inputs}` scenario shape.
+- Exact Python/JavaScript parity tests for canonical and migrated fixtures.
+- API model registry and evaluation routes.
 
 ## Install for development
 
@@ -26,11 +27,35 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements-dev.txt
 ```
 
-The plotting dependency is optional:
+The plotting dependency for the compatibility elasticity utility is optional:
 
 ```bash
 python -m pip install -e '.[plots]'
 ```
+
+## Canonical scenario input
+
+```json
+{
+  "contract_version": "1.1.0",
+  "model_id": "catalyst-finance.screening",
+  "project": {"name": "Building efficiency retrofit", "category": "Energy efficiency"},
+  "context": {
+    "currency": "USD",
+    "price_basis": "nominal",
+    "discount_rate_basis": "nominal",
+    "period_frequency": "annual",
+    "time_basis": "end_of_period",
+    "rounding_policy": "half_up",
+    "monetary_decimals": 2,
+    "ratio_decimals": 2,
+    "score_decimals": 1
+  },
+  "assumptions": {}
+}
+```
+
+See `data/sample_finance_scenario.json` for a complete fixture. Legacy v1.0.0 input remains accepted and is migrated with a preservation record.
 
 ## Scenario CLI
 
@@ -41,63 +66,39 @@ catalyst-finance \
   --markdown-out outputs/sample_finance_scenario.output.md
 ```
 
-The pre-v1.0.1 command remains available:
+The pre-v1.0.1 wrapper remains available:
 
 ```bash
-python python/catalyst_finance_core.py --input data/sample_finance_scenario.json
+python python/catalyst_finance_core.py --input data/legacy_v1.0.0_scenario.json
 ```
 
-## API boundary
+## API
 
 ```bash
 catalyst-finance-api --host 127.0.0.1 --port 8000
 ```
 
-Or:
-
-```bash
-uvicorn app:app --reload
-```
-
-System routes:
+Routes:
 
 ```text
-GET /healthz
-GET /api/v1/version
+GET  /healthz
+GET  /api/v1/version
+GET  /api/v1/models
+GET  /api/v1/models/catalyst-finance.screening
+POST /api/v1/evaluate
 ```
 
-## Demand and elasticity compatibility utility
+## WordPress
 
 ```bash
-catalyst-finance-elasticity observed \
-  --input examples/elasticity/input/observed_sample.csv \
-  --output outputs/observed_results.csv
-
-catalyst-finance-elasticity linear \
-  --a 100 --b 2 \
-  --p-start 5 --p-end 45 --p-step 5 \
-  --output outputs/linear_results.csv
-```
-
-Add `--plots --plot-dir outputs/plots` after installing the `plots` extra.
-
-## Validation and packaging
-
-```bash
-python scripts/check_release.py
 python scripts/build_plugin.py --versioned-copy
 ```
 
-The canonical WordPress package is:
+Packages:
 
 ```text
 dist/catalyst-finance.zip
-```
-
-The versioned package is:
-
-```text
-dist/catalyst-finance-demo-v1.0.1.zip
+dist/catalyst-finance-demo-v1.1.0.zip
 ```
 
 Activate the plugin and use:
@@ -106,26 +107,19 @@ Activate the plugin and use:
 [catalyst_finance_demo]
 ```
 
-## Repository layout
+The browser UI uses the same contract, calculation rules, score weights, methodology metadata, and migration behavior as Python.
 
-```text
-catalyst_finance/           Installable package, API, CLIs, and domain core
-python/                     Backward-compatible pre-v1.0.1 wrapper
-schemas/                    Scenario export schema
-data/                       Canonical sample scenario input
-examples/                   Reproducible outputs and legacy elasticity fixtures
-docs/                       Methodology and implementation notes
-scripts/                    Validation, smoke, reproduction, and package builders
-tests/                      Domain, API, CLI, and elasticity tests
-wordpress/                  WordPress shortcode plugin source
-release/                    Versioned release notes
-outputs/                    Ignored local outputs
-dist/                       Ignored generated packages
+## Validation
+
+```bash
+python scripts/check_release.py
 ```
+
+The release contract checks versions, schemas, generated fixtures, Python/JavaScript parity, migration preservation, API smoke behavior, Ruff, formatting, Mypy, PHP, JavaScript, and deterministic ZIP integrity.
 
 ## Product boundary
 
-Catalyst Finance supports structured financial reasoning and screening. It does not provide autonomous investment, lending, pricing, procurement, funding, tax, accounting, or fiduciary decisions. Real decisions require qualified human review, context-specific evidence, and appropriate professional advice.
+Catalyst Finance supports structured financial reasoning and screening. It does not make autonomous investment, lending, pricing, procurement, funding, tax, accounting, or fiduciary decisions. Real decisions require qualified human review, context-specific evidence, and appropriate professional advice.
 
 ## License
 

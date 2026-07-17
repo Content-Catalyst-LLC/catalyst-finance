@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.1.0 — 2026-07-17
+
+- Added strict versioned input, result, interpretation, metadata, and publication contracts.
+- Added explicit currency, price basis, discount-rate basis, annual frequency, end-of-period timing, and half-up rounding policy.
+- Replaced the prototype dataclasses with validated Pydantic contract records and structured validation issues.
+- Added the stable `catalyst-finance.screening` model registry and methodology version.
+- Separated financial calculations, interpretation rules, and user-facing narrative.
+- Replaced the opaque score formula with four disclosed weighted components and contribution trace.
+- Defined fractional-horizon, overfunding, zero-cost, negative-rate, missing-emissions, and non-positive-benefit behavior.
+- Added canonical and legacy fixtures, v1.0.0 migration, and field-preservation metadata.
+- Added a shared browser calculation engine and exact Python/JavaScript parity tests.
+- Added API model-registry and evaluation routes.
+
 ## 1.0.1 — 2026-07-17
 
 - Created one installable `catalyst_finance` package and release version contract.

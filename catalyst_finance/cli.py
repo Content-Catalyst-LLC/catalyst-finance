@@ -4,17 +4,21 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from collections.abc import Sequence
 from pathlib import Path
 
-from .domain import evaluate
+from pydantic import ValidationError
+
+from .engine import evaluate_scenario
 from .io import load_scenario, render_markdown
+from .models import validation_issues
 from .version import __version__
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Generate a Catalyst Finance scenario brief."
+        description="Generate a contract-valid Catalyst Finance scenario brief."
     )
     parser.add_argument("--version", action="version", version=__version__)
     parser.add_argument("--input", required=True, type=Path)
@@ -29,9 +33,24 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
-    project, inputs = load_scenario(args.input)
-    payload = evaluate(project, inputs, generated_at=args.generated_at)
+    try:
+        scenario, migration = load_scenario(args.input)
+        publication = evaluate_scenario(
+            scenario,
+            generated_at=args.generated_at,
+            migration=migration,
+        )
+    except (ValidationError, ValueError, json.JSONDecodeError) as exc:
+        print(
+            json.dumps(
+                {"error": "invalid_finance_scenario", "issues": validation_issues(exc)},
+                indent=2,
+            ),
+            file=sys.stderr,
+        )
+        return 2
 
+    payload = publication.model_dump(mode="json")
     if args.json_out:
         args.json_out.parent.mkdir(parents=True, exist_ok=True)
         args.json_out.write_text(
@@ -40,7 +59,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         )
     if args.markdown_out:
         args.markdown_out.parent.mkdir(parents=True, exist_ok=True)
-        args.markdown_out.write_text(render_markdown(payload), encoding="utf-8")
+        args.markdown_out.write_text(render_markdown(publication), encoding="utf-8")
 
     if not args.json_out and not args.markdown_out:
         print(json.dumps(payload, indent=2))

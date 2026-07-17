@@ -1,0 +1,156 @@
+{
+  "$defs": {
+    "ScoreComponent": {
+      "additionalProperties": false,
+      "properties": {
+        "component_id": {
+          "title": "Component Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "raw_score": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Raw Score",
+          "type": "number"
+        },
+        "weight": {
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "title": "Weight",
+          "type": "number"
+        },
+        "weighted_contribution": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Weighted Contribution",
+          "type": "number"
+        },
+        "rationale": {
+          "title": "Rationale",
+          "type": "string"
+        }
+      },
+      "required": [
+        "component_id",
+        "label",
+        "raw_score",
+        "weight",
+        "weighted_contribution",
+        "rationale"
+      ],
+      "title": "ScoreComponent",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "net_capital_cost": {
+      "title": "Net Capital Cost",
+      "type": "number",
+      "x-unit": "currency"
+    },
+    "carbon_value_per_year": {
+      "title": "Carbon Value Per Year",
+      "type": "number",
+      "x-unit": "currency"
+    },
+    "net_annual_benefit": {
+      "title": "Net Annual Benefit",
+      "type": "number",
+      "x-unit": "currency"
+    },
+    "present_value_benefits": {
+      "title": "Present Value Benefits",
+      "type": "number",
+      "x-unit": "currency"
+    },
+    "npv": {
+      "title": "Npv",
+      "type": "number",
+      "x-unit": "currency"
+    },
+    "payback_years": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Payback Years",
+      "x-unit": "years"
+    },
+    "roi_percent": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Roi Percent",
+      "x-unit": "percent"
+    },
+    "benefit_cost_ratio": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Benefit Cost Ratio"
+    },
+    "carbon_cost_per_ton": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Carbon Cost Per Ton",
+      "x-unit": "currency_per_metric_ton_co2e"
+    },
+    "risk_adjusted_score": {
+      "maximum": 100,
+      "minimum": 0,
+      "title": "Risk Adjusted Score",
+      "type": "number"
+    },
+    "score_components": {
+      "items": {
+        "$ref": "#/$defs/ScoreComponent"
+      },
+      "maxItems": 4,
+      "minItems": 4,
+      "title": "Score Components",
+      "type": "array"
+    }
+  },
+  "required": [
+    "net_capital_cost",
+    "carbon_value_per_year",
+    "net_annual_benefit",
+    "present_value_benefits",
+    "npv",
+    "payback_years",
+    "roi_percent",
+    "benefit_cost_ratio",
+    "carbon_cost_per_ton",
+    "risk_adjusted_score",
+    "score_components"
+  ],
+  "title": "FinanceResults",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.1.0/finance_result.schema.json"
+}

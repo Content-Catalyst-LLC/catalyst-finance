@@ -6,17 +6,24 @@ from catalyst_finance.domain import (
     FinanceInputs,
     FinanceProject,
     FinanceResult,
+    FinanceScenarioInput,
     evaluate,
     present_value_annuity,
+    round_half_up,
 )
+from catalyst_finance.engine import evaluate_payload, evaluate_scenario
 from catalyst_finance.io import load_scenario, render_markdown
 
 __all__ = [
     "FinanceInputs",
     "FinanceProject",
     "FinanceResult",
+    "FinanceScenarioInput",
     "evaluate",
+    "evaluate_payload",
+    "evaluate_scenario",
     "present_value_annuity",
+    "round_half_up",
     "load_scenario",
     "render_markdown",
     "main",

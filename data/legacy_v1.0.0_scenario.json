@@ -1,22 +1,9 @@
 {
-  "contract_version": "1.1.0",
-  "model_id": "catalyst-finance.screening",
   "project": {
     "name": "Building efficiency retrofit",
     "category": "Energy efficiency"
   },
-  "context": {
-    "currency": "USD",
-    "price_basis": "nominal",
-    "discount_rate_basis": "nominal",
-    "period_frequency": "annual",
-    "time_basis": "end_of_period",
-    "rounding_policy": "half_up",
-    "monetary_decimals": 2,
-    "ratio_decimals": 2,
-    "score_decimals": 1
-  },
-  "assumptions": {
+  "inputs": {
     "capital_cost": 250000,
     "external_funding": 40000,
     "annual_savings": 52000,

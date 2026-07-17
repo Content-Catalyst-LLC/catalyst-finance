@@ -1,0 +1,30 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "risk_level": {
+      "enum": [
+        "Lower concern",
+        "Moderate concern",
+        "High concern"
+      ],
+      "title": "Risk Level",
+      "type": "string"
+    },
+    "flags": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Flags",
+      "type": "array"
+    }
+  },
+  "required": [
+    "risk_level",
+    "flags"
+  ],
+  "title": "FinanceInterpretation",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.1.0/finance_interpretation.schema.json"
+}

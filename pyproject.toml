@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "catalyst-finance"
-version = "1.0.1"
+version = "1.1.0"
 description = "Transparent financial scenario and decision-support tools for Sustainable Catalyst."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -24,6 +24,7 @@ classifiers = [
 ]
 dependencies = [
   "fastapi>=0.115,<1",
+  "pydantic>=2.10,<3",
   "uvicorn>=0.30,<1",
 ]
 
@@ -68,8 +69,15 @@ files = [
   "catalyst_finance/__init__.py",
   "catalyst_finance/api.py",
   "catalyst_finance/cli.py",
+  "catalyst_finance/calculation.py",
   "catalyst_finance/domain.py",
+  "catalyst_finance/engine.py",
+  "catalyst_finance/interpretation.py",
   "catalyst_finance/io.py",
+  "catalyst_finance/migration.py",
+  "catalyst_finance/models.py",
+  "catalyst_finance/narrative.py",
+  "catalyst_finance/registry.py",
   "catalyst_finance/serve.py",
   "catalyst_finance/version.py",
 ]

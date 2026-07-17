@@ -1,0 +1,216 @@
+{
+  "$defs": {
+    "FinanceContext": {
+      "additionalProperties": false,
+      "properties": {
+        "currency": {
+          "default": "USD",
+          "pattern": "^[A-Z]{3}$",
+          "title": "Currency",
+          "type": "string"
+        },
+        "price_basis": {
+          "default": "nominal",
+          "enum": [
+            "nominal",
+            "real"
+          ],
+          "title": "Price Basis",
+          "type": "string"
+        },
+        "discount_rate_basis": {
+          "default": "nominal",
+          "enum": [
+            "nominal",
+            "real"
+          ],
+          "title": "Discount Rate Basis",
+          "type": "string"
+        },
+        "period_frequency": {
+          "const": "annual",
+          "default": "annual",
+          "title": "Period Frequency",
+          "type": "string"
+        },
+        "time_basis": {
+          "const": "end_of_period",
+          "default": "end_of_period",
+          "title": "Time Basis",
+          "type": "string"
+        },
+        "rounding_policy": {
+          "const": "half_up",
+          "default": "half_up",
+          "title": "Rounding Policy",
+          "type": "string"
+        },
+        "monetary_decimals": {
+          "const": 2,
+          "default": 2,
+          "title": "Monetary Decimals",
+          "type": "integer"
+        },
+        "ratio_decimals": {
+          "const": 2,
+          "default": 2,
+          "title": "Ratio Decimals",
+          "type": "integer"
+        },
+        "score_decimals": {
+          "const": 1,
+          "default": 1,
+          "title": "Score Decimals",
+          "type": "integer"
+        }
+      },
+      "title": "FinanceContext",
+      "type": "object"
+    },
+    "FinanceInputs": {
+      "additionalProperties": false,
+      "properties": {
+        "capital_cost": {
+          "minimum": 0,
+          "title": "Capital Cost",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "external_funding": {
+          "minimum": 0,
+          "title": "External Funding",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "annual_savings": {
+          "minimum": 0,
+          "title": "Annual Savings",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "annual_operating_cost": {
+          "minimum": 0,
+          "title": "Annual Operating Cost",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "time_horizon_years": {
+          "exclusiveMinimum": 0,
+          "maximum": 100,
+          "title": "Time Horizon Years",
+          "type": "number",
+          "x-unit": "years"
+        },
+        "discount_rate_percent": {
+          "exclusiveMinimum": -100,
+          "maximum": 100,
+          "title": "Discount Rate Percent",
+          "type": "number",
+          "x-unit": "percent_per_year"
+        },
+        "annual_emissions_reduced_tons": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Annual Emissions Reduced Tons",
+          "x-unit": "metric_tons_co2e_per_year"
+        },
+        "carbon_price_per_ton": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Carbon Price Per Ton",
+          "type": "number",
+          "x-unit": "currency_per_metric_ton_co2e"
+        },
+        "confidence_percent": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Confidence Percent",
+          "type": "number",
+          "x-unit": "percent"
+        },
+        "implementation_risk_percent": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Implementation Risk Percent",
+          "type": "number",
+          "x-unit": "percent"
+        }
+      },
+      "required": [
+        "capital_cost",
+        "external_funding",
+        "annual_savings",
+        "annual_operating_cost",
+        "time_horizon_years",
+        "discount_rate_percent",
+        "confidence_percent",
+        "implementation_risk_percent"
+      ],
+      "title": "FinanceInputs",
+      "type": "object"
+    },
+    "FinanceProject": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "category": {
+          "default": "Sustainability finance",
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Category",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "FinanceProject",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "const": "1.1.0",
+      "default": "1.1.0",
+      "title": "Contract Version",
+      "type": "string"
+    },
+    "model_id": {
+      "const": "catalyst-finance.screening",
+      "default": "catalyst-finance.screening",
+      "title": "Model Id",
+      "type": "string"
+    },
+    "project": {
+      "$ref": "#/$defs/FinanceProject"
+    },
+    "context": {
+      "$ref": "#/$defs/FinanceContext"
+    },
+    "assumptions": {
+      "$ref": "#/$defs/FinanceInputs"
+    }
+  },
+  "required": [
+    "project",
+    "assumptions"
+  ],
+  "title": "FinanceScenarioInput",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.1.0/finance_input.schema.json"
+}

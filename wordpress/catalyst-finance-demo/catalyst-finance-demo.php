@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Catalyst Finance Demo
  * Description: Browser-based Catalyst Finance scenario demo for Sustainable Catalyst.
- * Version: 1.0.1
+ * Version: 1.1.0
  * Author: Content Catalyst LLC
  * License: MIT
  */
@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('CATALYST_FINANCE_DEMO_VERSION', '1.0.1');
+define('CATALYST_FINANCE_DEMO_VERSION', '1.1.0');
 
 function catalyst_finance_demo_assets() {
     $base = plugin_dir_url(__FILE__);
@@ -23,9 +23,16 @@ function catalyst_finance_demo_assets() {
         CATALYST_FINANCE_DEMO_VERSION
     );
     wp_enqueue_script(
+        'catalyst-finance-engine',
+        $base . 'assets/catalyst-finance-engine.js',
+        array(),
+        CATALYST_FINANCE_DEMO_VERSION,
+        true
+    );
+    wp_enqueue_script(
         'catalyst-finance-demo',
         $base . 'assets/catalyst-finance-demo.js',
-        array(),
+        array('catalyst-finance-engine'),
         CATALYST_FINANCE_DEMO_VERSION,
         true
     );
@@ -39,7 +46,7 @@ function catalyst_finance_demo_shortcode($atts = array()) {
       <div class="scfin-demo__header">
         <p class="scfin-demo__eyebrow">Interactive Finance Scenario</p>
         <h3>Build a reviewable finance case</h3>
-        <p>Estimate net annual benefit, payback, NPV, ROI, benefit-cost ratio, carbon cost per ton, and a risk-adjusted review score.</p>
+        <p>Use the canonical v1.1.0 model to estimate NPV, payback, ROI, benefit-cost ratio, carbon value, and a fully traceable review score.</p>
       </div>
 
       <div class="scfin-demo__grid">
@@ -132,7 +139,12 @@ function catalyst_finance_demo_shortcode($atts = array()) {
           </div>
 
           <details class="scfin-demo__details">
-            <summary>JSON export</summary>
+            <summary>Score methodology</summary>
+            <ul data-scfin-score-trace></ul>
+          </details>
+
+          <details class="scfin-demo__details">
+            <summary>Contract-valid JSON export</summary>
             <pre data-scfin-json></pre>
           </details>
         </div>

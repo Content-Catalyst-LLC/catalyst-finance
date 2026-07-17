@@ -1,15 +1,19 @@
-# Export Specification
+# Catalyst Finance v1.1.0 Export Specification
 
-Catalyst Finance scenario exports conform to `schemas/finance_scenario.schema.json`.
+Canonical input validates against `schemas/finance_input.schema.json`. Complete publications validate against `schemas/finance_publication.schema.json` and the compatibility alias `schemas/finance_scenario.schema.json`.
 
-The top-level records are:
+The publication contains:
 
+- `contract_version` and `model_id`
 - `project`
-- `inputs`
-- `results`
+- `context`
+- `assumptions`
+- `results`, including a complete score trace
 - `interpretation`
-- `metadata`
+- `narrative`
+- `methodology`
+- `metadata`, including optional migration provenance
 
-The v1.0.1 metadata record includes a generation timestamp, tool name, release version, and educational-use disclaimer. The Python CLI accepts `--generated-at` only to reproduce fixtures and tests; ordinary exports use the current UTC time.
+Component schemas are also published for results, interpretation, and metadata. All contracts reject undeclared properties.
 
-v1.0.1 validates repository examples and package integrity. A fully versioned cross-runtime contract, units policy, migration layer, and browser parity suite are scheduled for v1.1.0.
+The CLI's `--generated-at` option exists only for reproducible fixtures and tests. Ordinary exports use the current UTC time.

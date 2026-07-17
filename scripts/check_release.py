@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Catalyst Finance v1.0.1 release contract."""
+"""Catalyst Finance v1.1.0 release contract."""
 
 from __future__ import annotations
 
@@ -14,25 +14,43 @@ import tempfile
 import zipfile
 from collections.abc import Sequence
 from pathlib import Path
+from typing import Any
 
 import tomllib
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-VERSION = "1.0.1"
+VERSION = "1.1.0"
+MODEL_ID = "catalyst-finance.screening"
+FIXED_TIMESTAMP = "2026-07-17T00:00:00+00:00"
 
 
 class ReleaseError(RuntimeError):
     """Raised when a release contract fails."""
 
 
-def run(command: Sequence[str], *, cwd: Path = ROOT) -> None:
+def run(
+    command: Sequence[str],
+    *,
+    cwd: Path = ROOT,
+    capture: bool = False,
+) -> subprocess.CompletedProcess[str]:
     print("RUN:", " ".join(command))
-    completed = subprocess.run(command, cwd=cwd, check=False)
+    completed = subprocess.run(
+        command,
+        cwd=cwd,
+        check=False,
+        capture_output=capture,
+        text=True,
+    )
     if completed.returncode:
+        if capture:
+            print(completed.stdout)
+            print(completed.stderr, file=sys.stderr)
         raise ReleaseError(
             f"Command failed with status {completed.returncode}: {' '.join(command)}"
         )
+    return completed
 
 
 def require(path: str) -> Path:
@@ -42,12 +60,22 @@ def require(path: str) -> Path:
     return target
 
 
+def _match(pattern: str, text: str, label: str) -> str:
+    match = re.search(pattern, text)
+    if match is None:
+        raise ReleaseError(f"Could not find version in {label}")
+    return match.group(1)
+
+
 def check_versions() -> None:
     version_file = require("VERSION").read_text(encoding="utf-8").strip()
     pyproject = tomllib.loads(require("pyproject.toml").read_text(encoding="utf-8"))
     package_text = require("catalyst_finance/version.py").read_text(encoding="utf-8")
     plugin_text = require(
         "wordpress/catalyst-finance-demo/catalyst-finance-demo.php"
+    ).read_text(encoding="utf-8")
+    engine_text = require(
+        "wordpress/catalyst-finance-demo/assets/catalyst-finance-engine.js"
     ).read_text(encoding="utf-8")
     manifest = json.loads(
         require("catalyst_finance_manifest.json").read_text(encoding="utf-8")
@@ -57,25 +85,39 @@ def check_versions() -> None:
             encoding="utf-8"
         )
     )
-    schema = json.loads(
-        require("schemas/finance_scenario.schema.json").read_text(encoding="utf-8")
+    input_schema = json.loads(
+        require("schemas/finance_input.schema.json").read_text(encoding="utf-8")
     )
-
+    publication_schema = json.loads(
+        require("schemas/finance_publication.schema.json").read_text(encoding="utf-8")
+    )
     observed = {
         "VERSION": version_file,
         "pyproject": pyproject["project"]["version"],
-        "package": re.search(r'__version__ = "([^"]+)"', package_text).group(1),
-        "plugin": re.search(r"Version:\s*([0-9.]+)", plugin_text).group(1),
-        "plugin constant": re.search(
-            r"CATALYST_FINANCE_DEMO_VERSION', '([0-9.]+)'", plugin_text
-        ).group(1),
+        "package": _match(r'__version__ = "([^"]+)"', package_text, "package"),
+        "plugin": _match(r"Version:\s*([0-9.]+)", plugin_text, "plugin"),
+        "plugin constant": _match(
+            r"CATALYST_FINANCE_DEMO_VERSION', '([0-9.]+)'",
+            plugin_text,
+            "plugin constant",
+        ),
+        "browser engine": _match(
+            r"const CONTRACT_VERSION = '([0-9.]+)'", engine_text, "browser engine"
+        ),
         "manifest": manifest["version"],
+        "manifest contract": manifest["contract_version"],
         "example": example["metadata"]["version"],
-        "schema": schema["properties"]["metadata"]["properties"]["version"]["const"],
+        "example contract": example["contract_version"],
+        "input schema": input_schema["properties"]["contract_version"]["const"],
+        "publication schema": publication_schema["properties"]["contract_version"][
+            "const"
+        ],
     }
     mismatches = {name: value for name, value in observed.items() if value != VERSION}
     if mismatches:
         raise ReleaseError(f"Version contract failed: {mismatches}")
+    if manifest["model_id"] != MODEL_ID or example["model_id"] != MODEL_ID:
+        raise ReleaseError("Model identifier contract failed.")
     print(f"PASS: {len(observed)} version surfaces report {VERSION}.")
 
 
@@ -83,19 +125,29 @@ def check_layout() -> None:
     required = [
         "app.py",
         "catalyst_finance/api.py",
+        "catalyst_finance/calculation.py",
         "catalyst_finance/cli.py",
         "catalyst_finance/domain.py",
-        "catalyst_finance/elasticity.py",
+        "catalyst_finance/engine.py",
+        "catalyst_finance/interpretation.py",
         "catalyst_finance/io.py",
-        "catalyst_finance/serve.py",
-        "scripts/build_plugin.py",
-        "scripts/build_repository_release.py",
-        "scripts/reproduce_examples.py",
-        "scripts/smoke_test.py",
-        "tests/test_api.py",
-        "tests/test_catalyst_finance_core.py",
-        "tests/test_elasticity.py",
-        "release/v1.0.1.md",
+        "catalyst_finance/migration.py",
+        "catalyst_finance/models.py",
+        "catalyst_finance/narrative.py",
+        "catalyst_finance/registry.py",
+        "data/sample_finance_scenario.json",
+        "data/legacy_v1.0.0_scenario.json",
+        "scripts/browser_parity.js",
+        "scripts/generate_schemas.py",
+        "tests/test_browser_parity.py",
+        "tests/test_contracts.py",
+        "release/v1.1.0.md",
+        "schemas/finance_input.schema.json",
+        "schemas/finance_result.schema.json",
+        "schemas/finance_interpretation.schema.json",
+        "schemas/finance_metadata.schema.json",
+        "schemas/finance_publication.schema.json",
+        "wordpress/catalyst-finance-demo/assets/catalyst-finance-engine.js",
     ]
     for path in required:
         require(path)
@@ -105,11 +157,6 @@ def check_layout() -> None:
         raise ReleaseError(
             "Exactly one CI workflow named .github/workflows/ci.yml is required."
         )
-
-    forbidden = [ROOT / "plots", ROOT / "data" / "linear_results.csv"]
-    for path in forbidden:
-        if path.exists():
-            raise ReleaseError(f"Generated artifact remains in source layout: {path}")
 
     archives = [
         path
@@ -132,9 +179,9 @@ def check_layout() -> None:
 
 def check_static_tools(portable: bool) -> None:
     ruff_available = (
-        subprocess.run(
+        shutil.which("ruff") is not None
+        or subprocess.run(
             [sys.executable, "-c", "import ruff"],
-            cwd=ROOT,
             check=False,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
@@ -142,16 +189,15 @@ def check_static_tools(portable: bool) -> None:
         == 0
     )
     mypy_available = (
-        subprocess.run(
+        shutil.which("mypy") is not None
+        or subprocess.run(
             [sys.executable, "-c", "import mypy"],
-            cwd=ROOT,
             check=False,
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
         ).returncode
         == 0
     )
-
     if ruff_available:
         run([sys.executable, "-m", "ruff", "check", "."])
         run([sys.executable, "-m", "ruff", "format", "--check", "."])
@@ -159,56 +205,117 @@ def check_static_tools(portable: bool) -> None:
         raise ReleaseError("Ruff is required for release validation.")
     else:
         print("INFO: portable mode skipped unavailable Ruff checks.")
-
-    mypy_files = [
-        "catalyst_finance/__init__.py",
-        "catalyst_finance/api.py",
-        "catalyst_finance/cli.py",
-        "catalyst_finance/domain.py",
-        "catalyst_finance/io.py",
-        "catalyst_finance/serve.py",
-        "catalyst_finance/version.py",
-    ]
     if mypy_available:
-        run([sys.executable, "-m", "mypy", *mypy_files])
+        run([sys.executable, "-m", "mypy"])
     elif not portable:
         raise ReleaseError("Mypy is required for release validation.")
     else:
         print("INFO: portable mode skipped unavailable Mypy checks.")
 
 
-def check_json_and_examples() -> None:
+def _validate(schema: dict[str, Any], instance: Any, label: str) -> None:
     from jsonschema import Draft202012Validator, FormatChecker
 
-    schema = json.loads(
-        require("schemas/finance_scenario.schema.json").read_text(encoding="utf-8")
-    )
     Draft202012Validator.check_schema(schema)
     validator = Draft202012Validator(schema, format_checker=FormatChecker())
-    example = json.loads(
+    errors = sorted(validator.iter_errors(instance), key=lambda item: list(item.path))
+    if errors:
+        messages = [f"{list(error.path)}: {error.message}" for error in errors]
+        raise ReleaseError(f"{label} schema validation failed: {'; '.join(messages)}")
+
+
+def check_contracts_and_examples() -> None:
+    schemas = {
+        path.name: json.loads(path.read_text(encoding="utf-8"))
+        for path in sorted((ROOT / "schemas").glob("*.schema.json"))
+    }
+    canonical_input = json.loads(
+        require("data/sample_finance_scenario.json").read_text(encoding="utf-8")
+    )
+    publication = json.loads(
         require("examples/sample_finance_scenario.output.json").read_text(
             encoding="utf-8"
         )
     )
-    errors = sorted(validator.iter_errors(example), key=lambda item: list(item.path))
-    if errors:
-        messages = [f"{list(error.path)}: {error.message}" for error in errors]
-        raise ReleaseError("Example schema validation failed: " + "; ".join(messages))
+    migrated = json.loads(
+        require("examples/legacy_v1.0.0_scenario.migrated.output.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    _validate(schemas["finance_input.schema.json"], canonical_input, "Canonical input")
+    _validate(
+        schemas["finance_publication.schema.json"], publication, "Canonical publication"
+    )
+    _validate(
+        schemas["finance_publication.schema.json"], migrated, "Migrated publication"
+    )
+    _validate(schemas["finance_result.schema.json"], publication["results"], "Results")
+    _validate(
+        schemas["finance_interpretation.schema.json"],
+        publication["interpretation"],
+        "Interpretation",
+    )
+    _validate(
+        schemas["finance_metadata.schema.json"], publication["metadata"], "Metadata"
+    )
 
+    legacy = json.loads(
+        require("data/legacy_v1.0.0_scenario.json").read_text(encoding="utf-8")
+    )
+    if migrated["assumptions"] != legacy["inputs"]:
+        raise ReleaseError("Legacy migration did not preserve all input values.")
+    migration = migrated["metadata"]["migration"]
+    if migration is None or len(migration["preserved_fields"]) != 12:
+        raise ReleaseError("Legacy migration provenance is incomplete.")
+
+    from scripts.generate_schemas import generate
     from scripts.reproduce_examples import reproduce
 
+    with tempfile.TemporaryDirectory(prefix="catalyst-finance-schemas-") as tmp:
+        generated_dir = Path(tmp)
+        generate(generated_dir)
+        for path in sorted((ROOT / "schemas").glob("*.schema.json")):
+            if path.read_bytes() != (generated_dir / path.name).read_bytes():
+                raise ReleaseError(f"Generated schema mismatch: {path.name}")
+
     with tempfile.TemporaryDirectory(prefix="catalyst-finance-examples-") as tmp:
-        output_dir = Path(tmp)
-        reproduce(output_dir)
-        for name in [
-            "sample_finance_scenario.output.json",
-            "sample_finance_scenario.output.md",
-        ]:
-            expected = require(f"examples/{name}").read_bytes()
-            actual = (output_dir / name).read_bytes()
-            if actual != expected:
-                raise ReleaseError(f"Reproducible example mismatch: {name}")
-    print("PASS: JSON schema and reproducible examples passed.")
+        generated = reproduce(Path(tmp))
+        for path in generated:
+            expected = require(f"examples/{path.name}").read_bytes()
+            if path.read_bytes() != expected:
+                raise ReleaseError(f"Reproducible example mismatch: {path.name}")
+    print("PASS: schemas, migration, and reproducible examples passed.")
+
+
+def check_browser_parity(portable: bool) -> None:
+    node = shutil.which("node")
+    if node is None:
+        if portable:
+            print(
+                "INFO: portable mode skipped browser parity because Node.js is absent."
+            )
+            return
+        raise ReleaseError("Node.js is required for browser parity.")
+
+    from catalyst_finance.engine import evaluate_scenario
+    from catalyst_finance.io import load_scenario
+
+    for filename in ["sample_finance_scenario.json", "legacy_v1.0.0_scenario.json"]:
+        path = ROOT / "data" / filename
+        scenario, migration = load_scenario(path)
+        expected = evaluate_scenario(
+            scenario,
+            generated_at=FIXED_TIMESTAMP,
+            migration=migration,
+        ).model_dump(mode="json")
+        completed = run(
+            [node, "scripts/browser_parity.js", str(path), FIXED_TIMESTAMP],
+            capture=True,
+        )
+        actual = json.loads(completed.stdout)
+        if actual != expected:
+            raise ReleaseError(f"Python/browser parity failed: {filename}")
+    print("PASS: Python and browser engines are contract-equivalent.")
 
 
 def check_plugin() -> None:
@@ -224,7 +331,10 @@ def check_plugin() -> None:
             php = archive.read(
                 "catalyst-finance-demo/catalyst-finance-demo.php"
             ).decode("utf-8")
-            if f"Version: {VERSION}" not in php:
+            engine = archive.read(
+                "catalyst-finance-demo/assets/catalyst-finance-engine.js"
+            ).decode("utf-8")
+            if f"Version: {VERSION}" not in php or VERSION not in engine:
                 raise ReleaseError("WordPress package version mismatch.")
     print("PASS: reproducible WordPress package contract passed.")
 
@@ -247,17 +357,16 @@ def check_syntax(portable: bool) -> None:
 
     node = shutil.which("node")
     if node:
-        run(
-            [
-                node,
-                "--check",
-                "wordpress/catalyst-finance-demo/assets/catalyst-finance-demo.js",
-            ]
-        )
+        for path in [
+            "scripts/browser_parity.js",
+            "wordpress/catalyst-finance-demo/assets/catalyst-finance-engine.js",
+            "wordpress/catalyst-finance-demo/assets/catalyst-finance-demo.js",
+        ]:
+            run([node, "--check", path])
     elif not portable:
-        raise ReleaseError("Node.js is required for the JavaScript syntax check.")
+        raise ReleaseError("Node.js is required for JavaScript syntax checks.")
     else:
-        print("INFO: portable mode skipped optional Node.js syntax check.")
+        print("INFO: portable mode skipped optional Node.js syntax checks.")
 
     php = shutil.which("php")
     if php:
@@ -285,22 +394,29 @@ def main() -> int:
         help="Permit unavailable optional Node/PHP checks.",
     )
     args = parser.parse_args()
-
     try:
         clear_transient_state()
         check_versions()
         check_layout()
         check_static_tools(args.portable)
-        check_json_and_examples()
+        run([sys.executable, "-m", "pytest", "-q"])
+        check_contracts_and_examples()
+        check_browser_parity(args.portable)
         check_plugin()
         check_syntax(args.portable)
         clear_transient_state()
         check_layout()
-    except (ReleaseError, AttributeError, KeyError, TypeError, ValueError) as exc:
+    except (
+        ReleaseError,
+        AttributeError,
+        KeyError,
+        TypeError,
+        ValueError,
+        json.JSONDecodeError,
+    ) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1
-
-    print("Catalyst Finance v1.0.1 release contract passed.")
+    print("Catalyst Finance v1.1.0 release contract passed.")
     return 0
 
 

@@ -1,0 +1,74 @@
+{
+  "$defs": {
+    "MigrationRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "source_contract_version": {
+          "title": "Source Contract Version",
+          "type": "string"
+        },
+        "target_contract_version": {
+          "const": "1.1.0",
+          "default": "1.1.0",
+          "title": "Target Contract Version",
+          "type": "string"
+        },
+        "preserved_fields": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Preserved Fields",
+          "type": "array"
+        }
+      },
+      "required": [
+        "source_contract_version",
+        "preserved_fields"
+      ],
+      "title": "MigrationRecord",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "generated_at": {
+      "title": "Generated At",
+      "type": "string"
+    },
+    "tool": {
+      "const": "Catalyst Finance scenario engine",
+      "default": "Catalyst Finance scenario engine",
+      "title": "Tool",
+      "type": "string"
+    },
+    "version": {
+      "const": "1.1.0",
+      "default": "1.1.0",
+      "title": "Version",
+      "type": "string"
+    },
+    "disclaimer": {
+      "title": "Disclaimer",
+      "type": "string"
+    },
+    "migration": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/MigrationRecord"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "generated_at",
+    "disclaimer"
+  ],
+  "title": "FinanceMetadata",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.1.0/finance_metadata.schema.json"
+}
