@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Catalyst Finance v1.1.0 release contract."""
+"""Catalyst Finance v1.2.0 release contract."""
 
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ import tomllib
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-VERSION = "1.1.0"
+VERSION = "1.2.0"
 MODEL_ID = "catalyst-finance.screening"
 FIXED_TIMESTAMP = "2026-07-17T00:00:00+00:00"
 
@@ -91,6 +91,14 @@ def check_versions() -> None:
     publication_schema = json.loads(
         require("schemas/finance_publication.schema.json").read_text(encoding="utf-8")
     )
+    workspace_schema = json.loads(
+        require("schemas/finance_workspace.schema.json").read_text(encoding="utf-8")
+    )
+    workspace_export = json.loads(
+        require("examples/sample_finance_workspace.export.json").read_text(
+            encoding="utf-8"
+        )
+    )
     observed = {
         "VERSION": version_file,
         "pyproject": pyproject["project"]["version"],
@@ -112,6 +120,11 @@ def check_versions() -> None:
         "publication schema": publication_schema["properties"]["contract_version"][
             "const"
         ],
+        "workspace schema": workspace_schema["properties"][
+            "workspace_contract_version"
+        ]["const"],
+        "workspace export": workspace_export["export_contract_version"],
+        "workspace record": workspace_export["workspace"]["workspace_contract_version"],
     }
     mismatches = {name: value for name, value in observed.items() if value != VERSION}
     if mismatches:
@@ -135,18 +148,32 @@ def check_layout() -> None:
         "catalyst_finance/models.py",
         "catalyst_finance/narrative.py",
         "catalyst_finance/registry.py",
+        "catalyst_finance/repositories.py",
+        "catalyst_finance/templates.py",
+        "catalyst_finance/workspace.py",
+        "catalyst_finance/workspace_cli.py",
+        "catalyst_finance/workspace_models.py",
         "data/sample_finance_scenario.json",
+        "data/legacy_v1.1.0_scenario.json",
         "data/legacy_v1.0.0_scenario.json",
         "scripts/browser_parity.js",
         "scripts/generate_schemas.py",
+        "scripts/reproduce_workspace_example.py",
         "tests/test_browser_parity.py",
+        "tests/test_workspace.py",
+        "tests/test_workspace_cli.py",
         "tests/test_contracts.py",
-        "release/v1.1.0.md",
+        "release/v1.2.0.md",
         "schemas/finance_input.schema.json",
         "schemas/finance_result.schema.json",
         "schemas/finance_interpretation.schema.json",
         "schemas/finance_metadata.schema.json",
         "schemas/finance_publication.schema.json",
+        "schemas/finance_workspace.schema.json",
+        "schemas/finance_workspace_export.schema.json",
+        "schemas/finance_workspace_scenario.schema.json",
+        "schemas/finance_scenario_template.schema.json",
+        "examples/sample_finance_workspace.export.json",
         "wordpress/catalyst-finance-demo/assets/catalyst-finance-engine.js",
     ]
     for path in required:
@@ -242,12 +269,37 @@ def check_contracts_and_examples() -> None:
             encoding="utf-8"
         )
     )
+    migrated_v110 = json.loads(
+        require("examples/legacy_v1.1.0_scenario.migrated.output.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    workspace_export = json.loads(
+        require("examples/sample_finance_workspace.export.json").read_text(
+            encoding="utf-8"
+        )
+    )
     _validate(schemas["finance_input.schema.json"], canonical_input, "Canonical input")
     _validate(
         schemas["finance_publication.schema.json"], publication, "Canonical publication"
     )
     _validate(
         schemas["finance_publication.schema.json"], migrated, "Migrated publication"
+    )
+    _validate(
+        schemas["finance_publication.schema.json"],
+        migrated_v110,
+        "Migrated v1.1.0 publication",
+    )
+    _validate(
+        schemas["finance_workspace_export.schema.json"],
+        workspace_export,
+        "Workspace export",
+    )
+    _validate(
+        schemas["finance_workspace.schema.json"],
+        workspace_export["workspace"],
+        "Workspace",
     )
     _validate(schemas["finance_result.schema.json"], publication["results"], "Results")
     _validate(
@@ -267,9 +319,17 @@ def check_contracts_and_examples() -> None:
     migration = migrated["metadata"]["migration"]
     if migration is None or len(migration["preserved_fields"]) != 12:
         raise ReleaseError("Legacy migration provenance is incomplete.")
+    migration_v110 = migrated_v110["metadata"]["migration"]
+    if (
+        migration_v110 is None
+        or migration_v110["source_contract_version"] != "1.1.0"
+        or len(migration_v110["preserved_fields"]) != 22
+    ):
+        raise ReleaseError("v1.1.0 migration provenance is incomplete.")
 
     from scripts.generate_schemas import generate
     from scripts.reproduce_examples import reproduce
+    from scripts.reproduce_workspace_example import reproduce as reproduce_workspace
 
     with tempfile.TemporaryDirectory(prefix="catalyst-finance-schemas-") as tmp:
         generated_dir = Path(tmp)
@@ -284,7 +344,15 @@ def check_contracts_and_examples() -> None:
             expected = require(f"examples/{path.name}").read_bytes()
             if path.read_bytes() != expected:
                 raise ReleaseError(f"Reproducible example mismatch: {path.name}")
-    print("PASS: schemas, migration, and reproducible examples passed.")
+
+    with tempfile.TemporaryDirectory(
+        prefix="catalyst-finance-workspace-example-"
+    ) as tmp:
+        generated_workspace = reproduce_workspace(Path(tmp) / "workspace.json")
+        expected_workspace = require("examples/sample_finance_workspace.export.json")
+        if generated_workspace.read_bytes() != expected_workspace.read_bytes():
+            raise ReleaseError("Reproducible workspace export mismatch.")
+    print("PASS: schemas, migrations, workspace export, and examples passed.")
 
 
 def check_browser_parity(portable: bool) -> None:
@@ -300,7 +368,11 @@ def check_browser_parity(portable: bool) -> None:
     from catalyst_finance.engine import evaluate_scenario
     from catalyst_finance.io import load_scenario
 
-    for filename in ["sample_finance_scenario.json", "legacy_v1.0.0_scenario.json"]:
+    for filename in [
+        "sample_finance_scenario.json",
+        "legacy_v1.0.0_scenario.json",
+        "legacy_v1.1.0_scenario.json",
+    ]:
         path = ROOT / "data" / filename
         scenario, migration = load_scenario(path)
         expected = evaluate_scenario(
@@ -336,6 +408,18 @@ def check_plugin() -> None:
             ).decode("utf-8")
             if f"Version: {VERSION}" not in php or VERSION not in engine:
                 raise ReleaseError("WordPress package version mismatch.")
+            browser = archive.read(
+                "catalyst-finance-demo/assets/catalyst-finance-demo.js"
+            ).decode("utf-8")
+            required_workspace_tokens = [
+                "workspace_contract_version",
+                "data-scfin-export-workspace",
+                "data-scfin-import-workspace",
+                "Recovered unsaved changes",
+                "beforeunload",
+            ]
+            if any(token not in php + browser for token in required_workspace_tokens):
+                raise ReleaseError("WordPress workspace controls are incomplete.")
     print("PASS: reproducible WordPress package contract passed.")
 
 
@@ -416,7 +500,7 @@ def main() -> int:
     ) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1
-    print("Catalyst Finance v1.1.0 release contract passed.")
+    print("Catalyst Finance v1.2.0 release contract passed.")
     return 0
 
 

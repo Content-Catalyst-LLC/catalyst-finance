@@ -1,18 +1,31 @@
 # WordPress Plugin
 
-The plugin source is located at `wordpress/catalyst-finance-demo/`.
-
-Build it with:
+Build with:
 
 ```bash
 python scripts/build_plugin.py --versioned-copy
 ```
 
-This creates:
+## Shortcodes
 
-- `dist/catalyst-finance.zip`
-- `dist/catalyst-finance-demo-v1.0.1.zip`
+Persistent multi-scenario workspace:
 
-Both packages contain one top-level `catalyst-finance-demo/` directory. The plugin registers `[catalyst_finance_demo]`, performs calculations locally in the browser, and does not submit visitor inputs to Sustainable Catalyst.
+```text
+[catalyst_finance_workspace]
+```
 
-The browser model remains a public demonstration surface. Cross-runtime calculation parity is scheduled for v1.1.0.
+The original shortcode now opens the same workspace experience:
+
+```text
+[catalyst_finance_demo]
+```
+
+Read-only public example:
+
+```text
+[catalyst_finance_demo mode="public"]
+```
+
+## Browser persistence
+
+The workspace uses `localStorage`, keeps a separate recovery copy for interrupted work, warns before leaving with unsaved changes, and supports complete JSON import/export. Data is local to the current browser and is not synchronized to WordPress or the Catalyst Finance API.

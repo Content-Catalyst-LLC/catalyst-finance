@@ -179,38 +179,215 @@
       ],
       "title": "FinanceProject",
       "type": "object"
+    },
+    "FinanceScenarioInput": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": "1.2.0",
+          "default": "1.2.0",
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "model_id": {
+          "const": "catalyst-finance.screening",
+          "default": "catalyst-finance.screening",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "project": {
+          "$ref": "#/$defs/FinanceProject"
+        },
+        "context": {
+          "$ref": "#/$defs/FinanceContext"
+        },
+        "assumptions": {
+          "$ref": "#/$defs/FinanceInputs"
+        }
+      },
+      "required": [
+        "project",
+        "assumptions"
+      ],
+      "title": "FinanceScenarioInput",
+      "type": "object"
+    },
+    "ScenarioRevision": {
+      "additionalProperties": false,
+      "properties": {
+        "revision_id": {
+          "maxLength": 100,
+          "minLength": 5,
+          "pattern": "^[a-z]+_[A-Za-z0-9_-]+$",
+          "title": "Revision Id",
+          "type": "string"
+        },
+        "revision_number": {
+          "minimum": 1,
+          "title": "Revision Number",
+          "type": "integer"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "model_id": {
+          "const": "catalyst-finance.screening",
+          "default": "catalyst-finance.screening",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "model_version": {
+          "const": "1.2.0",
+          "default": "1.2.0",
+          "title": "Model Version",
+          "type": "string"
+        },
+        "change_note": {
+          "default": "",
+          "maxLength": 1000,
+          "title": "Change Note",
+          "type": "string"
+        },
+        "scenario": {
+          "$ref": "#/$defs/FinanceScenarioInput"
+        }
+      },
+      "required": [
+        "revision_id",
+        "revision_number",
+        "created_at",
+        "scenario"
+      ],
+      "title": "ScenarioRevision",
+      "type": "object"
     }
   },
   "additionalProperties": false,
   "properties": {
-    "contract_version": {
-      "const": "1.2.0",
-      "default": "1.2.0",
-      "title": "Contract Version",
+    "scenario_id": {
+      "maxLength": 100,
+      "minLength": 5,
+      "pattern": "^[a-z]+_[A-Za-z0-9_-]+$",
+      "title": "Scenario Id",
       "type": "string"
     },
-    "model_id": {
-      "const": "catalyst-finance.screening",
-      "default": "catalyst-finance.screening",
-      "title": "Model Id",
+    "project_id": {
+      "anyOf": [
+        {
+          "maxLength": 100,
+          "minLength": 5,
+          "pattern": "^[a-z]+_[A-Za-z0-9_-]+$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Project Id"
+    },
+    "name": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Name",
       "type": "string"
     },
-    "project": {
-      "$ref": "#/$defs/FinanceProject"
+    "alternative_label": {
+      "default": "Base",
+      "maxLength": 120,
+      "minLength": 1,
+      "title": "Alternative Label",
+      "type": "string"
     },
-    "context": {
-      "$ref": "#/$defs/FinanceContext"
+    "status": {
+      "default": "active",
+      "enum": [
+        "draft",
+        "active",
+        "archived"
+      ],
+      "title": "Status",
+      "type": "string"
     },
-    "assumptions": {
-      "$ref": "#/$defs/FinanceInputs"
+    "template_id": {
+      "anyOf": [
+        {
+          "maxLength": 100,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Template Id"
+    },
+    "notes": {
+      "default": "",
+      "maxLength": 10000,
+      "title": "Notes",
+      "type": "string"
+    },
+    "tags": {
+      "items": {
+        "maxLength": 80,
+        "minLength": 1,
+        "type": "string"
+      },
+      "title": "Tags",
+      "type": "array"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "archived_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Archived At"
+    },
+    "current_revision_id": {
+      "maxLength": 100,
+      "minLength": 5,
+      "pattern": "^[a-z]+_[A-Za-z0-9_-]+$",
+      "title": "Current Revision Id",
+      "type": "string"
+    },
+    "revisions": {
+      "items": {
+        "$ref": "#/$defs/ScenarioRevision"
+      },
+      "minItems": 1,
+      "title": "Revisions",
+      "type": "array"
     }
   },
   "required": [
-    "project",
-    "assumptions"
+    "scenario_id",
+    "name",
+    "created_at",
+    "updated_at",
+    "current_revision_id",
+    "revisions"
   ],
-  "title": "FinanceScenarioInput",
+  "title": "WorkspaceScenario",
   "type": "object",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.2.0/finance_input.schema.json"
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.2.0/finance_workspace_scenario.schema.json"
 }

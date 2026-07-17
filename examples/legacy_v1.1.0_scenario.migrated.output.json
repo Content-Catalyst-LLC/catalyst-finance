@@ -99,6 +99,33 @@
     "tool": "Catalyst Finance scenario engine",
     "version": "1.2.0",
     "disclaimer": "Educational software only; not financial, investment, legal, accounting, tax, fiduciary, procurement, funding, lending, or assurance advice.",
-    "migration": null
+    "migration": {
+      "source_contract_version": "1.1.0",
+      "target_contract_version": "1.2.0",
+      "preserved_fields": [
+        "model_id",
+        "project.name",
+        "project.category",
+        "context.currency",
+        "context.price_basis",
+        "context.discount_rate_basis",
+        "context.period_frequency",
+        "context.time_basis",
+        "context.rounding_policy",
+        "context.monetary_decimals",
+        "context.ratio_decimals",
+        "context.score_decimals",
+        "assumptions.capital_cost",
+        "assumptions.external_funding",
+        "assumptions.annual_savings",
+        "assumptions.annual_operating_cost",
+        "assumptions.time_horizon_years",
+        "assumptions.discount_rate_percent",
+        "assumptions.annual_emissions_reduced_tons",
+        "assumptions.carbon_price_per_ton",
+        "assumptions.confidence_percent",
+        "assumptions.implementation_risk_percent"
+      ]
+    }
   }
 }

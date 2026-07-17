@@ -1,18 +1,13 @@
 # Repository Architecture
 
-The v1.1.0 architecture has one contract and two calculation runtimes.
+Catalyst Finance v1.2.0 separates five boundaries:
 
-- `catalyst_finance/models.py`: validated contracts and structured issues
-- `catalyst_finance/calculation.py`: pure financial calculations and score trace
-- `catalyst_finance/interpretation.py`: review flags and concern level
-- `catalyst_finance/narrative.py`: decision note and responsible-use boundary
-- `catalyst_finance/migration.py`: v1.0.0 normalization
-- `catalyst_finance/engine.py`: orchestration and publication
-- `catalyst_finance/registry.py`: stable model metadata
-- `catalyst_finance/api.py`: HTTP system, registry, and evaluation boundary
-- `wordpress/.../catalyst-finance-engine.js`: contract-equivalent browser engine
-- `wordpress/.../catalyst-finance-demo.js`: presentation-only browser UI
-- `schemas/`: generated versioned JSON Schemas
-- `scripts/browser_parity.js`: Node parity runner
+1. Scenario contracts and migration.
+2. Pure calculation, interpretation, and narrative.
+3. Workspace lifecycle and revision history.
+4. Repository adapters for JSON and SQLite.
+5. API, CLI, and WordPress delivery surfaces.
 
-The JavaScript engine is independently implemented but contract-tested against Python fixtures. UI code does not contain financial formulas.
+`WorkspaceService` depends on the `WorkspaceRepository` protocol, not on a concrete storage system. The browser workspace implements the same document and revision concepts using local browser storage while the calculation engine remains parity-tested against Python.
+
+The annual screening engine is unchanged in scope. Period-level cash flows belong to v1.3.0.

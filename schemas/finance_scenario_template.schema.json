@@ -179,38 +179,79 @@
       ],
       "title": "FinanceProject",
       "type": "object"
+    },
+    "FinanceScenarioInput": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": "1.2.0",
+          "default": "1.2.0",
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "model_id": {
+          "const": "catalyst-finance.screening",
+          "default": "catalyst-finance.screening",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "project": {
+          "$ref": "#/$defs/FinanceProject"
+        },
+        "context": {
+          "$ref": "#/$defs/FinanceContext"
+        },
+        "assumptions": {
+          "$ref": "#/$defs/FinanceInputs"
+        }
+      },
+      "required": [
+        "project",
+        "assumptions"
+      ],
+      "title": "FinanceScenarioInput",
+      "type": "object"
     }
   },
   "additionalProperties": false,
   "properties": {
-    "contract_version": {
-      "const": "1.2.0",
-      "default": "1.2.0",
-      "title": "Contract Version",
+    "template_id": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Template Id",
       "type": "string"
     },
-    "model_id": {
-      "const": "catalyst-finance.screening",
-      "default": "catalyst-finance.screening",
-      "title": "Model Id",
+    "name": {
+      "maxLength": 160,
+      "minLength": 1,
+      "title": "Name",
       "type": "string"
     },
-    "project": {
-      "$ref": "#/$defs/FinanceProject"
+    "description": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "title": "Description",
+      "type": "string"
     },
-    "context": {
-      "$ref": "#/$defs/FinanceContext"
+    "category": {
+      "maxLength": 120,
+      "minLength": 1,
+      "title": "Category",
+      "type": "string"
     },
-    "assumptions": {
-      "$ref": "#/$defs/FinanceInputs"
+    "scenario": {
+      "$ref": "#/$defs/FinanceScenarioInput"
     }
   },
   "required": [
-    "project",
-    "assumptions"
+    "template_id",
+    "name",
+    "description",
+    "category",
+    "scenario"
   ],
-  "title": "FinanceScenarioInput",
+  "title": "ScenarioTemplate",
   "type": "object",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.2.0/finance_input.schema.json"
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.2.0/finance_scenario_template.schema.json"
 }

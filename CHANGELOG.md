@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.0 — 2026-07-17
+
+- Added versioned persistent workspaces, projects, scenarios, alternatives, notes, tags, status, and append-only revisions.
+- Added atomic JSON and SQLite repositories behind one protocol.
+- Added autosave recovery, explicit save, identifier-preserving import/export, templates, workspace CLI, and API routes.
+- Upgraded the WordPress module to a multi-scenario local workspace with public read-only mode.
+- Added v1.1.0 migration and expanded release validation to workspace contracts.
+
 ## 1.1.0 — 2026-07-17
 
 - Added strict versioned input, result, interpretation, metadata, and publication contracts.

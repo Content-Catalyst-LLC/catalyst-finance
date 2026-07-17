@@ -1,7 +1,15 @@
-# Catalyst Finance Demo v1.1.0
+# Catalyst Finance Workspace v1.2.0
 
-This WordPress plugin registers the `[catalyst_finance_demo]` shortcode.
+This WordPress plugin registers:
 
-The calculator uses the shared Catalyst Finance v1.1.0 browser engine. Its input contract, calculations, score trace, interpretation rules, methodology metadata, and JSON output are parity-tested against the canonical Python engine.
+```text
+[catalyst_finance_workspace]
+[catalyst_finance_demo]
+[catalyst_finance_demo mode="public"]
+```
 
-Scenario inputs remain in the visitor's browser. This is an educational screening tool, not financial, investment, accounting, tax, legal, fiduciary, lending, procurement, funding, or assurance advice.
+Workspace mode supports multiple scenarios, templates, explicit revision saves, duplication, rename, archive, restore, delete, local autosave recovery, unsaved-change warnings, and complete workspace JSON import/export.
+
+Public mode is a read-only demonstration. Browser workspace data remains in the visitor's browser and is not synchronized to WordPress or the Python API.
+
+The calculation engine remains parity-tested against Python. This is an educational screening tool, not financial, investment, accounting, tax, legal, fiduciary, lending, procurement, funding, or assurance advice.

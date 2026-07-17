@@ -1,19 +1,23 @@
-# Catalyst Finance v1.1.0 Export Specification
+# Catalyst Finance v1.2.0 Export Specification
 
-Canonical input validates against `schemas/finance_input.schema.json`. Complete publications validate against `schemas/finance_publication.schema.json` and the compatibility alias `schemas/finance_scenario.schema.json`.
+Catalyst Finance produces two related JSON artifact families.
 
-The publication contains:
+## Scenario publication
 
-- `contract_version` and `model_id`
-- `project`
-- `context`
-- `assumptions`
-- `results`, including a complete score trace
-- `interpretation`
-- `narrative`
-- `methodology`
-- `metadata`, including optional migration provenance
+A scenario publication contains the validated input, calculated results, interpretation, narrative, methodology, timestamp, disclaimer, and optional migration record. It validates against `finance_publication.schema.json`.
 
-Component schemas are also published for results, interpretation, and metadata. All contracts reject undeclared properties.
+## Workspace export
 
-The CLI's `--generated-at` option exists only for reproducible fixtures and tests. Ordinary exports use the current UTC time.
+A workspace export contains:
+
+```json
+{
+  "export_contract_version": "1.2.0",
+  "exported_at": "ISO-8601 timestamp",
+  "workspace": {}
+}
+```
+
+The nested workspace includes defaults, projects, scenarios, all revisions, statuses, tags, notes, immutable identifiers, timestamps, and model-version references. It validates against `finance_workspace_export.schema.json`.
+
+Import must preserve every workspace, project, scenario, and revision identifier. Replacing an existing workspace requires an explicit `replace` instruction.

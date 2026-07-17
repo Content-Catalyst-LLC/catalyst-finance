@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Catalyst Finance Demo
- * Description: Browser-based Catalyst Finance scenario demo for Sustainable Catalyst.
- * Version: 1.1.0
+ * Description: Persistent browser-based Catalyst Finance scenario workspace for Sustainable Catalyst.
+ * Version: 1.2.0
  * Author: Content Catalyst LLC
  * License: MIT
  */
@@ -11,11 +11,10 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('CATALYST_FINANCE_DEMO_VERSION', '1.1.0');
+define('CATALYST_FINANCE_DEMO_VERSION', '1.2.0');
 
 function catalyst_finance_demo_assets() {
     $base = plugin_dir_url(__FILE__);
-    $path = plugin_dir_path(__FILE__);
     wp_enqueue_style(
         'catalyst-finance-demo',
         $base . 'assets/catalyst-finance-demo.css',
@@ -39,15 +38,63 @@ function catalyst_finance_demo_assets() {
 }
 
 function catalyst_finance_demo_shortcode($atts = array()) {
+    $atts = shortcode_atts(
+        array('mode' => 'workspace'),
+        $atts,
+        'catalyst_finance_demo'
+    );
+    $mode = $atts['mode'] === 'public' ? 'public' : 'workspace';
     catalyst_finance_demo_assets();
     ob_start();
     ?>
-    <section class="scfin-demo" data-scfin-demo>
+    <section class="scfin-demo" data-scfin-demo data-scfin-mode="<?php echo esc_attr($mode); ?>">
       <div class="scfin-demo__header">
-        <p class="scfin-demo__eyebrow">Interactive Finance Scenario</p>
-        <h3>Build a reviewable finance case</h3>
-        <p>Use the canonical v1.1.0 model to estimate NPV, payback, ROI, benefit-cost ratio, carbon value, and a fully traceable review score.</p>
+        <p class="scfin-demo__eyebrow">Catalyst Finance v1.2.0</p>
+        <h3><?php echo $mode === 'public' ? 'Explore a finance scenario' : 'Persistent finance scenario workspace'; ?></h3>
+        <p><?php echo $mode === 'public'
+            ? 'Review a read-only example using the canonical finance screening model.'
+            : 'Create alternatives, preserve revision history, recover interrupted work, and export or import the complete workspace.'; ?></p>
       </div>
+
+      <?php if ($mode === 'workspace') : ?>
+      <div class="scfin-demo__workspace" data-scfin-workspace-controls>
+        <label class="scfin-demo__workspace-name">
+          <span>Workspace</span>
+          <input type="text" value="My finance workspace" data-scfin-workspace-name>
+        </label>
+        <label>
+          <span>Scenario</span>
+          <select data-scfin-scenario-select aria-label="Select scenario"></select>
+        </label>
+        <label>
+          <span>Template</span>
+          <select data-scfin-template-select>
+            <option value="capital-project">Capital project</option>
+            <option value="operating-change">Operating change</option>
+            <option value="pricing-decision">Pricing decision</option>
+            <option value="sustainability-investment">Sustainability investment</option>
+            <option value="public-value-initiative">Public-value initiative</option>
+          </select>
+        </label>
+        <div class="scfin-demo__workspace-actions">
+          <button type="button" data-scfin-new>New</button>
+          <button type="button" data-scfin-duplicate>Duplicate</button>
+          <button type="button" data-scfin-rename>Rename</button>
+          <button type="button" data-scfin-save>Save revision</button>
+          <button type="button" data-scfin-archive>Archive</button>
+          <button type="button" data-scfin-restore>Restore</button>
+          <button type="button" data-scfin-delete>Delete</button>
+        </div>
+        <div class="scfin-demo__workspace-files">
+          <button type="button" data-scfin-export-workspace>Export workspace</button>
+          <label class="scfin-demo__file-label">
+            <span>Import workspace</span>
+            <input type="file" accept="application/json,.json" data-scfin-import-workspace>
+          </label>
+        </div>
+        <p class="scfin-demo__save-status" data-scfin-save-status role="status">Saved locally</p>
+      </div>
+      <?php endif; ?>
 
       <div class="scfin-demo__grid">
         <form class="scfin-demo__form" data-scfin-form>
@@ -56,10 +103,16 @@ function catalyst_finance_demo_shortcode($atts = array()) {
             <input name="projectName" type="text" value="Building efficiency retrofit">
           </label>
 
-          <label>
-            <span>Category</span>
-            <input name="category" type="text" value="Energy efficiency">
-          </label>
+          <div class="scfin-demo__two">
+            <label>
+              <span>Category</span>
+              <input name="category" type="text" value="Energy efficiency">
+            </label>
+            <label>
+              <span>Alternative</span>
+              <input name="alternativeLabel" type="text" value="Base">
+            </label>
+          </div>
 
           <div class="scfin-demo__two">
             <label>
@@ -86,11 +139,11 @@ function catalyst_finance_demo_shortcode($atts = array()) {
           <div class="scfin-demo__two">
             <label>
               <span>Time horizon (years)</span>
-              <input name="timeHorizon" type="number" min="1" max="40" step="1" value="10">
+              <input name="timeHorizon" type="number" min="0.1" max="100" step="0.1" value="10">
             </label>
             <label>
               <span>Discount rate (%)</span>
-              <input name="discountRate" type="number" min="0" max="30" step="0.1" value="6">
+              <input name="discountRate" type="number" min="-99.9" max="100" step="0.1" value="6">
             </label>
           </div>
 
@@ -115,9 +168,20 @@ function catalyst_finance_demo_shortcode($atts = array()) {
             <input name="implementationRisk" type="range" min="0" max="100" value="34">
           </label>
 
+          <div class="scfin-demo__two">
+            <label>
+              <span>Tags</span>
+              <input name="tags" type="text" value="retrofit, energy">
+            </label>
+            <label>
+              <span>Notes</span>
+              <textarea name="notes" rows="3">Initial screening case.</textarea>
+            </label>
+          </div>
+
           <div class="scfin-demo__actions">
             <button type="button" data-scfin-copy>Copy JSON</button>
-            <button type="button" data-scfin-download>Download JSON</button>
+            <button type="button" data-scfin-download>Download scenario</button>
             <button type="button" data-scfin-print>Print / PDF</button>
           </div>
         </form>
@@ -150,9 +214,10 @@ function catalyst_finance_demo_shortcode($atts = array()) {
         </div>
       </div>
 
-      <p class="scfin-demo__disclaimer">Educational scenario tool only. Not financial, investment, tax, accounting, legal, assurance, or fiduciary advice.</p>
+      <p class="scfin-demo__disclaimer">Educational scenario tool only. Not financial, investment, tax, accounting, legal, assurance, or fiduciary advice. Browser workspace data remains in this browser until exported or deleted.</p>
     </section>
     <?php
     return ob_get_clean();
 }
 add_shortcode('catalyst_finance_demo', 'catalyst_finance_demo_shortcode');
+add_shortcode('catalyst_finance_workspace', 'catalyst_finance_demo_shortcode');

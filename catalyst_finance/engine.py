@@ -1,4 +1,4 @@
-"""Canonical Catalyst Finance v1.1.0 evaluation engine."""
+"""Canonical Catalyst Finance v1.2.0 evaluation engine."""
 
 from __future__ import annotations
 

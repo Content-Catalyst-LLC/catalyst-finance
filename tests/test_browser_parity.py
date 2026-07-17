@@ -15,7 +15,11 @@ FIXED = "2026-07-17T00:00:00+00:00"
 @pytest.mark.skipif(shutil.which("node") is None, reason="Node.js not installed")
 @pytest.mark.parametrize(
     "filename",
-    ["sample_finance_scenario.json", "legacy_v1.0.0_scenario.json"],
+    [
+        "sample_finance_scenario.json",
+        "legacy_v1.0.0_scenario.json",
+        "legacy_v1.1.0_scenario.json",
+    ],
 )
 def test_browser_engine_matches_python(filename: str) -> None:
     path = ROOT / "data" / filename

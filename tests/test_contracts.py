@@ -6,7 +6,7 @@ from catalyst_finance.models import FinanceScenarioInput, validation_issues
 
 def base_payload() -> dict[str, object]:
     return {
-        "contract_version": "1.1.0",
+        "contract_version": "1.2.0",
         "model_id": "catalyst-finance.screening",
         "project": {"name": "Test", "category": "Test"},
         "context": {
@@ -62,3 +62,18 @@ def test_missing_emissions_requires_zero_carbon_price() -> None:
     assumptions["carbon_price_per_ton"] = 10
     with pytest.raises(ValidationError):
         FinanceScenarioInput.model_validate(payload)
+
+
+def test_v110_contract_migrates_without_value_loss() -> None:
+    from catalyst_finance.migration import normalize_scenario
+
+    payload = base_payload()
+    payload["contract_version"] = "1.1.0"
+    scenario, migration = normalize_scenario(payload)
+    assert scenario.contract_version == "1.2.0"
+    assert scenario.project.model_dump() == payload["project"]
+    assert scenario.context.model_dump() == payload["context"]
+    assert scenario.assumptions.model_dump() == payload["assumptions"]
+    assert migration is not None
+    assert migration.source_contract_version == "1.1.0"
+    assert len(migration.preserved_fields) == 22

@@ -1,0 +1,586 @@
+{
+  "$defs": {
+    "FinanceContext": {
+      "additionalProperties": false,
+      "properties": {
+        "currency": {
+          "default": "USD",
+          "pattern": "^[A-Z]{3}$",
+          "title": "Currency",
+          "type": "string"
+        },
+        "price_basis": {
+          "default": "nominal",
+          "enum": [
+            "nominal",
+            "real"
+          ],
+          "title": "Price Basis",
+          "type": "string"
+        },
+        "discount_rate_basis": {
+          "default": "nominal",
+          "enum": [
+            "nominal",
+            "real"
+          ],
+          "title": "Discount Rate Basis",
+          "type": "string"
+        },
+        "period_frequency": {
+          "const": "annual",
+          "default": "annual",
+          "title": "Period Frequency",
+          "type": "string"
+        },
+        "time_basis": {
+          "const": "end_of_period",
+          "default": "end_of_period",
+          "title": "Time Basis",
+          "type": "string"
+        },
+        "rounding_policy": {
+          "const": "half_up",
+          "default": "half_up",
+          "title": "Rounding Policy",
+          "type": "string"
+        },
+        "monetary_decimals": {
+          "const": 2,
+          "default": 2,
+          "title": "Monetary Decimals",
+          "type": "integer"
+        },
+        "ratio_decimals": {
+          "const": 2,
+          "default": 2,
+          "title": "Ratio Decimals",
+          "type": "integer"
+        },
+        "score_decimals": {
+          "const": 1,
+          "default": 1,
+          "title": "Score Decimals",
+          "type": "integer"
+        }
+      },
+      "title": "FinanceContext",
+      "type": "object"
+    },
+    "FinanceInputs": {
+      "additionalProperties": false,
+      "properties": {
+        "capital_cost": {
+          "minimum": 0,
+          "title": "Capital Cost",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "external_funding": {
+          "minimum": 0,
+          "title": "External Funding",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "annual_savings": {
+          "minimum": 0,
+          "title": "Annual Savings",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "annual_operating_cost": {
+          "minimum": 0,
+          "title": "Annual Operating Cost",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "time_horizon_years": {
+          "exclusiveMinimum": 0,
+          "maximum": 100,
+          "title": "Time Horizon Years",
+          "type": "number",
+          "x-unit": "years"
+        },
+        "discount_rate_percent": {
+          "exclusiveMinimum": -100,
+          "maximum": 100,
+          "title": "Discount Rate Percent",
+          "type": "number",
+          "x-unit": "percent_per_year"
+        },
+        "annual_emissions_reduced_tons": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Annual Emissions Reduced Tons",
+          "x-unit": "metric_tons_co2e_per_year"
+        },
+        "carbon_price_per_ton": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Carbon Price Per Ton",
+          "type": "number",
+          "x-unit": "currency_per_metric_ton_co2e"
+        },
+        "confidence_percent": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Confidence Percent",
+          "type": "number",
+          "x-unit": "percent"
+        },
+        "implementation_risk_percent": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Implementation Risk Percent",
+          "type": "number",
+          "x-unit": "percent"
+        }
+      },
+      "required": [
+        "capital_cost",
+        "external_funding",
+        "annual_savings",
+        "annual_operating_cost",
+        "time_horizon_years",
+        "discount_rate_percent",
+        "confidence_percent",
+        "implementation_risk_percent"
+      ],
+      "title": "FinanceInputs",
+      "type": "object"
+    },
+    "FinanceProject": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "category": {
+          "default": "Sustainability finance",
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Category",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "FinanceProject",
+      "type": "object"
+    },
+    "FinanceScenarioInput": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": "1.2.0",
+          "default": "1.2.0",
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "model_id": {
+          "const": "catalyst-finance.screening",
+          "default": "catalyst-finance.screening",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "project": {
+          "$ref": "#/$defs/FinanceProject"
+        },
+        "context": {
+          "$ref": "#/$defs/FinanceContext"
+        },
+        "assumptions": {
+          "$ref": "#/$defs/FinanceInputs"
+        }
+      },
+      "required": [
+        "project",
+        "assumptions"
+      ],
+      "title": "FinanceScenarioInput",
+      "type": "object"
+    },
+    "ScenarioRevision": {
+      "additionalProperties": false,
+      "properties": {
+        "revision_id": {
+          "maxLength": 100,
+          "minLength": 5,
+          "pattern": "^[a-z]+_[A-Za-z0-9_-]+$",
+          "title": "Revision Id",
+          "type": "string"
+        },
+        "revision_number": {
+          "minimum": 1,
+          "title": "Revision Number",
+          "type": "integer"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "model_id": {
+          "const": "catalyst-finance.screening",
+          "default": "catalyst-finance.screening",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "model_version": {
+          "const": "1.2.0",
+          "default": "1.2.0",
+          "title": "Model Version",
+          "type": "string"
+        },
+        "change_note": {
+          "default": "",
+          "maxLength": 1000,
+          "title": "Change Note",
+          "type": "string"
+        },
+        "scenario": {
+          "$ref": "#/$defs/FinanceScenarioInput"
+        }
+      },
+      "required": [
+        "revision_id",
+        "revision_number",
+        "created_at",
+        "scenario"
+      ],
+      "title": "ScenarioRevision",
+      "type": "object"
+    },
+    "WorkspaceDefaults": {
+      "additionalProperties": false,
+      "description": "Defaults inherited when a new scenario is created.",
+      "properties": {
+        "currency": {
+          "default": "USD",
+          "pattern": "^[A-Z]{3}$",
+          "title": "Currency",
+          "type": "string"
+        },
+        "locale": {
+          "default": "en-US",
+          "maxLength": 35,
+          "minLength": 2,
+          "title": "Locale",
+          "type": "string"
+        },
+        "time_basis": {
+          "const": "end_of_period",
+          "default": "end_of_period",
+          "title": "Time Basis",
+          "type": "string"
+        },
+        "price_basis": {
+          "default": "nominal",
+          "enum": [
+            "nominal",
+            "real"
+          ],
+          "title": "Price Basis",
+          "type": "string"
+        },
+        "discount_rate_basis": {
+          "default": "nominal",
+          "enum": [
+            "nominal",
+            "real"
+          ],
+          "title": "Discount Rate Basis",
+          "type": "string"
+        },
+        "default_model_id": {
+          "const": "catalyst-finance.screening",
+          "default": "catalyst-finance.screening",
+          "title": "Default Model Id",
+          "type": "string"
+        },
+        "default_model_version": {
+          "const": "1.2.0",
+          "default": "1.2.0",
+          "title": "Default Model Version",
+          "type": "string"
+        }
+      },
+      "title": "WorkspaceDefaults",
+      "type": "object"
+    },
+    "WorkspaceProject": {
+      "additionalProperties": false,
+      "properties": {
+        "project_id": {
+          "maxLength": 100,
+          "minLength": 5,
+          "pattern": "^[a-z]+_[A-Za-z0-9_-]+$",
+          "title": "Project Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "maxLength": 4000,
+          "title": "Description",
+          "type": "string"
+        },
+        "status": {
+          "default": "active",
+          "enum": [
+            "draft",
+            "active",
+            "completed",
+            "archived"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "tags": {
+          "items": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Tags",
+          "type": "array"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "project_id",
+        "name",
+        "created_at",
+        "updated_at"
+      ],
+      "title": "WorkspaceProject",
+      "type": "object"
+    },
+    "WorkspaceScenario": {
+      "additionalProperties": false,
+      "properties": {
+        "scenario_id": {
+          "maxLength": 100,
+          "minLength": 5,
+          "pattern": "^[a-z]+_[A-Za-z0-9_-]+$",
+          "title": "Scenario Id",
+          "type": "string"
+        },
+        "project_id": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "minLength": 5,
+              "pattern": "^[a-z]+_[A-Za-z0-9_-]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Project Id"
+        },
+        "name": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "alternative_label": {
+          "default": "Base",
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Alternative Label",
+          "type": "string"
+        },
+        "status": {
+          "default": "active",
+          "enum": [
+            "draft",
+            "active",
+            "archived"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "template_id": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Template Id"
+        },
+        "notes": {
+          "default": "",
+          "maxLength": 10000,
+          "title": "Notes",
+          "type": "string"
+        },
+        "tags": {
+          "items": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "Tags",
+          "type": "array"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        },
+        "archived_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Archived At"
+        },
+        "current_revision_id": {
+          "maxLength": 100,
+          "minLength": 5,
+          "pattern": "^[a-z]+_[A-Za-z0-9_-]+$",
+          "title": "Current Revision Id",
+          "type": "string"
+        },
+        "revisions": {
+          "items": {
+            "$ref": "#/$defs/ScenarioRevision"
+          },
+          "minItems": 1,
+          "title": "Revisions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "scenario_id",
+        "name",
+        "created_at",
+        "updated_at",
+        "current_revision_id",
+        "revisions"
+      ],
+      "title": "WorkspaceScenario",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "workspace_contract_version": {
+      "const": "1.2.0",
+      "default": "1.2.0",
+      "title": "Workspace Contract Version",
+      "type": "string"
+    },
+    "workspace_id": {
+      "maxLength": 100,
+      "minLength": 5,
+      "pattern": "^[a-z]+_[A-Za-z0-9_-]+$",
+      "title": "Workspace Id",
+      "type": "string"
+    },
+    "name": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "description": {
+      "default": "",
+      "maxLength": 4000,
+      "title": "Description",
+      "type": "string"
+    },
+    "status": {
+      "default": "active",
+      "enum": [
+        "active",
+        "archived"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "defaults": {
+      "$ref": "#/$defs/WorkspaceDefaults"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "projects": {
+      "items": {
+        "$ref": "#/$defs/WorkspaceProject"
+      },
+      "title": "Projects",
+      "type": "array"
+    },
+    "scenarios": {
+      "items": {
+        "$ref": "#/$defs/WorkspaceScenario"
+      },
+      "title": "Scenarios",
+      "type": "array"
+    }
+  },
+  "required": [
+    "workspace_id",
+    "name",
+    "created_at",
+    "updated_at"
+  ],
+  "title": "FinanceWorkspace",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.2.0/finance_workspace.schema.json"
+}
