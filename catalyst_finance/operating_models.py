@@ -1,4 +1,4 @@
-"""Cost, budget, variance, and operating-economics contracts for v1.7.0."""
+"""Cost, budget, variance, and operating-economics contracts for v1.8.0."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from pydantic import Field, model_validator
 from .comparison_models import SourceRevision
 from .models import ContractModel
 
-OPERATING_CONTRACT_VERSION: Literal["1.7.0"] = "1.7.0"
+OPERATING_CONTRACT_VERSION: Literal["1.8.0"] = "1.8.0"
 OPERATING_MODEL_ID: Literal["catalyst-finance.operating"] = "catalyst-finance.operating"
 PeriodFrequency = Literal["monthly", "quarterly", "annual"]
 VarianceStatus = Literal["favorable", "unfavorable", "neutral"]
@@ -47,7 +47,7 @@ class OperatingUnitInput(ContractModel):
 
 
 class OperatingDefinition(ContractModel):
-    contract_version: Literal["1.7.0"] = OPERATING_CONTRACT_VERSION
+    contract_version: Literal["1.8.0"] = OPERATING_CONTRACT_VERSION
     model_id: Literal["catalyst-finance.operating"] = OPERATING_MODEL_ID
     operating_id: str = Field(min_length=1, max_length=100, pattern=r"^[A-Za-z0-9_-]+$")
     name: str = Field(min_length=1, max_length=240)
@@ -134,7 +134,7 @@ class OperatingSummary(ContractModel):
 
 class OperatingMethodology(ContractModel):
     model_id: Literal["catalyst-finance.operating"] = OPERATING_MODEL_ID
-    model_version: Literal["1.7.0"] = OPERATING_CONTRACT_VERSION
+    model_version: Literal["1.8.0"] = OPERATING_CONTRACT_VERSION
     budget_policy: Literal["static_flexible_actual"] = "static_flexible_actual"
     variance_sign_policy: Literal["positive_is_favorable"] = "positive_is_favorable"
     volume_variance_policy: Literal["budget_contribution_margin"] = (
@@ -153,7 +153,7 @@ class OperatingMethodology(ContractModel):
 
 class OperatingMetadata(ContractModel):
     generated_at: str
-    version: Literal["1.7.0"] = OPERATING_CONTRACT_VERSION
+    version: Literal["1.8.0"] = OPERATING_CONTRACT_VERSION
     row_count: int
     unit_count: int
     cost_center_count: int
@@ -161,7 +161,7 @@ class OperatingMetadata(ContractModel):
 
 
 class OperatingPublication(ContractModel):
-    contract_version: Literal["1.7.0"] = OPERATING_CONTRACT_VERSION
+    contract_version: Literal["1.8.0"] = OPERATING_CONTRACT_VERSION
     model_id: Literal["catalyst-finance.operating"] = OPERATING_MODEL_ID
     definition: OperatingDefinition
     rows: list[OperatingPeriodResult] = Field(min_length=1)

@@ -1,0 +1,201 @@
+{
+  "contract_version": "1.8.0",
+  "model_id": "catalyst-finance.sustainable",
+  "definition": {
+    "contract_version": "1.8.0",
+    "model_id": "catalyst-finance.sustainable",
+    "analysis_id": "sample-sustainable",
+    "name": "Community retrofit sustainable value",
+    "description": "Carbon, natural-capital, transition, and green-financing value for a community retrofit program.",
+    "source": {
+      "workspace_id": "workspace_demo",
+      "scenario_id": "scenario_sustainable",
+      "revision_id": "revision_sustainable_001",
+      "revision_number": 1
+    },
+    "currency": "USD",
+    "reporting_period": "2027 investment case",
+    "horizon_years": 10.0,
+    "discount_rate_percent": 5.0,
+    "base_project_npv": 125000.0,
+    "baseline_emissions_tco2e": 12000.0,
+    "project_emissions_tco2e": 7500.0,
+    "carbon_price_per_tco2e": 85.0,
+    "carbon_credit_quantity_tco2e": 4200.0,
+    "carbon_credit_price_per_tco2e": 42.0,
+    "carbon_credit_discount_percent": 12.0,
+    "verification_cost": 18000.0,
+    "carbon_valuation_method": "higher_of",
+    "natural_capital_assets": [
+      {
+        "asset_id": "urban-canopy",
+        "label": "Urban tree canopy",
+        "category": "forest",
+        "quantity": 180.0,
+        "unit": "hectares",
+        "baseline_unit_value": 4200.0,
+        "projected_unit_value": 6100.0,
+        "annual_service_value": 48000.0,
+        "restoration_cost": 150000.0,
+        "confidence_percent": 80.0
+      },
+      {
+        "asset_id": "stormwater",
+        "label": "Stormwater retention",
+        "category": "water",
+        "quantity": 12.0,
+        "unit": "million gallons/year",
+        "baseline_unit_value": 18000.0,
+        "projected_unit_value": 24000.0,
+        "annual_service_value": 30000.0,
+        "restoration_cost": 45000.0,
+        "confidence_percent": 70.0
+      }
+    ],
+    "transition_items": [
+      {
+        "item_id": "energy-incentive",
+        "label": "Performance incentive",
+        "kind": "benefit",
+        "amount": 220000.0,
+        "probability_percent": 80.0,
+        "timing_years": 2.0
+      },
+      {
+        "item_id": "compliance-upgrade",
+        "label": "Future compliance upgrade avoided",
+        "kind": "benefit",
+        "amount": 160000.0,
+        "probability_percent": 65.0,
+        "timing_years": 4.0
+      },
+      {
+        "item_id": "assurance-cost",
+        "label": "Measurement and assurance program",
+        "kind": "cost",
+        "amount": 90000.0,
+        "probability_percent": 100.0,
+        "timing_years": 1.0
+      }
+    ],
+    "green_financing_principal": 1800000.0,
+    "conventional_interest_rate_percent": 6.2,
+    "green_interest_rate_percent": 5.1,
+    "financing_term_years": 8.0
+  },
+  "carbon": {
+    "baseline_emissions_tco2e": 12000.0,
+    "project_emissions_tco2e": 7500.0,
+    "avoided_emissions_tco2e": 4500.0,
+    "emissions_reduction_percent": 37.5,
+    "shadow_carbon_value": 382500.0,
+    "eligible_credit_quantity_tco2e": 4200.0,
+    "gross_market_credit_value": 176400.0,
+    "discounted_market_credit_value": 155232.0,
+    "verification_cost": 18000.0,
+    "net_market_credit_value": 137232.0,
+    "selected_carbon_value": 382500.0,
+    "valuation_method": "higher_of",
+    "implied_abatement_cost_per_tco2e": 19.05
+  },
+  "natural_capital_assets": [
+    {
+      "asset_id": "urban-canopy",
+      "label": "Urban tree canopy",
+      "category": "forest",
+      "quantity": 180.0,
+      "unit": "hectares",
+      "baseline_stock_value": 756000.0,
+      "projected_stock_value": 1098000.0,
+      "gross_stock_uplift": 342000.0,
+      "confidence_adjusted_stock_uplift": 273600.0,
+      "annual_service_value": 48000.0,
+      "service_value_present_value": 370643.28,
+      "restoration_cost": 150000.0,
+      "net_natural_capital_value": 494243.28,
+      "confidence_percent": 80.0
+    },
+    {
+      "asset_id": "stormwater",
+      "label": "Stormwater retention",
+      "category": "water",
+      "quantity": 12.0,
+      "unit": "million gallons/year",
+      "baseline_stock_value": 216000.0,
+      "projected_stock_value": 288000.0,
+      "gross_stock_uplift": 72000.0,
+      "confidence_adjusted_stock_uplift": 50400.0,
+      "annual_service_value": 30000.0,
+      "service_value_present_value": 231652.05,
+      "restoration_cost": 45000.0,
+      "net_natural_capital_value": 237052.05,
+      "confidence_percent": 70.0
+    }
+  ],
+  "transition_items": [
+    {
+      "item_id": "energy-incentive",
+      "label": "Performance incentive",
+      "kind": "benefit",
+      "nominal_amount": 220000.0,
+      "probability_percent": 80.0,
+      "probability_adjusted_amount": 176000.0,
+      "timing_years": 2.0,
+      "present_value": 159637.19,
+      "signed_present_value": 159637.19
+    },
+    {
+      "item_id": "compliance-upgrade",
+      "label": "Future compliance upgrade avoided",
+      "kind": "benefit",
+      "nominal_amount": 160000.0,
+      "probability_percent": 65.0,
+      "probability_adjusted_amount": 104000.0,
+      "timing_years": 4.0,
+      "present_value": 85561.06,
+      "signed_present_value": 85561.06
+    },
+    {
+      "item_id": "assurance-cost",
+      "label": "Measurement and assurance program",
+      "kind": "cost",
+      "nominal_amount": 90000.0,
+      "probability_percent": 100.0,
+      "probability_adjusted_amount": 90000.0,
+      "timing_years": 1.0,
+      "present_value": 85714.29,
+      "signed_present_value": -85714.29
+    }
+  ],
+  "summary": {
+    "carbon_value": 382500.0,
+    "natural_capital_value": 731295.32,
+    "transition_benefit_present_value": 245198.25,
+    "transition_cost_present_value": 85714.29,
+    "net_transition_value": 159483.96,
+    "green_financing_savings_present_value": 127971.61,
+    "total_sustainable_value": 1401250.9,
+    "base_project_npv": 125000.0,
+    "adjusted_project_npv": 1526250.9
+  },
+  "flags": [
+    "Carbon value uses one selected valuation basis; shadow and market values are not added together.",
+    "Natural-capital values require ownership, boundary, condition, and valuation evidence."
+  ],
+  "methodology": {
+    "model_id": "catalyst-finance.sustainable",
+    "model_version": "1.8.0",
+    "carbon_double_count_policy": "select_one_valuation_basis",
+    "credit_quantity_policy": "capped_at_avoided_emissions",
+    "natural_capital_policy": "confidence_adjusted_stock_plus_discounted_services_less_restoration",
+    "transition_policy": "probability_adjusted_discounted_cash_flow",
+    "financing_policy": "discounted_interest_rate_differential"
+  },
+  "metadata": {
+    "generated_at": "2026-07-17T00:00:00+00:00",
+    "version": "1.8.0",
+    "asset_count": 2,
+    "transition_item_count": 3,
+    "disclaimer": "Decision-support output only. Validate emissions boundaries, additionality, credit eligibility, natural-capital valuation, discount rates, accounting treatment, legal rights, and assurance evidence before reporting or investment use."
+  }
+}

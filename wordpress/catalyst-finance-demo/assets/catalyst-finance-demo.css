@@ -316,3 +316,9 @@
 .scfin-operating__output [data-scfin-operating-variance][data-status="favorable"] { color:#176b3a; }
 .scfin-operating__output [data-scfin-operating-variance][data-status="unfavorable"] { color:#9b1c1c; }
 @media (max-width:920px){.scfin-operating__layout{grid-template-columns:1fr;}}
+
+.scfin-sustainable { margin-top:2rem; padding-top:2rem; border-top:1px solid rgba(20,20,20,.16); }
+.scfin-sustainable__layout { display:grid; grid-template-columns:minmax(280px,.85fr) minmax(0,1.5fr); gap:1.25rem; align-items:start; }
+.scfin-sustainable__form,.scfin-sustainable__output { border:1px solid rgba(20,20,20,.16); border-radius:14px; background:#fff; padding:1rem; }
+.scfin-sustainable__form { display:grid; gap:.85rem; }
+@media (max-width:920px){.scfin-sustainable__layout{grid-template-columns:1fr;}}

@@ -1,4 +1,4 @@
-"""Workspace lifecycle and revision services for Catalyst Finance v1.7.0."""
+"""Workspace lifecycle and revision services for Catalyst Finance v1.8.0."""
 
 from __future__ import annotations
 
@@ -17,6 +17,7 @@ from .models import FinanceScenarioInput
 from .operating_models import OperatingDefinition
 from .pricing_models import PricingDefinition
 from .repositories import WorkspaceNotFoundError, WorkspaceRepository
+from .sustainable_models import SustainableDefinition
 from .templates import get_template
 from .uncertainty_models import UncertaintyDefinition
 from .workspace_migration import migrate_workspace_payload
@@ -27,6 +28,7 @@ from .workspace_models import (
     PricingRevision,
     ScenarioPayload,
     ScenarioRevision,
+    SustainableRevision,
     UncertaintyRevision,
     WorkspaceComparison,
     WorkspaceDefaults,
@@ -35,6 +37,7 @@ from .workspace_models import (
     WorkspacePricingAnalysis,
     WorkspaceProject,
     WorkspaceScenario,
+    WorkspaceSustainableAnalysis,
     WorkspaceUncertaintyAnalysis,
 )
 
@@ -858,6 +861,108 @@ class WorkspaceService:
         return self.repository.save(
             workspace.model_copy(
                 update={"operating_analyses": records, "updated_at": self.clock()}
+            )
+        )
+
+    def create_sustainable_analysis(
+        self,
+        workspace_id: str,
+        definition: SustainableDefinition | dict[str, Any],
+        *,
+        name: str | None = None,
+    ) -> FinanceWorkspace:
+        workspace = self.repository.get(workspace_id)
+        sustainable_definition = (
+            definition
+            if isinstance(definition, SustainableDefinition)
+            else SustainableDefinition.model_validate(definition)
+        )
+        now = self.clock()
+        revision = SustainableRevision(
+            revision_id=self.id_factory("revision"),
+            revision_number=1,
+            created_at=now,
+            change_note="Initial sustainable-finance definition",
+            definition=sustainable_definition,
+        )
+        record = WorkspaceSustainableAnalysis(
+            analysis_id=self.id_factory("sustainable"),
+            name=name or sustainable_definition.name,
+            created_at=now,
+            updated_at=now,
+            current_revision_id=revision.revision_id,
+            revisions=[revision],
+        )
+        return self.repository.save(
+            workspace.model_copy(
+                update={
+                    "sustainable_analyses": [*workspace.sustainable_analyses, record],
+                    "updated_at": now,
+                }
+            )
+        )
+
+    def save_sustainable_revision(
+        self,
+        workspace_id: str,
+        analysis_id: str,
+        definition: SustainableDefinition | dict[str, Any],
+        *,
+        change_note: str = "Saved sustainable-finance revision",
+    ) -> FinanceWorkspace:
+        workspace = self.repository.get(workspace_id)
+        sustainable_definition = (
+            definition
+            if isinstance(definition, SustainableDefinition)
+            else SustainableDefinition.model_validate(definition)
+        )
+        now = self.clock()
+        found = False
+        records: list[WorkspaceSustainableAnalysis] = []
+        for record in workspace.sustainable_analyses:
+            if record.analysis_id != analysis_id:
+                records.append(record)
+                continue
+            found = True
+            revision = SustainableRevision(
+                revision_id=self.id_factory("revision"),
+                revision_number=len(record.revisions) + 1,
+                created_at=now,
+                change_note=change_note,
+                definition=sustainable_definition,
+            )
+            records.append(
+                record.model_copy(
+                    update={
+                        "name": sustainable_definition.name,
+                        "updated_at": now,
+                        "current_revision_id": revision.revision_id,
+                        "revisions": [*record.revisions, revision],
+                    }
+                )
+            )
+        if not found:
+            raise WorkspaceNotFoundError(analysis_id)
+        return self.repository.save(
+            workspace.model_copy(
+                update={"sustainable_analyses": records, "updated_at": now}
+            )
+        )
+
+    def delete_sustainable_analysis(
+        self, workspace_id: str, analysis_id: str
+    ) -> FinanceWorkspace:
+        workspace = self.repository.get(workspace_id)
+        records = [
+            item
+            for item in workspace.sustainable_analyses
+            if item.analysis_id != analysis_id
+        ]
+        if len(records) == len(workspace.sustainable_analyses):
+            raise WorkspaceNotFoundError(analysis_id)
+        return self.repository.save(
+            workspace.model_copy(
+                update={"sustainable_analyses": records, "updated_at": self.clock()}
             )
         )
 

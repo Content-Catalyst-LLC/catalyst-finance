@@ -1,0 +1,791 @@
+{
+  "$defs": {
+    "CarbonResult": {
+      "additionalProperties": false,
+      "properties": {
+        "baseline_emissions_tco2e": {
+          "title": "Baseline Emissions Tco2E",
+          "type": "number"
+        },
+        "project_emissions_tco2e": {
+          "title": "Project Emissions Tco2E",
+          "type": "number"
+        },
+        "avoided_emissions_tco2e": {
+          "title": "Avoided Emissions Tco2E",
+          "type": "number"
+        },
+        "emissions_reduction_percent": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Emissions Reduction Percent"
+        },
+        "shadow_carbon_value": {
+          "title": "Shadow Carbon Value",
+          "type": "number"
+        },
+        "eligible_credit_quantity_tco2e": {
+          "title": "Eligible Credit Quantity Tco2E",
+          "type": "number"
+        },
+        "gross_market_credit_value": {
+          "title": "Gross Market Credit Value",
+          "type": "number"
+        },
+        "discounted_market_credit_value": {
+          "title": "Discounted Market Credit Value",
+          "type": "number"
+        },
+        "verification_cost": {
+          "title": "Verification Cost",
+          "type": "number"
+        },
+        "net_market_credit_value": {
+          "title": "Net Market Credit Value",
+          "type": "number"
+        },
+        "selected_carbon_value": {
+          "title": "Selected Carbon Value",
+          "type": "number"
+        },
+        "valuation_method": {
+          "enum": [
+            "shadow_price",
+            "market_credit",
+            "higher_of",
+            "lower_of"
+          ],
+          "title": "Valuation Method",
+          "type": "string"
+        },
+        "implied_abatement_cost_per_tco2e": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Implied Abatement Cost Per Tco2E"
+        }
+      },
+      "required": [
+        "baseline_emissions_tco2e",
+        "project_emissions_tco2e",
+        "avoided_emissions_tco2e",
+        "emissions_reduction_percent",
+        "shadow_carbon_value",
+        "eligible_credit_quantity_tco2e",
+        "gross_market_credit_value",
+        "discounted_market_credit_value",
+        "verification_cost",
+        "net_market_credit_value",
+        "selected_carbon_value",
+        "valuation_method",
+        "implied_abatement_cost_per_tco2e"
+      ],
+      "title": "CarbonResult",
+      "type": "object"
+    },
+    "NaturalCapitalAssetInput": {
+      "additionalProperties": false,
+      "properties": {
+        "asset_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "water",
+            "biodiversity",
+            "soil",
+            "forest",
+            "ecosystem_service",
+            "other"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "quantity": {
+          "minimum": 0,
+          "title": "Quantity",
+          "type": "number"
+        },
+        "unit": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Unit",
+          "type": "string"
+        },
+        "baseline_unit_value": {
+          "minimum": 0,
+          "title": "Baseline Unit Value",
+          "type": "number"
+        },
+        "projected_unit_value": {
+          "minimum": 0,
+          "title": "Projected Unit Value",
+          "type": "number"
+        },
+        "annual_service_value": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Annual Service Value",
+          "type": "number"
+        },
+        "restoration_cost": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Restoration Cost",
+          "type": "number"
+        },
+        "confidence_percent": {
+          "default": 100,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Confidence Percent",
+          "type": "number"
+        }
+      },
+      "required": [
+        "asset_id",
+        "label",
+        "category",
+        "quantity",
+        "unit",
+        "baseline_unit_value",
+        "projected_unit_value"
+      ],
+      "title": "NaturalCapitalAssetInput",
+      "type": "object"
+    },
+    "NaturalCapitalAssetResult": {
+      "additionalProperties": false,
+      "properties": {
+        "asset_id": {
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "water",
+            "biodiversity",
+            "soil",
+            "forest",
+            "ecosystem_service",
+            "other"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "quantity": {
+          "title": "Quantity",
+          "type": "number"
+        },
+        "unit": {
+          "title": "Unit",
+          "type": "string"
+        },
+        "baseline_stock_value": {
+          "title": "Baseline Stock Value",
+          "type": "number"
+        },
+        "projected_stock_value": {
+          "title": "Projected Stock Value",
+          "type": "number"
+        },
+        "gross_stock_uplift": {
+          "title": "Gross Stock Uplift",
+          "type": "number"
+        },
+        "confidence_adjusted_stock_uplift": {
+          "title": "Confidence Adjusted Stock Uplift",
+          "type": "number"
+        },
+        "annual_service_value": {
+          "title": "Annual Service Value",
+          "type": "number"
+        },
+        "service_value_present_value": {
+          "title": "Service Value Present Value",
+          "type": "number"
+        },
+        "restoration_cost": {
+          "title": "Restoration Cost",
+          "type": "number"
+        },
+        "net_natural_capital_value": {
+          "title": "Net Natural Capital Value",
+          "type": "number"
+        },
+        "confidence_percent": {
+          "title": "Confidence Percent",
+          "type": "number"
+        }
+      },
+      "required": [
+        "asset_id",
+        "label",
+        "category",
+        "quantity",
+        "unit",
+        "baseline_stock_value",
+        "projected_stock_value",
+        "gross_stock_uplift",
+        "confidence_adjusted_stock_uplift",
+        "annual_service_value",
+        "service_value_present_value",
+        "restoration_cost",
+        "net_natural_capital_value",
+        "confidence_percent"
+      ],
+      "title": "NaturalCapitalAssetResult",
+      "type": "object"
+    },
+    "SourceRevision": {
+      "additionalProperties": false,
+      "properties": {
+        "workspace_id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Workspace Id",
+          "type": "string"
+        },
+        "scenario_id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Scenario Id",
+          "type": "string"
+        },
+        "revision_id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Revision Id",
+          "type": "string"
+        },
+        "revision_number": {
+          "minimum": 1,
+          "title": "Revision Number",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "workspace_id",
+        "scenario_id",
+        "revision_id",
+        "revision_number"
+      ],
+      "title": "SourceRevision",
+      "type": "object"
+    },
+    "SustainableDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": "1.8.0",
+          "default": "1.8.0",
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "model_id": {
+          "const": "catalyst-finance.sustainable",
+          "default": "catalyst-finance.sustainable",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "analysis_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Analysis Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "maxLength": 4000,
+          "title": "Description",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/SourceRevision"
+        },
+        "currency": {
+          "default": "USD",
+          "pattern": "^[A-Z]{3}$",
+          "title": "Currency",
+          "type": "string"
+        },
+        "reporting_period": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Reporting Period",
+          "type": "string"
+        },
+        "horizon_years": {
+          "default": 10,
+          "exclusiveMinimum": 0,
+          "maximum": 100,
+          "title": "Horizon Years",
+          "type": "number"
+        },
+        "discount_rate_percent": {
+          "default": 5,
+          "exclusiveMinimum": -100,
+          "maximum": 100,
+          "title": "Discount Rate Percent",
+          "type": "number"
+        },
+        "base_project_npv": {
+          "default": 0,
+          "title": "Base Project Npv",
+          "type": "number"
+        },
+        "baseline_emissions_tco2e": {
+          "minimum": 0,
+          "title": "Baseline Emissions Tco2E",
+          "type": "number"
+        },
+        "project_emissions_tco2e": {
+          "minimum": 0,
+          "title": "Project Emissions Tco2E",
+          "type": "number"
+        },
+        "carbon_price_per_tco2e": {
+          "minimum": 0,
+          "title": "Carbon Price Per Tco2E",
+          "type": "number"
+        },
+        "carbon_credit_quantity_tco2e": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Carbon Credit Quantity Tco2E",
+          "type": "number"
+        },
+        "carbon_credit_price_per_tco2e": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Carbon Credit Price Per Tco2E",
+          "type": "number"
+        },
+        "carbon_credit_discount_percent": {
+          "default": 0,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Carbon Credit Discount Percent",
+          "type": "number"
+        },
+        "verification_cost": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Verification Cost",
+          "type": "number"
+        },
+        "carbon_valuation_method": {
+          "default": "shadow_price",
+          "enum": [
+            "shadow_price",
+            "market_credit",
+            "higher_of",
+            "lower_of"
+          ],
+          "title": "Carbon Valuation Method",
+          "type": "string"
+        },
+        "natural_capital_assets": {
+          "items": {
+            "$ref": "#/$defs/NaturalCapitalAssetInput"
+          },
+          "maxItems": 200,
+          "title": "Natural Capital Assets",
+          "type": "array"
+        },
+        "transition_items": {
+          "items": {
+            "$ref": "#/$defs/TransitionItemInput"
+          },
+          "maxItems": 200,
+          "title": "Transition Items",
+          "type": "array"
+        },
+        "green_financing_principal": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Green Financing Principal",
+          "type": "number"
+        },
+        "conventional_interest_rate_percent": {
+          "default": 0,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Conventional Interest Rate Percent",
+          "type": "number"
+        },
+        "green_interest_rate_percent": {
+          "default": 0,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Green Interest Rate Percent",
+          "type": "number"
+        },
+        "financing_term_years": {
+          "default": 0,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Financing Term Years",
+          "type": "number"
+        }
+      },
+      "required": [
+        "analysis_id",
+        "name",
+        "source",
+        "reporting_period",
+        "baseline_emissions_tco2e",
+        "project_emissions_tco2e",
+        "carbon_price_per_tco2e"
+      ],
+      "title": "SustainableDefinition",
+      "type": "object"
+    },
+    "SustainableMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "generated_at": {
+          "title": "Generated At",
+          "type": "string"
+        },
+        "version": {
+          "const": "1.8.0",
+          "default": "1.8.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "asset_count": {
+          "title": "Asset Count",
+          "type": "integer"
+        },
+        "transition_item_count": {
+          "title": "Transition Item Count",
+          "type": "integer"
+        },
+        "disclaimer": {
+          "title": "Disclaimer",
+          "type": "string"
+        }
+      },
+      "required": [
+        "generated_at",
+        "asset_count",
+        "transition_item_count",
+        "disclaimer"
+      ],
+      "title": "SustainableMetadata",
+      "type": "object"
+    },
+    "SustainableMethodology": {
+      "additionalProperties": false,
+      "properties": {
+        "model_id": {
+          "const": "catalyst-finance.sustainable",
+          "default": "catalyst-finance.sustainable",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "model_version": {
+          "const": "1.8.0",
+          "default": "1.8.0",
+          "title": "Model Version",
+          "type": "string"
+        },
+        "carbon_double_count_policy": {
+          "const": "select_one_valuation_basis",
+          "default": "select_one_valuation_basis",
+          "title": "Carbon Double Count Policy",
+          "type": "string"
+        },
+        "credit_quantity_policy": {
+          "const": "capped_at_avoided_emissions",
+          "default": "capped_at_avoided_emissions",
+          "title": "Credit Quantity Policy",
+          "type": "string"
+        },
+        "natural_capital_policy": {
+          "const": "confidence_adjusted_stock_plus_discounted_services_less_restoration",
+          "default": "confidence_adjusted_stock_plus_discounted_services_less_restoration",
+          "title": "Natural Capital Policy",
+          "type": "string"
+        },
+        "transition_policy": {
+          "const": "probability_adjusted_discounted_cash_flow",
+          "default": "probability_adjusted_discounted_cash_flow",
+          "title": "Transition Policy",
+          "type": "string"
+        },
+        "financing_policy": {
+          "const": "discounted_interest_rate_differential",
+          "default": "discounted_interest_rate_differential",
+          "title": "Financing Policy",
+          "type": "string"
+        }
+      },
+      "title": "SustainableMethodology",
+      "type": "object"
+    },
+    "SustainableSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "carbon_value": {
+          "title": "Carbon Value",
+          "type": "number"
+        },
+        "natural_capital_value": {
+          "title": "Natural Capital Value",
+          "type": "number"
+        },
+        "transition_benefit_present_value": {
+          "title": "Transition Benefit Present Value",
+          "type": "number"
+        },
+        "transition_cost_present_value": {
+          "title": "Transition Cost Present Value",
+          "type": "number"
+        },
+        "net_transition_value": {
+          "title": "Net Transition Value",
+          "type": "number"
+        },
+        "green_financing_savings_present_value": {
+          "title": "Green Financing Savings Present Value",
+          "type": "number"
+        },
+        "total_sustainable_value": {
+          "title": "Total Sustainable Value",
+          "type": "number"
+        },
+        "base_project_npv": {
+          "title": "Base Project Npv",
+          "type": "number"
+        },
+        "adjusted_project_npv": {
+          "title": "Adjusted Project Npv",
+          "type": "number"
+        }
+      },
+      "required": [
+        "carbon_value",
+        "natural_capital_value",
+        "transition_benefit_present_value",
+        "transition_cost_present_value",
+        "net_transition_value",
+        "green_financing_savings_present_value",
+        "total_sustainable_value",
+        "base_project_npv",
+        "adjusted_project_npv"
+      ],
+      "title": "SustainableSummary",
+      "type": "object"
+    },
+    "TransitionItemInput": {
+      "additionalProperties": false,
+      "properties": {
+        "item_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Item Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "benefit",
+            "cost"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "amount": {
+          "minimum": 0,
+          "title": "Amount",
+          "type": "number"
+        },
+        "probability_percent": {
+          "default": 100,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Probability Percent",
+          "type": "number"
+        },
+        "timing_years": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Timing Years",
+          "type": "number"
+        }
+      },
+      "required": [
+        "item_id",
+        "label",
+        "kind",
+        "amount"
+      ],
+      "title": "TransitionItemInput",
+      "type": "object"
+    },
+    "TransitionItemResult": {
+      "additionalProperties": false,
+      "properties": {
+        "item_id": {
+          "title": "Item Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "benefit",
+            "cost"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "nominal_amount": {
+          "title": "Nominal Amount",
+          "type": "number"
+        },
+        "probability_percent": {
+          "title": "Probability Percent",
+          "type": "number"
+        },
+        "probability_adjusted_amount": {
+          "title": "Probability Adjusted Amount",
+          "type": "number"
+        },
+        "timing_years": {
+          "title": "Timing Years",
+          "type": "number"
+        },
+        "present_value": {
+          "title": "Present Value",
+          "type": "number"
+        },
+        "signed_present_value": {
+          "title": "Signed Present Value",
+          "type": "number"
+        }
+      },
+      "required": [
+        "item_id",
+        "label",
+        "kind",
+        "nominal_amount",
+        "probability_percent",
+        "probability_adjusted_amount",
+        "timing_years",
+        "present_value",
+        "signed_present_value"
+      ],
+      "title": "TransitionItemResult",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "const": "1.8.0",
+      "default": "1.8.0",
+      "title": "Contract Version",
+      "type": "string"
+    },
+    "model_id": {
+      "const": "catalyst-finance.sustainable",
+      "default": "catalyst-finance.sustainable",
+      "title": "Model Id",
+      "type": "string"
+    },
+    "definition": {
+      "$ref": "#/$defs/SustainableDefinition"
+    },
+    "carbon": {
+      "$ref": "#/$defs/CarbonResult"
+    },
+    "natural_capital_assets": {
+      "items": {
+        "$ref": "#/$defs/NaturalCapitalAssetResult"
+      },
+      "title": "Natural Capital Assets",
+      "type": "array"
+    },
+    "transition_items": {
+      "items": {
+        "$ref": "#/$defs/TransitionItemResult"
+      },
+      "title": "Transition Items",
+      "type": "array"
+    },
+    "summary": {
+      "$ref": "#/$defs/SustainableSummary"
+    },
+    "flags": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Flags",
+      "type": "array"
+    },
+    "methodology": {
+      "$ref": "#/$defs/SustainableMethodology"
+    },
+    "metadata": {
+      "$ref": "#/$defs/SustainableMetadata"
+    }
+  },
+  "required": [
+    "definition",
+    "carbon",
+    "natural_capital_assets",
+    "transition_items",
+    "summary",
+    "flags",
+    "methodology",
+    "metadata"
+  ],
+  "title": "SustainablePublication",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.8.0/sustainable_publication.schema.json"
+}

@@ -28,6 +28,9 @@ from .repositories import (
     WorkspaceNotFoundError,
     WorkspaceRepository,
 )
+from .sustainable import evaluate_sustainable
+from .sustainable_migration import normalize_sustainable
+from .sustainable_models import SustainableDefinition
 from .templates import list_templates
 from .uncertainty import evaluate_uncertainty
 from .uncertainty_migration import normalize_uncertainty
@@ -102,6 +105,18 @@ class CreateOperatingRequest(ContractModel):
 class OperatingRevisionRequest(ContractModel):
     definition: OperatingDefinition
     change_note: str = Field(default="Saved operating revision", max_length=1000)
+
+
+class CreateSustainableRequest(ContractModel):
+    definition: SustainableDefinition
+    name: str | None = Field(default=None, max_length=240)
+
+
+class SustainableRevisionRequest(ContractModel):
+    definition: SustainableDefinition
+    change_note: str = Field(
+        default="Saved sustainable-finance revision", max_length=1000
+    )
 
 
 class RenameRequest(ContractModel):
@@ -236,6 +251,22 @@ def create_app(repository: WorkspaceRepository | None = None) -> FastAPI:
                 status_code=422,
                 detail={
                     "error": "invalid_operating_definition",
+                    "issues": validation_issues(exc),
+                },
+            ) from exc
+
+    @application.post("/api/v1/sustainable/evaluate", tags=["sustainable finance"])
+    def evaluate_sustainable_endpoint(payload: dict[str, Any]) -> dict[str, Any]:
+        try:
+            definition = normalize_sustainable(payload)
+            return cast(
+                dict[str, Any], evaluate_sustainable(definition).model_dump(mode="json")
+            )
+        except (ValidationError, ValueError) as exc:
+            raise HTTPException(
+                status_code=422,
+                detail={
+                    "error": "invalid_sustainable_definition",
                     "issues": validation_issues(exc),
                 },
             ) from exc
@@ -664,6 +695,61 @@ def create_app(repository: WorkspaceRepository | None = None) -> FastAPI:
                 service.delete_operating_analysis(workspace_id, analysis_id).model_dump(
                     mode="json"
                 ),
+            )
+        except WorkspaceNotFoundError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    @application.post(
+        "/api/v1/workspaces/{workspace_id}/sustainable-analyses",
+        tags=["sustainable finance"],
+        status_code=201,
+    )
+    def create_sustainable_endpoint(
+        workspace_id: str, payload: CreateSustainableRequest
+    ) -> dict[str, Any]:
+        try:
+            return cast(
+                dict[str, Any],
+                service.create_sustainable_analysis(
+                    workspace_id, payload.definition, name=payload.name
+                ).model_dump(mode="json"),
+            )
+        except WorkspaceNotFoundError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    @application.post(
+        "/api/v1/workspaces/{workspace_id}/sustainable-analyses/{analysis_id}/revisions",
+        tags=["sustainable finance"],
+    )
+    def save_sustainable_revision_endpoint(
+        workspace_id: str, analysis_id: str, payload: SustainableRevisionRequest
+    ) -> dict[str, Any]:
+        try:
+            return cast(
+                dict[str, Any],
+                service.save_sustainable_revision(
+                    workspace_id,
+                    analysis_id,
+                    payload.definition,
+                    change_note=payload.change_note,
+                ).model_dump(mode="json"),
+            )
+        except WorkspaceNotFoundError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    @application.delete(
+        "/api/v1/workspaces/{workspace_id}/sustainable-analyses/{analysis_id}",
+        tags=["sustainable finance"],
+    )
+    def delete_sustainable_endpoint(
+        workspace_id: str, analysis_id: str
+    ) -> dict[str, Any]:
+        try:
+            return cast(
+                dict[str, Any],
+                service.delete_sustainable_analysis(
+                    workspace_id, analysis_id
+                ).model_dump(mode="json"),
             )
         except WorkspaceNotFoundError as exc:
             raise HTTPException(status_code=404, detail=str(exc)) from exc

@@ -1,8 +1,8 @@
 {
-  "contract_version": "1.7.0",
+  "contract_version": "1.8.0",
   "model_id": "catalyst-finance.operating",
   "definition": {
-    "contract_version": "1.7.0",
+    "contract_version": "1.8.0",
     "model_id": "catalyst-finance.operating",
     "operating_id": "sample-operations",
     "name": "Community retrofit operating plan",
@@ -490,7 +490,7 @@
   ],
   "methodology": {
     "model_id": "catalyst-finance.operating",
-    "model_version": "1.7.0",
+    "model_version": "1.8.0",
     "budget_policy": "static_flexible_actual",
     "variance_sign_policy": "positive_is_favorable",
     "volume_variance_policy": "budget_contribution_margin",
@@ -500,7 +500,7 @@
   },
   "metadata": {
     "generated_at": "2026-07-17T00:00:00+00:00",
-    "version": "1.7.0",
+    "version": "1.8.0",
     "row_count": 4,
     "unit_count": 2,
     "cost_center_count": 2,

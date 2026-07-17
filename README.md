@@ -4,7 +4,9 @@ Catalyst Finance is an open-source financial scenario, cash-flow, and decision-s
 
 > Educational software only. This repository does not provide investment, legal, tax, accounting, fiduciary, assurance, lending, procurement, funding, or financial advice.
 
-## v1.7.0 — Cost, Budget, and Operating Economics
+## v1.8.0 — Sustainable Finance, Carbon, and Natural-Capital Accounting
+
+The v1.8.0 release adds a seventh canonical engine for non-double-counted carbon valuation, natural-capital stock and ecosystem-service value, probability-adjusted transition effects, green-financing savings, and adjusted project NPV.
 
 Catalyst Finance now includes a canonical operating model with static, flexible, and actual budgets; reconciled favorable and unfavorable variances; unit and cost-center rollups; contribution margins; break-even and margin-of-safety analysis; operating leverage; and target-profit volume.
 
@@ -118,7 +120,7 @@ Packages:
 
 ```text
 dist/catalyst-finance.zip
-dist/catalyst-finance-demo-v1.7.0.zip
+dist/catalyst-finance-demo-v1.8.0.zip
 ```
 
 Shortcodes:

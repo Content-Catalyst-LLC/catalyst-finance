@@ -7,7 +7,7 @@
   else root.CatalystFinanceComparisonEngine = engine;
 })(typeof self !== 'undefined' ? self : this, function (cashFlowEngine) {
   'use strict';
-  const CONTRACT_VERSION = '1.7.0';
+  const CONTRACT_VERSION = '1.8.0';
   const MODEL_ID = 'catalyst-finance.comparison';
   const LABELS = {
     npv: 'Net present value', net_cash_flow: 'Net cash flow',

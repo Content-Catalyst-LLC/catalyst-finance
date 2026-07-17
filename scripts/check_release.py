@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Catalyst Finance v1.7.0 release contract."""
+"""Catalyst Finance v1.8.0 release contract."""
 
 from __future__ import annotations
 
@@ -20,13 +20,14 @@ import tomllib
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-VERSION = "1.7.0"
+VERSION = "1.8.0"
 SCREENING_MODEL_ID = "catalyst-finance.screening"
 CASHFLOW_MODEL_ID = "catalyst-finance.cash-flow"
 COMPARISON_MODEL_ID = "catalyst-finance.comparison"
 UNCERTAINTY_MODEL_ID = "catalyst-finance.uncertainty"
 PRICING_MODEL_ID = "catalyst-finance.pricing"
 OPERATING_MODEL_ID = "catalyst-finance.operating"
+SUSTAINABLE_MODEL_ID = "catalyst-finance.sustainable"
 FIXED_TIMESTAMP = "2026-07-17T00:00:00+00:00"
 CASHFLOW_FIXTURES = [
     "sample_cash_flow_scenario.json",
@@ -95,6 +96,7 @@ def check_versions() -> None:
         "uncertainty browser": "wordpress/catalyst-finance-demo/assets/catalyst-finance-uncertainty-engine.js",
         "pricing browser": "wordpress/catalyst-finance-demo/assets/catalyst-finance-pricing-engine.js",
         "operating browser": "wordpress/catalyst-finance-demo/assets/catalyst-finance-operating-engine.js",
+        "sustainable browser": "wordpress/catalyst-finance-demo/assets/catalyst-finance-sustainable-engine.js",
     }
     package_text = require("catalyst_finance/version.py").read_text(encoding="utf-8")
     manifest = load_json("catalyst_finance_manifest.json")
@@ -105,6 +107,7 @@ def check_versions() -> None:
         "uncertainty": load_json("examples/sample_uncertainty.output.json"),
         "pricing": load_json("examples/sample_pricing.output.json"),
         "operating": load_json("examples/sample_operating.output.json"),
+        "sustainable": load_json("examples/sample_sustainable.output.json"),
     }
     schemas = {
         name: load_json(f"schemas/{name}")
@@ -121,9 +124,45 @@ def check_versions() -> None:
             "pricing_publication.schema.json",
             "operating_definition.schema.json",
             "operating_publication.schema.json",
+            "sustainable_definition.schema.json",
+            "sustainable_publication.schema.json",
             "finance_workspace.schema.json",
         ]
     }
+
+    sustainable_definition = load_json("data/sample_sustainable.json")
+    sustainable_publication = load_json("examples/sample_sustainable.output.json")
+    _validate(
+        schemas["sustainable_definition.schema.json"],
+        sustainable_definition,
+        "Sustainable definition",
+    )
+    _validate(
+        schemas["sustainable_publication.schema.json"],
+        sustainable_publication,
+        "Sustainable publication",
+    )
+    if sustainable_publication["carbon"]["avoided_emissions_tco2e"] != 4500.0:
+        raise ReleaseError("Sustainable avoided-emissions contract failed.")
+    if sustainable_publication["summary"]["adjusted_project_npv"] != 1526250.9:
+        raise ReleaseError("Sustainable adjusted-project-value contract failed.")
+    if (
+        sustainable_publication["summary"]["carbon_value"]
+        != sustainable_publication["carbon"]["selected_carbon_value"]
+    ):
+        raise ReleaseError("Sustainable carbon selection reconciliation failed.")
+    if (
+        sustainable_publication["summary"]["carbon_value"]
+        == sustainable_publication["carbon"]["shadow_carbon_value"]
+        + sustainable_publication["carbon"]["net_market_credit_value"]
+    ):
+        raise ReleaseError("Sustainable carbon double-count policy failed.")
+    from catalyst_finance.sustainable_migration import normalize_sustainable
+
+    legacy_sustainable = load_json("data/legacy_v1.7.0_sustainable.json")
+    if normalize_sustainable(legacy_sustainable).contract_version != VERSION:
+        raise ReleaseError("v1.7.0 sustainable-finance migration failed.")
+
     workspace_export = load_json("examples/sample_finance_workspace.export.json")
     observed: dict[str, str] = {
         "VERSION": require("VERSION").read_text(encoding="utf-8").strip(),
@@ -151,6 +190,8 @@ def check_versions() -> None:
         "pricing example contract": examples["pricing"]["contract_version"],
         "operating example": examples["operating"]["metadata"]["version"],
         "operating example contract": examples["operating"]["contract_version"],
+        "sustainable example": examples["sustainable"]["metadata"]["version"],
+        "sustainable example contract": examples["sustainable"]["contract_version"],
         "workspace export": workspace_export["export_contract_version"],
         "workspace record": workspace_export["workspace"]["workspace_contract_version"],
     }
@@ -178,6 +219,7 @@ def check_versions() -> None:
         "uncertainty_model_id": UNCERTAINTY_MODEL_ID,
         "pricing_model_id": PRICING_MODEL_ID,
         "operating_model_id": OPERATING_MODEL_ID,
+        "sustainable_model_id": SUSTAINABLE_MODEL_ID,
     }
     if any(manifest.get(key) != value for key, value in expected_model_ids.items()):
         raise ReleaseError("Manifest model identifier contract failed.")
@@ -193,6 +235,8 @@ def check_versions() -> None:
         raise ReleaseError("Pricing model identifier contract failed.")
     if examples["operating"]["model_id"] != OPERATING_MODEL_ID:
         raise ReleaseError("Operating model identifier contract failed.")
+    if examples["sustainable"]["model_id"] != SUSTAINABLE_MODEL_ID:
+        raise ReleaseError("Sustainable model identifier contract failed.")
     print(f"PASS: {len(observed)} version surfaces report {VERSION}.")
 
 
@@ -221,6 +265,10 @@ def check_layout() -> None:
         "catalyst_finance/operating_cli.py",
         "catalyst_finance/operating_models.py",
         "catalyst_finance/operating_migration.py",
+        "catalyst_finance/sustainable_migration.py",
+        "catalyst_finance/sustainable_models.py",
+        "catalyst_finance/sustainable_cli.py",
+        "catalyst_finance/sustainable.py",
         "catalyst_finance/workspace_migration.py",
         "catalyst_finance/engine.py",
         "catalyst_finance/migration.py",
@@ -228,6 +276,16 @@ def check_layout() -> None:
         "catalyst_finance/repositories.py",
         "catalyst_finance/workspace.py",
         "catalyst_finance/workspace_models.py",
+        "docs/sustainable-finance-review-checklist.md",
+        "docs/sustainable-finance-and-natural-capital.md",
+        "wordpress/catalyst-finance-demo/assets/catalyst-finance-sustainable-engine.js",
+        "scripts/browser_sustainable_parity.js",
+        "scripts/reproduce_sustainable_example.py",
+        "schemas/sustainable_publication.schema.json",
+        "schemas/sustainable_definition.schema.json",
+        "examples/sample_sustainable.summary.csv",
+        "examples/sample_sustainable.output.json",
+        "data/sample_sustainable.json",
         "data/sample_finance_scenario.json",
         "data/sample_comparison.json",
         "data/sample_uncertainty.json",
@@ -274,7 +332,7 @@ def check_layout() -> None:
         "tests/test_workspace.py",
         "tests/test_workspace_comparison.py",
         "tests/test_workspace_uncertainty.py",
-        "release/v1.7.0.md",
+        "release/v1.8.0.md",
         "docs/cash-flow-modeling.md",
         "docs/capital-budgeting-review-checklist.md",
         "docs/scenario-comparison.md",
@@ -672,6 +730,7 @@ def check_contracts_and_examples() -> None:
     legacy_workspace["workspace"].pop("uncertainty_analyses", None)
     legacy_workspace["workspace"].pop("pricing_analyses", None)
     legacy_workspace["workspace"].pop("operating_analyses", None)
+    legacy_workspace["workspace"].pop("sustainable_analyses", None)
     migrated_workspace = migrate_workspace_payload(legacy_workspace)
     if migrated_workspace["workspace"]["workspace_contract_version"] != VERSION:
         raise ReleaseError("v1.4.0 workspace migration version failed.")
@@ -683,6 +742,10 @@ def check_contracts_and_examples() -> None:
         raise ReleaseError("Legacy workspace migration did not add pricing analyses.")
     if migrated_workspace["workspace"].get("operating_analyses") != []:
         raise ReleaseError("Legacy workspace migration did not add operating analyses.")
+    if migrated_workspace["workspace"].get("sustainable_analyses") != []:
+        raise ReleaseError(
+            "Legacy workspace migration did not add sustainable analyses."
+        )
 
     workspace_export = load_json("examples/sample_finance_workspace.export.json")
     _validate(
@@ -765,7 +828,7 @@ def check_contracts_and_examples() -> None:
         ):
             raise ReleaseError("Reproducible workspace export mismatch.")
     print(
-        "PASS: schemas, migrations, capital budgeting, comparison, uncertainty, pricing, operating economics, and exports passed."
+        "PASS: schemas, migrations, capital budgeting, comparison, uncertainty, pricing, operating economics, sustainable finance, and exports passed."
     )
 
 
@@ -830,6 +893,8 @@ def check_browser_parity(portable: bool) -> None:
     from catalyst_finance.operating_models import OperatingDefinition
     from catalyst_finance.pricing import evaluate_pricing
     from catalyst_finance.pricing_models import PricingDefinition
+    from catalyst_finance.sustainable import evaluate_sustainable
+    from catalyst_finance.sustainable_models import SustainableDefinition
     from catalyst_finance.uncertainty import evaluate_uncertainty
     from catalyst_finance.uncertainty_models import UncertaintyDefinition
 
@@ -990,8 +1055,29 @@ def check_browser_parity(portable: bool) -> None:
     if actual_operating != expected_operating:
         raise ReleaseError("Operating Python/browser parity failed.")
 
+    sustainable_path = ROOT / "data/sample_sustainable.json"
+    sustainable_definition = SustainableDefinition.model_validate(
+        json.loads(sustainable_path.read_text(encoding="utf-8"))
+    )
+    expected_sustainable = evaluate_sustainable(
+        sustainable_definition, generated_at=FIXED_TIMESTAMP
+    ).model_dump(mode="json")
+    actual_sustainable = json.loads(
+        run(
+            [
+                node,
+                "scripts/browser_sustainable_parity.js",
+                str(sustainable_path),
+                FIXED_TIMESTAMP,
+            ],
+            capture=True,
+        ).stdout
+    )
+    if actual_sustainable != expected_sustainable:
+        raise ReleaseError("Sustainable Python/browser parity failed.")
+
     print(
-        "PASS: screening, cash-flow, migration, comparison, uncertainty, pricing, and operating browser engines match Python."
+        "PASS: screening, cash-flow, migration, comparison, uncertainty, pricing, operating, and sustainable browser engines match Python."
     )
 
 
@@ -1026,6 +1112,9 @@ def check_plugin() -> None:
             operating = archive.read(
                 "catalyst-finance-demo/assets/catalyst-finance-operating-engine.js"
             ).decode("utf-8")
+            sustainable = archive.read(
+                "catalyst-finance-demo/assets/catalyst-finance-sustainable-engine.js"
+            ).decode("utf-8")
             browser = archive.read(
                 "catalyst-finance-demo/assets/catalyst-finance-demo.js"
             ).decode("utf-8")
@@ -1037,6 +1126,7 @@ def check_plugin() -> None:
                 or VERSION not in uncertainty
                 or VERSION not in pricing
                 or VERSION not in operating
+                or VERSION not in sustainable
             ):
                 raise ReleaseError("WordPress package version mismatch.")
             combined = (
@@ -1047,6 +1137,7 @@ def check_plugin() -> None:
                 + uncertainty
                 + pricing
                 + operating
+                + sustainable
             )
             required_tokens = [
                 "workspace_contract_version",
@@ -1086,6 +1177,11 @@ def check_plugin() -> None:
                 "CatalystFinanceOperatingEngine",
                 "variance_reconciliation",
                 "static_flexible_actual",
+                "data-scfin-sustainable-studio",
+                "data-scfin-sustainable-run",
+                "CatalystFinanceSustainableEngine",
+                "selected_carbon_value",
+                "select_one_valuation_basis",
             ]
             missing = [token for token in required_tokens if token not in combined]
             if missing:
@@ -1118,12 +1214,14 @@ def check_syntax(portable: bool) -> None:
             "scripts/browser_uncertainty_parity.js",
             "scripts/browser_pricing_parity.js",
             "scripts/browser_operating_parity.js",
+            "scripts/browser_sustainable_parity.js",
             "wordpress/catalyst-finance-demo/assets/catalyst-finance-engine.js",
             "wordpress/catalyst-finance-demo/assets/catalyst-finance-cashflow-engine.js",
             "wordpress/catalyst-finance-demo/assets/catalyst-finance-comparison-engine.js",
             "wordpress/catalyst-finance-demo/assets/catalyst-finance-uncertainty-engine.js",
             "wordpress/catalyst-finance-demo/assets/catalyst-finance-pricing-engine.js",
             "wordpress/catalyst-finance-demo/assets/catalyst-finance-operating-engine.js",
+            "wordpress/catalyst-finance-demo/assets/catalyst-finance-sustainable-engine.js",
             "wordpress/catalyst-finance-demo/assets/catalyst-finance-demo.js",
         ]:
             run([node, "--check", path])
@@ -1179,7 +1277,7 @@ def main() -> int:
     ) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1
-    print("Catalyst Finance v1.7.0 release contract passed.")
+    print("Catalyst Finance v1.8.0 release contract passed.")
     return 0
 
 

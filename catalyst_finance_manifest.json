@@ -1,7 +1,7 @@
 {
   "name": "Catalyst Finance",
-  "version": "1.7.0",
-  "release_title": "Cost, Budget, and Operating Economics",
+  "version": "1.8.0",
+  "release_title": "Sustainable Finance, Carbon, and Natural-Capital Accounting",
   "repository": "https://github.com/Content-Catalyst-LLC/catalyst-finance",
   "shortcode": "[catalyst_finance_workspace]",
   "module_type": "Sustainable Catalyst platform module",
@@ -12,20 +12,20 @@
   "models_endpoint": "/api/v1/models",
   "evaluation_endpoint": "/api/v1/evaluate",
   "cash_flow_evaluation_endpoint": "/api/v1/cash-flow/evaluate",
-  "contract_version": "1.7.0",
+  "contract_version": "1.8.0",
   "model_id": "catalyst-finance.screening",
   "cash_flow_model_id": "catalyst-finance.cash-flow",
-  "methodology_version": "1.7.0",
+  "methodology_version": "1.8.0",
   "workflow": [
-    "versioned operating definition",
-    "budget, actual, and cost-center validation",
-    "static and flexible budget construction",
-    "actual operating statement calculation",
-    "favorable and unfavorable variance reconciliation",
-    "unit economics, break-even, and leverage review",
-    "workspace operating revision save",
-    "publication validation",
-    "JSON and CSV export"
+    "versioned sustainable-finance definition",
+    "emissions boundary and carbon-basis validation",
+    "avoided-emissions and eligible-credit calculation",
+    "natural-capital stock and ecosystem-service valuation",
+    "transition benefit and cost present value",
+    "green-financing savings calculation",
+    "non-double-counted sustainable-value reconciliation",
+    "workspace revision save",
+    "JSON and CSV publication export"
   ],
   "artifacts": [
     "canonical screening engine",
@@ -58,7 +58,17 @@
     "contribution margin, break-even, margin of safety, and operating leverage",
     "target-profit volume and variance reconciliation",
     "versioned operating workspace analyses and API routes",
-    "WordPress operating economics studio"
+    "WordPress operating economics studio",
+    "canonical sustainable-finance, carbon, and natural-capital engine",
+    "non-double-counted shadow-price and market-credit valuation",
+    "avoided-emissions and eligible-credit accounting",
+    "confidence-adjusted natural-capital stock uplift",
+    "discounted ecosystem-service and restoration-cost accounting",
+    "probability-adjusted transition benefits and costs",
+    "green-financing interest savings",
+    "adjusted project NPV and review flags",
+    "versioned sustainable-finance workspace analyses and API routes",
+    "WordPress sustainable finance studio"
   ],
   "boundaries": [
     "not investment advice",
@@ -71,7 +81,7 @@
   ],
   "templates_endpoint": "/api/v1/templates",
   "workspaces_endpoint": "/api/v1/workspaces",
-  "workspace_contract_version": "1.7.0",
+  "workspace_contract_version": "1.8.0",
   "workspace_adapters": [
     "atomic JSON directory",
     "SQLite"
@@ -83,5 +93,7 @@
   "pricing_endpoint": "/api/v1/pricing/evaluate",
   "pricing_model_id": "catalyst-finance.pricing",
   "operating_endpoint": "/api/v1/operating/evaluate",
-  "operating_model_id": "catalyst-finance.operating"
+  "operating_model_id": "catalyst-finance.operating",
+  "sustainable_endpoint": "/api/v1/sustainable/evaluate",
+  "sustainable_model_id": "catalyst-finance.sustainable"
 }

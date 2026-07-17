@@ -9,6 +9,7 @@ from .comparison_models import COMPARISON_CONTRACT_VERSION, COMPARISON_MODEL_ID
 from .models import CONTRACT_VERSION, METHODOLOGY_VERSION, MODEL_ID
 from .operating_models import OPERATING_CONTRACT_VERSION, OPERATING_MODEL_ID
 from .pricing_models import PRICING_CONTRACT_VERSION, PRICING_MODEL_ID
+from .sustainable_models import SUSTAINABLE_CONTRACT_VERSION, SUSTAINABLE_MODEL_ID
 from .uncertainty_models import UNCERTAINTY_CONTRACT_VERSION, UNCERTAINTY_MODEL_ID
 
 MODEL_REGISTRY: dict[str, dict[str, Any]] = {
@@ -122,6 +123,23 @@ MODEL_REGISTRY: dict[str, dict[str, Any]] = {
             "target-profit volume",
             "cost-center and unit rollups",
             "variance reconciliation",
+        ],
+    },
+    SUSTAINABLE_MODEL_ID: {
+        "model_id": SUSTAINABLE_MODEL_ID,
+        "name": "Catalyst Finance sustainable finance, carbon, and natural-capital model",
+        "model_version": SUSTAINABLE_CONTRACT_VERSION,
+        "contract_version": SUSTAINABLE_CONTRACT_VERSION,
+        "status": "stable",
+        "period_frequency": "reporting horizon",
+        "capabilities": [
+            "non-double-counted carbon valuation",
+            "avoided emissions and carbon-credit accounting",
+            "natural-capital stock and ecosystem-service valuation",
+            "probability-adjusted transition benefits and costs",
+            "green-financing interest savings",
+            "adjusted project value and review flags",
+            "revision traceability",
         ],
     },
 }

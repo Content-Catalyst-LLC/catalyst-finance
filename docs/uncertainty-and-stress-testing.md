@@ -1,6 +1,6 @@
 # Uncertainty, Monte Carlo, and Stress Testing
 
-Catalyst Finance v1.7.0 adds a seeded uncertainty model around the canonical period cash-flow engine. It is designed for transparent decision support: every uncertain variable points to an explicit scenario parameter, every distribution is declared, correlation assumptions are reviewable, and the seed makes the simulation reproducible.
+Catalyst Finance v1.8.0 adds a seeded uncertainty model around the canonical period cash-flow engine. It is designed for transparent decision support: every uncertain variable points to an explicit scenario parameter, every distribution is declared, correlation assumptions are reviewable, and the seed makes the simulation reproducible.
 
 ## Supported distributions
 

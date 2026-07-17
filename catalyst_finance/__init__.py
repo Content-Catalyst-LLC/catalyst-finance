@@ -9,6 +9,8 @@ from .models import FinanceScenarioInput
 from .pricing import evaluate_pricing
 from .pricing_models import PricingDefinition, PricingPublication
 from .repositories import JsonWorkspaceRepository, SQLiteWorkspaceRepository
+from .sustainable import evaluate_sustainable
+from .sustainable_models import SustainableDefinition, SustainablePublication
 from .uncertainty import evaluate_uncertainty
 from .uncertainty_models import UncertaintyDefinition, UncertaintyPublication
 from .version import __version__
@@ -26,6 +28,8 @@ __all__ = [
     "PricingDefinition",
     "PricingPublication",
     "SQLiteWorkspaceRepository",
+    "SustainableDefinition",
+    "SustainablePublication",
     "UncertaintyDefinition",
     "UncertaintyPublication",
     "WorkspaceService",
@@ -35,5 +39,6 @@ __all__ = [
     "evaluate_payload",
     "evaluate_pricing",
     "evaluate_scenario",
+    "evaluate_sustainable",
     "evaluate_uncertainty",
 ]

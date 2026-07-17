@@ -45,7 +45,7 @@ def test_operating_api_rejects_invalid_payload(tmp_path: Path) -> None:
     client = TestClient(create_app(JsonWorkspaceRepository(tmp_path)))
     response = client.post(
         "/api/v1/operating/evaluate",
-        json={"contract_version": "1.7.0", "model_id": "catalyst-finance.operating"},
+        json={"contract_version": "1.8.0", "model_id": "catalyst-finance.operating"},
     )
     assert response.status_code == 422
     assert response.json()["detail"]["error"] == "invalid_operating_definition"

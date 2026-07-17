@@ -1,12 +1,12 @@
 # Changelog
 
-## 1.7.0 — 2026-07-17
+## 1.8.0 — 2026-07-17
 
-- Added a canonical demand, elasticity, pricing, and revenue model with linear, constant-elasticity, and observed demand curves.
-- Added multi-segment aggregation, proportional capacity allocation, cost-to-serve, break-even quantity, and contribution-margin analysis.
-- Added revenue, contribution, and operating-profit optima plus current-price recommendations and price-change constraints.
-- Added pricing schemas, examples, CLI, FastAPI routes, workspace revisions, exact browser parity, and a WordPress pricing studio.
-- Added v1.5.0 migration support and expanded the full release contract.
+- Added the sustainable-finance, carbon, and natural-capital accounting engine.
+- Added one-basis carbon valuation to prevent shadow-price and credit double counting.
+- Added confidence-adjusted natural-capital stock and ecosystem-service valuation.
+- Added transition-value and green-financing savings calculations.
+- Added API, CLI, workspace revisions, migrations, schemas, reproducible examples, browser parity, and WordPress studio support.
 
 ## 1.5.0 — 2026-07-17
 

@@ -239,8 +239,8 @@
       "additionalProperties": false,
       "properties": {
         "contract_version": {
-          "const": "1.7.0",
-          "default": "1.7.0",
+          "const": "1.8.0",
+          "default": "1.8.0",
           "title": "Contract Version",
           "type": "string"
         },
@@ -359,8 +359,8 @@
       "additionalProperties": false,
       "properties": {
         "contract_version": {
-          "const": "1.7.0",
-          "default": "1.7.0",
+          "const": "1.8.0",
+          "default": "1.8.0",
           "title": "Contract Version",
           "type": "string"
         },
@@ -970,8 +970,8 @@
       "additionalProperties": false,
       "properties": {
         "contract_version": {
-          "const": "1.7.0",
-          "default": "1.7.0",
+          "const": "1.8.0",
+          "default": "1.8.0",
           "title": "Contract Version",
           "type": "string"
         },
@@ -1084,6 +1084,87 @@
       "title": "MonteCarloConfiguration",
       "type": "object"
     },
+    "NaturalCapitalAssetInput": {
+      "additionalProperties": false,
+      "properties": {
+        "asset_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "water",
+            "biodiversity",
+            "soil",
+            "forest",
+            "ecosystem_service",
+            "other"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "quantity": {
+          "minimum": 0,
+          "title": "Quantity",
+          "type": "number"
+        },
+        "unit": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Unit",
+          "type": "string"
+        },
+        "baseline_unit_value": {
+          "minimum": 0,
+          "title": "Baseline Unit Value",
+          "type": "number"
+        },
+        "projected_unit_value": {
+          "minimum": 0,
+          "title": "Projected Unit Value",
+          "type": "number"
+        },
+        "annual_service_value": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Annual Service Value",
+          "type": "number"
+        },
+        "restoration_cost": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Restoration Cost",
+          "type": "number"
+        },
+        "confidence_percent": {
+          "default": 100,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Confidence Percent",
+          "type": "number"
+        }
+      },
+      "required": [
+        "asset_id",
+        "label",
+        "category",
+        "quantity",
+        "unit",
+        "baseline_unit_value",
+        "projected_unit_value"
+      ],
+      "title": "NaturalCapitalAssetInput",
+      "type": "object"
+    },
     "ObservedDemandPoint": {
       "additionalProperties": false,
       "properties": {
@@ -1160,8 +1241,8 @@
       "additionalProperties": false,
       "properties": {
         "contract_version": {
-          "const": "1.7.0",
-          "default": "1.7.0",
+          "const": "1.8.0",
+          "default": "1.8.0",
           "title": "Contract Version",
           "type": "string"
         },
@@ -1478,8 +1559,8 @@
       "additionalProperties": false,
       "properties": {
         "contract_version": {
-          "const": "1.7.0",
-          "default": "1.7.0",
+          "const": "1.8.0",
+          "default": "1.8.0",
           "title": "Contract Version",
           "type": "string"
         },
@@ -1666,8 +1747,8 @@
           "type": "string"
         },
         "model_version": {
-          "const": "1.7.0",
-          "default": "1.7.0",
+          "const": "1.8.0",
+          "default": "1.8.0",
           "title": "Model Version",
           "type": "string"
         },
@@ -1848,6 +1929,272 @@
       "title": "StressCase",
       "type": "object"
     },
+    "SustainableDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": "1.8.0",
+          "default": "1.8.0",
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "model_id": {
+          "const": "catalyst-finance.sustainable",
+          "default": "catalyst-finance.sustainable",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "analysis_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Analysis Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "maxLength": 4000,
+          "title": "Description",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/SourceRevision"
+        },
+        "currency": {
+          "default": "USD",
+          "pattern": "^[A-Z]{3}$",
+          "title": "Currency",
+          "type": "string"
+        },
+        "reporting_period": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Reporting Period",
+          "type": "string"
+        },
+        "horizon_years": {
+          "default": 10,
+          "exclusiveMinimum": 0,
+          "maximum": 100,
+          "title": "Horizon Years",
+          "type": "number"
+        },
+        "discount_rate_percent": {
+          "default": 5,
+          "exclusiveMinimum": -100,
+          "maximum": 100,
+          "title": "Discount Rate Percent",
+          "type": "number"
+        },
+        "base_project_npv": {
+          "default": 0,
+          "title": "Base Project Npv",
+          "type": "number"
+        },
+        "baseline_emissions_tco2e": {
+          "minimum": 0,
+          "title": "Baseline Emissions Tco2E",
+          "type": "number"
+        },
+        "project_emissions_tco2e": {
+          "minimum": 0,
+          "title": "Project Emissions Tco2E",
+          "type": "number"
+        },
+        "carbon_price_per_tco2e": {
+          "minimum": 0,
+          "title": "Carbon Price Per Tco2E",
+          "type": "number"
+        },
+        "carbon_credit_quantity_tco2e": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Carbon Credit Quantity Tco2E",
+          "type": "number"
+        },
+        "carbon_credit_price_per_tco2e": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Carbon Credit Price Per Tco2E",
+          "type": "number"
+        },
+        "carbon_credit_discount_percent": {
+          "default": 0,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Carbon Credit Discount Percent",
+          "type": "number"
+        },
+        "verification_cost": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Verification Cost",
+          "type": "number"
+        },
+        "carbon_valuation_method": {
+          "default": "shadow_price",
+          "enum": [
+            "shadow_price",
+            "market_credit",
+            "higher_of",
+            "lower_of"
+          ],
+          "title": "Carbon Valuation Method",
+          "type": "string"
+        },
+        "natural_capital_assets": {
+          "items": {
+            "$ref": "#/$defs/NaturalCapitalAssetInput"
+          },
+          "maxItems": 200,
+          "title": "Natural Capital Assets",
+          "type": "array"
+        },
+        "transition_items": {
+          "items": {
+            "$ref": "#/$defs/TransitionItemInput"
+          },
+          "maxItems": 200,
+          "title": "Transition Items",
+          "type": "array"
+        },
+        "green_financing_principal": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Green Financing Principal",
+          "type": "number"
+        },
+        "conventional_interest_rate_percent": {
+          "default": 0,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Conventional Interest Rate Percent",
+          "type": "number"
+        },
+        "green_interest_rate_percent": {
+          "default": 0,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Green Interest Rate Percent",
+          "type": "number"
+        },
+        "financing_term_years": {
+          "default": 0,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Financing Term Years",
+          "type": "number"
+        }
+      },
+      "required": [
+        "analysis_id",
+        "name",
+        "source",
+        "reporting_period",
+        "baseline_emissions_tco2e",
+        "project_emissions_tco2e",
+        "carbon_price_per_tco2e"
+      ],
+      "title": "SustainableDefinition",
+      "type": "object"
+    },
+    "SustainableRevision": {
+      "additionalProperties": false,
+      "properties": {
+        "revision_id": {
+          "maxLength": 100,
+          "minLength": 5,
+          "pattern": "^[a-z]+_[A-Za-z0-9_-]+$",
+          "title": "Revision Id",
+          "type": "string"
+        },
+        "revision_number": {
+          "minimum": 1,
+          "title": "Revision Number",
+          "type": "integer"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "change_note": {
+          "default": "",
+          "maxLength": 1000,
+          "title": "Change Note",
+          "type": "string"
+        },
+        "definition": {
+          "$ref": "#/$defs/SustainableDefinition"
+        }
+      },
+      "required": [
+        "revision_id",
+        "revision_number",
+        "created_at",
+        "definition"
+      ],
+      "title": "SustainableRevision",
+      "type": "object"
+    },
+    "TransitionItemInput": {
+      "additionalProperties": false,
+      "properties": {
+        "item_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Item Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "benefit",
+            "cost"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "amount": {
+          "minimum": 0,
+          "title": "Amount",
+          "type": "number"
+        },
+        "probability_percent": {
+          "default": 100,
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Probability Percent",
+          "type": "number"
+        },
+        "timing_years": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Timing Years",
+          "type": "number"
+        }
+      },
+      "required": [
+        "item_id",
+        "label",
+        "kind",
+        "amount"
+      ],
+      "title": "TransitionItemInput",
+      "type": "object"
+    },
     "TwoWaySensitivityDefinition": {
       "additionalProperties": false,
       "properties": {
@@ -1917,8 +2264,8 @@
       "additionalProperties": false,
       "properties": {
         "contract_version": {
-          "const": "1.7.0",
-          "default": "1.7.0",
+          "const": "1.8.0",
+          "default": "1.8.0",
           "title": "Contract Version",
           "type": "string"
         },
@@ -2215,8 +2562,8 @@
           "type": "string"
         },
         "default_model_version": {
-          "const": "1.7.0",
-          "default": "1.7.0",
+          "const": "1.8.0",
+          "default": "1.8.0",
           "title": "Default Model Version",
           "type": "string"
         }
@@ -2538,6 +2885,69 @@
       "title": "WorkspaceScenario",
       "type": "object"
     },
+    "WorkspaceSustainableAnalysis": {
+      "additionalProperties": false,
+      "properties": {
+        "analysis_id": {
+          "maxLength": 100,
+          "minLength": 5,
+          "pattern": "^[a-z]+_[A-Za-z0-9_-]+$",
+          "title": "Analysis Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "status": {
+          "default": "active",
+          "enum": [
+            "draft",
+            "active",
+            "archived"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        },
+        "current_revision_id": {
+          "maxLength": 100,
+          "minLength": 5,
+          "pattern": "^[a-z]+_[A-Za-z0-9_-]+$",
+          "title": "Current Revision Id",
+          "type": "string"
+        },
+        "revisions": {
+          "items": {
+            "$ref": "#/$defs/SustainableRevision"
+          },
+          "minItems": 1,
+          "title": "Revisions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "analysis_id",
+        "name",
+        "created_at",
+        "updated_at",
+        "current_revision_id",
+        "revisions"
+      ],
+      "title": "WorkspaceSustainableAnalysis",
+      "type": "object"
+    },
     "WorkspaceUncertaintyAnalysis": {
       "additionalProperties": false,
       "properties": {
@@ -2605,8 +3015,8 @@
   "additionalProperties": false,
   "properties": {
     "workspace_contract_version": {
-      "const": "1.7.0",
-      "default": "1.7.0",
+      "const": "1.8.0",
+      "default": "1.8.0",
       "title": "Workspace Contract Version",
       "type": "string"
     },
@@ -2692,6 +3102,13 @@
       },
       "title": "Operating Analyses",
       "type": "array"
+    },
+    "sustainable_analyses": {
+      "items": {
+        "$ref": "#/$defs/WorkspaceSustainableAnalysis"
+      },
+      "title": "Sustainable Analyses",
+      "type": "array"
     }
   },
   "required": [
@@ -2703,5 +3120,5 @@
   "title": "FinanceWorkspace",
   "type": "object",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.7.0/finance_workspace.schema.json"
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.8.0/finance_workspace.schema.json"
 }

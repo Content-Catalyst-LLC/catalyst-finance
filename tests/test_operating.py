@@ -82,7 +82,7 @@ def test_v160_operating_definition_migrates() -> None:
     payload = json.loads((ROOT / "data/sample_operating.json").read_text())
     payload["contract_version"] = "1.6.0"
     migrated = normalize_operating(payload)
-    assert migrated.contract_version == "1.7.0"
+    assert migrated.contract_version == "1.8.0"
 
 
 def test_browser_operating_parity() -> None:

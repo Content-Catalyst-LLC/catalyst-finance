@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Catalyst Finance Demo
  * Description: Persistent finance workspace with screening, capital budgeting, comparison, uncertainty, pricing, budgets, variances, and operating economics for Sustainable Catalyst.
- * Version: 1.7.0
+ * Version: 1.8.0
  * Author: Content Catalyst LLC
  * License: MIT
  */
@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('CATALYST_FINANCE_DEMO_VERSION', '1.7.0');
+define('CATALYST_FINANCE_DEMO_VERSION', '1.8.0');
 
 function catalyst_finance_demo_assets() {
     $base = plugin_dir_url(__FILE__);
@@ -64,9 +64,16 @@ function catalyst_finance_demo_assets() {
         true
     );
     wp_enqueue_script(
+        'catalyst-finance-sustainable-engine',
+        $base . 'assets/catalyst-finance-sustainable-engine.js',
+        array(),
+        CATALYST_FINANCE_DEMO_VERSION,
+        true
+    );
+    wp_enqueue_script(
         'catalyst-finance-demo',
         $base . 'assets/catalyst-finance-demo.js',
-        array('catalyst-finance-engine', 'catalyst-finance-cashflow-engine', 'catalyst-finance-comparison-engine', 'catalyst-finance-uncertainty-engine', 'catalyst-finance-pricing-engine', 'catalyst-finance-operating-engine'),
+        array('catalyst-finance-engine', 'catalyst-finance-cashflow-engine', 'catalyst-finance-comparison-engine', 'catalyst-finance-uncertainty-engine', 'catalyst-finance-pricing-engine', 'catalyst-finance-operating-engine', 'catalyst-finance-sustainable-engine'),
         CATALYST_FINANCE_DEMO_VERSION,
         true
     );
@@ -84,7 +91,7 @@ function catalyst_finance_demo_shortcode($atts = array()) {
     ?>
     <section class="scfin-demo" data-scfin-demo data-scfin-mode="<?php echo esc_attr($mode); ?>">
       <div class="scfin-demo__header">
-        <p class="scfin-demo__eyebrow">Catalyst Finance v1.7.0</p>
+        <p class="scfin-demo__eyebrow">Catalyst Finance v1.8.0</p>
         <h3><?php echo $mode === 'public' ? 'Explore a finance scenario' : 'Persistent finance scenario workspace'; ?></h3>
         <p><?php echo $mode === 'public'
             ? 'Review a read-only example using the canonical finance screening model.'
@@ -496,6 +503,54 @@ function catalyst_finance_demo_shortcode($atts = array()) {
             </div>
             <ul data-scfin-operating-flags></ul>
             <details class="scfin-demo__details"><summary>Versioned operating publication</summary><pre data-scfin-operating-json></pre></details>
+          </div>
+        </div>
+      </section>
+
+      <section class="scfin-sustainable" data-scfin-sustainable-studio>
+        <div class="scfin-capital__header">
+          <p class="scfin-demo__eyebrow">Carbon and natural capital</p>
+          <h3>Sustainable finance studio</h3>
+          <p>Reconcile avoided emissions, one selected carbon-value basis, natural-capital value, transition effects, and green-financing savings without double counting.</p>
+        </div>
+        <div class="scfin-sustainable__layout">
+          <form class="scfin-sustainable__form" data-scfin-sustainable-form>
+            <div class="scfin-demo__two">
+              <label><span>Baseline emissions (tCO₂e)</span><input name="baselineEmissions" type="number" min="0" step="100" value="12000"></label>
+              <label><span>Project emissions (tCO₂e)</span><input name="projectEmissions" type="number" min="0" step="100" value="7500"></label>
+            </div>
+            <div class="scfin-demo__two">
+              <label><span>Shadow carbon price</span><input name="carbonPrice" type="number" min="0" step="1" value="85"></label>
+              <label><span>Credit price</span><input name="creditPrice" type="number" min="0" step="1" value="42"></label>
+            </div>
+            <div class="scfin-demo__two">
+              <label><span>Credit quantity</span><input name="creditQuantity" type="number" min="0" step="100" value="4200"></label>
+              <label><span>Credit discount (%)</span><input name="creditDiscount" type="number" min="0" max="100" step="1" value="12"></label>
+            </div>
+            <div class="scfin-demo__two">
+              <label><span>Natural-capital uplift</span><input name="naturalUplift" type="number" step="1000" value="414000"></label>
+              <label><span>Annual ecosystem services</span><input name="annualServices" type="number" min="0" step="1000" value="78000"></label>
+            </div>
+            <div class="scfin-demo__two">
+              <label><span>Green financing principal</span><input name="greenPrincipal" type="number" min="0" step="10000" value="1800000"></label>
+              <label><span>Rate savings (%)</span><input name="rateSavings" type="number" min="0" step="0.1" value="1.1"></label>
+            </div>
+            <label><span>Base project NPV</span><input name="baseNpv" type="number" step="1000" value="125000"></label>
+            <div class="scfin-demo__actions">
+              <button type="button" data-scfin-sustainable-run>Evaluate sustainable value</button>
+              <button type="button" data-scfin-sustainable-download>Download publication</button>
+            </div>
+          </form>
+          <div class="scfin-sustainable__output" aria-live="polite">
+            <div class="scfin-demo__metrics">
+              <div><span>Avoided emissions</span><strong data-scfin-sustainable-emissions>—</strong></div>
+              <div><span>Selected carbon value</span><strong data-scfin-sustainable-carbon>—</strong></div>
+              <div><span>Total sustainable value</span><strong data-scfin-sustainable-total>—</strong></div>
+              <div><span>Adjusted project NPV</span><strong data-scfin-sustainable-npv>—</strong></div>
+            </div>
+            <div class="scfin-capital__table-wrap"><table class="scfin-capital__table"><thead><tr><th>Component</th><th>Value</th></tr></thead><tbody data-scfin-sustainable-table></tbody></table></div>
+            <ul data-scfin-sustainable-flags></ul>
+            <details class="scfin-demo__details"><summary>Versioned sustainable-finance publication</summary><pre data-scfin-sustainable-json></pre></details>
           </div>
         </div>
       </section>

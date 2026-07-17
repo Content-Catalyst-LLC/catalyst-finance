@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Portable v1.7.0 smoke tests that do not require a running server."""
+"""Portable v1.8.0 smoke tests that do not require a running server."""
 
 from __future__ import annotations
 
@@ -34,6 +34,7 @@ def main() -> int:
             "catalyst-finance.uncertainty",
             "catalyst-finance.pricing",
             "catalyst-finance.operating",
+            "catalyst-finance.sustainable",
         ]
         assert len(client.get("/api/v1/templates").json()["templates"]) == 5
 
@@ -116,13 +117,26 @@ def main() -> int:
         )
         assert len(operating_publication["rows"]) == 4
 
+        sustainable = json.loads(
+            (ROOT / "data" / "sample_sustainable.json").read_text(encoding="utf-8")
+        )
+        sustainable_response = client.post(
+            "/api/v1/sustainable/evaluate", json=sustainable
+        )
+        assert sustainable_response.status_code == 200
+        sustainable_publication = sustainable_response.json()
+        assert sustainable_publication["model_id"] == "catalyst-finance.sustainable"
+        assert sustainable_publication["metadata"]["version"] == __version__
+        assert sustainable_publication["carbon"]["avoided_emissions_tco2e"] == 4500.0
+        assert sustainable_publication["summary"]["adjusted_project_npv"] == 1526250.9
+
         service = WorkspaceService(repository)
         workspace = service.create_workspace("Smoke workspace")
         workspace = service.create_scenario(workspace.workspace_id, "Smoke scenario")
         reopened = service.get_workspace(workspace.workspace_id)
         assert reopened.scenarios[0].revisions[0].model_version == __version__
 
-    print("Catalyst Finance v1.7.0 smoke tests passed.")
+    print("Catalyst Finance v1.8.0 smoke tests passed.")
     return 0
 
 
