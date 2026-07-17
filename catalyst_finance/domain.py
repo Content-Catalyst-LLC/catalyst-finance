@@ -26,7 +26,7 @@ def evaluate(
     *,
     generated_at: str | None = None,
 ) -> dict[str, Any]:
-    """Backward-compatible evaluator using canonical v1.5.0 defaults."""
+    """Backward-compatible evaluator using canonical v1.6.0 defaults."""
     scenario = FinanceScenarioInput(project=project, assumptions=inputs)
     return cast(
         dict[str, Any],

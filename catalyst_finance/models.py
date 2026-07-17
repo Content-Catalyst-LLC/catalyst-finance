@@ -1,4 +1,4 @@
-"""Validated Catalyst Finance v1.5.0 contract records."""
+"""Validated Catalyst Finance v1.6.0 contract records."""
 
 from __future__ import annotations
 
@@ -6,9 +6,9 @@ from typing import Annotated, Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-CONTRACT_VERSION: Literal["1.5.0"] = "1.5.0"
+CONTRACT_VERSION: Literal["1.6.0"] = "1.6.0"
 MODEL_ID: Literal["catalyst-finance.screening"] = "catalyst-finance.screening"
-METHODOLOGY_VERSION: Literal["1.5.0"] = "1.5.0"
+METHODOLOGY_VERSION: Literal["1.6.0"] = "1.6.0"
 
 Money = Annotated[
     float,
@@ -119,7 +119,7 @@ class FinanceInputs(ContractModel):
 
 
 class FinanceScenarioInput(ContractModel):
-    contract_version: Literal["1.5.0"] = CONTRACT_VERSION
+    contract_version: Literal["1.6.0"] = CONTRACT_VERSION
     model_id: Literal["catalyst-finance.screening"] = MODEL_ID
     project: FinanceProject
     context: FinanceContext = Field(default_factory=FinanceContext)
@@ -170,7 +170,7 @@ class FinanceNarrative(ContractModel):
 
 class FinanceMethodology(ContractModel):
     model_id: Literal["catalyst-finance.screening"] = MODEL_ID
-    model_version: Literal["1.5.0"] = METHODOLOGY_VERSION
+    model_version: Literal["1.6.0"] = METHODOLOGY_VERSION
     calculation_basis: Literal["annual_screening"] = "annual_screening"
     fractional_horizon_policy: Literal["prorated_final_period"] = (
         "prorated_final_period"
@@ -187,7 +187,7 @@ class FinanceMethodology(ContractModel):
 
 class MigrationRecord(ContractModel):
     source_contract_version: str
-    target_contract_version: Literal["1.5.0"] = CONTRACT_VERSION
+    target_contract_version: Literal["1.6.0"] = CONTRACT_VERSION
     preserved_fields: list[str]
 
 
@@ -196,13 +196,13 @@ class FinanceMetadata(ContractModel):
     tool: Literal["Catalyst Finance scenario engine"] = (
         "Catalyst Finance scenario engine"
     )
-    version: Literal["1.5.0"] = CONTRACT_VERSION
+    version: Literal["1.6.0"] = CONTRACT_VERSION
     disclaimer: str
     migration: MigrationRecord | None = None
 
 
 class FinancePublication(ContractModel):
-    contract_version: Literal["1.5.0"] = CONTRACT_VERSION
+    contract_version: Literal["1.6.0"] = CONTRACT_VERSION
     model_id: Literal["catalyst-finance.screening"] = MODEL_ID
     project: FinanceProject
     context: FinanceContext

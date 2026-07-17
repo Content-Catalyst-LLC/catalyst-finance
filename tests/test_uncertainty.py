@@ -29,7 +29,7 @@ def publication(definition: UncertaintyDefinition):
 
 
 def test_sample_contract_validates(definition: UncertaintyDefinition) -> None:
-    assert definition.contract_version == "1.5.0"
+    assert definition.contract_version == "1.6.0"
     assert len(definition.variables) == 5
     assert len(definition.stress_cases) == 3
 
@@ -142,4 +142,4 @@ def test_legacy_v14_nested_scenario_can_be_upgraded() -> None:
     from catalyst_finance.cashflow_migration import normalize_cash_flow
 
     upgraded = normalize_cash_flow(payload["scenario"])
-    assert upgraded.contract_version == "1.5.0"
+    assert upgraded.contract_version == "1.6.0"

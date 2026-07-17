@@ -1,0 +1,2442 @@
+{
+  "contract_version": "1.6.0",
+  "model_id": "catalyst-finance.pricing",
+  "definition": {
+    "contract_version": "1.6.0",
+    "model_id": "catalyst-finance.pricing",
+    "pricing_id": "pricing_transit_pass",
+    "name": "Regional transit pass pricing",
+    "description": "Evaluate demand, revenue, contribution, and operating profit across three customer segments.",
+    "source": {
+      "workspace_id": "workspace_demo",
+      "scenario_id": "scenario_pricing",
+      "revision_id": "revision_001",
+      "revision_number": 1
+    },
+    "currency": "USD",
+    "objective": "profit",
+    "current_price": 50.0,
+    "segments": [
+      {
+        "segment_id": "commuter",
+        "label": "Daily commuters",
+        "quantity_multiplier": 1.0,
+        "curve": {
+          "kind": "linear",
+          "intercept": 18000.0,
+          "slope": 180.0,
+          "reference_price": null,
+          "reference_quantity": null,
+          "elasticity": null,
+          "observed_points": []
+        }
+      },
+      {
+        "segment_id": "hybrid",
+        "label": "Hybrid workers",
+        "quantity_multiplier": 1.0,
+        "curve": {
+          "kind": "constant_elasticity",
+          "intercept": null,
+          "slope": null,
+          "reference_price": 50.0,
+          "reference_quantity": 7000.0,
+          "elasticity": -1.35,
+          "observed_points": []
+        }
+      },
+      {
+        "segment_id": "student",
+        "label": "Students",
+        "quantity_multiplier": 1.0,
+        "curve": {
+          "kind": "observed",
+          "intercept": null,
+          "slope": null,
+          "reference_price": null,
+          "reference_quantity": null,
+          "elasticity": null,
+          "observed_points": [
+            {
+              "price": 30.0,
+              "quantity": 5500.0
+            },
+            {
+              "price": 45.0,
+              "quantity": 4200.0
+            },
+            {
+              "price": 60.0,
+              "quantity": 3000.0
+            },
+            {
+              "price": 80.0,
+              "quantity": 1800.0
+            }
+          ]
+        }
+      }
+    ],
+    "costs": {
+      "fixed_cost": 350000.0,
+      "unit_variable_cost": 9.0,
+      "unit_fulfillment_cost": 2.5,
+      "channel_fee_percent": 2.5
+    },
+    "grid": {
+      "minimum_price": 30.0,
+      "maximum_price": 80.0,
+      "steps": 51
+    },
+    "constraints": {
+      "capacity_units": 22000.0,
+      "minimum_volume_units": 9000.0,
+      "maximum_price_change_percent": 20.0
+    }
+  },
+  "rows": [
+    {
+      "price": 30.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 12600.0,
+          "quantity": 8648.815678,
+          "elasticity": -0.428571,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 13950.631013,
+          "quantity": 9575.907637,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 5500.0,
+          "quantity": 3775.276685,
+          "elasticity": -0.472727,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "clamped_below_range"
+        }
+      ],
+      "unconstrained_quantity": 32050.631013,
+      "quantity": 22000.0,
+      "gross_revenue": 660000.0,
+      "variable_cost": 269500.0,
+      "contribution": 390500.0,
+      "operating_profit": 40500.0,
+      "contribution_margin_percent": 59.166667,
+      "average_elasticity": -0.837217,
+      "capacity_constrained": true,
+      "minimum_volume_met": true,
+      "break_even_quantity": 19718.309859,
+      "break_even_met": true
+    },
+    {
+      "price": 31.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 12420.0,
+          "quantity": 8763.340519,
+          "elasticity": -0.449275,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 13346.557419,
+          "quantity": 9417.103657,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 5413.333333,
+          "quantity": 3819.555825,
+          "elasticity": -0.496305,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 31179.890752,
+      "quantity": 22000.000001,
+      "gross_revenue": 682000.000031,
+      "variable_cost": 270050.000012,
+      "contribution": 411950.000019,
+      "operating_profit": 61950.000019,
+      "contribution_margin_percent": 60.403226,
+      "average_elasticity": -0.842996,
+      "capacity_constrained": true,
+      "minimum_volume_met": true,
+      "break_even_quantity": 18691.588785,
+      "break_even_met": true
+    },
+    {
+      "price": 32.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 12240.0,
+          "quantity": 8871.53281,
+          "elasticity": -0.470588,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 12786.599873,
+          "quantity": 9267.707541,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 5326.666667,
+          "quantity": 3860.759649,
+          "elasticity": -0.520651,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 30353.266539,
+      "quantity": 22000.0,
+      "gross_revenue": 704000.0,
+      "variable_cost": 270600.0,
+      "contribution": 433400.0,
+      "operating_profit": 83400.0,
+      "contribution_margin_percent": 61.5625,
+      "average_elasticity": -0.849834,
+      "capacity_constrained": true,
+      "minimum_volume_met": true,
+      "break_even_quantity": 17766.497462,
+      "break_even_met": true
+    },
+    {
+      "price": 33.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 12060.0,
+          "quantity": 8973.728984,
+          "elasticity": -0.492537,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 12266.304093,
+          "quantity": 9127.237858,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 5240.0,
+          "quantity": 3899.033157,
+          "elasticity": -0.545802,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 29566.304093,
+      "quantity": 21999.999999,
+      "gross_revenue": 725999.999967,
+      "variable_cost": 271149.999988,
+      "contribution": 454849.999979,
+      "operating_profit": 104849.999979,
+      "contribution_margin_percent": 62.651515,
+      "average_elasticity": -0.857717,
+      "capacity_constrained": true,
+      "minimum_volume_met": true,
+      "break_even_quantity": 16928.657799,
+      "break_even_met": true
+    },
+    {
+      "price": 34.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 11880.0,
+          "quantity": 9070.239379,
+          "elasticity": -0.515152,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 11781.782684,
+          "quantity": 8995.25162,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 5153.333333,
+          "quantity": 3934.509001,
+          "elasticity": -0.571798,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 28815.116017,
+      "quantity": 22000.0,
+      "gross_revenue": 748000.0,
+      "variable_cost": 271700.0,
+      "contribution": 476300.0,
+      "operating_profit": 126300.0,
+      "contribution_margin_percent": 63.676471,
+      "average_elasticity": -0.866631,
+      "capacity_constrained": true,
+      "minimum_volume_met": true,
+      "break_even_quantity": 16166.281755,
+      "break_even_met": true
+    },
+    {
+      "price": 35.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 11700.0,
+          "quantity": 9161.350083,
+          "elasticity": -0.538462,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 11329.62893,
+          "quantity": 8871.341619,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 5066.666667,
+          "quantity": 3967.308298,
+          "elasticity": -0.598684,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 28096.295596,
+      "quantity": 22000.0,
+      "gross_revenue": 770000.0,
+      "variable_cost": 272250.0,
+      "contribution": 497750.0,
+      "operating_profit": 147750.0,
+      "contribution_margin_percent": 64.642857,
+      "average_elasticity": -0.876569,
+      "capacity_constrained": true,
+      "minimum_volume_met": true,
+      "break_even_quantity": 15469.61326,
+      "break_even_met": true
+    },
+    {
+      "price": 36.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 11520.0,
+          "quantity": 9247.324651,
+          "elasticity": -0.5625,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 10906.845716,
+          "quantity": 8755.133963,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 4980.0,
+          "quantity": 3997.541386,
+          "elasticity": -0.626506,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 27406.845716,
+      "quantity": 22000.0,
+      "gross_revenue": 792000.0,
+      "variable_cost": 272800.0,
+      "contribution": 519200.0,
+      "operating_profit": 169200.0,
+      "contribution_margin_percent": 65.555556,
+      "average_elasticity": -0.887524,
+      "capacity_constrained": true,
+      "minimum_volume_met": true,
+      "break_even_quantity": 14830.508475,
+      "break_even_met": true
+    },
+    {
+      "price": 37.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 11340.0,
+          "quantity": 9328.405672,
+          "elasticity": -0.587302,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 10510.786592,
+          "quantity": 8646.285825,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 4893.333333,
+          "quantity": 4025.308503,
+          "elasticity": -0.655313,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 26744.119925,
+      "quantity": 22000.0,
+      "gross_revenue": 814000.0,
+      "variable_cost": 273350.0,
+      "contribution": 540650.0,
+      "operating_profit": 190650.0,
+      "contribution_margin_percent": 66.418919,
+      "average_elasticity": -0.899496,
+      "capacity_constrained": true,
+      "minimum_volume_met": true,
+      "break_even_quantity": 14242.115972,
+      "break_even_met": true
+    },
+    {
+      "price": 38.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 11160.0,
+          "quantity": 9404.816215,
+          "elasticity": -0.612903,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 10139.10663,
+          "quantity": 8544.483373,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 4806.666667,
+          "quantity": 4050.700413,
+          "elasticity": -0.68516,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 26105.773297,
+      "quantity": 22000.000001,
+      "gross_revenue": 836000.000038,
+      "variable_cost": 273900.000012,
+      "contribution": 562100.000026,
+      "operating_profit": 212100.000026,
+      "contribution_margin_percent": 67.236842,
+      "average_elasticity": -0.912485,
+      "capacity_constrained": true,
+      "minimum_volume_met": true,
+      "break_even_quantity": 13698.630137,
+      "break_even_met": true
+    },
+    {
+      "price": 39.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 10980.0,
+          "quantity": 9476.761144,
+          "elasticity": -0.639344,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 9789.721259,
+          "quantity": 8449.439894,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 4720.0,
+          "quantity": 4073.798962,
+          "elasticity": -0.716102,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 25489.721259,
+      "quantity": 22000.0,
+      "gross_revenue": 858000.0,
+      "variable_cost": 274450.0,
+      "contribution": 583550.0,
+      "operating_profit": 233550.0,
+      "contribution_margin_percent": 68.012821,
+      "average_elasticity": -0.926496,
+      "capacity_constrained": true,
+      "minimum_volume_met": true,
+      "break_even_quantity": 13195.098963,
+      "break_even_met": true
+    },
+    {
+      "price": 40.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 10800.0,
+          "quantity": 9544.428318,
+          "elasticity": -0.666667,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 9460.771592,
+          "quantity": 8360.894101,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 4633.333333,
+          "quantity": 4094.677581,
+          "elasticity": -0.748201,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 24894.104925,
+      "quantity": 22000.0,
+      "gross_revenue": 880000.0,
+      "variable_cost": 275000.0,
+      "contribution": 605000.0,
+      "operating_profit": 255000.0,
+      "contribution_margin_percent": 68.75,
+      "average_elasticity": -0.941537,
+      "capacity_constrained": true,
+      "minimum_volume_met": true,
+      "break_even_quantity": 12727.272727,
+      "break_even_met": true
+    },
+    {
+      "price": 41.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 10620.0,
+          "quantity": 9607.989673,
+          "elasticity": -0.694915,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 9150.595108,
+          "quantity": 8278.608597,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 4546.666667,
+          "quantity": 4113.401731,
+          "elasticity": -0.781525,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 24317.261775,
+      "quantity": 22000.000001,
+      "gross_revenue": 902000.000041,
+      "variable_cost": 275550.000013,
+      "contribution": 626450.000028,
+      "operating_profit": 276450.000028,
+      "contribution_margin_percent": 69.45122,
+      "average_elasticity": -0.957617,
+      "capacity_constrained": true,
+      "minimum_volume_met": true,
+      "break_even_quantity": 12291.483758,
+      "break_even_met": true
+    },
+    {
+      "price": 42.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 10440.0,
+          "quantity": 9667.602199,
+          "elasticity": -0.724138,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 8857.700748,
+          "quantity": 8202.368509,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 4460.0,
+          "quantity": 4130.029292,
+          "elasticity": -0.816143,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 23757.700748,
+      "quantity": 22000.0,
+      "gross_revenue": 924000.0,
+      "variable_cost": 276100.0,
+      "contribution": 647900.0,
+      "operating_profit": 297900.0,
+      "contribution_margin_percent": 70.119048,
+      "average_elasticity": -0.974753,
+      "capacity_constrained": true,
+      "minimum_volume_met": true,
+      "break_even_quantity": 11884.550085,
+      "break_even_met": true
+    },
+    {
+      "price": 43.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 10260.0,
+          "quantity": 9723.408823,
+          "elasticity": -0.754386,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 8580.747665,
+          "quantity": 8131.980269,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 4373.333333,
+          "quantity": 4144.610908,
+          "elasticity": -0.852134,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 23214.080999,
+      "quantity": 22000.0,
+      "gross_revenue": 946000.0,
+      "variable_cost": 276650.0,
+      "contribution": 669350.0,
+      "operating_profit": 319350.0,
+      "contribution_margin_percent": 70.755814,
+      "average_elasticity": -0.992961,
+      "capacity_constrained": true,
+      "minimum_volume_met": true,
+      "break_even_quantity": 11503.697617,
+      "break_even_met": true
+    },
+    {
+      "price": 44.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 10080.0,
+          "quantity": 9775.539185,
+          "elasticity": -0.785714,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 8318.527039,
+          "quantity": 8067.270539,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 4286.666667,
+          "quantity": 4157.190275,
+          "elasticity": -0.88958,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 22685.193706,
+      "quantity": 21999.999999,
+      "gross_revenue": 967999.999956,
+      "variable_cost": 277199.999987,
+      "contribution": 690799.999969,
+      "operating_profit": 340799.999969,
+      "contribution_margin_percent": 71.363636,
+      "average_elasticity": -1.012261,
+      "capacity_constrained": true,
+      "minimum_volume_met": true,
+      "break_even_quantity": 11146.496815,
+      "break_even_met": true
+    },
+    {
+      "price": 45.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 9900.0,
+          "quantity": 9824.110338,
+          "elasticity": -0.818182,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 8069.946439,
+          "quantity": 8008.085276,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 4200.0,
+          "quantity": 4167.804386,
+          "elasticity": -0.928571,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 22169.946439,
+      "quantity": 22000.0,
+      "gross_revenue": 990000.0,
+      "variable_cost": 277750.0,
+      "contribution": 712250.0,
+      "operating_profit": 362250.0,
+      "contribution_margin_percent": 71.944444,
+      "average_elasticity": -1.032679,
+      "capacity_constrained": true,
+      "minimum_volume_met": true,
+      "break_even_quantity": 10810.810811,
+      "break_even_met": true
+    },
+    {
+      "price": 46.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 9720.0,
+          "quantity": 9720.0,
+          "elasticity": -0.851852,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 7834.016341,
+          "quantity": 7834.016341,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 4120.0,
+          "quantity": 4120.0,
+          "elasticity": -0.893204,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 21674.016341,
+      "quantity": 21674.016341,
+      "gross_revenue": 997004.751686,
+      "variable_cost": 274176.306714,
+      "contribution": 722828.444972,
+      "operating_profit": 372828.444972,
+      "contribution_margin_percent": 72.5,
+      "average_elasticity": -1.039767,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 10494.752624,
+      "break_even_met": true
+    },
+    {
+      "price": 47.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 9540.0,
+          "quantity": 9540.0,
+          "elasticity": -0.886792,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 7609.838458,
+          "quantity": 7609.838458,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 4040.0,
+          "quantity": 4040.0,
+          "elasticity": -0.930693,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 21189.838458,
+      "quantity": 21189.838458,
+      "gross_revenue": 995922.407526,
+      "variable_cost": 268581.202455,
+      "contribution": 727341.205071,
+      "operating_profit": 377341.205071,
+      "contribution_margin_percent": 73.031915,
+      "average_elasticity": -1.061512,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 10196.649672,
+      "break_even_met": true
+    },
+    {
+      "price": 48.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 9360.0,
+          "quantity": 9360.0,
+          "elasticity": -0.923077,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 7396.59561,
+          "quantity": 7396.59561,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 3960.0,
+          "quantity": 3960.0,
+          "elasticity": -0.969697,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 20716.59561,
+      "quantity": 20716.59561,
+      "gross_revenue": 994396.58928,
+      "variable_cost": 263100.764247,
+      "contribution": 731295.825033,
+      "operating_profit": 381295.825033,
+      "contribution_margin_percent": 73.541667,
+      "average_elasticity": -1.084416,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 9915.014164,
+      "break_even_met": true
+    },
+    {
+      "price": 49.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 9180.0,
+          "quantity": 9180.0,
+          "elasticity": -0.960784,
+          "demand_classification": "inelastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 7193.542898,
+          "quantity": 7193.542898,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 3880.0,
+          "quantity": 3880.0,
+          "elasticity": -1.010309,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 20253.542898,
+      "quantity": 20253.542898,
+      "gross_revenue": 992423.602002,
+      "variable_cost": 257726.333377,
+      "contribution": 734697.268625,
+      "operating_profit": 384697.268625,
+      "contribution_margin_percent": 74.030612,
+      "average_elasticity": -1.108511,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 9648.518263,
+      "break_even_met": true
+    },
+    {
+      "price": 50.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 9000.0,
+          "quantity": 9000.0,
+          "elasticity": -1.0,
+          "demand_classification": "unit_elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 7000.0,
+          "quantity": 7000.0,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 3800.0,
+          "quantity": 3800.0,
+          "elasticity": -1.052632,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 19800.0,
+      "quantity": 19800.0,
+      "gross_revenue": 990000.0,
+      "variable_cost": 252450.0,
+      "contribution": 737550.0,
+      "operating_profit": 387550.0,
+      "contribution_margin_percent": 74.5,
+      "average_elasticity": -1.133838,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 9395.973154,
+      "break_even_met": true
+    },
+    {
+      "price": 51.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 8820.0,
+          "quantity": 8820.0,
+          "elasticity": -1.040816,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 6815.344419,
+          "quantity": 6815.344419,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 3720.0,
+          "quantity": 3720.0,
+          "elasticity": -1.096774,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 19355.344419,
+      "quantity": 19355.344419,
+      "gross_revenue": 987122.565369,
+      "variable_cost": 247264.524953,
+      "contribution": 739858.040416,
+      "operating_profit": 389858.040416,
+      "contribution_margin_percent": 74.95098,
+      "average_elasticity": -1.16044,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 9156.311315,
+      "break_even_met": true
+    },
+    {
+      "price": 52.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 8640.0,
+          "quantity": 8640.0,
+          "elasticity": -1.083333,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 6639.005554,
+          "quantity": 6639.005554,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 3640.0,
+          "quantity": 3640.0,
+          "elasticity": -1.142857,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 18919.005554,
+      "quantity": 18919.005554,
+      "gross_revenue": 983788.288808,
+      "variable_cost": 242163.271091,
+      "contribution": 741625.017717,
+      "operating_profit": 391625.017717,
+      "contribution_margin_percent": 75.384615,
+      "average_elasticity": -1.188363,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 8928.571429,
+      "break_even_met": true
+    },
+    {
+      "price": 53.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 8460.0,
+          "quantity": 8460.0,
+          "elasticity": -1.12766,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 6470.459481,
+          "quantity": 6470.459481,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 3560.0,
+          "quantity": 3560.0,
+          "elasticity": -1.191011,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 18490.459481,
+      "quantity": 18490.459481,
+      "gross_revenue": 979994.352493,
+      "variable_cost": 237140.142844,
+      "contribution": 742854.209649,
+      "operating_profit": 392854.209649,
+      "contribution_margin_percent": 75.801887,
+      "average_elasticity": -1.217662,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 8711.885501,
+      "break_even_met": true
+    },
+    {
+      "price": 54.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 8280.0,
+          "quantity": 8280.0,
+          "elasticity": -1.173913,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 6309.22434,
+          "quantity": 6309.22434,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 3480.0,
+          "quantity": 3480.0,
+          "elasticity": -1.241379,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 18069.22434,
+      "quantity": 18069.22434,
+      "gross_revenue": 975738.11436,
+      "variable_cost": 232189.532769,
+      "contribution": 743548.581591,
+      "operating_profit": 393548.581591,
+      "contribution_margin_percent": 76.203704,
+      "average_elasticity": -1.248391,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 8505.467801,
+      "break_even_met": true
+    },
+    {
+      "price": 55.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 8100.0,
+          "quantity": 8100.0,
+          "elasticity": -1.222222,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 6154.856262,
+          "quantity": 6154.856262,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 3400.0,
+          "quantity": 3400.0,
+          "elasticity": -1.294118,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 17654.856262,
+      "quantity": 17654.856262,
+      "gross_revenue": 971017.09441,
+      "variable_cost": 227306.274373,
+      "contribution": 743710.820037,
+      "operating_profit": 393710.820037,
+      "contribution_margin_percent": 76.590909,
+      "average_elasticity": -1.280614,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 8308.605341,
+      "break_even_met": true
+    },
+    {
+      "price": 56.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 7920.0,
+          "quantity": 7920.0,
+          "elasticity": -1.272727,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 6006.945745,
+          "quantity": 6006.945745,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 3320.0,
+          "quantity": 3320.0,
+          "elasticity": -1.349398,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 17246.945745,
+      "quantity": 17246.945745,
+      "gross_revenue": 965828.96172,
+      "variable_cost": 222485.600111,
+      "contribution": 743343.36161,
+      "operating_profit": 393343.36161,
+      "contribution_margin_percent": 76.964286,
+      "average_elasticity": -1.314399,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 8120.649652,
+      "break_even_met": true
+    },
+    {
+      "price": 57.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 7740.0,
+          "quantity": 7740.0,
+          "elasticity": -1.325581,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 5865.114443,
+          "quantity": 5865.114443,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 3240.0,
+          "quantity": 3240.0,
+          "elasticity": -1.407407,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 16845.114443,
+      "quantity": 16845.114443,
+      "gross_revenue": 960171.523251,
+      "variable_cost": 217723.104176,
+      "contribution": 742448.419075,
+      "operating_profit": 392448.419075,
+      "contribution_margin_percent": 77.324561,
+      "average_elasticity": -1.349822,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 7941.009643,
+      "break_even_met": true
+    },
+    {
+      "price": 58.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 7560.0,
+          "quantity": 7560.0,
+          "elasticity": -1.380952,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 5729.012299,
+          "quantity": 5729.012299,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 3160.0,
+          "quantity": 3160.0,
+          "elasticity": -1.468354,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 16449.012299,
+      "quantity": 16449.012299,
+      "gross_revenue": 954042.713342,
+      "variable_cost": 213014.709272,
+      "contribution": 741028.00407,
+      "operating_profit": 391028.00407,
+      "contribution_margin_percent": 77.672414,
+      "average_elasticity": -1.386962,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 7769.145394,
+      "break_even_met": true
+    },
+    {
+      "price": 59.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 7380.0,
+          "quantity": 7380.0,
+          "elasticity": -1.439024,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 5598.314986,
+          "quantity": 5598.314986,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 3080.0,
+          "quantity": 3080.0,
+          "elasticity": -1.532468,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 16058.314986,
+      "quantity": 16058.314986,
+      "gross_revenue": 947440.584174,
+      "variable_cost": 208356.636943,
+      "contribution": 739083.947231,
+      "operating_profit": 389083.947231,
+      "contribution_margin_percent": 78.008475,
+      "average_elasticity": -1.425911,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 7604.562738,
+      "break_even_met": true
+    },
+    {
+      "price": 60.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 7200.0,
+          "quantity": 7200.0,
+          "elasticity": -1.5,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 5472.721624,
+          "quantity": 5472.721624,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 3000.0,
+          "quantity": 3000.0,
+          "elasticity": -1.6,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 15672.721624,
+      "quantity": 15672.721624,
+      "gross_revenue": 940363.29744,
+      "variable_cost": 203745.381112,
+      "contribution": 736617.916328,
+      "operating_profit": 386617.916328,
+      "contribution_margin_percent": 78.333333,
+      "average_elasticity": -1.466763,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 7446.808511,
+      "break_even_met": true
+    },
+    {
+      "price": 61.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 7020.0,
+          "quantity": 7020.0,
+          "elasticity": -1.564103,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 5351.952726,
+          "quantity": 5351.952726,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 2940.0,
+          "quantity": 2940.0,
+          "elasticity": -1.244898,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 15311.952726,
+      "quantity": 15311.952726,
+      "gross_revenue": 934029.116286,
+      "variable_cost": 199438.184256,
+      "contribution": 734590.93203,
+      "operating_profit": 384590.93203,
+      "contribution_margin_percent": 78.647541,
+      "average_elasticity": -1.427979,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 7295.466389,
+      "break_even_met": true
+    },
+    {
+      "price": 62.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 6840.0,
+          "quantity": 6840.0,
+          "elasticity": -1.631579,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 5235.748356,
+          "quantity": 5235.748356,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 2880.0,
+          "quantity": 2880.0,
+          "elasticity": -1.291667,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 14955.748356,
+      "quantity": 14955.748356,
+      "gross_revenue": 927256.398072,
+      "variable_cost": 195172.516046,
+      "contribution": 732083.882026,
+      "operating_profit": 382083.882026,
+      "contribution_margin_percent": 78.951613,
+      "average_elasticity": -1.467547,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 7150.153218,
+      "break_even_met": true
+    },
+    {
+      "price": 63.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 6660.0,
+          "quantity": 6660.0,
+          "elasticity": -1.702703,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 5123.866479,
+          "quantity": 5123.866479,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 2820.0,
+          "quantity": 2820.0,
+          "elasticity": -1.340426,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 14603.866479,
+      "quantity": 14603.866479,
+      "gross_revenue": 920043.588177,
+      "variable_cost": 190945.554213,
+      "contribution": 729098.033964,
+      "operating_profit": 379098.033964,
+      "contribution_margin_percent": 79.246032,
+      "average_elasticity": -1.508999,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 7010.515774,
+      "break_even_met": true
+    },
+    {
+      "price": 64.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 6480.0,
+          "quantity": 6480.0,
+          "elasticity": -1.777778,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 5016.081463,
+          "quantity": 5016.081463,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 2760.0,
+          "quantity": 2760.0,
+          "elasticity": -1.391304,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 14256.081463,
+      "quantity": 14256.081463,
+      "gross_revenue": 912389.213632,
+      "variable_cost": 186754.667165,
+      "contribution": 725634.546467,
+      "operating_profit": 375634.546467,
+      "contribution_margin_percent": 79.53125,
+      "average_elasticity": -1.55244,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 6876.227898,
+      "break_even_met": true
+    },
+    {
+      "price": 65.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 6300.0,
+          "quantity": 6300.0,
+          "elasticity": -1.857143,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 4912.182736,
+          "quantity": 4912.182736,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 2700.0,
+          "quantity": 2700.0,
+          "elasticity": -1.444444,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 13912.182736,
+      "quantity": 13912.182736,
+      "gross_revenue": 904291.87784,
+      "variable_cost": 182597.39841,
+      "contribution": 721694.47943,
+      "operating_profit": 371694.47943,
+      "contribution_margin_percent": 79.807692,
+      "average_elasticity": -1.597984,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 6746.987952,
+      "break_even_met": true
+    },
+    {
+      "price": 66.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 6120.0,
+          "quantity": 6120.0,
+          "elasticity": -1.941176,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 4811.973566,
+          "quantity": 4811.973566,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 2640.0,
+          "quantity": 2640.0,
+          "elasticity": -1.5,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 13571.973566,
+      "quantity": 13571.973566,
+      "gross_revenue": 895750.255356,
+      "variable_cost": 178471.452393,
+      "contribution": 717278.802963,
+      "operating_profit": 367278.802963,
+      "contribution_margin_percent": 80.075758,
+      "average_elasticity": -1.645756,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 6622.516556,
+      "break_even_met": true
+    },
+    {
+      "price": 67.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 5940.0,
+          "quantity": 5940.0,
+          "elasticity": -2.030303,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 4715.269961,
+          "quantity": 4715.269961,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 2580.0,
+          "quantity": 2580.0,
+          "elasticity": -1.55814,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 13235.269961,
+      "quantity": 13235.269961,
+      "gross_revenue": 886763.087387,
+      "variable_cost": 174374.681736,
+      "contribution": 712388.405651,
+      "operating_profit": 362388.405651,
+      "contribution_margin_percent": 80.335821,
+      "average_elasticity": -1.695894,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 6502.554575,
+      "break_even_met": true
+    },
+    {
+      "price": 68.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 5760.0,
+          "quantity": 5760.0,
+          "elasticity": -2.125,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 4621.899669,
+          "quantity": 4621.899669,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 2520.0,
+          "quantity": 2520.0,
+          "elasticity": -1.619048,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 12901.899669,
+      "quantity": 12901.899669,
+      "gross_revenue": 877329.177492,
+      "variable_cost": 170305.075631,
+      "contribution": 707024.101861,
+      "operating_profit": 357024.101861,
+      "contribution_margin_percent": 80.588235,
+      "average_elasticity": -1.748546,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 6386.861314,
+      "break_even_met": true
+    },
+    {
+      "price": 69.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 5580.0,
+          "quantity": 5580.0,
+          "elasticity": -2.225806,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 4531.70127,
+          "quantity": 4531.70127,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 2460.0,
+          "quantity": 2460.0,
+          "elasticity": -1.682927,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 12571.70127,
+      "quantity": 12571.70127,
+      "gross_revenue": 867447.38763,
+      "variable_cost": 166260.749296,
+      "contribution": 701186.638334,
+      "operating_profit": 351186.638334,
+      "contribution_margin_percent": 80.833333,
+      "average_elasticity": -1.803876,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 6275.212909,
+      "break_even_met": true
+    },
+    {
+      "price": 70.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 5400.0,
+          "quantity": 5400.0,
+          "elasticity": -2.333333,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 4444.523347,
+          "quantity": 4444.523347,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 2400.0,
+          "quantity": 2400.0,
+          "elasticity": -1.75,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 12244.523347,
+      "quantity": 12244.523347,
+      "gross_revenue": 857116.63429,
+      "variable_cost": 162239.934348,
+      "contribution": 694876.699942,
+      "operating_profit": 344876.699942,
+      "contribution_margin_percent": 81.071429,
+      "average_elasticity": -1.862066,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 6167.400881,
+      "break_even_met": true
+    },
+    {
+      "price": 71.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 5220.0,
+          "quantity": 5220.0,
+          "elasticity": -2.448276,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 4360.223739,
+          "quantity": 4360.223739,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 2340.0,
+          "quantity": 2340.0,
+          "elasticity": -1.820513,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 11920.223739,
+      "quantity": 11920.223739,
+      "gross_revenue": 846335.885469,
+      "variable_cost": 158240.970135,
+      "contribution": 688094.915334,
+      "operating_profit": 338094.915334,
+      "contribution_margin_percent": 81.302817,
+      "average_elasticity": -1.923311,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 6063.230836,
+      "break_even_met": true
+    },
+    {
+      "price": 72.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 5040.0,
+          "quantity": 5040.0,
+          "elasticity": -2.571429,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 4278.668854,
+          "quantity": 4278.668854,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 2280.0,
+          "quantity": 2280.0,
+          "elasticity": -1.894737,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 11598.668854,
+      "quantity": 11598.668854,
+      "gross_revenue": 835104.157488,
+      "variable_cost": 154262.295758,
+      "contribution": 680841.86173,
+      "operating_profit": 330841.86173,
+      "contribution_margin_percent": 81.527778,
+      "average_elasticity": -1.987832,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 5962.521295,
+      "break_even_met": true
+    },
+    {
+      "price": 73.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 4860.0,
+          "quantity": 4860.0,
+          "elasticity": -2.703704,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 4199.733038,
+          "quantity": 4199.733038,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 2220.0,
+          "quantity": 2220.0,
+          "elasticity": -1.972973,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 11279.733038,
+      "quantity": 11279.733038,
+      "gross_revenue": 823420.511774,
+      "variable_cost": 150302.442731,
+      "contribution": 673118.069043,
+      "operating_profit": 323118.069043,
+      "contribution_margin_percent": 81.746575,
+      "average_elasticity": -2.055868,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 5865.102639,
+      "break_even_met": true
+    },
+    {
+      "price": 74.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 4680.0,
+          "quantity": 4680.0,
+          "elasticity": -2.846154,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 4123.298008,
+          "quantity": 4123.298008,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 2160.0,
+          "quantity": 2160.0,
+          "elasticity": -2.055556,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 10963.298008,
+      "quantity": 10963.298008,
+      "gross_revenue": 811284.052592,
+      "variable_cost": 146360.028407,
+      "contribution": 664924.024185,
+      "operating_profit": 314924.024185,
+      "contribution_margin_percent": 81.959459,
+      "average_elasticity": -2.127686,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 5770.816158,
+      "break_even_met": true
+    },
+    {
+      "price": 75.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 4500.0,
+          "quantity": 4500.0,
+          "elasticity": -3.0,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 4049.252326,
+          "quantity": 4049.252326,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 2100.0,
+          "quantity": 2100.0,
+          "elasticity": -2.142857,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 10649.252326,
+      "quantity": 10649.252326,
+      "gross_revenue": 798693.92445,
+      "variable_cost": 142433.74986,
+      "contribution": 656260.17459,
+      "operating_profit": 306260.17459,
+      "contribution_margin_percent": 82.166667,
+      "average_elasticity": -2.203581,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 5679.513185,
+      "break_even_met": true
+    },
+    {
+      "price": 76.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 4320.0,
+          "quantity": 4320.0,
+          "elasticity": -3.166667,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 3977.490914,
+          "quantity": 3977.490914,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 2040.0,
+          "quantity": 2040.0,
+          "elasticity": -2.235294,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 10337.490914,
+      "quantity": 10337.490914,
+      "gross_revenue": 785649.309464,
+      "variable_cost": 138522.378248,
+      "contribution": 647126.931216,
+      "operating_profit": 297126.931216,
+      "contribution_margin_percent": 82.368421,
+      "average_elasticity": -2.283882,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 5591.054313,
+      "break_even_met": true
+    },
+    {
+      "price": 77.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 4140.0,
+          "quantity": 4140.0,
+          "elasticity": -3.347826,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 3907.914622,
+          "quantity": 3907.914622,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 1980.0,
+          "quantity": 1980.0,
+          "elasticity": -2.333333,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 10027.914622,
+      "quantity": 10027.914622,
+      "gross_revenue": 772149.425894,
+      "variable_cost": 134624.7538,
+      "contribution": 637524.672094,
+      "operating_profit": 287524.672094,
+      "contribution_margin_percent": 82.564935,
+      "average_elasticity": -2.368956,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 5505.308691,
+      "break_even_met": true
+    },
+    {
+      "price": 78.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 3960.0,
+          "quantity": 3960.0,
+          "elasticity": -3.545455,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 3840.429811,
+          "quantity": 3840.429811,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 1920.0,
+          "quantity": 1920.0,
+          "elasticity": -2.4375,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 9720.429811,
+      "quantity": 9720.429811,
+      "gross_revenue": 758193.525258,
+      "variable_cost": 130739.780958,
+      "contribution": 627453.7443,
+      "operating_profit": 277453.7443,
+      "contribution_margin_percent": 82.75641,
+      "average_elasticity": -2.45921,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 5422.153369,
+      "break_even_met": true
+    },
+    {
+      "price": 79.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 3780.0,
+          "quantity": 3780.0,
+          "elasticity": -3.761905,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 3774.947992,
+          "quantity": 3774.947992,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 1860.0,
+          "quantity": 1860.0,
+          "elasticity": -2.548387,
+          "demand_classification": "elastic",
+          "interpolation_policy": "interpolated"
+        }
+      ],
+      "unconstrained_quantity": 9414.947992,
+      "quantity": 9414.947992,
+      "gross_revenue": 743780.891368,
+      "variable_cost": 126866.424192,
+      "contribution": 616914.467176,
+      "operating_profit": 266914.467176,
+      "contribution_margin_percent": 82.943038,
+      "average_elasticity": -2.555105,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 5341.47272,
+      "break_even_met": true
+    },
+    {
+      "price": 80.0,
+      "segments": [
+        {
+          "segment_id": "commuter",
+          "label": "Daily commuters",
+          "unconstrained_quantity": 3600.0,
+          "quantity": 3600.0,
+          "elasticity": -4.0,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_linear"
+        },
+        {
+          "segment_id": "hybrid",
+          "label": "Hybrid workers",
+          "unconstrained_quantity": 3711.385472,
+          "quantity": 3711.385472,
+          "elasticity": -1.35,
+          "demand_classification": "elastic",
+          "interpolation_policy": "analytical_constant_elasticity"
+        },
+        {
+          "segment_id": "student",
+          "label": "Students",
+          "unconstrained_quantity": 1800.0,
+          "quantity": 1800.0,
+          "elasticity": -2.666667,
+          "demand_classification": "elastic",
+          "interpolation_policy": "clamped_above_range"
+        }
+      ],
+      "unconstrained_quantity": 9111.385472,
+      "quantity": 9111.385472,
+      "gross_revenue": 728910.83776,
+      "variable_cost": 123003.703872,
+      "contribution": 605907.133888,
+      "operating_profit": 255907.133888,
+      "contribution_margin_percent": 83.125,
+      "average_elasticity": -2.657156,
+      "capacity_constrained": false,
+      "minimum_volume_met": true,
+      "break_even_quantity": 5263.157895,
+      "break_even_met": true
+    }
+  ],
+  "current_position": {
+    "price": 50.0,
+    "segments": [
+      {
+        "segment_id": "commuter",
+        "label": "Daily commuters",
+        "unconstrained_quantity": 9000.0,
+        "quantity": 9000.0,
+        "elasticity": -1.0,
+        "demand_classification": "unit_elastic",
+        "interpolation_policy": "analytical_linear"
+      },
+      {
+        "segment_id": "hybrid",
+        "label": "Hybrid workers",
+        "unconstrained_quantity": 7000.0,
+        "quantity": 7000.0,
+        "elasticity": -1.35,
+        "demand_classification": "elastic",
+        "interpolation_policy": "analytical_constant_elasticity"
+      },
+      {
+        "segment_id": "student",
+        "label": "Students",
+        "unconstrained_quantity": 3800.0,
+        "quantity": 3800.0,
+        "elasticity": -1.052632,
+        "demand_classification": "elastic",
+        "interpolation_policy": "interpolated"
+      }
+    ],
+    "unconstrained_quantity": 19800.0,
+    "quantity": 19800.0,
+    "gross_revenue": 990000.0,
+    "variable_cost": 252450.0,
+    "contribution": 737550.0,
+    "operating_profit": 387550.0,
+    "contribution_margin_percent": 74.5,
+    "average_elasticity": -1.133838,
+    "capacity_constrained": false,
+    "minimum_volume_met": true,
+    "break_even_quantity": 9395.973154,
+    "break_even_met": true
+  },
+  "optima": [
+    {
+      "objective": "revenue",
+      "price": 46.0,
+      "quantity": 21674.016341,
+      "value": 997004.751686,
+      "row_index": 16
+    },
+    {
+      "objective": "contribution",
+      "price": 55.0,
+      "quantity": 17654.856262,
+      "value": 743710.820037,
+      "row_index": 25
+    },
+    {
+      "objective": "profit",
+      "price": 55.0,
+      "quantity": 17654.856262,
+      "value": 393710.820037,
+      "row_index": 25
+    }
+  ],
+  "recommendation": {
+    "objective": "profit",
+    "current_price": 50.0,
+    "recommended_price": 55.0,
+    "absolute_price_change": 5.0,
+    "percent_price_change": 10.0,
+    "current_objective_value": 387550.0,
+    "recommended_objective_value": 393710.820037,
+    "expected_objective_gain": 6160.820037,
+    "constraint_limited": false,
+    "narrative": "Increase price to USD 55.00 to maximize profit within the declared grid and constraints."
+  },
+  "flags": [
+    "Capacity constrains demand at one or more evaluated prices.",
+    "Observed demand is endpoint-clamped outside its measured price range."
+  ],
+  "methodology": {
+    "model_id": "catalyst-finance.pricing",
+    "model_version": "1.6.0",
+    "grid_policy": "inclusive_even_price_grid",
+    "observed_policy": "piecewise_linear_with_endpoint_clamping",
+    "capacity_policy": "proportional_segment_allocation",
+    "optimum_tie_policy": "lowest_price",
+    "elasticity_policy": "point_linear_constant_or_local_observed_quantity_weighted"
+  },
+  "metadata": {
+    "generated_at": "2026-07-17T00:00:00+00:00",
+    "version": "1.6.0",
+    "grid_rows": 51,
+    "constrained_rows": 16,
+    "disclaimer": "Decision-support output only. Validate demand assumptions, cost-to-serve, market response, legal constraints, taxes, and implementation effects before use."
+  }
+}

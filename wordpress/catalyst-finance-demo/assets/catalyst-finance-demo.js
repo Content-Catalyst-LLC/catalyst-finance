@@ -1,8 +1,8 @@
 (function () {
   'use strict';
 
-  const WORKSPACE_VERSION = '1.5.0';
-  const STORAGE_PREFIX = 'catalyst-finance-workspace-v1.5.0';
+  const WORKSPACE_VERSION = '1.6.0';
+  const STORAGE_PREFIX = 'catalyst-finance-workspace-v1.6.0';
 
   const TEMPLATES = {
     'capital-project': {
@@ -234,7 +234,7 @@
     return { workspace: defaultWorkspace(), recovered: false };
   }
   function validateWorkspace(workspace) {
-    if (!workspace || workspace.workspace_contract_version !== WORKSPACE_VERSION) throw new Error('Workspace contract_version must be 1.5.0.');
+    if (!workspace || workspace.workspace_contract_version !== WORKSPACE_VERSION) throw new Error('Workspace contract_version must be 1.6.0.');
     if (!workspace.workspace_id || !Array.isArray(workspace.scenarios)) throw new Error('Workspace ID and scenarios are required.');
     const scenarioIds = new Set();
     workspace.scenarios.forEach(record => {
@@ -259,7 +259,7 @@
         if (navigator.clipboard) navigator.clipboard.writeText(text);
       });
       root.querySelector('[data-scfin-download]').addEventListener('click', function () {
-        downloadJson('catalyst-finance-scenario-v1.5.0.json', root._scfinPayload);
+        downloadJson('catalyst-finance-scenario-v1.6.0.json', root._scfinPayload);
       });
       root.querySelector('[data-scfin-print]').addEventListener('click', function () { window.print(); });
       return;
@@ -347,7 +347,7 @@
     });
     root.querySelector('[data-scfin-export-workspace]').addEventListener('click', function () {
       const bundle = { export_contract_version: WORKSPACE_VERSION, exported_at: now(), workspace: state.workspace };
-      downloadJson('catalyst-finance-workspace-v1.5.0.json', bundle);
+      downloadJson('catalyst-finance-workspace-v1.6.0.json', bundle);
     });
     root.querySelector('[data-scfin-import-workspace]').addEventListener('change', function (event) {
       const file = event.target.files[0]; if (!file) return;
@@ -370,7 +370,7 @@
       if (navigator.clipboard) navigator.clipboard.writeText(text);
     });
     root.querySelector('[data-scfin-download]').addEventListener('click', function () {
-      downloadJson('catalyst-finance-scenario-v1.5.0.json', root._scfinPayload || CatalystFinanceEngine.evaluate(inputFromForm(form, state.workspace.defaults.currency)));
+      downloadJson('catalyst-finance-scenario-v1.6.0.json', root._scfinPayload || CatalystFinanceEngine.evaluate(inputFromForm(form, state.workspace.defaults.currency)));
     });
     root.querySelector('[data-scfin-print]').addEventListener('click', function () { window.print(); });
 
@@ -395,7 +395,7 @@
     ];
     if (value('phasedCapital') > 0) lines.push({ flow_id: 'phase-two', label: 'Phased capital', category: 'capital_cost', amount: value('phasedCapital'), start_period: Math.min(2, horizon), price_basis: basis });
     return {
-      contract_version: '1.5.0',
+      contract_version: '1.6.0',
       model_id: 'catalyst-finance.cash-flow',
       project: { name: 'Browser capital-budgeting scenario', category: 'Capital project' },
       context: {
@@ -478,7 +478,7 @@
       }
     }
     form.addEventListener('input', render); form.addEventListener('change', render);
-    section.querySelector('[data-scfin-cf-download]').addEventListener('click', function () { downloadJson('catalyst-finance-cash-flow-v1.5.0.json', root._scfinCashFlowPayload); });
+    section.querySelector('[data-scfin-cf-download]').addEventListener('click', function () { downloadJson('catalyst-finance-cash-flow-v1.6.0.json', root._scfinCashFlowPayload); });
     section.querySelector('[data-scfin-cf-copy]').addEventListener('click', function () {
       if (navigator.clipboard) navigator.clipboard.writeText(JSON.stringify(root._scfinCashFlowPayload, null, 2));
     });
@@ -521,7 +521,7 @@
       values: [line(base, 'benefit').amount * 0.65, line(base, 'benefit').amount * 0.8, line(base, 'benefit').amount, line(base, 'benefit').amount * 1.2, line(base, 'benefit').amount * 1.35]
     }; };
     return {
-      contract_version: '1.5.0', model_id: 'catalyst-finance.comparison', comparison_id: 'browser-options',
+      contract_version: '1.6.0', model_id: 'catalyst-finance.comparison', comparison_id: 'browser-options',
       name: 'Browser capital project alternatives', description: 'Live downside, base, and upside comparison generated from the capital-budgeting form.', baseline_alternative_id: 'base',
       alternatives: [
         { alternative_id: 'downside', label: 'Downside', kind: 'downside', source: source('downside'), scenario: downside, non_financial_caveats: ['Higher disruption and delivery risk', 'Benefits begin later'] },
@@ -596,7 +596,7 @@
     let timer = null; function schedule() { window.clearTimeout(timer); timer = window.setTimeout(render, 120); }
     cashForm.addEventListener('input', schedule); cashForm.addEventListener('change', schedule);
     section.querySelector('[data-scfin-comparison-refresh]').addEventListener('click', render);
-    section.querySelector('[data-scfin-comparison-download]').addEventListener('click', function () { downloadJson('catalyst-finance-comparison-v1.5.0.json', root._scfinComparisonPayload); });
+    section.querySelector('[data-scfin-comparison-download]').addEventListener('click', function () { downloadJson('catalyst-finance-comparison-v1.6.0.json', root._scfinComparisonPayload); });
     render();
   }
 
@@ -611,7 +611,7 @@
     const benefitStd = Number(section.querySelector('[data-scfin-uncertainty-benefit]').value || 15) / 100;
     const rate = scenario.discount_rate_percent_annual;
     return {
-      contract_version: '1.5.0', model_id: 'catalyst-finance.uncertainty', uncertainty_id: 'browser-risk-analysis',
+      contract_version: '1.6.0', model_id: 'catalyst-finance.uncertainty', uncertainty_id: 'browser-risk-analysis',
       name: 'Browser uncertainty and stress analysis', description: 'Seeded simulation generated from the live capital-budgeting form.',
       source: { workspace_id: 'workspace_browser', scenario_id: 'scenario_cashflow', revision_id: 'revision_browser_001', revision_number: 1 },
       scenario: scenario, metric_ids: ['npv', 'mirr_percent_annual', 'discounted_payback_periods'],
@@ -675,7 +675,65 @@
       } catch (error) { section.querySelector('[data-scfin-uncertainty-json]').textContent = String(error.message || error); }
     }
     section.querySelector('[data-scfin-uncertainty-run]').addEventListener('click', run);
-    section.querySelector('[data-scfin-uncertainty-download]').addEventListener('click', function () { if (root._scfinUncertaintyPayload) downloadJson('catalyst-finance-uncertainty-v1.5.0.json', root._scfinUncertaintyPayload); });
+    section.querySelector('[data-scfin-uncertainty-download]').addEventListener('click', function () { if (root._scfinUncertaintyPayload) downloadJson('catalyst-finance-uncertainty-v1.6.0.json', root._scfinUncertaintyPayload); });
+    run();
+  }
+
+
+  function pricingDefinition(section) {
+    const form = section.querySelector('[data-scfin-pricing-form]');
+    const value = function (name) { return Number(form.elements[name].value); };
+    const current = value('currentPrice');
+    return {
+      contract_version: '1.6.0', model_id: 'catalyst-finance.pricing', pricing_id: 'browser-pricing',
+      name: 'Browser pricing analysis', description: 'Interactive segmented demand and pricing analysis.',
+      source: { workspace_id: 'workspace_browser', scenario_id: 'scenario_pricing', revision_id: 'revision_browser', revision_number: 1 },
+      currency: 'USD', objective: form.elements.objective.value, current_price: current,
+      segments: [
+        { segment_id: 'commuter', label: 'Daily commuters', quantity_multiplier: 1, curve: { kind: 'linear', intercept: value('intercept'), slope: value('slope'), reference_price: null, reference_quantity: null, elasticity: null, observed_points: [] } },
+        { segment_id: 'hybrid', label: 'Hybrid workers', quantity_multiplier: 1, curve: { kind: 'constant_elasticity', intercept: null, slope: null, reference_price: current, reference_quantity: value('referenceQuantity'), elasticity: value('elasticity'), observed_points: [] } },
+        { segment_id: 'student', label: 'Students', quantity_multiplier: 1, curve: { kind: 'observed', intercept: null, slope: null, reference_price: null, reference_quantity: null, elasticity: null, observed_points: [ {price:30,quantity:5500}, {price:45,quantity:4200}, {price:60,quantity:3000}, {price:80,quantity:1800} ] } }
+      ],
+      costs: { fixed_cost: value('fixedCost'), unit_variable_cost: value('unitCost'), unit_fulfillment_cost: 0, channel_fee_percent: 2.5 },
+      grid: { minimum_price: value('minimumPrice'), maximum_price: value('maximumPrice'), steps: 51 },
+      constraints: { capacity_units: value('capacity'), minimum_volume_units: 9000, maximum_price_change_percent: value('maxChange') }
+    };
+  }
+
+  function drawPricingChart(canvas, result) {
+    const context = canvas.getContext('2d'), width = canvas.width, height = canvas.height, pad = 42;
+    context.clearRect(0, 0, width, height);
+    const values = result.rows.map(function (row) { return result.definition.objective === 'revenue' ? row.gross_revenue : (result.definition.objective === 'contribution' ? row.contribution : row.operating_profit); });
+    const minimum = Math.min.apply(null, values), maximum = Math.max.apply(null, values), span = Math.max(1, maximum - minimum);
+    context.strokeStyle = '#777'; context.beginPath(); context.moveTo(pad, height-pad); context.lineTo(width-pad, height-pad); context.stroke();
+    context.strokeStyle = '#5a2635'; context.lineWidth = 3; context.beginPath();
+    result.rows.forEach(function (row, index) { const x = pad + index * (width-pad*2)/(result.rows.length-1); const y = height-pad-(values[index]-minimum)*(height-pad*2)/span; if(index===0) context.moveTo(x,y); else context.lineTo(x,y); });
+    context.stroke();
+    const selected = result.recommendation.recommended_price; const index = result.rows.findIndex(function (row) { return row.price === selected; });
+    if(index >= 0) { const x = pad + index*(width-pad*2)/(result.rows.length-1); const y = height-pad-(values[index]-minimum)*(height-pad*2)/span; context.fillStyle='#000'; context.beginPath(); context.arc(x,y,5,0,Math.PI*2); context.fill(); }
+  }
+
+  function initializePricing(root) {
+    const section = root.querySelector('[data-scfin-pricing-studio]');
+    if (!section || typeof CatalystFinancePricingEngine === 'undefined') return;
+    function run() {
+      try {
+        const result = CatalystFinancePricingEngine.evaluate(pricingDefinition(section)); root._scfinPricingPayload = result;
+        const row = result.rows[result.recommendation.recommended_price === null ? 0 : result.rows.findIndex(function (item) { return item.price === result.recommendation.recommended_price; })];
+        section.querySelector('[data-scfin-pricing-price]').textContent = money(result.recommendation.recommended_price, result.definition.currency);
+        section.querySelector('[data-scfin-pricing-gain]').textContent = result.recommendation.expected_objective_gain === null ? '—' : money(result.recommendation.expected_objective_gain, result.definition.currency);
+        section.querySelector('[data-scfin-pricing-volume]').textContent = row.quantity.toLocaleString('en-US', {maximumFractionDigits:0});
+        section.querySelector('[data-scfin-pricing-elasticity]').textContent = row.average_elasticity === null ? '—' : row.average_elasticity.toFixed(2);
+        section.querySelector('[data-scfin-pricing-note]').textContent = result.recommendation.narrative;
+        drawPricingChart(section.querySelector('[data-scfin-pricing-chart]'), result);
+        const table = section.querySelector('[data-scfin-pricing-table]'); table.innerHTML='';
+        result.rows.filter(function (_, index) { return index % 5 === 0 || index === result.rows.length - 1; }).forEach(function (item) { const tr=document.createElement('tr'); tr.innerHTML='<td>'+money(item.price,'USD')+'</td><td>'+item.quantity.toLocaleString('en-US',{maximumFractionDigits:0})+'</td><td>'+money(item.gross_revenue,'USD')+'</td><td>'+money(item.contribution,'USD')+'</td><td>'+money(item.operating_profit,'USD')+'</td><td>'+(item.average_elasticity===null?'—':item.average_elasticity.toFixed(2))+'</td>'; table.appendChild(tr); });
+        const flags = section.querySelector('[data-scfin-pricing-flags]'); flags.innerHTML=''; result.flags.forEach(function(item){const li=document.createElement('li');li.textContent=item;flags.appendChild(li);});
+        section.querySelector('[data-scfin-pricing-json]').textContent=JSON.stringify(result,null,2);
+      } catch(error) { section.querySelector('[data-scfin-pricing-json]').textContent=String(error.message||error); }
+    }
+    section.querySelector('[data-scfin-pricing-run]').addEventListener('click', run);
+    section.querySelector('[data-scfin-pricing-download]').addEventListener('click', function(){ if(root._scfinPricingPayload) downloadJson('catalyst-finance-pricing-v1.6.0.json', root._scfinPricingPayload); });
     run();
   }
 
@@ -685,6 +743,7 @@
       initializeCapitalBudgeting(root);
       initializeComparison(root);
       initializeUncertainty(root);
+      initializePricing(root);
     });
   });
 })();

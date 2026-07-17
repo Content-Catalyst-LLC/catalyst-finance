@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Catalyst Finance Demo
- * Description: Persistent finance workspace with screening, capital budgeting, comparison, uncertainty, and stress testing for Sustainable Catalyst.
- * Version: 1.5.0
+ * Description: Persistent finance workspace with screening, capital budgeting, comparison, uncertainty, pricing, revenue, and stress testing for Sustainable Catalyst.
+ * Version: 1.6.0
  * Author: Content Catalyst LLC
  * License: MIT
  */
@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('CATALYST_FINANCE_DEMO_VERSION', '1.5.0');
+define('CATALYST_FINANCE_DEMO_VERSION', '1.6.0');
 
 function catalyst_finance_demo_assets() {
     $base = plugin_dir_url(__FILE__);
@@ -50,9 +50,16 @@ function catalyst_finance_demo_assets() {
         true
     );
     wp_enqueue_script(
+        'catalyst-finance-pricing-engine',
+        $base . 'assets/catalyst-finance-pricing-engine.js',
+        array(),
+        CATALYST_FINANCE_DEMO_VERSION,
+        true
+    );
+    wp_enqueue_script(
         'catalyst-finance-demo',
         $base . 'assets/catalyst-finance-demo.js',
-        array('catalyst-finance-engine', 'catalyst-finance-cashflow-engine', 'catalyst-finance-comparison-engine', 'catalyst-finance-uncertainty-engine'),
+        array('catalyst-finance-engine', 'catalyst-finance-cashflow-engine', 'catalyst-finance-comparison-engine', 'catalyst-finance-uncertainty-engine', 'catalyst-finance-pricing-engine'),
         CATALYST_FINANCE_DEMO_VERSION,
         true
     );
@@ -70,7 +77,7 @@ function catalyst_finance_demo_shortcode($atts = array()) {
     ?>
     <section class="scfin-demo" data-scfin-demo data-scfin-mode="<?php echo esc_attr($mode); ?>">
       <div class="scfin-demo__header">
-        <p class="scfin-demo__eyebrow">Catalyst Finance v1.5.0</p>
+        <p class="scfin-demo__eyebrow">Catalyst Finance v1.6.0</p>
         <h3><?php echo $mode === 'public' ? 'Explore a finance scenario' : 'Persistent finance scenario workspace'; ?></h3>
         <p><?php echo $mode === 'public'
             ? 'Review a read-only example using the canonical finance screening model.'
@@ -383,6 +390,61 @@ function catalyst_finance_demo_shortcode($atts = array()) {
           </div>
         </div>
         <details class="scfin-demo__details"><summary>Versioned uncertainty publication</summary><pre data-scfin-uncertainty-json></pre></details>
+      </section>
+
+      <section class="scfin-pricing" data-scfin-pricing-studio>
+        <div class="scfin-capital__header">
+          <p class="scfin-demo__eyebrow">Demand and revenue analysis</p>
+          <h3>Pricing and elasticity studio</h3>
+          <p>Model segmented demand, cost-to-serve, capacity, break-even volume, and revenue, contribution, or profit objectives across a transparent price grid.</p>
+        </div>
+        <div class="scfin-pricing__layout">
+          <form class="scfin-pricing__form" data-scfin-pricing-form>
+            <div class="scfin-demo__two">
+              <label><span>Objective</span><select name="objective"><option value="profit">Profit</option><option value="contribution">Contribution</option><option value="revenue">Revenue</option></select></label>
+              <label><span>Current price</span><input name="currentPrice" type="number" min="0.01" step="0.5" value="50"></label>
+            </div>
+            <div class="scfin-demo__two">
+              <label><span>Minimum price</span><input name="minimumPrice" type="number" min="0.01" step="0.5" value="30"></label>
+              <label><span>Maximum price</span><input name="maximumPrice" type="number" min="0.01" step="0.5" value="80"></label>
+            </div>
+            <div class="scfin-demo__two">
+              <label><span>Commuter intercept</span><input name="intercept" type="number" min="1" step="100" value="18000"></label>
+              <label><span>Commuter slope</span><input name="slope" type="number" min="0.01" step="1" value="180"></label>
+            </div>
+            <div class="scfin-demo__two">
+              <label><span>Hybrid demand at current price</span><input name="referenceQuantity" type="number" min="0" step="100" value="7000"></label>
+              <label><span>Hybrid elasticity</span><input name="elasticity" type="number" max="-0.01" step="0.05" value="-1.35"></label>
+            </div>
+            <div class="scfin-demo__two">
+              <label><span>Unit variable cost</span><input name="unitCost" type="number" min="0" step="0.5" value="11.5"></label>
+              <label><span>Fixed cost</span><input name="fixedCost" type="number" min="0" step="1000" value="350000"></label>
+            </div>
+            <div class="scfin-demo__two">
+              <label><span>Capacity units</span><input name="capacity" type="number" min="1" step="100" value="22000"></label>
+              <label><span>Maximum price change (%)</span><input name="maxChange" type="number" min="0.1" step="0.5" value="20"></label>
+            </div>
+            <div class="scfin-demo__actions">
+              <button type="button" data-scfin-pricing-run>Evaluate pricing</button>
+              <button type="button" data-scfin-pricing-download>Download publication</button>
+            </div>
+          </form>
+          <div class="scfin-pricing__output" aria-live="polite">
+            <div class="scfin-demo__metrics">
+              <div><span>Recommended price</span><strong data-scfin-pricing-price>—</strong></div>
+              <div><span>Expected gain</span><strong data-scfin-pricing-gain>—</strong></div>
+              <div><span>Recommended volume</span><strong data-scfin-pricing-volume>—</strong></div>
+              <div><span>Average elasticity</span><strong data-scfin-pricing-elasticity>—</strong></div>
+            </div>
+            <p class="scfin-pricing__recommendation" data-scfin-pricing-note></p>
+            <canvas width="760" height="280" data-scfin-pricing-chart aria-label="Pricing objective curve"></canvas>
+            <div class="scfin-capital__table-wrap">
+              <table class="scfin-capital__table"><thead><tr><th>Price</th><th>Quantity</th><th>Revenue</th><th>Contribution</th><th>Profit</th><th>Elasticity</th></tr></thead><tbody data-scfin-pricing-table></tbody></table>
+            </div>
+            <ul data-scfin-pricing-flags></ul>
+            <details class="scfin-demo__details"><summary>Versioned pricing publication</summary><pre data-scfin-pricing-json></pre></details>
+          </div>
+        </div>
       </section>
       <p class="scfin-demo__disclaimer">Educational scenario tool only. Not financial, investment, tax, accounting, legal, assurance, or fiduciary advice. Browser workspace data remains in this browser until exported or deleted.</p>
     </section>

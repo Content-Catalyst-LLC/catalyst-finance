@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reproduce the checked-in v1.5.0 uncertainty publication and summary CSV."""
+"""Reproduce the checked-in v1.6.0 uncertainty publication and summary CSV."""
 
 from __future__ import annotations
 

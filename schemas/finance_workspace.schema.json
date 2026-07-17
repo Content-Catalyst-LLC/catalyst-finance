@@ -239,8 +239,8 @@
       "additionalProperties": false,
       "properties": {
         "contract_version": {
-          "const": "1.5.0",
-          "default": "1.5.0",
+          "const": "1.6.0",
+          "default": "1.6.0",
           "title": "Contract Version",
           "type": "string"
         },
@@ -359,8 +359,8 @@
       "additionalProperties": false,
       "properties": {
         "contract_version": {
-          "const": "1.5.0",
-          "default": "1.5.0",
+          "const": "1.6.0",
+          "default": "1.6.0",
           "title": "Contract Version",
           "type": "string"
         },
@@ -509,6 +509,132 @@
         "coefficient"
       ],
       "title": "CorrelationPair",
+      "type": "object"
+    },
+    "DemandCurve": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "linear",
+            "constant_elasticity",
+            "observed"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "intercept": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Intercept"
+        },
+        "slope": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Slope"
+        },
+        "reference_price": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reference Price"
+        },
+        "reference_quantity": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reference Quantity"
+        },
+        "elasticity": {
+          "anyOf": [
+            {
+              "exclusiveMaximum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Elasticity"
+        },
+        "observed_points": {
+          "items": {
+            "$ref": "#/$defs/ObservedDemandPoint"
+          },
+          "maxItems": 500,
+          "title": "Observed Points",
+          "type": "array"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "DemandCurve",
+      "type": "object"
+    },
+    "DemandSegment": {
+      "additionalProperties": false,
+      "properties": {
+        "segment_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Segment Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "quantity_multiplier": {
+          "default": 1,
+          "exclusiveMinimum": 0,
+          "title": "Quantity Multiplier",
+          "type": "number"
+        },
+        "curve": {
+          "$ref": "#/$defs/DemandCurve"
+        }
+      },
+      "required": [
+        "segment_id",
+        "label",
+        "curve"
+      ],
+      "title": "DemandSegment",
       "type": "object"
     },
     "DistributionSpec": {
@@ -844,8 +970,8 @@
       "additionalProperties": false,
       "properties": {
         "contract_version": {
-          "const": "1.5.0",
-          "default": "1.5.0",
+          "const": "1.6.0",
+          "default": "1.6.0",
           "title": "Contract Version",
           "type": "string"
         },
@@ -958,6 +1084,27 @@
       "title": "MonteCarloConfiguration",
       "type": "object"
     },
+    "ObservedDemandPoint": {
+      "additionalProperties": false,
+      "properties": {
+        "price": {
+          "exclusiveMinimum": 0,
+          "title": "Price",
+          "type": "number"
+        },
+        "quantity": {
+          "minimum": 0,
+          "title": "Quantity",
+          "type": "number"
+        }
+      },
+      "required": [
+        "price",
+        "quantity"
+      ],
+      "title": "ObservedDemandPoint",
+      "type": "object"
+    },
     "OneWaySensitivityDefinition": {
       "additionalProperties": false,
       "properties": {
@@ -1009,6 +1156,246 @@
       "title": "OneWaySensitivityDefinition",
       "type": "object"
     },
+    "PricingConstraints": {
+      "additionalProperties": false,
+      "properties": {
+        "capacity_units": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Capacity Units"
+        },
+        "minimum_volume_units": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Minimum Volume Units"
+        },
+        "maximum_price_change_percent": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Maximum Price Change Percent"
+        }
+      },
+      "title": "PricingConstraints",
+      "type": "object"
+    },
+    "PricingCostStructure": {
+      "additionalProperties": false,
+      "properties": {
+        "fixed_cost": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Fixed Cost",
+          "type": "number"
+        },
+        "unit_variable_cost": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Unit Variable Cost",
+          "type": "number"
+        },
+        "unit_fulfillment_cost": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Unit Fulfillment Cost",
+          "type": "number"
+        },
+        "channel_fee_percent": {
+          "default": 0,
+          "exclusiveMaximum": 100,
+          "minimum": 0,
+          "title": "Channel Fee Percent",
+          "type": "number"
+        }
+      },
+      "title": "PricingCostStructure",
+      "type": "object"
+    },
+    "PricingDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": "1.6.0",
+          "default": "1.6.0",
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "model_id": {
+          "const": "catalyst-finance.pricing",
+          "default": "catalyst-finance.pricing",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "pricing_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Pricing Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "maxLength": 4000,
+          "title": "Description",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/SourceRevision"
+        },
+        "currency": {
+          "default": "USD",
+          "pattern": "^[A-Z]{3}$",
+          "title": "Currency",
+          "type": "string"
+        },
+        "objective": {
+          "default": "profit",
+          "enum": [
+            "revenue",
+            "contribution",
+            "profit"
+          ],
+          "title": "Objective",
+          "type": "string"
+        },
+        "current_price": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Current Price"
+        },
+        "segments": {
+          "items": {
+            "$ref": "#/$defs/DemandSegment"
+          },
+          "maxItems": 50,
+          "minItems": 1,
+          "title": "Segments",
+          "type": "array"
+        },
+        "costs": {
+          "$ref": "#/$defs/PricingCostStructure"
+        },
+        "grid": {
+          "$ref": "#/$defs/PricingGrid"
+        },
+        "constraints": {
+          "$ref": "#/$defs/PricingConstraints"
+        }
+      },
+      "required": [
+        "pricing_id",
+        "name",
+        "source",
+        "segments",
+        "grid"
+      ],
+      "title": "PricingDefinition",
+      "type": "object"
+    },
+    "PricingGrid": {
+      "additionalProperties": false,
+      "properties": {
+        "minimum_price": {
+          "exclusiveMinimum": 0,
+          "title": "Minimum Price",
+          "type": "number"
+        },
+        "maximum_price": {
+          "exclusiveMinimum": 0,
+          "title": "Maximum Price",
+          "type": "number"
+        },
+        "steps": {
+          "default": 41,
+          "maximum": 1001,
+          "minimum": 3,
+          "title": "Steps",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "minimum_price",
+        "maximum_price"
+      ],
+      "title": "PricingGrid",
+      "type": "object"
+    },
+    "PricingRevision": {
+      "additionalProperties": false,
+      "properties": {
+        "revision_id": {
+          "maxLength": 100,
+          "minLength": 5,
+          "pattern": "^[a-z]+_[A-Za-z0-9_-]+$",
+          "title": "Revision Id",
+          "type": "string"
+        },
+        "revision_number": {
+          "minimum": 1,
+          "title": "Revision Number",
+          "type": "integer"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "change_note": {
+          "default": "",
+          "maxLength": 1000,
+          "title": "Change Note",
+          "type": "string"
+        },
+        "definition": {
+          "$ref": "#/$defs/PricingDefinition"
+        }
+      },
+      "required": [
+        "revision_id",
+        "revision_number",
+        "created_at",
+        "definition"
+      ],
+      "title": "PricingRevision",
+      "type": "object"
+    },
     "ScenarioRevision": {
       "additionalProperties": false,
       "properties": {
@@ -1039,8 +1426,8 @@
           "type": "string"
         },
         "model_version": {
-          "const": "1.5.0",
-          "default": "1.5.0",
+          "const": "1.6.0",
+          "default": "1.6.0",
           "title": "Model Version",
           "type": "string"
         },
@@ -1290,8 +1677,8 @@
       "additionalProperties": false,
       "properties": {
         "contract_version": {
-          "const": "1.5.0",
-          "default": "1.5.0",
+          "const": "1.6.0",
+          "default": "1.6.0",
           "title": "Contract Version",
           "type": "string"
         },
@@ -1588,13 +1975,76 @@
           "type": "string"
         },
         "default_model_version": {
-          "const": "1.5.0",
-          "default": "1.5.0",
+          "const": "1.6.0",
+          "default": "1.6.0",
           "title": "Default Model Version",
           "type": "string"
         }
       },
       "title": "WorkspaceDefaults",
+      "type": "object"
+    },
+    "WorkspacePricingAnalysis": {
+      "additionalProperties": false,
+      "properties": {
+        "analysis_id": {
+          "maxLength": 100,
+          "minLength": 5,
+          "pattern": "^[a-z]+_[A-Za-z0-9_-]+$",
+          "title": "Analysis Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "status": {
+          "default": "active",
+          "enum": [
+            "draft",
+            "active",
+            "archived"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        },
+        "current_revision_id": {
+          "maxLength": 100,
+          "minLength": 5,
+          "pattern": "^[a-z]+_[A-Za-z0-9_-]+$",
+          "title": "Current Revision Id",
+          "type": "string"
+        },
+        "revisions": {
+          "items": {
+            "$ref": "#/$defs/PricingRevision"
+          },
+          "minItems": 1,
+          "title": "Revisions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "analysis_id",
+        "name",
+        "created_at",
+        "updated_at",
+        "current_revision_id",
+        "revisions"
+      ],
+      "title": "WorkspacePricingAnalysis",
       "type": "object"
     },
     "WorkspaceProject": {
@@ -1852,8 +2302,8 @@
   "additionalProperties": false,
   "properties": {
     "workspace_contract_version": {
-      "const": "1.5.0",
-      "default": "1.5.0",
+      "const": "1.6.0",
+      "default": "1.6.0",
       "title": "Workspace Contract Version",
       "type": "string"
     },
@@ -1925,6 +2375,13 @@
       },
       "title": "Uncertainty Analyses",
       "type": "array"
+    },
+    "pricing_analyses": {
+      "items": {
+        "$ref": "#/$defs/WorkspacePricingAnalysis"
+      },
+      "title": "Pricing Analyses",
+      "type": "array"
     }
   },
   "required": [
@@ -1936,5 +2393,5 @@
   "title": "FinanceWorkspace",
   "type": "object",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.5.0/finance_workspace.schema.json"
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.6.0/finance_workspace.schema.json"
 }

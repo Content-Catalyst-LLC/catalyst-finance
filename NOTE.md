@@ -1,5 +1,5 @@
 # Note
 
-Catalyst Finance is part of the Sustainable Catalyst platform. It supports financial scenario discipline by keeping costs, benefits, assumptions, risk, interpretation, and release provenance visible.
+Catalyst Finance is part of the Sustainable Catalyst platform. Version 1.6.0 adds transparent demand, elasticity, pricing, revenue, contribution, and profit analysis while preserving the existing screening, capital-budgeting, comparison, uncertainty, and workspace engines.
 
-Catalyst Finance v1.0.1 is a repository-integrity release. The current model remains educational and experimental; it is not a source of financial, investment, accounting, tax, legal, fiduciary, lending, or assurance advice.
+The software is educational decision support, not financial, investment, accounting, tax, legal, fiduciary, lending, pricing, competition, or assurance advice.

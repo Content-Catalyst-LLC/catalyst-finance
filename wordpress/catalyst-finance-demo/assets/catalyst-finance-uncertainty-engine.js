@@ -4,7 +4,7 @@
   root.CatalystFinanceUncertaintyEngine = engine;
 })(typeof globalThis !== 'undefined' ? globalThis : this, function (cashFlowEngine, comparisonEngine) {
   'use strict';
-  const CONTRACT_VERSION = '1.5.0';
+  const CONTRACT_VERSION = '1.6.0';
   const MODEL_ID = 'catalyst-finance.uncertainty';
   function round(value, decimals) { return cashFlowEngine.roundHalfUp(value, decimals); }
   function XorShift32(seed) { this.state = (seed >>> 0) || 0x6D2B79F5; this.spare = null; }

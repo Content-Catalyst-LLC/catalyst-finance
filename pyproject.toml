@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "catalyst-finance"
-version = "1.5.0"
+version = "1.6.0"
 description = "Transparent financial scenario and decision-support tools for Sustainable Catalyst."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -47,6 +47,7 @@ catalyst-finance-workspace = "catalyst_finance.workspace_cli:main"
 catalyst-finance-cashflow = "catalyst_finance.cashflow_cli:main"
 catalyst-finance-compare = "catalyst_finance.comparison_cli:main"
 catalyst-finance-uncertainty = "catalyst_finance.uncertainty_cli:main"
+catalyst-finance-pricing = "catalyst_finance.pricing_cli:main"
 
 [project.urls]
 Repository = "https://github.com/Content-Catalyst-LLC/catalyst-finance"
@@ -98,4 +99,7 @@ files = [
   "catalyst_finance/uncertainty.py",
   "catalyst_finance/uncertainty_cli.py",
   "catalyst_finance/uncertainty_models.py",
+  "catalyst_finance/pricing.py",
+  "catalyst_finance/pricing_cli.py",
+  "catalyst_finance/pricing_models.py",
 ]

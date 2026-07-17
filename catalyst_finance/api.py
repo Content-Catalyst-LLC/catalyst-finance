@@ -16,6 +16,9 @@ from .comparison_migration import normalize_comparison
 from .comparison_models import ComparisonDefinition
 from .engine import evaluate_payload
 from .models import ContractModel, validation_issues
+from .pricing import evaluate_pricing
+from .pricing_migration import normalize_pricing
+from .pricing_models import PricingDefinition
 from .registry import get_model, list_models
 from .repositories import (
     JsonWorkspaceRepository,
@@ -24,6 +27,7 @@ from .repositories import (
 )
 from .templates import list_templates
 from .uncertainty import evaluate_uncertainty
+from .uncertainty_migration import normalize_uncertainty
 from .uncertainty_models import UncertaintyDefinition
 from .version import __version__
 from .workspace import WorkspaceConflictError, WorkspaceService
@@ -75,6 +79,16 @@ class CreateUncertaintyRequest(ContractModel):
 class UncertaintyRevisionRequest(ContractModel):
     definition: UncertaintyDefinition
     change_note: str = Field(default="Saved uncertainty revision", max_length=1000)
+
+
+class CreatePricingRequest(ContractModel):
+    definition: PricingDefinition
+    name: str | None = Field(default=None, max_length=240)
+
+
+class PricingRevisionRequest(ContractModel):
+    definition: PricingDefinition
+    change_note: str = Field(default="Saved pricing revision", max_length=1000)
 
 
 class RenameRequest(ContractModel):
@@ -165,7 +179,7 @@ def create_app(repository: WorkspaceRepository | None = None) -> FastAPI:
     @application.post("/api/v1/uncertainty/evaluate", tags=["uncertainty"])
     def evaluate_uncertainty_endpoint(payload: dict[str, Any]) -> dict[str, Any]:
         try:
-            definition = UncertaintyDefinition.model_validate(payload)
+            definition = normalize_uncertainty(payload)
             return cast(
                 dict[str, Any],
                 evaluate_uncertainty(definition).model_dump(mode="json"),
@@ -175,6 +189,23 @@ def create_app(repository: WorkspaceRepository | None = None) -> FastAPI:
                 status_code=422,
                 detail={
                     "error": "invalid_uncertainty_definition",
+                    "issues": validation_issues(exc),
+                },
+            ) from exc
+
+    @application.post("/api/v1/pricing/evaluate", tags=["pricing"])
+    def evaluate_pricing_endpoint(payload: dict[str, Any]) -> dict[str, Any]:
+        try:
+            definition = normalize_pricing(payload)
+            return cast(
+                dict[str, Any],
+                evaluate_pricing(definition).model_dump(mode="json"),
+            )
+        except (ValidationError, ValueError) as exc:
+            raise HTTPException(
+                status_code=422,
+                detail={
+                    "error": "invalid_pricing_definition",
                     "issues": validation_issues(exc),
                 },
             ) from exc
@@ -495,6 +526,59 @@ def create_app(repository: WorkspaceRepository | None = None) -> FastAPI:
                 service.delete_uncertainty_analysis(
                     workspace_id, analysis_id
                 ).model_dump(mode="json"),
+            )
+        except WorkspaceNotFoundError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    @application.post(
+        "/api/v1/workspaces/{workspace_id}/pricing-analyses",
+        tags=["pricing"],
+        status_code=201,
+    )
+    def create_pricing_endpoint(
+        workspace_id: str, payload: CreatePricingRequest
+    ) -> dict[str, Any]:
+        try:
+            return cast(
+                dict[str, Any],
+                service.create_pricing_analysis(
+                    workspace_id, payload.definition, name=payload.name
+                ).model_dump(mode="json"),
+            )
+        except WorkspaceNotFoundError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    @application.post(
+        "/api/v1/workspaces/{workspace_id}/pricing-analyses/{analysis_id}/revisions",
+        tags=["pricing"],
+    )
+    def save_pricing_revision_endpoint(
+        workspace_id: str, analysis_id: str, payload: PricingRevisionRequest
+    ) -> dict[str, Any]:
+        try:
+            return cast(
+                dict[str, Any],
+                service.save_pricing_revision(
+                    workspace_id,
+                    analysis_id,
+                    payload.definition,
+                    change_note=payload.change_note,
+                ).model_dump(mode="json"),
+            )
+        except WorkspaceNotFoundError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    @application.delete(
+        "/api/v1/workspaces/{workspace_id}/pricing-analyses/{analysis_id}",
+        tags=["pricing"],
+    )
+    def delete_pricing_endpoint(workspace_id: str, analysis_id: str) -> dict[str, Any]:
+        try:
+            return cast(
+                dict[str, Any],
+                service.delete_pricing_analysis(workspace_id, analysis_id).model_dump(
+                    mode="json"
+                ),
             )
         except WorkspaceNotFoundError as exc:
             raise HTTPException(status_code=404, detail=str(exc)) from exc

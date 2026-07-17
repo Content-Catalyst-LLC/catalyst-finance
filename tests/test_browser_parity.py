@@ -150,3 +150,23 @@ def test_uncertainty_browser_parity(tmp_path: Path) -> None:
         browser_result["metadata"]["rejected_iterations"]
         == python_result["metadata"]["rejected_iterations"]
     )
+
+
+@pytest.mark.skipif(shutil.which("node") is None, reason="Node.js not installed")
+def test_pricing_browser_engine_matches_python() -> None:
+    from catalyst_finance.pricing import evaluate_pricing
+    from catalyst_finance.pricing_models import PricingDefinition
+
+    path = ROOT / "data/sample_pricing.json"
+    definition = PricingDefinition.model_validate(json.loads(path.read_text()))
+    python_payload = evaluate_pricing(definition, generated_at=FIXED).model_dump(
+        mode="json"
+    )
+    completed = subprocess.run(
+        ["node", "scripts/browser_pricing_parity.js", str(path), FIXED],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    assert json.loads(completed.stdout) == python_payload

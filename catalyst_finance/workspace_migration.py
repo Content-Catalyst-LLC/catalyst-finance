@@ -1,10 +1,10 @@
-"""Upgrade v1.4 workspace payloads into the v1.5 workspace contract."""
+"""Upgrade v1.4 and v1.5 workspace payloads into the v1.6 contract."""
 
 from __future__ import annotations
 
 from typing import Any
 
-CURRENT_VERSION = "1.5.0"
+CURRENT_VERSION = "1.6.0"
 
 
 def migrate_workspace_payload(payload: dict[str, Any]) -> dict[str, Any]:
@@ -16,6 +16,7 @@ def migrate_workspace_payload(payload: dict[str, Any]) -> dict[str, Any]:
     )
     if isinstance(workspace, dict):
         workspace.setdefault("uncertainty_analyses", [])
+        workspace.setdefault("pricing_analyses", [])
     return migrated
 
 
@@ -30,7 +31,7 @@ def _upgrade(value: Any) -> Any:
             "methodology_version",
             "version",
         ):
-            if output.get(key) == "1.4.0":
+            if output.get(key) in {"1.4.0", "1.5.0"}:
                 output[key] = CURRENT_VERSION
         return output
     if isinstance(value, list):

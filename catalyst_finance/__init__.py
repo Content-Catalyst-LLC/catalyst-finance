@@ -6,6 +6,8 @@ from .comparison import evaluate_comparison
 from .comparison_models import ComparisonDefinition, ComparisonPublication
 from .engine import evaluate_payload, evaluate_scenario
 from .models import FinanceScenarioInput
+from .pricing import evaluate_pricing
+from .pricing_models import PricingDefinition, PricingPublication
 from .repositories import JsonWorkspaceRepository, SQLiteWorkspaceRepository
 from .uncertainty import evaluate_uncertainty
 from .uncertainty_models import UncertaintyDefinition, UncertaintyPublication
@@ -21,6 +23,8 @@ __all__ = [
     "FinanceScenarioInput",
     "FinanceWorkspace",
     "JsonWorkspaceRepository",
+    "PricingDefinition",
+    "PricingPublication",
     "SQLiteWorkspaceRepository",
     "UncertaintyDefinition",
     "UncertaintyPublication",
@@ -29,6 +33,7 @@ __all__ = [
     "evaluate_cash_flow",
     "evaluate_comparison",
     "evaluate_payload",
+    "evaluate_pricing",
     "evaluate_scenario",
     "evaluate_uncertainty",
 ]

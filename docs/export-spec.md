@@ -1,4 +1,4 @@
-# Catalyst Finance v1.5.0 Export Specification
+# Catalyst Finance v1.6.0 Export Specification
 
 Catalyst Finance produces two related JSON artifact families.
 
@@ -12,7 +12,7 @@ A workspace export contains:
 
 ```json
 {
-  "export_contract_version": "1.5.0",
+  "export_contract_version": "1.6.0",
   "exported_at": "ISO-8601 timestamp",
   "workspace": {}
 }

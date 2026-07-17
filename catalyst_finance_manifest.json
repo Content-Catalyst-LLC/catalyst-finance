@@ -1,7 +1,7 @@
 {
   "name": "Catalyst Finance",
-  "version": "1.5.0",
-  "release_title": "Uncertainty, Monte Carlo, and Stress Testing",
+  "version": "1.6.0",
+  "release_title": "Demand, Elasticity, Pricing, and Revenue Studio",
   "repository": "https://github.com/Content-Catalyst-LLC/catalyst-finance",
   "shortcode": "[catalyst_finance_workspace]",
   "module_type": "Sustainable Catalyst platform module",
@@ -12,18 +12,18 @@
   "models_endpoint": "/api/v1/models",
   "evaluation_endpoint": "/api/v1/evaluate",
   "cash_flow_evaluation_endpoint": "/api/v1/cash-flow/evaluate",
-  "contract_version": "1.5.0",
+  "contract_version": "1.6.0",
   "model_id": "catalyst-finance.screening",
   "cash_flow_model_id": "catalyst-finance.cash-flow",
-  "methodology_version": "1.5.0",
+  "methodology_version": "1.6.0",
   "workflow": [
-    "validated cash-flow revision",
-    "distribution and correlation review",
-    "seeded simulation",
-    "risk summary and histogram",
-    "variable influence review",
-    "named stress tests",
-    "workspace uncertainty revision save",
+    "versioned demand definition",
+    "segment and demand-curve validation",
+    "inclusive price-grid evaluation",
+    "capacity and cost-to-serve calculation",
+    "revenue, contribution, and profit optimization",
+    "elasticity and break-even review",
+    "workspace pricing revision save",
     "publication validation",
     "JSON and CSV export"
   ],
@@ -39,11 +39,18 @@
     "deterministic histograms and variable influence rankings",
     "multi-factor named stress cases",
     "atomic JSON and SQLite workspace repositories",
-    "versioned scenario, comparison, and uncertainty revisions",
-    "FastAPI screening, cash-flow, comparison, uncertainty, template, and workspace endpoints",
-    "v1.0.0 through v1.4.0 migration paths",
-    "WordPress screening, capital-budgeting, comparison, and uncertainty studios",
-    "release validation suite"
+    "versioned scenario, comparison, uncertainty, and pricing revisions",
+    "FastAPI screening, cash-flow, comparison, uncertainty, pricing, template, and workspace endpoints",
+    "v1.0.0 through v1.5.0 migration paths",
+    "WordPress screening, capital-budgeting, comparison, uncertainty, and pricing studios",
+    "release validation suite",
+    "canonical demand, elasticity, pricing, and revenue engine",
+    "linear, constant-elasticity, and observed demand contracts",
+    "multi-segment aggregation with capacity allocation",
+    "revenue, contribution, and operating-profit optima",
+    "break-even quantity, contribution margin, and price recommendation traces",
+    "versioned pricing workspace analyses and API routes",
+    "WordPress pricing and elasticity studio"
   ],
   "boundaries": [
     "not investment advice",
@@ -56,7 +63,7 @@
   ],
   "templates_endpoint": "/api/v1/templates",
   "workspaces_endpoint": "/api/v1/workspaces",
-  "workspace_contract_version": "1.5.0",
+  "workspace_contract_version": "1.6.0",
   "workspace_adapters": [
     "atomic JSON directory",
     "SQLite"
@@ -64,5 +71,7 @@
   "comparison_endpoint": "/api/v1/compare",
   "comparison_model_id": "catalyst-finance.comparison",
   "uncertainty_endpoint": "/api/v1/uncertainty/evaluate",
-  "uncertainty_model_id": "catalyst-finance.uncertainty"
+  "uncertainty_model_id": "catalyst-finance.uncertainty",
+  "pricing_endpoint": "/api/v1/pricing/evaluate",
+  "pricing_model_id": "catalyst-finance.pricing"
 }

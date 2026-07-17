@@ -300,3 +300,11 @@
     grid-template-columns: 1fr;
   }
 }
+
+.scfin-pricing { margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(20,20,20,.16); }
+.scfin-pricing__layout { display:grid; grid-template-columns:minmax(280px,.85fr) minmax(0,1.5fr); gap:1.25rem; align-items:start; }
+.scfin-pricing__form,.scfin-pricing__output { border:1px solid rgba(20,20,20,.16); border-radius:14px; background:#fff; padding:1rem; }
+.scfin-pricing__form { display:grid; gap:.85rem; }
+.scfin-pricing__recommendation { margin:1rem 0; padding:1rem; border-left:5px solid var(--scfin-red); background:var(--scfin-cream); font-weight:700; }
+.scfin-pricing canvas { display:block; width:100%; height:auto; border:1px solid rgba(20,20,20,.12); background:#fafafa; }
+@media (max-width:920px){.scfin-pricing__layout{grid-template-columns:1fr;}}

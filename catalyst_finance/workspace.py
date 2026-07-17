@@ -1,4 +1,4 @@
-"""Workspace lifecycle and revision services for Catalyst Finance v1.5.0."""
+"""Workspace lifecycle and revision services for Catalyst Finance v1.6.0."""
 
 from __future__ import annotations
 
@@ -14,6 +14,7 @@ from .cashflow_models import CashFlowScenarioInput
 from .comparison_models import ComparisonDefinition
 from .migration import normalize_scenario
 from .models import FinanceScenarioInput
+from .pricing_models import PricingDefinition
 from .repositories import WorkspaceNotFoundError, WorkspaceRepository
 from .templates import get_template
 from .uncertainty_models import UncertaintyDefinition
@@ -21,12 +22,14 @@ from .workspace_migration import migrate_workspace_payload
 from .workspace_models import (
     ComparisonRevision,
     FinanceWorkspace,
+    PricingRevision,
     ScenarioPayload,
     ScenarioRevision,
     UncertaintyRevision,
     WorkspaceComparison,
     WorkspaceDefaults,
     WorkspaceExport,
+    WorkspacePricingAnalysis,
     WorkspaceProject,
     WorkspaceScenario,
     WorkspaceUncertaintyAnalysis,
@@ -648,6 +651,108 @@ class WorkspaceService:
         return self.repository.save(
             workspace.model_copy(
                 update={"uncertainty_analyses": records, "updated_at": self.clock()}
+            )
+        )
+
+    def create_pricing_analysis(
+        self,
+        workspace_id: str,
+        definition: PricingDefinition | dict[str, Any],
+        *,
+        name: str | None = None,
+    ) -> FinanceWorkspace:
+        workspace = self.repository.get(workspace_id)
+        pricing_definition = (
+            definition
+            if isinstance(definition, PricingDefinition)
+            else PricingDefinition.model_validate(definition)
+        )
+        now = self.clock()
+        revision = PricingRevision(
+            revision_id=self.id_factory("revision"),
+            revision_number=1,
+            created_at=now,
+            change_note="Initial pricing definition",
+            definition=pricing_definition,
+        )
+        record = WorkspacePricingAnalysis(
+            analysis_id=self.id_factory("pricing"),
+            name=name or pricing_definition.name,
+            created_at=now,
+            updated_at=now,
+            current_revision_id=revision.revision_id,
+            revisions=[revision],
+        )
+        return self.repository.save(
+            workspace.model_copy(
+                update={
+                    "pricing_analyses": [*workspace.pricing_analyses, record],
+                    "updated_at": now,
+                }
+            )
+        )
+
+    def save_pricing_revision(
+        self,
+        workspace_id: str,
+        analysis_id: str,
+        definition: PricingDefinition | dict[str, Any],
+        *,
+        change_note: str = "Saved pricing revision",
+    ) -> FinanceWorkspace:
+        workspace = self.repository.get(workspace_id)
+        pricing_definition = (
+            definition
+            if isinstance(definition, PricingDefinition)
+            else PricingDefinition.model_validate(definition)
+        )
+        now = self.clock()
+        found = False
+        records: list[WorkspacePricingAnalysis] = []
+        for record in workspace.pricing_analyses:
+            if record.analysis_id != analysis_id:
+                records.append(record)
+                continue
+            found = True
+            revision = PricingRevision(
+                revision_id=self.id_factory("revision"),
+                revision_number=len(record.revisions) + 1,
+                created_at=now,
+                change_note=change_note,
+                definition=pricing_definition,
+            )
+            records.append(
+                record.model_copy(
+                    update={
+                        "name": pricing_definition.name,
+                        "updated_at": now,
+                        "current_revision_id": revision.revision_id,
+                        "revisions": [*record.revisions, revision],
+                    }
+                )
+            )
+        if not found:
+            raise WorkspaceNotFoundError(analysis_id)
+        return self.repository.save(
+            workspace.model_copy(
+                update={"pricing_analyses": records, "updated_at": now}
+            )
+        )
+
+    def delete_pricing_analysis(
+        self, workspace_id: str, analysis_id: str
+    ) -> FinanceWorkspace:
+        workspace = self.repository.get(workspace_id)
+        records = [
+            item
+            for item in workspace.pricing_analyses
+            if item.analysis_id != analysis_id
+        ]
+        if len(records) == len(workspace.pricing_analyses):
+            raise WorkspaceNotFoundError(analysis_id)
+        return self.repository.save(
+            workspace.model_copy(
+                update={"pricing_analyses": records, "updated_at": self.clock()}
             )
         )
 

@@ -1,4 +1,4 @@
-# Catalyst Finance Workspace v1.5.0
+# Catalyst Finance Workspace v1.6.0
 
 Shortcodes:
 
@@ -6,4 +6,4 @@ Shortcodes:
 - `[catalyst_finance_demo]`
 - `[catalyst_finance_demo mode="public"]`
 
-The browser module includes the annual screening workspace, period cash-flow capital-budgeting studio, and a downside/base/upside comparison studio. The comparison surface provides aligned metrics, weighted ranking, financial dominance, tornado sensitivity, break-even thresholds, caveats, and a downloadable versioned JSON artifact. Browser data remains local until exported.
+The browser module includes annual screening, period cash-flow capital budgeting, alternative comparison, uncertainty and stress testing, and the demand, elasticity, pricing, and revenue studio. The pricing surface provides segmented demand curves, capacity constraints, cost-to-serve, revenue/contribution/profit optima, break-even quantities, recommendation deltas, charts, tables, flags, and a downloadable v1.6.0 publication. Browser data remains local until exported.

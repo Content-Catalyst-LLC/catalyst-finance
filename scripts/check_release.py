@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Catalyst Finance v1.5.0 release contract."""
+"""Catalyst Finance v1.6.0 release contract."""
 
 from __future__ import annotations
 
@@ -20,11 +20,12 @@ import tomllib
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-VERSION = "1.5.0"
+VERSION = "1.6.0"
 SCREENING_MODEL_ID = "catalyst-finance.screening"
 CASHFLOW_MODEL_ID = "catalyst-finance.cash-flow"
 COMPARISON_MODEL_ID = "catalyst-finance.comparison"
 UNCERTAINTY_MODEL_ID = "catalyst-finance.uncertainty"
+PRICING_MODEL_ID = "catalyst-finance.pricing"
 FIXED_TIMESTAMP = "2026-07-17T00:00:00+00:00"
 CASHFLOW_FIXTURES = [
     "sample_cash_flow_scenario.json",
@@ -91,6 +92,7 @@ def check_versions() -> None:
         "cash-flow browser": "wordpress/catalyst-finance-demo/assets/catalyst-finance-cashflow-engine.js",
         "comparison browser": "wordpress/catalyst-finance-demo/assets/catalyst-finance-comparison-engine.js",
         "uncertainty browser": "wordpress/catalyst-finance-demo/assets/catalyst-finance-uncertainty-engine.js",
+        "pricing browser": "wordpress/catalyst-finance-demo/assets/catalyst-finance-pricing-engine.js",
     }
     package_text = require("catalyst_finance/version.py").read_text(encoding="utf-8")
     manifest = load_json("catalyst_finance_manifest.json")
@@ -99,6 +101,7 @@ def check_versions() -> None:
         "cash-flow": load_json("examples/sample_cash_flow_scenario.output.json"),
         "comparison": load_json("examples/sample_comparison.output.json"),
         "uncertainty": load_json("examples/sample_uncertainty.output.json"),
+        "pricing": load_json("examples/sample_pricing.output.json"),
     }
     schemas = {
         name: load_json(f"schemas/{name}")
@@ -111,6 +114,8 @@ def check_versions() -> None:
             "comparison_publication.schema.json",
             "uncertainty_definition.schema.json",
             "uncertainty_publication.schema.json",
+            "pricing_definition.schema.json",
+            "pricing_publication.schema.json",
             "finance_workspace.schema.json",
         ]
     }
@@ -137,6 +142,8 @@ def check_versions() -> None:
         "comparison example contract": examples["comparison"]["contract_version"],
         "uncertainty example": examples["uncertainty"]["metadata"]["version"],
         "uncertainty example contract": examples["uncertainty"]["contract_version"],
+        "pricing example": examples["pricing"]["metadata"]["version"],
+        "pricing example contract": examples["pricing"]["contract_version"],
         "workspace export": workspace_export["export_contract_version"],
         "workspace record": workspace_export["workspace"]["workspace_contract_version"],
     }
@@ -162,6 +169,7 @@ def check_versions() -> None:
         "cash_flow_model_id": CASHFLOW_MODEL_ID,
         "comparison_model_id": COMPARISON_MODEL_ID,
         "uncertainty_model_id": UNCERTAINTY_MODEL_ID,
+        "pricing_model_id": PRICING_MODEL_ID,
     }
     if any(manifest.get(key) != value for key, value in expected_model_ids.items()):
         raise ReleaseError("Manifest model identifier contract failed.")
@@ -173,6 +181,8 @@ def check_versions() -> None:
         raise ReleaseError("Comparison model identifier contract failed.")
     if examples["uncertainty"]["model_id"] != UNCERTAINTY_MODEL_ID:
         raise ReleaseError("Uncertainty model identifier contract failed.")
+    if examples["pricing"]["model_id"] != PRICING_MODEL_ID:
+        raise ReleaseError("Pricing model identifier contract failed.")
     print(f"PASS: {len(observed)} version surfaces report {VERSION}.")
 
 
@@ -192,6 +202,11 @@ def check_layout() -> None:
         "catalyst_finance/uncertainty.py",
         "catalyst_finance/uncertainty_cli.py",
         "catalyst_finance/uncertainty_models.py",
+        "catalyst_finance/uncertainty_migration.py",
+        "catalyst_finance/pricing.py",
+        "catalyst_finance/pricing_cli.py",
+        "catalyst_finance/pricing_models.py",
+        "catalyst_finance/pricing_migration.py",
         "catalyst_finance/workspace_migration.py",
         "catalyst_finance/engine.py",
         "catalyst_finance/migration.py",
@@ -202,6 +217,11 @@ def check_layout() -> None:
         "data/sample_finance_scenario.json",
         "data/sample_comparison.json",
         "data/sample_uncertainty.json",
+        "data/sample_pricing.json",
+        "data/legacy_v1.5.0_scenario.json",
+        "data/legacy_v1.5.0_cash_flow_scenario.json",
+        "data/legacy_v1.5.0_comparison.json",
+        "data/legacy_v1.5.0_uncertainty.json",
         "data/legacy_v1.0.0_scenario.json",
         "data/legacy_v1.1.0_scenario.json",
         "data/legacy_v1.2.0_scenario.json",
@@ -212,11 +232,13 @@ def check_layout() -> None:
         "scripts/browser_cashflow_parity.js",
         "scripts/browser_comparison_parity.js",
         "scripts/browser_uncertainty_parity.js",
+        "scripts/browser_pricing_parity.js",
         "scripts/generate_schemas.py",
         "scripts/reproduce_examples.py",
         "scripts/reproduce_cashflow_examples.py",
         "scripts/reproduce_comparison_example.py",
         "scripts/reproduce_uncertainty_example.py",
+        "scripts/reproduce_pricing_example.py",
         "scripts/reproduce_workspace_example.py",
         "tests/test_browser_parity.py",
         "tests/test_cashflow.py",
@@ -226,16 +248,21 @@ def check_layout() -> None:
         "tests/test_comparison_cli.py",
         "tests/test_uncertainty.py",
         "tests/test_uncertainty_cli.py",
+        "tests/test_pricing.py",
+        "tests/test_pricing_cli.py",
+        "tests/test_workspace_pricing.py",
         "tests/test_workspace.py",
         "tests/test_workspace_comparison.py",
         "tests/test_workspace_uncertainty.py",
-        "release/v1.5.0.md",
+        "release/v1.6.0.md",
         "docs/cash-flow-modeling.md",
         "docs/capital-budgeting-review-checklist.md",
         "docs/scenario-comparison.md",
         "docs/comparison-review-checklist.md",
         "docs/uncertainty-and-stress-testing.md",
         "docs/uncertainty-review-checklist.md",
+        "docs/pricing-and-elasticity.md",
+        "docs/pricing-review-checklist.md",
         "schemas/finance_input.schema.json",
         "schemas/finance_publication.schema.json",
         "schemas/cash_flow_input.schema.json",
@@ -244,6 +271,8 @@ def check_layout() -> None:
         "schemas/comparison_publication.schema.json",
         "schemas/uncertainty_definition.schema.json",
         "schemas/uncertainty_publication.schema.json",
+        "schemas/pricing_definition.schema.json",
+        "schemas/pricing_publication.schema.json",
         "schemas/finance_workspace.schema.json",
         "schemas/finance_workspace_export.schema.json",
         "examples/sample_finance_workspace.export.json",
@@ -259,6 +288,7 @@ def check_layout() -> None:
         "wordpress/catalyst-finance-demo/assets/catalyst-finance-cashflow-engine.js",
         "wordpress/catalyst-finance-demo/assets/catalyst-finance-comparison-engine.js",
         "wordpress/catalyst-finance-demo/assets/catalyst-finance-uncertainty-engine.js",
+        "wordpress/catalyst-finance-demo/assets/catalyst-finance-pricing-engine.js",
         "wordpress/catalyst-finance-demo/assets/catalyst-finance-demo.js",
     ]
     for path in required:
@@ -509,9 +539,49 @@ def check_contracts_and_examples() -> None:
     ):
         raise ReleaseError("Uncertainty stress-case coverage is incomplete.")
 
+    pricing_definition = load_json("data/sample_pricing.json")
+    pricing_publication = load_json("examples/sample_pricing.output.json")
+    _validate(
+        schemas["pricing_definition.schema.json"],
+        pricing_definition,
+        "Pricing definition",
+    )
+    _validate(
+        schemas["pricing_publication.schema.json"],
+        pricing_publication,
+        "Pricing publication",
+    )
+    if len(pricing_publication["rows"]) != pricing_definition["grid"]["steps"]:
+        raise ReleaseError("Pricing grid row accounting failed.")
+    optima = {item["objective"]: item for item in pricing_publication["optima"]}
+    if optima["revenue"]["price"] != 46.0 or optima["profit"]["price"] != 55.0:
+        raise ReleaseError("Pricing benchmark optimum contract failed.")
+    if pricing_publication["recommendation"]["recommended_price"] != 55.0:
+        raise ReleaseError("Pricing recommendation contract failed.")
+    if not any(item["capacity_constrained"] for item in pricing_publication["rows"]):
+        raise ReleaseError("Pricing capacity constraint coverage is incomplete.")
+    if any(not item["segments"] for item in pricing_publication["rows"]):
+        raise ReleaseError("Pricing segment traceability is incomplete.")
+
     from catalyst_finance.cashflow_migration import normalize_cash_flow
     from catalyst_finance.comparison_migration import normalize_comparison
+    from catalyst_finance.pricing_migration import normalize_pricing
+    from catalyst_finance.uncertainty_migration import normalize_uncertainty
     from catalyst_finance.workspace_migration import migrate_workspace_payload
+
+    legacy_pricing = dict(pricing_definition)
+    legacy_pricing["contract_version"] = "1.5.0"
+    if normalize_pricing(legacy_pricing).contract_version != VERSION:
+        raise ReleaseError("v1.5.0 pricing migration failed.")
+
+    legacy_uncertainty_definition = dict(uncertainty_definition)
+    legacy_uncertainty_definition["contract_version"] = "1.5.0"
+    legacy_uncertainty_definition["scenario"] = dict(
+        legacy_uncertainty_definition["scenario"]
+    )
+    legacy_uncertainty_definition["scenario"]["contract_version"] = "1.5.0"
+    if normalize_uncertainty(legacy_uncertainty_definition).contract_version != VERSION:
+        raise ReleaseError("v1.5.0 uncertainty migration failed.")
 
     legacy_uncertainty_scenario = dict(uncertainty_definition["scenario"])
     legacy_uncertainty_scenario["contract_version"] = "1.4.0"
@@ -543,13 +613,16 @@ def check_contracts_and_examples() -> None:
     workspace_export = load_json("examples/sample_finance_workspace.export.json")
     legacy_workspace = mark_legacy(workspace_export)
     legacy_workspace["workspace"].pop("uncertainty_analyses", None)
+    legacy_workspace["workspace"].pop("pricing_analyses", None)
     migrated_workspace = migrate_workspace_payload(legacy_workspace)
     if migrated_workspace["workspace"]["workspace_contract_version"] != VERSION:
         raise ReleaseError("v1.4.0 workspace migration version failed.")
     if migrated_workspace["workspace"].get("uncertainty_analyses") != []:
         raise ReleaseError(
-            "v1.4.0 workspace migration did not add uncertainty analyses."
+            "Legacy workspace migration did not add uncertainty analyses."
         )
+    if migrated_workspace["workspace"].get("pricing_analyses") != []:
+        raise ReleaseError("Legacy workspace migration did not add pricing analyses.")
 
     workspace_export = load_json("examples/sample_finance_workspace.export.json")
     _validate(
@@ -567,6 +640,7 @@ def check_contracts_and_examples() -> None:
     from scripts.reproduce_cashflow_examples import reproduce as reproduce_cashflow
     from scripts.reproduce_comparison_example import reproduce as reproduce_comparison
     from scripts.reproduce_examples import reproduce
+    from scripts.reproduce_pricing_example import reproduce as reproduce_pricing
     from scripts.reproduce_uncertainty_example import reproduce as reproduce_uncertainty
     from scripts.reproduce_workspace_example import reproduce as reproduce_workspace
 
@@ -600,6 +674,14 @@ def check_contracts_and_examples() -> None:
                 raise ReleaseError(
                     f"Reproducible uncertainty example mismatch: {path.name}"
                 )
+    with tempfile.TemporaryDirectory(prefix="catalyst-finance-pricing-") as tmp:
+        output_dir = Path(tmp)
+        reproduce_pricing(output_dir)
+        for name in ["sample_pricing.output.json", "sample_pricing.curve.csv"]:
+            if (output_dir / name).read_bytes() != require(
+                f"examples/{name}"
+            ).read_bytes():
+                raise ReleaseError(f"Reproducible pricing example mismatch: {name}")
     with tempfile.TemporaryDirectory(prefix="catalyst-finance-workspace-") as tmp:
         generated_workspace = reproduce_workspace(Path(tmp) / "workspace.json")
         if (
@@ -608,7 +690,7 @@ def check_contracts_and_examples() -> None:
         ):
             raise ReleaseError("Reproducible workspace export mismatch.")
     print(
-        "PASS: schemas, migrations, capital budgeting, comparison, uncertainty, and exports passed."
+        "PASS: schemas, migrations, capital budgeting, comparison, uncertainty, pricing, and exports passed."
     )
 
 
@@ -669,6 +751,8 @@ def check_browser_parity(portable: bool) -> None:
     from catalyst_finance.comparison_models import ComparisonDefinition
     from catalyst_finance.engine import evaluate_scenario
     from catalyst_finance.io import load_scenario
+    from catalyst_finance.pricing import evaluate_pricing
+    from catalyst_finance.pricing_models import PricingDefinition
     from catalyst_finance.uncertainty import evaluate_uncertainty
     from catalyst_finance.uncertainty_models import UncertaintyDefinition
 
@@ -786,8 +870,30 @@ def check_browser_parity(portable: bool) -> None:
         )
     if _uncertainty_core(actual_uncertainty) != _uncertainty_core(expected_uncertainty):
         raise ReleaseError("Uncertainty Python/browser core parity failed.")
+
+    pricing_path = ROOT / "data/sample_pricing.json"
+    pricing_definition = PricingDefinition.model_validate(
+        json.loads(pricing_path.read_text(encoding="utf-8"))
+    )
+    expected_pricing = evaluate_pricing(
+        pricing_definition, generated_at=FIXED_TIMESTAMP
+    ).model_dump(mode="json")
+    actual_pricing = json.loads(
+        run(
+            [
+                node,
+                "scripts/browser_pricing_parity.js",
+                str(pricing_path),
+                FIXED_TIMESTAMP,
+            ],
+            capture=True,
+        ).stdout
+    )
+    if actual_pricing != expected_pricing:
+        raise ReleaseError("Pricing Python/browser parity failed.")
+
     print(
-        "PASS: screening, cash-flow, migration, comparison, and uncertainty browser engines match Python."
+        "PASS: screening, cash-flow, migration, comparison, uncertainty, and pricing browser engines match Python."
     )
 
 
@@ -816,6 +922,9 @@ def check_plugin() -> None:
             uncertainty = archive.read(
                 "catalyst-finance-demo/assets/catalyst-finance-uncertainty-engine.js"
             ).decode("utf-8")
+            pricing = archive.read(
+                "catalyst-finance-demo/assets/catalyst-finance-pricing-engine.js"
+            ).decode("utf-8")
             browser = archive.read(
                 "catalyst-finance-demo/assets/catalyst-finance-demo.js"
             ).decode("utf-8")
@@ -825,9 +934,10 @@ def check_plugin() -> None:
                 or VERSION not in cashflow
                 or VERSION not in comparison
                 or VERSION not in uncertainty
+                or VERSION not in pricing
             ):
                 raise ReleaseError("WordPress package version mismatch.")
-            combined = php + browser + cashflow + comparison + uncertainty
+            combined = php + browser + cashflow + comparison + uncertainty + pricing
             required_tokens = [
                 "workspace_contract_version",
                 "data-scfin-export-workspace",
@@ -853,13 +963,20 @@ def check_plugin() -> None:
                 "CatalystFinanceUncertaintyEngine",
                 "xorshift32_box_muller",
                 "expected_shortfall_5",
+                "data-scfin-pricing-studio",
+                "data-scfin-pricing-run",
+                "data-scfin-pricing-chart",
+                "data-scfin-pricing-table",
+                "CatalystFinancePricingEngine",
+                "break_even_quantity",
+                "piecewise_linear_with_endpoint_clamping",
             ]
             missing = [token for token in required_tokens if token not in combined]
             if missing:
                 raise ReleaseError(
                     f"WordPress finance controls are incomplete: {missing}"
                 )
-    print("PASS: reproducible WordPress uncertainty-studio package contract passed.")
+    print("PASS: reproducible WordPress finance-studio package contract passed.")
 
 
 def check_syntax(portable: bool) -> None:
@@ -883,10 +1000,12 @@ def check_syntax(portable: bool) -> None:
             "scripts/browser_cashflow_parity.js",
             "scripts/browser_comparison_parity.js",
             "scripts/browser_uncertainty_parity.js",
+            "scripts/browser_pricing_parity.js",
             "wordpress/catalyst-finance-demo/assets/catalyst-finance-engine.js",
             "wordpress/catalyst-finance-demo/assets/catalyst-finance-cashflow-engine.js",
             "wordpress/catalyst-finance-demo/assets/catalyst-finance-comparison-engine.js",
             "wordpress/catalyst-finance-demo/assets/catalyst-finance-uncertainty-engine.js",
+            "wordpress/catalyst-finance-demo/assets/catalyst-finance-pricing-engine.js",
             "wordpress/catalyst-finance-demo/assets/catalyst-finance-demo.js",
         ]:
             run([node, "--check", path])
@@ -942,7 +1061,7 @@ def main() -> int:
     ) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1
-    print("Catalyst Finance v1.5.0 release contract passed.")
+    print("Catalyst Finance v1.6.0 release contract passed.")
     return 0
 
 
