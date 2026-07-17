@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Catalyst Finance v1.3.0 release contract."""
+"""Catalyst Finance v1.4.0 release contract."""
 
 from __future__ import annotations
 
@@ -20,9 +20,10 @@ import tomllib
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-VERSION = "1.3.0"
+VERSION = "1.4.0"
 SCREENING_MODEL_ID = "catalyst-finance.screening"
 CASHFLOW_MODEL_ID = "catalyst-finance.cash-flow"
+COMPARISON_MODEL_ID = "catalyst-finance.comparison"
 FIXED_TIMESTAMP = "2026-07-17T00:00:00+00:00"
 CASHFLOW_FIXTURES = [
     "sample_cash_flow_scenario.json",
@@ -38,10 +39,7 @@ class ReleaseError(RuntimeError):
 
 
 def run(
-    command: Sequence[str],
-    *,
-    cwd: Path = ROOT,
-    capture: bool = False,
+    command: Sequence[str], *, cwd: Path = ROOT, capture: bool = False
 ) -> subprocess.CompletedProcess[str]:
     print("RUN:", " ".join(command))
     completed = subprocess.run(
@@ -87,23 +85,32 @@ def check_versions() -> None:
     plugin_text = require(
         "wordpress/catalyst-finance-demo/catalyst-finance-demo.php"
     ).read_text(encoding="utf-8")
-    screening_engine = require(
-        "wordpress/catalyst-finance-demo/assets/catalyst-finance-engine.js"
-    ).read_text(encoding="utf-8")
-    cashflow_engine = require(
-        "wordpress/catalyst-finance-demo/assets/catalyst-finance-cashflow-engine.js"
-    ).read_text(encoding="utf-8")
+    browser_paths = {
+        "screening browser": "wordpress/catalyst-finance-demo/assets/catalyst-finance-engine.js",
+        "cash-flow browser": "wordpress/catalyst-finance-demo/assets/catalyst-finance-cashflow-engine.js",
+        "comparison browser": "wordpress/catalyst-finance-demo/assets/catalyst-finance-comparison-engine.js",
+    }
     package_text = require("catalyst_finance/version.py").read_text(encoding="utf-8")
     manifest = load_json("catalyst_finance_manifest.json")
-    screening_example = load_json("examples/sample_finance_scenario.output.json")
-    cashflow_example = load_json("examples/sample_cash_flow_scenario.output.json")
-    screening_schema = load_json("schemas/finance_input.schema.json")
-    screening_publication_schema = load_json("schemas/finance_publication.schema.json")
-    cashflow_schema = load_json("schemas/cash_flow_input.schema.json")
-    cashflow_publication_schema = load_json("schemas/cash_flow_publication.schema.json")
-    workspace_schema = load_json("schemas/finance_workspace.schema.json")
+    examples = {
+        "screening": load_json("examples/sample_finance_scenario.output.json"),
+        "cash-flow": load_json("examples/sample_cash_flow_scenario.output.json"),
+        "comparison": load_json("examples/sample_comparison.output.json"),
+    }
+    schemas = {
+        name: load_json(f"schemas/{name}")
+        for name in [
+            "finance_input.schema.json",
+            "finance_publication.schema.json",
+            "cash_flow_input.schema.json",
+            "cash_flow_publication.schema.json",
+            "comparison_definition.schema.json",
+            "comparison_publication.schema.json",
+            "finance_workspace.schema.json",
+        ]
+    }
     workspace_export = load_json("examples/sample_finance_workspace.export.json")
-    observed = {
+    observed: dict[str, str] = {
         "VERSION": require("VERSION").read_text(encoding="utf-8").strip(),
         "pyproject": pyproject["project"]["version"],
         "package": _match(r'__version__ = "([^"]+)"', package_text, "package"),
@@ -113,50 +120,49 @@ def check_versions() -> None:
             plugin_text,
             "plugin constant",
         ),
-        "screening browser": _match(
-            r"const CONTRACT_VERSION = '([0-9.]+)'",
-            screening_engine,
-            "screening browser engine",
-        ),
-        "cash-flow browser": _match(
-            r"const CONTRACT_VERSION = '([0-9.]+)'",
-            cashflow_engine,
-            "cash-flow browser engine",
-        ),
         "manifest": manifest["version"],
         "manifest contract": manifest["contract_version"],
-        "screening example": screening_example["metadata"]["version"],
-        "screening example contract": screening_example["contract_version"],
-        "cash-flow example": cashflow_example["metadata"]["version"],
-        "cash-flow example contract": cashflow_example["contract_version"],
-        "screening input schema": screening_schema["properties"]["contract_version"][
-            "const"
-        ],
-        "screening publication schema": screening_publication_schema["properties"][
-            "contract_version"
-        ]["const"],
-        "cash-flow input schema": cashflow_schema["properties"]["contract_version"][
-            "const"
-        ],
-        "cash-flow publication schema": cashflow_publication_schema["properties"][
-            "contract_version"
-        ]["const"],
-        "workspace schema": workspace_schema["properties"][
-            "workspace_contract_version"
-        ]["const"],
+        "manifest methodology": manifest["methodology_version"],
+        "manifest workspace": manifest["workspace_contract_version"],
+        "screening example": examples["screening"]["metadata"]["version"],
+        "screening example contract": examples["screening"]["contract_version"],
+        "cash-flow example": examples["cash-flow"]["metadata"]["version"],
+        "cash-flow example contract": examples["cash-flow"]["contract_version"],
+        "comparison example": examples["comparison"]["metadata"]["version"],
+        "comparison example contract": examples["comparison"]["contract_version"],
         "workspace export": workspace_export["export_contract_version"],
         "workspace record": workspace_export["workspace"]["workspace_contract_version"],
     }
+    for label, path in browser_paths.items():
+        observed[label] = _match(
+            r"const CONTRACT_VERSION = '([0-9.]+)'",
+            require(path).read_text(encoding="utf-8"),
+            label,
+        )
+    for name, schema in schemas.items():
+        property_name = (
+            "workspace_contract_version"
+            if name == "finance_workspace.schema.json"
+            else "contract_version"
+        )
+        observed[f"schema {name}"] = schema["properties"][property_name]["const"]
+
     mismatches = {name: value for name, value in observed.items() if value != VERSION}
     if mismatches:
         raise ReleaseError(f"Version contract failed: {mismatches}")
-    if (
-        manifest["model_id"] != SCREENING_MODEL_ID
-        or manifest["cash_flow_model_id"] != CASHFLOW_MODEL_ID
-        or screening_example["model_id"] != SCREENING_MODEL_ID
-        or cashflow_example["model_id"] != CASHFLOW_MODEL_ID
-    ):
-        raise ReleaseError("Model identifier contract failed.")
+    expected_model_ids = {
+        "model_id": SCREENING_MODEL_ID,
+        "cash_flow_model_id": CASHFLOW_MODEL_ID,
+        "comparison_model_id": COMPARISON_MODEL_ID,
+    }
+    if any(manifest.get(key) != value for key, value in expected_model_ids.items()):
+        raise ReleaseError("Manifest model identifier contract failed.")
+    if examples["screening"]["model_id"] != SCREENING_MODEL_ID:
+        raise ReleaseError("Screening model identifier contract failed.")
+    if examples["cash-flow"]["model_id"] != CASHFLOW_MODEL_ID:
+        raise ReleaseError("Cash-flow model identifier contract failed.")
+    if examples["comparison"]["model_id"] != COMPARISON_MODEL_ID:
+        raise ReleaseError("Comparison model identifier contract failed.")
     print(f"PASS: {len(observed)} version surfaces report {VERSION}.")
 
 
@@ -167,7 +173,11 @@ def check_layout() -> None:
         "catalyst_finance/calculation.py",
         "catalyst_finance/cashflow.py",
         "catalyst_finance/cashflow_cli.py",
+        "catalyst_finance/cashflow_migration.py",
         "catalyst_finance/cashflow_models.py",
+        "catalyst_finance/comparison.py",
+        "catalyst_finance/comparison_cli.py",
+        "catalyst_finance/comparison_models.py",
         "catalyst_finance/engine.py",
         "catalyst_finance/migration.py",
         "catalyst_finance/models.py",
@@ -175,34 +185,52 @@ def check_layout() -> None:
         "catalyst_finance/workspace.py",
         "catalyst_finance/workspace_models.py",
         "data/sample_finance_scenario.json",
+        "data/sample_comparison.json",
         "data/legacy_v1.0.0_scenario.json",
         "data/legacy_v1.1.0_scenario.json",
         "data/legacy_v1.2.0_scenario.json",
+        "data/legacy_v1.3.0_scenario.json",
+        "data/legacy_v1.3.0_cash_flow_scenario.json",
         *[f"data/{filename}" for filename in CASHFLOW_FIXTURES],
         "scripts/browser_parity.js",
         "scripts/browser_cashflow_parity.js",
+        "scripts/browser_comparison_parity.js",
         "scripts/generate_schemas.py",
         "scripts/reproduce_examples.py",
         "scripts/reproduce_cashflow_examples.py",
+        "scripts/reproduce_comparison_example.py",
         "scripts/reproduce_workspace_example.py",
         "tests/test_browser_parity.py",
         "tests/test_cashflow.py",
         "tests/test_cashflow_cli.py",
+        "tests/test_cashflow_migration.py",
+        "tests/test_comparison.py",
+        "tests/test_comparison_cli.py",
         "tests/test_workspace.py",
-        "release/v1.3.0.md",
+        "tests/test_workspace_comparison.py",
+        "release/v1.4.0.md",
         "docs/cash-flow-modeling.md",
         "docs/capital-budgeting-review-checklist.md",
+        "docs/scenario-comparison.md",
+        "docs/comparison-review-checklist.md",
         "schemas/finance_input.schema.json",
         "schemas/finance_publication.schema.json",
         "schemas/cash_flow_input.schema.json",
         "schemas/cash_flow_publication.schema.json",
+        "schemas/comparison_definition.schema.json",
+        "schemas/comparison_publication.schema.json",
         "schemas/finance_workspace.schema.json",
         "schemas/finance_workspace_export.schema.json",
         "examples/sample_finance_workspace.export.json",
         "examples/sample_cash_flow_scenario.output.json",
         "examples/sample_cash_flow_scenario.periods.csv",
+        "examples/sample_comparison.output.json",
+        "examples/sample_comparison.output.csv",
+        "examples/sample_comparison.output.md",
+        "examples/sample_comparison.output.html",
         "wordpress/catalyst-finance-demo/assets/catalyst-finance-engine.js",
         "wordpress/catalyst-finance-demo/assets/catalyst-finance-cashflow-engine.js",
+        "wordpress/catalyst-finance-demo/assets/catalyst-finance-comparison-engine.js",
         "wordpress/catalyst-finance-demo/assets/catalyst-finance-demo.js",
     ]
     for path in required:
@@ -231,37 +259,33 @@ def check_layout() -> None:
 
 
 def check_static_tools(portable: bool) -> None:
-    ruff_available = (
-        subprocess.run(
-            [sys.executable, "-c", "import ruff"],
-            check=False,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-        ).returncode
-        == 0
-    )
-    mypy_available = (
-        subprocess.run(
-            [sys.executable, "-c", "import mypy"],
-            check=False,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-        ).returncode
-        == 0
-    )
-    if ruff_available:
-        run([sys.executable, "-m", "ruff", "check", "."])
-        run([sys.executable, "-m", "ruff", "format", "--check", "."])
-    elif not portable:
-        raise ReleaseError("Ruff is required for release validation.")
-    else:
-        print("INFO: portable mode skipped unavailable Ruff checks.")
-    if mypy_available:
-        run([sys.executable, "-m", "mypy"])
-    elif not portable:
-        raise ReleaseError("Mypy is required for release validation.")
-    else:
-        print("INFO: portable mode skipped unavailable Mypy checks.")
+    for module, label, commands in [
+        (
+            "ruff",
+            "Ruff",
+            [
+                [sys.executable, "-m", "ruff", "check", "."],
+                [sys.executable, "-m", "ruff", "format", "--check", "."],
+            ],
+        ),
+        ("mypy", "Mypy", [[sys.executable, "-m", "mypy"]]),
+    ]:
+        available = (
+            subprocess.run(
+                [sys.executable, "-c", f"import {module}"],
+                check=False,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            ).returncode
+            == 0
+        )
+        if available:
+            for command in commands:
+                run(command)
+        elif not portable:
+            raise ReleaseError(f"{label} is required for release validation.")
+        else:
+            print(f"INFO: portable mode skipped unavailable {label} checks.")
 
 
 def _validate(schema: dict[str, Any], instance: Any, label: str) -> None:
@@ -288,7 +312,7 @@ def check_contracts_and_examples() -> None:
         screening_publication,
         "Screening publication",
     )
-    for version in ["1.0.0", "1.1.0", "1.2.0"]:
+    for version in ["1.0.0", "1.1.0", "1.2.0", "1.3.0"]:
         migrated = load_json(
             f"examples/legacy_v{version}_scenario.migrated.output.json"
         )
@@ -341,6 +365,74 @@ def check_contracts_and_examples() -> None:
     ):
         raise ReleaseError("Multiple-sign-change IRR ambiguity contract failed.")
 
+    from catalyst_finance.cashflow_migration import normalize_cash_flow
+
+    legacy_cashflow = load_json("data/legacy_v1.3.0_cash_flow_scenario.json")
+    normalized_cashflow = normalize_cash_flow(legacy_cashflow).model_dump(mode="json")
+    for key, value in legacy_cashflow.items():
+        if key == "contract_version":
+            continue
+        if key != "lines" and normalized_cashflow.get(key) != value:
+            raise ReleaseError(
+                f"Legacy v1.3.0 cash-flow migration changed source field: {key}"
+            )
+    for index, source_line in enumerate(legacy_cashflow["lines"]):
+        normalized_line = normalized_cashflow["lines"][index]
+        for key, value in source_line.items():
+            if normalized_line.get(key) != value:
+                raise ReleaseError(
+                    "Legacy v1.3.0 cash-flow migration changed source line "
+                    f"{index} field: {key}"
+                )
+
+    comparison_definition = load_json("data/sample_comparison.json")
+    comparison_publication = load_json("examples/sample_comparison.output.json")
+    _validate(
+        schemas["comparison_definition.schema.json"],
+        comparison_definition,
+        "Comparison definition",
+    )
+    _validate(
+        schemas["comparison_publication.schema.json"],
+        comparison_publication,
+        "Comparison publication",
+    )
+    if len(comparison_publication["alternatives"]) < 3:
+        raise ReleaseError("Comparison must preserve at least three alternatives.")
+    if len(comparison_publication["rankings"]) != len(
+        comparison_publication["alternatives"]
+    ):
+        raise ReleaseError("Comparison rankings are incomplete.")
+    if [item["rank"] for item in comparison_publication["rankings"]] != [1, 2, 3]:
+        raise ReleaseError("Comparison ranking order is invalid.")
+    if any(
+        not all(
+            alt["source"].get(key)
+            for key in ["workspace_id", "scenario_id", "revision_id"]
+        )
+        for alt in comparison_publication["alternatives"]
+    ):
+        raise ReleaseError("Comparison revision traceability is incomplete.")
+    if len(comparison_publication["one_way_sensitivities"]) < 5:
+        raise ReleaseError("One-way sensitivity coverage is incomplete.")
+    if (
+        not comparison_publication["two_way_sensitivities"]
+        or len(comparison_publication["two_way_sensitivities"][0]["cells"]) < 12
+    ):
+        raise ReleaseError("Two-way sensitivity matrix is incomplete.")
+    if len(comparison_publication["break_even_results"]) < 3 or any(
+        item["status"] not in {"found", "already_at_target"}
+        for item in comparison_publication["break_even_results"]
+    ):
+        raise ReleaseError("Break-even threshold search contract failed.")
+    reproducible = [
+        *comparison_publication["one_way_sensitivities"],
+        *comparison_publication["two_way_sensitivities"],
+        *comparison_publication["break_even_results"],
+    ]
+    if any(not item.get("reproducibility_key") for item in reproducible):
+        raise ReleaseError("Comparison reproducibility keys are incomplete.")
+
     workspace_export = load_json("examples/sample_finance_workspace.export.json")
     _validate(
         schemas["finance_workspace_export.schema.json"],
@@ -355,6 +447,7 @@ def check_contracts_and_examples() -> None:
 
     from scripts.generate_schemas import generate
     from scripts.reproduce_cashflow_examples import reproduce as reproduce_cashflow
+    from scripts.reproduce_comparison_example import reproduce as reproduce_comparison
     from scripts.reproduce_examples import reproduce
     from scripts.reproduce_workspace_example import reproduce as reproduce_workspace
 
@@ -376,6 +469,12 @@ def check_contracts_and_examples() -> None:
                 raise ReleaseError(
                     f"Reproducible cash-flow example mismatch: {path.name}"
                 )
+    with tempfile.TemporaryDirectory(prefix="catalyst-finance-comparison-") as tmp:
+        for path in reproduce_comparison(Path(tmp)):
+            if path.read_bytes() != require(f"examples/{path.name}").read_bytes():
+                raise ReleaseError(
+                    f"Reproducible comparison example mismatch: {path.name}"
+                )
     with tempfile.TemporaryDirectory(prefix="catalyst-finance-workspace-") as tmp:
         generated_workspace = reproduce_workspace(Path(tmp) / "workspace.json")
         if (
@@ -383,7 +482,38 @@ def check_contracts_and_examples() -> None:
             != require("examples/sample_finance_workspace.export.json").read_bytes()
         ):
             raise ReleaseError("Reproducible workspace export mismatch.")
-    print("PASS: schemas, migrations, cash-flow benchmarks, and exports passed.")
+    print(
+        "PASS: schemas, migrations, capital-budgeting benchmarks, comparison analyses, and exports passed."
+    )
+
+
+def _comparison_core(payload: dict[str, Any]) -> dict[str, Any]:
+    selected = json.loads(
+        json.dumps(
+            {
+                key: payload[key]
+                for key in [
+                    "contract_version",
+                    "model_id",
+                    "alternatives",
+                    "aligned_metrics",
+                    "rankings",
+                    "one_way_sensitivities",
+                    "two_way_sensitivities",
+                    "break_even_results",
+                    "tornado",
+                ]
+            }
+        )
+    )
+    for item in selected["one_way_sensitivities"]:
+        item.pop("reproducibility_key", None)
+    for item in selected["two_way_sensitivities"]:
+        item.pop("reproducibility_key", None)
+    for item in selected["break_even_results"]:
+        item.pop("reproducibility_key", None)
+        item.pop("notes", None)
+    return selected
 
 
 def check_browser_parity(portable: bool) -> None:
@@ -397,7 +527,10 @@ def check_browser_parity(portable: bool) -> None:
         raise ReleaseError("Node.js is required for browser parity.")
 
     from catalyst_finance.cashflow import evaluate_cash_flow
+    from catalyst_finance.cashflow_migration import normalize_cash_flow
     from catalyst_finance.cashflow_models import CashFlowScenarioInput
+    from catalyst_finance.comparison import evaluate_comparison
+    from catalyst_finance.comparison_models import ComparisonDefinition
     from catalyst_finance.engine import evaluate_scenario
     from catalyst_finance.io import load_scenario
 
@@ -406,14 +539,13 @@ def check_browser_parity(portable: bool) -> None:
         "legacy_v1.0.0_scenario.json",
         "legacy_v1.1.0_scenario.json",
         "legacy_v1.2.0_scenario.json",
+        "legacy_v1.3.0_scenario.json",
     ]
     for filename in screening_files:
         path = ROOT / "data" / filename
         scenario, migration = load_scenario(path)
         expected = evaluate_scenario(
-            scenario,
-            generated_at=FIXED_TIMESTAMP,
-            migration=migration,
+            scenario, generated_at=FIXED_TIMESTAMP, migration=migration
         ).model_dump(mode="json")
         actual = json.loads(
             run(
@@ -444,7 +576,55 @@ def check_browser_parity(portable: bool) -> None:
         )
         if actual != expected:
             raise ReleaseError(f"Cash-flow Python/browser parity failed: {filename}")
-    print("PASS: screening and cash-flow browser engines match Python exactly.")
+    legacy_cashflow_path = ROOT / "data/legacy_v1.3.0_cash_flow_scenario.json"
+    legacy_cashflow = normalize_cash_flow(
+        json.loads(legacy_cashflow_path.read_text(encoding="utf-8"))
+    )
+    expected_legacy = evaluate_cash_flow(
+        legacy_cashflow, generated_at=FIXED_TIMESTAMP
+    ).model_dump(mode="json")
+    with tempfile.TemporaryDirectory(prefix="catalyst-finance-legacy-cf-") as tmp:
+        normalized_path = Path(tmp) / "normalized.json"
+        normalized_path.write_text(
+            json.dumps(legacy_cashflow.model_dump(mode="json")), encoding="utf-8"
+        )
+        actual_legacy = json.loads(
+            run(
+                [
+                    node,
+                    "scripts/browser_cashflow_parity.js",
+                    str(normalized_path),
+                    FIXED_TIMESTAMP,
+                ],
+                capture=True,
+            ).stdout
+        )
+    if actual_legacy != expected_legacy:
+        raise ReleaseError("Migrated v1.3.0 cash-flow Python/browser parity failed.")
+
+    comparison_path = ROOT / "data/sample_comparison.json"
+    definition = ComparisonDefinition.model_validate(
+        json.loads(comparison_path.read_text(encoding="utf-8"))
+    )
+    expected_comparison = evaluate_comparison(
+        definition, generated_at=FIXED_TIMESTAMP
+    ).model_dump(mode="json")
+    actual_comparison = json.loads(
+        run(
+            [
+                node,
+                "scripts/browser_comparison_parity.js",
+                str(comparison_path),
+                FIXED_TIMESTAMP,
+            ],
+            capture=True,
+        ).stdout
+    )
+    if _comparison_core(actual_comparison) != _comparison_core(expected_comparison):
+        raise ReleaseError("Comparison Python/browser core parity failed.")
+    print(
+        "PASS: screening, cash-flow, migration, and comparison browser engines match Python."
+    )
 
 
 def check_plugin() -> None:
@@ -466,6 +646,9 @@ def check_plugin() -> None:
             cashflow = archive.read(
                 "catalyst-finance-demo/assets/catalyst-finance-cashflow-engine.js"
             ).decode("utf-8")
+            comparison = archive.read(
+                "catalyst-finance-demo/assets/catalyst-finance-comparison-engine.js"
+            ).decode("utf-8")
             browser = archive.read(
                 "catalyst-finance-demo/assets/catalyst-finance-demo.js"
             ).decode("utf-8")
@@ -473,8 +656,10 @@ def check_plugin() -> None:
                 f"Version: {VERSION}" not in php
                 or VERSION not in screening
                 or VERSION not in cashflow
+                or VERSION not in comparison
             ):
                 raise ReleaseError("WordPress package version mismatch.")
+            combined = php + browser + cashflow + comparison
             required_tokens = [
                 "workspace_contract_version",
                 "data-scfin-export-workspace",
@@ -485,10 +670,20 @@ def check_plugin() -> None:
                 "data-scfin-cf-table",
                 "data-scfin-cf-waterfall",
                 "metric_trace",
+                "data-scfin-comparison-studio",
+                "data-scfin-comparison-ranking",
+                "data-scfin-comparison-tornado",
+                "data-scfin-comparison-thresholds",
+                "CatalystFinanceComparisonEngine",
+                "break_even_results",
+                "non_financial_caveats",
             ]
-            if any(token not in php + browser + cashflow for token in required_tokens):
-                raise ReleaseError("WordPress finance controls are incomplete.")
-    print("PASS: reproducible WordPress package contract passed.")
+            missing = [token for token in required_tokens if token not in combined]
+            if missing:
+                raise ReleaseError(
+                    f"WordPress finance controls are incomplete: {missing}"
+                )
+    print("PASS: reproducible WordPress comparison-studio package contract passed.")
 
 
 def check_syntax(portable: bool) -> None:
@@ -510,8 +705,10 @@ def check_syntax(portable: bool) -> None:
         for path in [
             "scripts/browser_parity.js",
             "scripts/browser_cashflow_parity.js",
+            "scripts/browser_comparison_parity.js",
             "wordpress/catalyst-finance-demo/assets/catalyst-finance-engine.js",
             "wordpress/catalyst-finance-demo/assets/catalyst-finance-cashflow-engine.js",
+            "wordpress/catalyst-finance-demo/assets/catalyst-finance-comparison-engine.js",
             "wordpress/catalyst-finance-demo/assets/catalyst-finance-demo.js",
         ]:
             run([node, "--check", path])
@@ -567,7 +764,7 @@ def main() -> int:
     ) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1
-    print("Catalyst Finance v1.3.0 release contract passed.")
+    print("Catalyst Finance v1.4.0 release contract passed.")
     return 0
 
 

@@ -7,8 +7,8 @@ Category: Energy efficiency
 
 ## Contract
 
-- Contract version: 1.3.0
-- Model: catalyst-finance.screening v1.3.0
+- Contract version: 1.4.0
+- Model: catalyst-finance.screening v1.4.0
 - Currency: USD
 - Price and discount-rate basis: nominal
 - Frequency: annual, end_of_period

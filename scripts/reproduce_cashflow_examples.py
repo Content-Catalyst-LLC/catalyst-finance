@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reproduce Catalyst Finance v1.3.0 cash-flow fixtures."""
+"""Reproduce Catalyst Finance v1.4.0 cash-flow fixtures."""
 
 from __future__ import annotations
 

@@ -33,8 +33,9 @@ def test_model_registry_endpoint() -> None:
     assert [model["model_id"] for model in models] == [
         "catalyst-finance.screening",
         "catalyst-finance.cash-flow",
+        "catalyst-finance.comparison",
     ]
-    assert all(model["model_version"] == "1.3.0" for model in models)
+    assert all(model["model_version"] == "1.4.0" for model in models)
 
 
 def test_evaluate_endpoint_uses_canonical_contract() -> None:
@@ -42,7 +43,7 @@ def test_evaluate_endpoint_uses_canonical_contract() -> None:
     response = CLIENT.post("/api/v1/evaluate", json=payload)
     assert response.status_code == 200
     result = response.json()
-    assert result["contract_version"] == "1.3.0"
+    assert result["contract_version"] == "1.4.0"
     assert result["results"]["score_components"]
 
 
@@ -133,3 +134,30 @@ def test_cash_flow_endpoint_returns_basis_error() -> None:
     detail = response.json()["detail"]
     assert detail["error"] == "invalid_cash_flow_scenario"
     assert any("must match" in issue["message"] for issue in detail["issues"])
+
+
+def test_comparison_api_and_workspace_revision_endpoints(tmp_path: Path) -> None:
+    from catalyst_finance.api import create_app
+    from catalyst_finance.repositories import JsonWorkspaceRepository
+
+    client = TestClient(create_app(JsonWorkspaceRepository(tmp_path / "workspaces")))
+    definition = json.loads((ROOT / "data/sample_comparison.json").read_text())
+    compared = client.post("/api/v1/compare", json=definition)
+    assert compared.status_code == 200
+    assert compared.json()["rankings"][0]["alternative_id"] == "upside"
+
+    workspace = client.post("/api/v1/workspaces", json={"name": "Comparisons"})
+    workspace_id = workspace.json()["workspace_id"]
+    created = client.post(
+        f"/api/v1/workspaces/{workspace_id}/comparisons",
+        json={"definition": definition},
+    )
+    assert created.status_code == 201
+    comparison_id = created.json()["comparisons"][0]["comparison_id"]
+    definition["name"] = "API revised comparison"
+    revised = client.post(
+        f"/api/v1/workspaces/{workspace_id}/comparisons/{comparison_id}/revisions",
+        json={"definition": definition, "change_note": "API update"},
+    )
+    assert revised.status_code == 200
+    assert len(revised.json()["comparisons"][0]["revisions"]) == 2

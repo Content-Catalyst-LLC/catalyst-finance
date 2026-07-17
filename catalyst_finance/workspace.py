@@ -1,4 +1,4 @@
-"""Workspace lifecycle and revision services for Catalyst Finance v1.3.0."""
+"""Workspace lifecycle and revision services for Catalyst Finance v1.4.0."""
 
 from __future__ import annotations
 
@@ -9,15 +9,19 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, cast
 
+from .cashflow_migration import normalize_cash_flow
 from .cashflow_models import CashFlowScenarioInput
+from .comparison_models import ComparisonDefinition
 from .migration import normalize_scenario
 from .models import FinanceScenarioInput
 from .repositories import WorkspaceNotFoundError, WorkspaceRepository
 from .templates import get_template
 from .workspace_models import (
+    ComparisonRevision,
     FinanceWorkspace,
     ScenarioPayload,
     ScenarioRevision,
+    WorkspaceComparison,
     WorkspaceDefaults,
     WorkspaceExport,
     WorkspaceProject,
@@ -46,9 +50,7 @@ def normalize_workspace_scenario(
     if isinstance(scenario, (FinanceScenarioInput, CashFlowScenarioInput)):
         return scenario
     if scenario.get("model_id") == "catalyst-finance.cash-flow":
-        return cast(
-            CashFlowScenarioInput, CashFlowScenarioInput.model_validate(scenario)
-        )
+        return cast(CashFlowScenarioInput, normalize_cash_flow(scenario))
     return normalize_scenario(scenario)[0]
 
 
@@ -440,6 +442,106 @@ class WorkspaceService:
         return self.repository.save(
             workspace.model_copy(
                 update={"scenarios": records, "updated_at": self.clock()}
+            )
+        )
+
+    def create_comparison(
+        self,
+        workspace_id: str,
+        definition: ComparisonDefinition | dict[str, Any],
+        *,
+        name: str | None = None,
+    ) -> FinanceWorkspace:
+        workspace = self.repository.get(workspace_id)
+        comparison_definition = (
+            definition
+            if isinstance(definition, ComparisonDefinition)
+            else ComparisonDefinition.model_validate(definition)
+        )
+        now = self.clock()
+        revision = ComparisonRevision(
+            revision_id=self.id_factory("revision"),
+            revision_number=1,
+            created_at=now,
+            change_note="Initial comparison definition",
+            definition=comparison_definition,
+        )
+        record = WorkspaceComparison(
+            comparison_id=self.id_factory("comparison"),
+            name=name or comparison_definition.name,
+            created_at=now,
+            updated_at=now,
+            current_revision_id=revision.revision_id,
+            revisions=[revision],
+        )
+        return self.repository.save(
+            workspace.model_copy(
+                update={
+                    "comparisons": [*workspace.comparisons, record],
+                    "updated_at": now,
+                }
+            )
+        )
+
+    def save_comparison_revision(
+        self,
+        workspace_id: str,
+        comparison_id: str,
+        definition: ComparisonDefinition | dict[str, Any],
+        *,
+        change_note: str = "Saved comparison revision",
+    ) -> FinanceWorkspace:
+        workspace = self.repository.get(workspace_id)
+        comparison_definition = (
+            definition
+            if isinstance(definition, ComparisonDefinition)
+            else ComparisonDefinition.model_validate(definition)
+        )
+        now = self.clock()
+        found = False
+        records: list[WorkspaceComparison] = []
+        for record in workspace.comparisons:
+            if record.comparison_id != comparison_id:
+                records.append(record)
+                continue
+            found = True
+            revision = ComparisonRevision(
+                revision_id=self.id_factory("revision"),
+                revision_number=len(record.revisions) + 1,
+                created_at=now,
+                change_note=change_note,
+                definition=comparison_definition,
+            )
+            records.append(
+                record.model_copy(
+                    update={
+                        "name": comparison_definition.name,
+                        "updated_at": now,
+                        "current_revision_id": revision.revision_id,
+                        "revisions": [*record.revisions, revision],
+                    }
+                )
+            )
+        if not found:
+            raise WorkspaceNotFoundError(comparison_id)
+        return self.repository.save(
+            workspace.model_copy(update={"comparisons": records, "updated_at": now})
+        )
+
+    def delete_comparison(
+        self, workspace_id: str, comparison_id: str
+    ) -> FinanceWorkspace:
+        workspace = self.repository.get(workspace_id)
+        records = [
+            record
+            for record in workspace.comparisons
+            if record.comparison_id != comparison_id
+        ]
+        if len(records) == len(workspace.comparisons):
+            raise WorkspaceNotFoundError(comparison_id)
+        return self.repository.save(
+            workspace.model_copy(
+                update={"comparisons": records, "updated_at": self.clock()}
             )
         )
 

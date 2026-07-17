@@ -1,8 +1,8 @@
 (function () {
   'use strict';
 
-  const WORKSPACE_VERSION = '1.3.0';
-  const STORAGE_PREFIX = 'catalyst-finance-workspace-v1.3.0';
+  const WORKSPACE_VERSION = '1.4.0';
+  const STORAGE_PREFIX = 'catalyst-finance-workspace-v1.4.0';
 
   const TEMPLATES = {
     'capital-project': {
@@ -234,7 +234,7 @@
     return { workspace: defaultWorkspace(), recovered: false };
   }
   function validateWorkspace(workspace) {
-    if (!workspace || workspace.workspace_contract_version !== WORKSPACE_VERSION) throw new Error('Workspace contract_version must be 1.3.0.');
+    if (!workspace || workspace.workspace_contract_version !== WORKSPACE_VERSION) throw new Error('Workspace contract_version must be 1.4.0.');
     if (!workspace.workspace_id || !Array.isArray(workspace.scenarios)) throw new Error('Workspace ID and scenarios are required.');
     const scenarioIds = new Set();
     workspace.scenarios.forEach(record => {
@@ -259,7 +259,7 @@
         if (navigator.clipboard) navigator.clipboard.writeText(text);
       });
       root.querySelector('[data-scfin-download]').addEventListener('click', function () {
-        downloadJson('catalyst-finance-scenario-v1.3.0.json', root._scfinPayload);
+        downloadJson('catalyst-finance-scenario-v1.4.0.json', root._scfinPayload);
       });
       root.querySelector('[data-scfin-print]').addEventListener('click', function () { window.print(); });
       return;
@@ -347,7 +347,7 @@
     });
     root.querySelector('[data-scfin-export-workspace]').addEventListener('click', function () {
       const bundle = { export_contract_version: WORKSPACE_VERSION, exported_at: now(), workspace: state.workspace };
-      downloadJson('catalyst-finance-workspace-v1.3.0.json', bundle);
+      downloadJson('catalyst-finance-workspace-v1.4.0.json', bundle);
     });
     root.querySelector('[data-scfin-import-workspace]').addEventListener('change', function (event) {
       const file = event.target.files[0]; if (!file) return;
@@ -370,7 +370,7 @@
       if (navigator.clipboard) navigator.clipboard.writeText(text);
     });
     root.querySelector('[data-scfin-download]').addEventListener('click', function () {
-      downloadJson('catalyst-finance-scenario-v1.3.0.json', root._scfinPayload || CatalystFinanceEngine.evaluate(inputFromForm(form, state.workspace.defaults.currency)));
+      downloadJson('catalyst-finance-scenario-v1.4.0.json', root._scfinPayload || CatalystFinanceEngine.evaluate(inputFromForm(form, state.workspace.defaults.currency)));
     });
     root.querySelector('[data-scfin-print]').addEventListener('click', function () { window.print(); });
 
@@ -395,7 +395,7 @@
     ];
     if (value('phasedCapital') > 0) lines.push({ flow_id: 'phase-two', label: 'Phased capital', category: 'capital_cost', amount: value('phasedCapital'), start_period: Math.min(2, horizon), price_basis: basis });
     return {
-      contract_version: '1.3.0',
+      contract_version: '1.4.0',
       model_id: 'catalyst-finance.cash-flow',
       project: { name: 'Browser capital-budgeting scenario', category: 'Capital project' },
       context: {
@@ -478,7 +478,7 @@
       }
     }
     form.addEventListener('input', render); form.addEventListener('change', render);
-    section.querySelector('[data-scfin-cf-download]').addEventListener('click', function () { downloadJson('catalyst-finance-cash-flow-v1.3.0.json', root._scfinCashFlowPayload); });
+    section.querySelector('[data-scfin-cf-download]').addEventListener('click', function () { downloadJson('catalyst-finance-cash-flow-v1.4.0.json', root._scfinCashFlowPayload); });
     section.querySelector('[data-scfin-cf-copy]').addEventListener('click', function () {
       if (navigator.clipboard) navigator.clipboard.writeText(JSON.stringify(root._scfinCashFlowPayload, null, 2));
     });
@@ -486,10 +486,125 @@
     render();
   }
 
+
+  function comparisonDefinition(root) {
+    const form = root.querySelector('[data-scfin-cf-form]');
+    const base = cashFlowScenario(form);
+    const horizon = base.analysis_horizon_periods;
+    base.project.name = 'Browser comparison base case';
+    base.lines.splice(5, 0, {
+      flow_id: 'carbon-value', label: 'Annual carbon value', category: 'other_benefit', amount: 6300,
+      start_period: 1, end_period: horizon, escalation_rate_percent_annual: 2, price_basis: base.context.price_basis
+    });
+    const downside = clone(base); const upside = clone(base);
+    function line(scenario, id) { return scenario.lines.find(function (item) { return item.flow_id === id; }); }
+    downside.project.name = 'Browser comparison downside case';
+    downside.discount_rate_percent_annual = base.discount_rate_percent_annual + 2;
+    downside.finance_rate_percent_annual = base.finance_rate_percent_annual + 2;
+    line(downside, 'capital').amount *= 1.16;
+    line(downside, 'benefit').amount *= 0.83;
+    line(downside, 'benefit').start_period = Math.min(2, horizon);
+    line(downside, 'operations').amount *= 1.25;
+    line(downside, 'carbon-value').amount = 4500;
+    upside.project.name = 'Browser comparison upside case';
+    upside.discount_rate_percent_annual = Math.max(-99, base.discount_rate_percent_annual - 1);
+    upside.finance_rate_percent_annual = Math.max(-99, base.finance_rate_percent_annual - 1);
+    line(upside, 'capital').amount *= 0.94;
+    line(upside, 'grant').amount += 20000;
+    line(upside, 'benefit').amount *= 1.17;
+    line(upside, 'operations').amount *= 0.85;
+    line(upside, 'carbon-value').amount = 9000;
+    const source = function (id) { return { workspace_id: 'workspace_browser', scenario_id: 'scenario_' + id, revision_id: 'revision_' + id + '_001', revision_number: 1 }; };
+    const savings = function (alternativeId, id) { return {
+      sensitivity_id: id, alternative_id: alternativeId, metric_id: 'npv',
+      parameter: { parameter_id: 'annual-savings', label: 'Recurring benefit', path: 'line:benefit:amount', operation: 'set', value_kind: 'continuous', unit: 'USD/period' },
+      values: [line(base, 'benefit').amount * 0.65, line(base, 'benefit').amount * 0.8, line(base, 'benefit').amount, line(base, 'benefit').amount * 1.2, line(base, 'benefit').amount * 1.35]
+    }; };
+    return {
+      contract_version: '1.4.0', model_id: 'catalyst-finance.comparison', comparison_id: 'browser-options',
+      name: 'Browser capital project alternatives', description: 'Live downside, base, and upside comparison generated from the capital-budgeting form.', baseline_alternative_id: 'base',
+      alternatives: [
+        { alternative_id: 'downside', label: 'Downside', kind: 'downside', source: source('downside'), scenario: downside, non_financial_caveats: ['Higher disruption and delivery risk', 'Benefits begin later'] },
+        { alternative_id: 'base', label: 'Base', kind: 'base', source: source('base'), scenario: base, non_financial_caveats: ['Requires coordinated implementation access'] },
+        { alternative_id: 'upside', label: 'Upside', kind: 'upside', source: source('upside'), scenario: upside, non_financial_caveats: ['Additional grant is not confirmed', 'Higher benefit realization requires verification'] }
+      ],
+      selected_metrics: [
+        { metric_id: 'npv', objective: 'maximize', weight: 0.45 },
+        { metric_id: 'discounted_payback_periods', objective: 'minimize', weight: 0.2 },
+        { metric_id: 'mirr_percent_annual', objective: 'maximize', weight: 0.2 },
+        { metric_id: 'benefit_cost_ratio', objective: 'maximize', weight: 0.15 }
+      ],
+      one_way_sensitivities: [
+        savings('base', 'base-savings'),
+        { sensitivity_id: 'base-discount-rate', alternative_id: 'base', metric_id: 'npv', parameter: { parameter_id: 'discount-rate', label: 'Discount rate', path: 'discount_rate_percent_annual', operation: 'set', value_kind: 'continuous', unit: 'percent/year' }, values: [2, 4, 6, 8, 10, 12] },
+        { sensitivity_id: 'upside-capital', alternative_id: 'upside', metric_id: 'npv', parameter: { parameter_id: 'capital-cost', label: 'Initial capital cost', path: 'line:capital:amount', operation: 'set', value_kind: 'continuous', unit: 'USD' }, values: [line(base, 'capital').amount * 0.75, line(base, 'capital').amount, line(base, 'capital').amount * 1.25] },
+        { sensitivity_id: 'downside-delay', alternative_id: 'downside', metric_id: 'npv', parameter: { parameter_id: 'implementation-delay', label: 'Implementation delay', path: 'all', operation: 'shift_periods', value_kind: 'integer', unit: 'periods' }, values: [0, 1, 2, 3] },
+        { sensitivity_id: 'base-carbon', alternative_id: 'base', metric_id: 'npv', parameter: { parameter_id: 'carbon-value', label: 'Annual carbon value', path: 'line:carbon-value:amount', operation: 'set', value_kind: 'continuous', unit: 'USD/year' }, values: [0, 3000, 6300, 9000, 12000] }
+      ],
+      two_way_sensitivities: [{ sensitivity_id: 'benefit-vs-rate', alternative_id: 'base', metric_id: 'npv', row_parameter: { parameter_id: 'annual-savings', label: 'Recurring benefit', path: 'line:benefit:amount', operation: 'set', value_kind: 'continuous', unit: 'USD/period' }, row_values: [line(base, 'benefit').amount * 0.75, line(base, 'benefit').amount, line(base, 'benefit').amount * 1.25], column_parameter: { parameter_id: 'discount-rate', label: 'Discount rate', path: 'discount_rate_percent_annual', operation: 'set', value_kind: 'continuous', unit: 'percent/year' }, column_values: [4, 6, 8, 10] }],
+      break_even_definitions: [
+        { threshold_id: 'benefit-break-even', alternative_id: 'base', metric_id: 'npv', parameter: { parameter_id: 'annual-savings', label: 'Recurring benefit', path: 'line:benefit:amount', operation: 'set', value_kind: 'continuous', unit: 'USD/period' }, target_value: 0, lower_bound: 0, upper_bound: Math.max(100000, line(base, 'benefit').amount * 2), tolerance: 0.01, max_iterations: 100 },
+        { threshold_id: 'capital-threshold', alternative_id: 'base', metric_id: 'npv', parameter: { parameter_id: 'capital-cost', label: 'Initial capital cost', path: 'line:capital:amount', operation: 'set', value_kind: 'continuous', unit: 'USD' }, target_value: 0, lower_bound: 0, upper_bound: Math.max(700000, line(base, 'capital').amount * 3), tolerance: 0.01, max_iterations: 100 },
+        { threshold_id: 'delay-threshold', alternative_id: 'base', metric_id: 'npv', parameter: { parameter_id: 'implementation-delay', label: 'Implementation delay', path: 'all', operation: 'shift_periods', value_kind: 'integer', unit: 'periods' }, target_value: 0, lower_bound: 0, upper_bound: Math.min(10, horizon), tolerance: 0.01, max_iterations: 100 }
+      ]
+    };
+  }
+
+  function drawTornado(canvas, bars) {
+    const context = canvas.getContext('2d'); const width = canvas.width; const height = canvas.height;
+    context.clearRect(0, 0, width, height); if (!bars.length) return;
+    const padLeft = 190; const padRight = 35; const center = padLeft + (width - padLeft - padRight) / 2;
+    const maximum = Math.max(1, ...bars.flatMap(function (bar) { return [Math.abs(bar.low_impact || 0), Math.abs(bar.high_impact || 0)]; }));
+    const scale = (width - padLeft - padRight) / 2 / maximum; const slot = (height - 20) / bars.length;
+    context.strokeStyle = '#777'; context.beginPath(); context.moveTo(center, 8); context.lineTo(center, height - 8); context.stroke();
+    bars.forEach(function (bar, index) {
+      const y = 12 + index * slot; const low = bar.low_impact || 0; const high = bar.high_impact || 0;
+      context.fillStyle = '#222'; context.font = '13px system-ui'; context.textAlign = 'right'; context.fillText(bar.label, padLeft - 12, y + 13);
+      context.fillStyle = '#7d2838'; context.fillRect(center + Math.min(0, low) * scale, y, Math.max(2, Math.abs(low) * scale), Math.max(8, slot * 0.32));
+      context.fillStyle = '#335f4a'; context.fillRect(center + Math.min(0, high) * scale, y + Math.max(9, slot * 0.35), Math.max(2, Math.abs(high) * scale), Math.max(8, slot * 0.32));
+    });
+  }
+
+  function initializeComparison(root) {
+    const section = root.querySelector('[data-scfin-comparison-studio]');
+    if (!section || typeof CatalystFinanceComparisonEngine === 'undefined') return;
+    const cashForm = root.querySelector('[data-scfin-cf-form]'); const currency = 'USD';
+    function render() {
+      try {
+        const result = CatalystFinanceComparisonEngine.evaluate(comparisonDefinition(root)); root._scfinComparisonPayload = result;
+        const byId = {}; result.alternatives.forEach(function (item) { byId[item.alternative_id] = item; });
+        const ranking = section.querySelector('[data-scfin-comparison-ranking]'); ranking.innerHTML = '';
+        result.rankings.forEach(function (item) {
+          const tr = document.createElement('tr'); const alt = byId[item.alternative_id];
+          [item.rank, item.label, item.weighted_score.toFixed(2), money(alt.metrics.npv, currency), alt.metrics.discounted_payback_periods === null ? 'Not reached' : alt.metrics.discounted_payback_periods + ' periods', item.dominates.length ? 'Dominates ' + item.dominates.join(', ') : 'No dominance'].forEach(function (value) { const td = document.createElement('td'); td.textContent = value; tr.appendChild(td); }); ranking.appendChild(tr);
+        });
+        const metrics = section.querySelector('[data-scfin-comparison-metrics]'); metrics.innerHTML = '';
+        result.aligned_metrics.forEach(function (row) {
+          const tr = document.createElement('tr'); const label = document.createElement('td'); label.textContent = row.label; tr.appendChild(label);
+          ['downside', 'base', 'upside'].forEach(function (id) { const value = row.values.find(function (item) { return item.alternative_id === id; }); const td = document.createElement('td'); td.textContent = value.value === null ? '—' : (['npv', 'equivalent_annual_value', 'net_cash_flow'].includes(row.metric_id) ? money(value.value, currency) : value.value) + (value.delta_from_baseline === null ? '' : ' (' + (value.delta_from_baseline >= 0 ? '+' : '') + value.delta_from_baseline + ')'); tr.appendChild(td); }); metrics.appendChild(tr);
+        });
+        drawTornado(section.querySelector('[data-scfin-comparison-tornado]'), result.tornado);
+        const tornadoList = section.querySelector('[data-scfin-comparison-tornado-list]'); tornadoList.innerHTML = '';
+        result.tornado.forEach(function (bar) { const li = document.createElement('li'); li.textContent = bar.label + ': ' + money(bar.low_impact, currency) + ' to ' + money(bar.high_impact, currency) + ' NPV impact'; tornadoList.appendChild(li); });
+        const thresholds = section.querySelector('[data-scfin-comparison-thresholds]'); thresholds.innerHTML = '';
+        result.break_even_results.forEach(function (item) { const li = document.createElement('li'); li.textContent = item.parameter.label + ': ' + (item.threshold_value === null ? item.status.replaceAll('_', ' ') : item.threshold_value + (item.parameter.unit ? ' ' + item.parameter.unit : '')); thresholds.appendChild(li); });
+        const caveats = section.querySelector('[data-scfin-comparison-caveats]'); caveats.innerHTML = '';
+        result.alternatives.forEach(function (item) { item.non_financial_caveats.forEach(function (caveat) { const li = document.createElement('li'); li.textContent = item.label + ': ' + caveat; caveats.appendChild(li); }); });
+        section.querySelector('[data-scfin-comparison-json]').textContent = JSON.stringify(result, null, 2);
+      } catch (error) { section.querySelector('[data-scfin-comparison-json]').textContent = String(error.message || error); }
+    }
+    let timer = null; function schedule() { window.clearTimeout(timer); timer = window.setTimeout(render, 120); }
+    cashForm.addEventListener('input', schedule); cashForm.addEventListener('change', schedule);
+    section.querySelector('[data-scfin-comparison-refresh]').addEventListener('click', render);
+    section.querySelector('[data-scfin-comparison-download]').addEventListener('click', function () { downloadJson('catalyst-finance-comparison-v1.4.0.json', root._scfinComparisonPayload); });
+    render();
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('[data-scfin-demo]').forEach(function (root, index) {
       initializeWorkspace(root, index);
       initializeCapitalBudgeting(root);
+      initializeComparison(root);
     });
   });
 })();

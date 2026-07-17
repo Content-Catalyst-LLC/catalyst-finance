@@ -1,0 +1,2265 @@
+{
+  "$defs": {
+    "AlignedMetricComparison": {
+      "additionalProperties": false,
+      "properties": {
+        "metric_id": {
+          "enum": [
+            "npv",
+            "net_cash_flow",
+            "discounted_payback_periods",
+            "irr_percent_annual",
+            "mirr_percent_annual",
+            "profitability_index",
+            "benefit_cost_ratio",
+            "equivalent_annual_value"
+          ],
+          "title": "Metric Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "objective": {
+          "enum": [
+            "maximize",
+            "minimize"
+          ],
+          "title": "Objective",
+          "type": "string"
+        },
+        "baseline_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Baseline Value"
+        },
+        "values": {
+          "items": {
+            "$ref": "#/$defs/AlternativeMetricValue"
+          },
+          "title": "Values",
+          "type": "array"
+        }
+      },
+      "required": [
+        "metric_id",
+        "label",
+        "objective",
+        "baseline_value",
+        "values"
+      ],
+      "title": "AlignedMetricComparison",
+      "type": "object"
+    },
+    "AlternativeEvaluation": {
+      "additionalProperties": false,
+      "properties": {
+        "alternative_id": {
+          "title": "Alternative Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "base",
+            "downside",
+            "upside",
+            "custom"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/SourceRevision"
+        },
+        "non_financial_caveats": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Non Financial Caveats",
+          "type": "array"
+        },
+        "metrics": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Metrics",
+          "type": "object"
+        },
+        "publication": {
+          "$ref": "#/$defs/CashFlowPublication"
+        }
+      },
+      "required": [
+        "alternative_id",
+        "label",
+        "kind",
+        "source",
+        "non_financial_caveats",
+        "metrics",
+        "publication"
+      ],
+      "title": "AlternativeEvaluation",
+      "type": "object"
+    },
+    "AlternativeMetricValue": {
+      "additionalProperties": false,
+      "properties": {
+        "alternative_id": {
+          "title": "Alternative Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        },
+        "delta_from_baseline": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Delta From Baseline"
+        },
+        "rank": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Rank"
+        }
+      },
+      "required": [
+        "alternative_id",
+        "label",
+        "value",
+        "delta_from_baseline",
+        "rank"
+      ],
+      "title": "AlternativeMetricValue",
+      "type": "object"
+    },
+    "AlternativeRanking": {
+      "additionalProperties": false,
+      "properties": {
+        "alternative_id": {
+          "title": "Alternative Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "rank": {
+          "title": "Rank",
+          "type": "integer"
+        },
+        "weighted_score": {
+          "title": "Weighted Score",
+          "type": "number"
+        },
+        "dominates": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Dominates",
+          "type": "array"
+        },
+        "dominated_by": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Dominated By",
+          "type": "array"
+        },
+        "financial_only": {
+          "const": true,
+          "default": true,
+          "title": "Financial Only",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "alternative_id",
+        "label",
+        "rank",
+        "weighted_score",
+        "dominates",
+        "dominated_by"
+      ],
+      "title": "AlternativeRanking",
+      "type": "object"
+    },
+    "BreakEvenCrossing": {
+      "additionalProperties": false,
+      "properties": {
+        "lower_value": {
+          "title": "Lower Value",
+          "type": "number"
+        },
+        "upper_value": {
+          "title": "Upper Value",
+          "type": "number"
+        },
+        "threshold_value": {
+          "title": "Threshold Value",
+          "type": "number"
+        },
+        "metric_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Metric Value"
+        }
+      },
+      "required": [
+        "lower_value",
+        "upper_value",
+        "threshold_value",
+        "metric_value"
+      ],
+      "title": "BreakEvenCrossing",
+      "type": "object"
+    },
+    "BreakEvenDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "threshold_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Threshold Id",
+          "type": "string"
+        },
+        "alternative_id": {
+          "title": "Alternative Id",
+          "type": "string"
+        },
+        "metric_id": {
+          "default": "npv",
+          "enum": [
+            "npv",
+            "net_cash_flow",
+            "discounted_payback_periods",
+            "irr_percent_annual",
+            "mirr_percent_annual",
+            "profitability_index",
+            "benefit_cost_ratio",
+            "equivalent_annual_value"
+          ],
+          "title": "Metric Id",
+          "type": "string"
+        },
+        "parameter": {
+          "$ref": "#/$defs/SensitivityParameter"
+        },
+        "target_value": {
+          "default": 0,
+          "title": "Target Value",
+          "type": "number"
+        },
+        "lower_bound": {
+          "title": "Lower Bound",
+          "type": "number"
+        },
+        "upper_bound": {
+          "title": "Upper Bound",
+          "type": "number"
+        },
+        "tolerance": {
+          "default": 0.0001,
+          "exclusiveMinimum": 0,
+          "title": "Tolerance",
+          "type": "number"
+        },
+        "max_iterations": {
+          "default": 100,
+          "maximum": 500,
+          "minimum": 10,
+          "title": "Max Iterations",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "threshold_id",
+        "alternative_id",
+        "parameter",
+        "lower_bound",
+        "upper_bound"
+      ],
+      "title": "BreakEvenDefinition",
+      "type": "object"
+    },
+    "BreakEvenResult": {
+      "additionalProperties": false,
+      "properties": {
+        "threshold_id": {
+          "title": "Threshold Id",
+          "type": "string"
+        },
+        "alternative_id": {
+          "title": "Alternative Id",
+          "type": "string"
+        },
+        "metric_id": {
+          "enum": [
+            "npv",
+            "net_cash_flow",
+            "discounted_payback_periods",
+            "irr_percent_annual",
+            "mirr_percent_annual",
+            "profitability_index",
+            "benefit_cost_ratio",
+            "equivalent_annual_value"
+          ],
+          "title": "Metric Id",
+          "type": "string"
+        },
+        "parameter": {
+          "$ref": "#/$defs/SensitivityParameter"
+        },
+        "target_value": {
+          "title": "Target Value",
+          "type": "number"
+        },
+        "status": {
+          "enum": [
+            "found",
+            "already_at_target",
+            "no_crossing",
+            "invalid_parameter"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "threshold_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Threshold Value"
+        },
+        "metric_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Metric Value"
+        },
+        "crossings": {
+          "items": {
+            "$ref": "#/$defs/BreakEvenCrossing"
+          },
+          "title": "Crossings",
+          "type": "array"
+        },
+        "iterations": {
+          "title": "Iterations",
+          "type": "integer"
+        },
+        "reproducibility_key": {
+          "title": "Reproducibility Key",
+          "type": "string"
+        },
+        "notes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Notes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "threshold_id",
+        "alternative_id",
+        "metric_id",
+        "parameter",
+        "target_value",
+        "status",
+        "threshold_value",
+        "metric_value",
+        "crossings",
+        "iterations",
+        "reproducibility_key",
+        "notes"
+      ],
+      "title": "BreakEvenResult",
+      "type": "object"
+    },
+    "CashFlowContext": {
+      "additionalProperties": false,
+      "properties": {
+        "currency": {
+          "default": "USD",
+          "pattern": "^[A-Z]{3}$",
+          "title": "Currency",
+          "type": "string"
+        },
+        "price_basis": {
+          "default": "nominal",
+          "enum": [
+            "nominal",
+            "real"
+          ],
+          "title": "Price Basis",
+          "type": "string"
+        },
+        "discount_rate_basis": {
+          "default": "nominal",
+          "enum": [
+            "nominal",
+            "real"
+          ],
+          "title": "Discount Rate Basis",
+          "type": "string"
+        },
+        "period_frequency": {
+          "default": "annual",
+          "enum": [
+            "monthly",
+            "quarterly",
+            "annual"
+          ],
+          "title": "Period Frequency",
+          "type": "string"
+        },
+        "time_basis": {
+          "const": "end_of_period",
+          "default": "end_of_period",
+          "title": "Time Basis",
+          "type": "string"
+        },
+        "rounding_policy": {
+          "const": "half_up",
+          "default": "half_up",
+          "title": "Rounding Policy",
+          "type": "string"
+        },
+        "monetary_decimals": {
+          "default": 2,
+          "maximum": 6,
+          "minimum": 0,
+          "title": "Monetary Decimals",
+          "type": "integer"
+        },
+        "ratio_decimals": {
+          "default": 4,
+          "maximum": 6,
+          "minimum": 0,
+          "title": "Ratio Decimals",
+          "type": "integer"
+        }
+      },
+      "title": "CashFlowContext",
+      "type": "object"
+    },
+    "CashFlowInterpretation": {
+      "additionalProperties": false,
+      "properties": {
+        "basis_status": {
+          "const": "matched",
+          "default": "matched",
+          "title": "Basis Status",
+          "type": "string"
+        },
+        "flags": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Flags",
+          "type": "array"
+        }
+      },
+      "required": [
+        "flags"
+      ],
+      "title": "CashFlowInterpretation",
+      "type": "object"
+    },
+    "CashFlowLine": {
+      "additionalProperties": false,
+      "properties": {
+        "flow_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Flow Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "capital_cost",
+            "operating_cost",
+            "revenue",
+            "savings",
+            "avoided_cost",
+            "grant",
+            "rebate",
+            "residual_value",
+            "decommissioning_cost",
+            "working_capital",
+            "working_capital_recovery",
+            "other_benefit",
+            "other_cost"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "amount": {
+          "minimum": 0,
+          "title": "Amount",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "start_period": {
+          "minimum": 0,
+          "title": "Start Period",
+          "type": "integer"
+        },
+        "end_period": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "End Period"
+        },
+        "interval_periods": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Interval Periods",
+          "type": "integer"
+        },
+        "escalation_rate_percent_annual": {
+          "default": 0,
+          "exclusiveMinimum": -100,
+          "maximum": 1000,
+          "title": "Escalation Rate Percent Annual",
+          "type": "number",
+          "x-unit": "percent_per_year"
+        },
+        "price_basis": {
+          "default": "nominal",
+          "enum": [
+            "nominal",
+            "real"
+          ],
+          "title": "Price Basis",
+          "type": "string"
+        },
+        "notes": {
+          "default": "",
+          "maxLength": 4000,
+          "title": "Notes",
+          "type": "string"
+        }
+      },
+      "required": [
+        "flow_id",
+        "label",
+        "category",
+        "amount",
+        "start_period"
+      ],
+      "title": "CashFlowLine",
+      "type": "object"
+    },
+    "CashFlowMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "generated_at": {
+          "title": "Generated At",
+          "type": "string"
+        },
+        "tool": {
+          "const": "Catalyst Finance cash-flow engine",
+          "default": "Catalyst Finance cash-flow engine",
+          "title": "Tool",
+          "type": "string"
+        },
+        "version": {
+          "const": "1.4.0",
+          "default": "1.4.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "disclaimer": {
+          "title": "Disclaimer",
+          "type": "string"
+        }
+      },
+      "required": [
+        "generated_at",
+        "disclaimer"
+      ],
+      "title": "CashFlowMetadata",
+      "type": "object"
+    },
+    "CashFlowMethodology": {
+      "additionalProperties": false,
+      "properties": {
+        "model_id": {
+          "const": "catalyst-finance.cash-flow",
+          "default": "catalyst-finance.cash-flow",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "model_version": {
+          "const": "1.4.0",
+          "default": "1.4.0",
+          "title": "Model Version",
+          "type": "string"
+        },
+        "timing_policy": {
+          "const": "period_zero_then_end_of_period",
+          "default": "period_zero_then_end_of_period",
+          "title": "Timing Policy",
+          "type": "string"
+        },
+        "annual_to_period_rate_policy": {
+          "const": "effective_rate_conversion",
+          "default": "effective_rate_conversion",
+          "title": "Annual To Period Rate Policy",
+          "type": "string"
+        },
+        "escalation_policy": {
+          "const": "effective_annual_compounding",
+          "default": "effective_annual_compounding",
+          "title": "Escalation Policy",
+          "type": "string"
+        },
+        "payback_policy": {
+          "const": "linear_interpolation_within_crossing_period",
+          "default": "linear_interpolation_within_crossing_period",
+          "title": "Payback Policy",
+          "type": "string"
+        },
+        "irr_policy": {
+          "const": "all_detected_roots_and_ambiguity_flag",
+          "default": "all_detected_roots_and_ambiguity_flag",
+          "title": "Irr Policy",
+          "type": "string"
+        },
+        "transfer_policy": {
+          "const": "grants_and_rebates_excluded_from_bcr",
+          "default": "grants_and_rebates_excluded_from_bcr",
+          "title": "Transfer Policy",
+          "type": "string"
+        }
+      },
+      "title": "CashFlowMethodology",
+      "type": "object"
+    },
+    "CashFlowMetrics": {
+      "additionalProperties": false,
+      "properties": {
+        "total_inflows": {
+          "title": "Total Inflows",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "total_outflows": {
+          "title": "Total Outflows",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "net_cash_flow": {
+          "title": "Net Cash Flow",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "present_value_inflows": {
+          "title": "Present Value Inflows",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "present_value_outflows": {
+          "title": "Present Value Outflows",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "npv": {
+          "title": "Npv",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "simple_payback_periods": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Simple Payback Periods"
+        },
+        "discounted_payback_periods": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Discounted Payback Periods"
+        },
+        "irr_percent_annual": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Irr Percent Annual"
+        },
+        "irr_roots_percent_annual": {
+          "items": {
+            "type": "number"
+          },
+          "title": "Irr Roots Percent Annual",
+          "type": "array"
+        },
+        "irr_status": {
+          "enum": [
+            "unique",
+            "ambiguous_multiple_sign_changes",
+            "no_root",
+            "not_applicable"
+          ],
+          "title": "Irr Status",
+          "type": "string"
+        },
+        "mirr_percent_annual": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Mirr Percent Annual"
+        },
+        "profitability_index": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Profitability Index"
+        },
+        "benefit_cost_ratio": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Benefit Cost Ratio"
+        },
+        "equivalent_annual_value": {
+          "title": "Equivalent Annual Value",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "terminal_value": {
+          "title": "Terminal Value",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "sign_changes": {
+          "title": "Sign Changes",
+          "type": "integer"
+        },
+        "metric_trace": {
+          "items": {
+            "$ref": "#/$defs/MetricTrace"
+          },
+          "minItems": 8,
+          "title": "Metric Trace",
+          "type": "array"
+        }
+      },
+      "required": [
+        "total_inflows",
+        "total_outflows",
+        "net_cash_flow",
+        "present_value_inflows",
+        "present_value_outflows",
+        "npv",
+        "simple_payback_periods",
+        "discounted_payback_periods",
+        "irr_percent_annual",
+        "irr_roots_percent_annual",
+        "irr_status",
+        "mirr_percent_annual",
+        "profitability_index",
+        "benefit_cost_ratio",
+        "equivalent_annual_value",
+        "terminal_value",
+        "sign_changes",
+        "metric_trace"
+      ],
+      "title": "CashFlowMetrics",
+      "type": "object"
+    },
+    "CashFlowPublication": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": "1.4.0",
+          "default": "1.4.0",
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "model_id": {
+          "const": "catalyst-finance.cash-flow",
+          "default": "catalyst-finance.cash-flow",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "project": {
+          "$ref": "#/$defs/FinanceProject"
+        },
+        "context": {
+          "$ref": "#/$defs/CashFlowContext"
+        },
+        "assumptions": {
+          "$ref": "#/$defs/CashFlowScenarioInput"
+        },
+        "periods": {
+          "items": {
+            "$ref": "#/$defs/PeriodCashFlow"
+          },
+          "title": "Periods",
+          "type": "array"
+        },
+        "metrics": {
+          "$ref": "#/$defs/CashFlowMetrics"
+        },
+        "interpretation": {
+          "$ref": "#/$defs/CashFlowInterpretation"
+        },
+        "methodology": {
+          "$ref": "#/$defs/CashFlowMethodology"
+        },
+        "metadata": {
+          "$ref": "#/$defs/CashFlowMetadata"
+        }
+      },
+      "required": [
+        "project",
+        "context",
+        "assumptions",
+        "periods",
+        "metrics",
+        "interpretation",
+        "methodology",
+        "metadata"
+      ],
+      "title": "CashFlowPublication",
+      "type": "object"
+    },
+    "CashFlowScenarioInput": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": "1.4.0",
+          "default": "1.4.0",
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "model_id": {
+          "const": "catalyst-finance.cash-flow",
+          "default": "catalyst-finance.cash-flow",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "project": {
+          "$ref": "#/$defs/FinanceProject"
+        },
+        "context": {
+          "$ref": "#/$defs/CashFlowContext"
+        },
+        "analysis_horizon_periods": {
+          "maximum": 1200,
+          "minimum": 1,
+          "title": "Analysis Horizon Periods",
+          "type": "integer"
+        },
+        "discount_rate_percent_annual": {
+          "exclusiveMinimum": -100,
+          "maximum": 1000,
+          "title": "Discount Rate Percent Annual",
+          "type": "number",
+          "x-unit": "percent_per_year"
+        },
+        "finance_rate_percent_annual": {
+          "default": 0,
+          "exclusiveMinimum": -100,
+          "maximum": 1000,
+          "title": "Finance Rate Percent Annual",
+          "type": "number",
+          "x-unit": "percent_per_year"
+        },
+        "reinvestment_rate_percent_annual": {
+          "default": 0,
+          "exclusiveMinimum": -100,
+          "maximum": 1000,
+          "title": "Reinvestment Rate Percent Annual",
+          "type": "number",
+          "x-unit": "percent_per_year"
+        },
+        "lines": {
+          "items": {
+            "$ref": "#/$defs/CashFlowLine"
+          },
+          "maxItems": 1000,
+          "minItems": 1,
+          "title": "Lines",
+          "type": "array"
+        }
+      },
+      "required": [
+        "project",
+        "analysis_horizon_periods",
+        "discount_rate_percent_annual",
+        "lines"
+      ],
+      "title": "CashFlowScenarioInput",
+      "type": "object"
+    },
+    "ComparisonAlternative": {
+      "additionalProperties": false,
+      "properties": {
+        "alternative_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Alternative Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "kind": {
+          "default": "custom",
+          "enum": [
+            "base",
+            "downside",
+            "upside",
+            "custom"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/SourceRevision"
+        },
+        "scenario": {
+          "$ref": "#/$defs/CashFlowScenarioInput"
+        },
+        "non_financial_caveats": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Non Financial Caveats",
+          "type": "array"
+        }
+      },
+      "required": [
+        "alternative_id",
+        "label",
+        "source",
+        "scenario"
+      ],
+      "title": "ComparisonAlternative",
+      "type": "object"
+    },
+    "ComparisonDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": "1.4.0",
+          "default": "1.4.0",
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "model_id": {
+          "const": "catalyst-finance.comparison",
+          "default": "catalyst-finance.comparison",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "comparison_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Comparison Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "maxLength": 4000,
+          "title": "Description",
+          "type": "string"
+        },
+        "baseline_alternative_id": {
+          "title": "Baseline Alternative Id",
+          "type": "string"
+        },
+        "alternatives": {
+          "items": {
+            "$ref": "#/$defs/ComparisonAlternative"
+          },
+          "maxItems": 50,
+          "minItems": 3,
+          "title": "Alternatives",
+          "type": "array"
+        },
+        "selected_metrics": {
+          "items": {
+            "$ref": "#/$defs/MetricSelection"
+          },
+          "maxItems": 20,
+          "minItems": 1,
+          "title": "Selected Metrics",
+          "type": "array"
+        },
+        "one_way_sensitivities": {
+          "items": {
+            "$ref": "#/$defs/OneWaySensitivityDefinition"
+          },
+          "maxItems": 50,
+          "title": "One Way Sensitivities",
+          "type": "array"
+        },
+        "two_way_sensitivities": {
+          "items": {
+            "$ref": "#/$defs/TwoWaySensitivityDefinition"
+          },
+          "maxItems": 20,
+          "title": "Two Way Sensitivities",
+          "type": "array"
+        },
+        "break_even_definitions": {
+          "items": {
+            "$ref": "#/$defs/BreakEvenDefinition"
+          },
+          "maxItems": 50,
+          "title": "Break Even Definitions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "comparison_id",
+        "name",
+        "baseline_alternative_id",
+        "alternatives",
+        "selected_metrics"
+      ],
+      "title": "ComparisonDefinition",
+      "type": "object"
+    },
+    "ComparisonMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "generated_at": {
+          "title": "Generated At",
+          "type": "string"
+        },
+        "tool": {
+          "const": "Catalyst Finance comparison engine",
+          "default": "Catalyst Finance comparison engine",
+          "title": "Tool",
+          "type": "string"
+        },
+        "version": {
+          "const": "1.4.0",
+          "default": "1.4.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "disclaimer": {
+          "title": "Disclaimer",
+          "type": "string"
+        }
+      },
+      "required": [
+        "generated_at",
+        "disclaimer"
+      ],
+      "title": "ComparisonMetadata",
+      "type": "object"
+    },
+    "ComparisonMethodology": {
+      "additionalProperties": false,
+      "properties": {
+        "model_id": {
+          "const": "catalyst-finance.comparison",
+          "default": "catalyst-finance.comparison",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "model_version": {
+          "const": "1.4.0",
+          "default": "1.4.0",
+          "title": "Model Version",
+          "type": "string"
+        },
+        "ranking_policy": {
+          "const": "weighted_min_max_normalization",
+          "default": "weighted_min_max_normalization",
+          "title": "Ranking Policy",
+          "type": "string"
+        },
+        "dominance_policy": {
+          "const": "pareto_financial_metrics_only",
+          "default": "pareto_financial_metrics_only",
+          "title": "Dominance Policy",
+          "type": "string"
+        },
+        "sensitivity_policy": {
+          "const": "deterministic_parameter_substitution",
+          "default": "deterministic_parameter_substitution",
+          "title": "Sensitivity Policy",
+          "type": "string"
+        },
+        "break_even_policy": {
+          "const": "bounded_scan_then_bisection",
+          "default": "bounded_scan_then_bisection",
+          "title": "Break Even Policy",
+          "type": "string"
+        },
+        "difference_policy": {
+          "const": "one_assumption_at_a_time_npv_impacts",
+          "default": "one_assumption_at_a_time_npv_impacts",
+          "title": "Difference Policy",
+          "type": "string"
+        }
+      },
+      "title": "ComparisonMethodology",
+      "type": "object"
+    },
+    "CrossoverPoint": {
+      "additionalProperties": false,
+      "properties": {
+        "sensitivity_id": {
+          "title": "Sensitivity Id",
+          "type": "string"
+        },
+        "alternative_id": {
+          "title": "Alternative Id",
+          "type": "string"
+        },
+        "baseline_alternative_id": {
+          "title": "Baseline Alternative Id",
+          "type": "string"
+        },
+        "parameter_id": {
+          "title": "Parameter Id",
+          "type": "string"
+        },
+        "parameter_value": {
+          "title": "Parameter Value",
+          "type": "number"
+        },
+        "metric_id": {
+          "enum": [
+            "npv",
+            "net_cash_flow",
+            "discounted_payback_periods",
+            "irr_percent_annual",
+            "mirr_percent_annual",
+            "profitability_index",
+            "benefit_cost_ratio",
+            "equivalent_annual_value"
+          ],
+          "title": "Metric Id",
+          "type": "string"
+        },
+        "metric_value": {
+          "title": "Metric Value",
+          "type": "number"
+        }
+      },
+      "required": [
+        "sensitivity_id",
+        "alternative_id",
+        "baseline_alternative_id",
+        "parameter_id",
+        "parameter_value",
+        "metric_id",
+        "metric_value"
+      ],
+      "title": "CrossoverPoint",
+      "type": "object"
+    },
+    "DifferenceExplanation": {
+      "additionalProperties": false,
+      "properties": {
+        "alternative_id": {
+          "title": "Alternative Id",
+          "type": "string"
+        },
+        "relative_to_alternative_id": {
+          "title": "Relative To Alternative Id",
+          "type": "string"
+        },
+        "npv_delta": {
+          "title": "Npv Delta",
+          "type": "number"
+        },
+        "top_drivers": {
+          "items": {
+            "$ref": "#/$defs/DriverContribution"
+          },
+          "title": "Top Drivers",
+          "type": "array"
+        },
+        "non_financial_caveats": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Non Financial Caveats",
+          "type": "array"
+        },
+        "notes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Notes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "alternative_id",
+        "relative_to_alternative_id",
+        "npv_delta",
+        "top_drivers",
+        "non_financial_caveats",
+        "notes"
+      ],
+      "title": "DifferenceExplanation",
+      "type": "object"
+    },
+    "DriverContribution": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "baseline_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Baseline Value"
+        },
+        "alternative_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Alternative Value"
+        },
+        "npv_impact": {
+          "title": "Npv Impact",
+          "type": "number"
+        }
+      },
+      "required": [
+        "path",
+        "label",
+        "baseline_value",
+        "alternative_value",
+        "npv_impact"
+      ],
+      "title": "DriverContribution",
+      "type": "object"
+    },
+    "ExpandedCashFlowLine": {
+      "additionalProperties": false,
+      "properties": {
+        "flow_id": {
+          "title": "Flow Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "capital_cost",
+            "operating_cost",
+            "revenue",
+            "savings",
+            "avoided_cost",
+            "grant",
+            "rebate",
+            "residual_value",
+            "decommissioning_cost",
+            "working_capital",
+            "working_capital_recovery",
+            "other_benefit",
+            "other_cost"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "period": {
+          "title": "Period",
+          "type": "integer"
+        },
+        "amount": {
+          "title": "Amount",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "signed_amount": {
+          "title": "Signed Amount",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "direction": {
+          "enum": [
+            "inflow",
+            "outflow"
+          ],
+          "title": "Direction",
+          "type": "string"
+        }
+      },
+      "required": [
+        "flow_id",
+        "label",
+        "category",
+        "period",
+        "amount",
+        "signed_amount",
+        "direction"
+      ],
+      "title": "ExpandedCashFlowLine",
+      "type": "object"
+    },
+    "FinanceProject": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "category": {
+          "default": "Sustainability finance",
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Category",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "FinanceProject",
+      "type": "object"
+    },
+    "MetricSelection": {
+      "additionalProperties": false,
+      "properties": {
+        "metric_id": {
+          "enum": [
+            "npv",
+            "net_cash_flow",
+            "discounted_payback_periods",
+            "irr_percent_annual",
+            "mirr_percent_annual",
+            "profitability_index",
+            "benefit_cost_ratio",
+            "equivalent_annual_value"
+          ],
+          "title": "Metric Id",
+          "type": "string"
+        },
+        "objective": {
+          "default": "maximize",
+          "enum": [
+            "maximize",
+            "minimize"
+          ],
+          "title": "Objective",
+          "type": "string"
+        },
+        "weight": {
+          "default": 1,
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "title": "Weight",
+          "type": "number"
+        }
+      },
+      "required": [
+        "metric_id"
+      ],
+      "title": "MetricSelection",
+      "type": "object"
+    },
+    "MetricTrace": {
+      "additionalProperties": false,
+      "properties": {
+        "metric_id": {
+          "title": "Metric Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        },
+        "included_categories": {
+          "items": {
+            "enum": [
+              "capital_cost",
+              "operating_cost",
+              "revenue",
+              "savings",
+              "avoided_cost",
+              "grant",
+              "rebate",
+              "residual_value",
+              "decommissioning_cost",
+              "working_capital",
+              "working_capital_recovery",
+              "other_benefit",
+              "other_cost"
+            ],
+            "type": "string"
+          },
+          "title": "Included Categories",
+          "type": "array"
+        },
+        "excluded_categories": {
+          "items": {
+            "enum": [
+              "capital_cost",
+              "operating_cost",
+              "revenue",
+              "savings",
+              "avoided_cost",
+              "grant",
+              "rebate",
+              "residual_value",
+              "decommissioning_cost",
+              "working_capital",
+              "working_capital_recovery",
+              "other_benefit",
+              "other_cost"
+            ],
+            "type": "string"
+          },
+          "title": "Excluded Categories",
+          "type": "array"
+        },
+        "included_flow_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Included Flow Ids",
+          "type": "array"
+        },
+        "formula": {
+          "title": "Formula",
+          "type": "string"
+        },
+        "notes": {
+          "title": "Notes",
+          "type": "string"
+        }
+      },
+      "required": [
+        "metric_id",
+        "label",
+        "value",
+        "included_categories",
+        "excluded_categories",
+        "included_flow_ids",
+        "formula",
+        "notes"
+      ],
+      "title": "MetricTrace",
+      "type": "object"
+    },
+    "OneWaySensitivityDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "sensitivity_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Sensitivity Id",
+          "type": "string"
+        },
+        "alternative_id": {
+          "title": "Alternative Id",
+          "type": "string"
+        },
+        "metric_id": {
+          "default": "npv",
+          "enum": [
+            "npv",
+            "net_cash_flow",
+            "discounted_payback_periods",
+            "irr_percent_annual",
+            "mirr_percent_annual",
+            "profitability_index",
+            "benefit_cost_ratio",
+            "equivalent_annual_value"
+          ],
+          "title": "Metric Id",
+          "type": "string"
+        },
+        "parameter": {
+          "$ref": "#/$defs/SensitivityParameter"
+        },
+        "values": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 101,
+          "minItems": 2,
+          "title": "Values",
+          "type": "array"
+        }
+      },
+      "required": [
+        "sensitivity_id",
+        "alternative_id",
+        "parameter",
+        "values"
+      ],
+      "title": "OneWaySensitivityDefinition",
+      "type": "object"
+    },
+    "OneWaySensitivityResult": {
+      "additionalProperties": false,
+      "properties": {
+        "sensitivity_id": {
+          "title": "Sensitivity Id",
+          "type": "string"
+        },
+        "alternative_id": {
+          "title": "Alternative Id",
+          "type": "string"
+        },
+        "metric_id": {
+          "enum": [
+            "npv",
+            "net_cash_flow",
+            "discounted_payback_periods",
+            "irr_percent_annual",
+            "mirr_percent_annual",
+            "profitability_index",
+            "benefit_cost_ratio",
+            "equivalent_annual_value"
+          ],
+          "title": "Metric Id",
+          "type": "string"
+        },
+        "parameter": {
+          "$ref": "#/$defs/SensitivityParameter"
+        },
+        "base_parameter_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Base Parameter Value"
+        },
+        "base_metric_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Base Metric Value"
+        },
+        "points": {
+          "items": {
+            "$ref": "#/$defs/SensitivityPoint"
+          },
+          "title": "Points",
+          "type": "array"
+        },
+        "reproducibility_key": {
+          "title": "Reproducibility Key",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sensitivity_id",
+        "alternative_id",
+        "metric_id",
+        "parameter",
+        "base_parameter_value",
+        "base_metric_value",
+        "points",
+        "reproducibility_key"
+      ],
+      "title": "OneWaySensitivityResult",
+      "type": "object"
+    },
+    "PeriodCashFlow": {
+      "additionalProperties": false,
+      "properties": {
+        "period": {
+          "title": "Period",
+          "type": "integer"
+        },
+        "period_label": {
+          "title": "Period Label",
+          "type": "string"
+        },
+        "inflows": {
+          "title": "Inflows",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "outflows": {
+          "title": "Outflows",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "net_cash_flow": {
+          "title": "Net Cash Flow",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "discounted_net_cash_flow": {
+          "title": "Discounted Net Cash Flow",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "cumulative_cash_flow": {
+          "title": "Cumulative Cash Flow",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "cumulative_discounted_cash_flow": {
+          "title": "Cumulative Discounted Cash Flow",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "line_items": {
+          "items": {
+            "$ref": "#/$defs/ExpandedCashFlowLine"
+          },
+          "title": "Line Items",
+          "type": "array"
+        }
+      },
+      "required": [
+        "period",
+        "period_label",
+        "inflows",
+        "outflows",
+        "net_cash_flow",
+        "discounted_net_cash_flow",
+        "cumulative_cash_flow",
+        "cumulative_discounted_cash_flow",
+        "line_items"
+      ],
+      "title": "PeriodCashFlow",
+      "type": "object"
+    },
+    "SensitivityParameter": {
+      "additionalProperties": false,
+      "properties": {
+        "parameter_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Parameter Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "path": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        },
+        "operation": {
+          "default": "set",
+          "enum": [
+            "set",
+            "multiply",
+            "shift_periods"
+          ],
+          "title": "Operation",
+          "type": "string"
+        },
+        "value_kind": {
+          "default": "continuous",
+          "enum": [
+            "continuous",
+            "integer"
+          ],
+          "title": "Value Kind",
+          "type": "string"
+        },
+        "unit": {
+          "default": "",
+          "maxLength": 80,
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "parameter_id",
+        "label",
+        "path"
+      ],
+      "title": "SensitivityParameter",
+      "type": "object"
+    },
+    "SensitivityPoint": {
+      "additionalProperties": false,
+      "properties": {
+        "parameter_value": {
+          "title": "Parameter Value",
+          "type": "number"
+        },
+        "metric_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Metric Value"
+        },
+        "baseline_metric_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Baseline Metric Value"
+        },
+        "delta_from_baseline": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Delta From Baseline"
+        }
+      },
+      "required": [
+        "parameter_value",
+        "metric_value",
+        "baseline_metric_value",
+        "delta_from_baseline"
+      ],
+      "title": "SensitivityPoint",
+      "type": "object"
+    },
+    "SourceRevision": {
+      "additionalProperties": false,
+      "properties": {
+        "workspace_id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Workspace Id",
+          "type": "string"
+        },
+        "scenario_id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Scenario Id",
+          "type": "string"
+        },
+        "revision_id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Revision Id",
+          "type": "string"
+        },
+        "revision_number": {
+          "minimum": 1,
+          "title": "Revision Number",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "workspace_id",
+        "scenario_id",
+        "revision_id",
+        "revision_number"
+      ],
+      "title": "SourceRevision",
+      "type": "object"
+    },
+    "TornadoBar": {
+      "additionalProperties": false,
+      "properties": {
+        "sensitivity_id": {
+          "title": "Sensitivity Id",
+          "type": "string"
+        },
+        "alternative_id": {
+          "title": "Alternative Id",
+          "type": "string"
+        },
+        "parameter_id": {
+          "title": "Parameter Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "low_value": {
+          "title": "Low Value",
+          "type": "number"
+        },
+        "high_value": {
+          "title": "High Value",
+          "type": "number"
+        },
+        "low_impact": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Low Impact"
+        },
+        "high_impact": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "High Impact"
+        },
+        "absolute_swing": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Absolute Swing"
+        }
+      },
+      "required": [
+        "sensitivity_id",
+        "alternative_id",
+        "parameter_id",
+        "label",
+        "low_value",
+        "high_value",
+        "low_impact",
+        "high_impact",
+        "absolute_swing"
+      ],
+      "title": "TornadoBar",
+      "type": "object"
+    },
+    "TwoWaySensitivityCell": {
+      "additionalProperties": false,
+      "properties": {
+        "row_value": {
+          "title": "Row Value",
+          "type": "number"
+        },
+        "column_value": {
+          "title": "Column Value",
+          "type": "number"
+        },
+        "metric_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Metric Value"
+        }
+      },
+      "required": [
+        "row_value",
+        "column_value",
+        "metric_value"
+      ],
+      "title": "TwoWaySensitivityCell",
+      "type": "object"
+    },
+    "TwoWaySensitivityDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "sensitivity_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Sensitivity Id",
+          "type": "string"
+        },
+        "alternative_id": {
+          "title": "Alternative Id",
+          "type": "string"
+        },
+        "metric_id": {
+          "default": "npv",
+          "enum": [
+            "npv",
+            "net_cash_flow",
+            "discounted_payback_periods",
+            "irr_percent_annual",
+            "mirr_percent_annual",
+            "profitability_index",
+            "benefit_cost_ratio",
+            "equivalent_annual_value"
+          ],
+          "title": "Metric Id",
+          "type": "string"
+        },
+        "row_parameter": {
+          "$ref": "#/$defs/SensitivityParameter"
+        },
+        "row_values": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 25,
+          "minItems": 2,
+          "title": "Row Values",
+          "type": "array"
+        },
+        "column_parameter": {
+          "$ref": "#/$defs/SensitivityParameter"
+        },
+        "column_values": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 25,
+          "minItems": 2,
+          "title": "Column Values",
+          "type": "array"
+        }
+      },
+      "required": [
+        "sensitivity_id",
+        "alternative_id",
+        "row_parameter",
+        "row_values",
+        "column_parameter",
+        "column_values"
+      ],
+      "title": "TwoWaySensitivityDefinition",
+      "type": "object"
+    },
+    "TwoWaySensitivityResult": {
+      "additionalProperties": false,
+      "properties": {
+        "sensitivity_id": {
+          "title": "Sensitivity Id",
+          "type": "string"
+        },
+        "alternative_id": {
+          "title": "Alternative Id",
+          "type": "string"
+        },
+        "metric_id": {
+          "enum": [
+            "npv",
+            "net_cash_flow",
+            "discounted_payback_periods",
+            "irr_percent_annual",
+            "mirr_percent_annual",
+            "profitability_index",
+            "benefit_cost_ratio",
+            "equivalent_annual_value"
+          ],
+          "title": "Metric Id",
+          "type": "string"
+        },
+        "row_parameter": {
+          "$ref": "#/$defs/SensitivityParameter"
+        },
+        "column_parameter": {
+          "$ref": "#/$defs/SensitivityParameter"
+        },
+        "cells": {
+          "items": {
+            "$ref": "#/$defs/TwoWaySensitivityCell"
+          },
+          "title": "Cells",
+          "type": "array"
+        },
+        "reproducibility_key": {
+          "title": "Reproducibility Key",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sensitivity_id",
+        "alternative_id",
+        "metric_id",
+        "row_parameter",
+        "column_parameter",
+        "cells",
+        "reproducibility_key"
+      ],
+      "title": "TwoWaySensitivityResult",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "const": "1.4.0",
+      "default": "1.4.0",
+      "title": "Contract Version",
+      "type": "string"
+    },
+    "model_id": {
+      "const": "catalyst-finance.comparison",
+      "default": "catalyst-finance.comparison",
+      "title": "Model Id",
+      "type": "string"
+    },
+    "definition": {
+      "$ref": "#/$defs/ComparisonDefinition"
+    },
+    "alternatives": {
+      "items": {
+        "$ref": "#/$defs/AlternativeEvaluation"
+      },
+      "title": "Alternatives",
+      "type": "array"
+    },
+    "aligned_metrics": {
+      "items": {
+        "$ref": "#/$defs/AlignedMetricComparison"
+      },
+      "title": "Aligned Metrics",
+      "type": "array"
+    },
+    "rankings": {
+      "items": {
+        "$ref": "#/$defs/AlternativeRanking"
+      },
+      "title": "Rankings",
+      "type": "array"
+    },
+    "difference_explanations": {
+      "items": {
+        "$ref": "#/$defs/DifferenceExplanation"
+      },
+      "title": "Difference Explanations",
+      "type": "array"
+    },
+    "one_way_sensitivities": {
+      "items": {
+        "$ref": "#/$defs/OneWaySensitivityResult"
+      },
+      "title": "One Way Sensitivities",
+      "type": "array"
+    },
+    "two_way_sensitivities": {
+      "items": {
+        "$ref": "#/$defs/TwoWaySensitivityResult"
+      },
+      "title": "Two Way Sensitivities",
+      "type": "array"
+    },
+    "break_even_results": {
+      "items": {
+        "$ref": "#/$defs/BreakEvenResult"
+      },
+      "title": "Break Even Results",
+      "type": "array"
+    },
+    "tornado": {
+      "items": {
+        "$ref": "#/$defs/TornadoBar"
+      },
+      "title": "Tornado",
+      "type": "array"
+    },
+    "crossover_points": {
+      "items": {
+        "$ref": "#/$defs/CrossoverPoint"
+      },
+      "title": "Crossover Points",
+      "type": "array"
+    },
+    "methodology": {
+      "$ref": "#/$defs/ComparisonMethodology"
+    },
+    "metadata": {
+      "$ref": "#/$defs/ComparisonMetadata"
+    }
+  },
+  "required": [
+    "definition",
+    "alternatives",
+    "aligned_metrics",
+    "rankings",
+    "difference_explanations",
+    "one_way_sensitivities",
+    "two_way_sensitivities",
+    "break_even_results",
+    "tornado",
+    "crossover_points",
+    "methodology",
+    "metadata"
+  ],
+  "title": "ComparisonPublication",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.4.0/comparison_publication.schema.json"
+}

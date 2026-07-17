@@ -2,6 +2,8 @@
 
 from .cashflow import evaluate_cash_flow
 from .cashflow_models import CashFlowPublication, CashFlowScenarioInput
+from .comparison import evaluate_comparison
+from .comparison_models import ComparisonDefinition, ComparisonPublication
 from .engine import evaluate_payload, evaluate_scenario
 from .models import FinanceScenarioInput
 from .repositories import JsonWorkspaceRepository, SQLiteWorkspaceRepository
@@ -12,6 +14,8 @@ from .workspace_models import FinanceWorkspace
 __all__ = [
     "CashFlowPublication",
     "CashFlowScenarioInput",
+    "ComparisonDefinition",
+    "ComparisonPublication",
     "FinanceScenarioInput",
     "FinanceWorkspace",
     "JsonWorkspaceRepository",
@@ -19,6 +23,7 @@ __all__ = [
     "WorkspaceService",
     "__version__",
     "evaluate_cash_flow",
+    "evaluate_comparison",
     "evaluate_payload",
     "evaluate_scenario",
 ]

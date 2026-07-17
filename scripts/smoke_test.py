@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Portable v1.3.0 smoke tests that do not require a running server."""
+"""Portable v1.4.0 smoke tests that do not require a running server."""
 
 from __future__ import annotations
 
@@ -30,6 +30,7 @@ def main() -> int:
         assert [item["model_id"] for item in models] == [
             "catalyst-finance.screening",
             "catalyst-finance.cash-flow",
+            "catalyst-finance.comparison",
         ]
         assert len(client.get("/api/v1/templates").json()["templates"]) == 5
 
@@ -56,13 +57,28 @@ def main() -> int:
         assert cashflow_publication["metrics"]["npv"] == 198884.69
         assert len(cashflow_publication["periods"]) == 11
 
+        comparison = json.loads(
+            (ROOT / "data" / "sample_comparison.json").read_text(encoding="utf-8")
+        )
+        comparison_response = client.post("/api/v1/compare", json=comparison)
+        assert comparison_response.status_code == 200
+        comparison_publication = comparison_response.json()
+        assert comparison_publication["model_id"] == "catalyst-finance.comparison"
+        assert comparison_publication["metadata"]["version"] == __version__
+        assert len(comparison_publication["alternatives"]) == 3
+        assert comparison_publication["rankings"][0]["alternative_id"] == "upside"
+        assert all(
+            result["status"] in {"found", "already_at_target"}
+            for result in comparison_publication["break_even_results"]
+        )
+
         service = WorkspaceService(repository)
         workspace = service.create_workspace("Smoke workspace")
         workspace = service.create_scenario(workspace.workspace_id, "Smoke scenario")
         reopened = service.get_workspace(workspace.workspace_id)
         assert reopened.scenarios[0].revisions[0].model_version == __version__
 
-    print("Catalyst Finance v1.3.0 smoke tests passed.")
+    print("Catalyst Finance v1.4.0 smoke tests passed.")
     return 0
 
 

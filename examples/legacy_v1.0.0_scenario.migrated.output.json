@@ -1,5 +1,5 @@
 {
-  "contract_version": "1.3.0",
+  "contract_version": "1.4.0",
   "model_id": "catalyst-finance.screening",
   "project": {
     "name": "Building efficiency retrofit",
@@ -86,7 +86,7 @@
   },
   "methodology": {
     "model_id": "catalyst-finance.screening",
-    "model_version": "1.3.0",
+    "model_version": "1.4.0",
     "calculation_basis": "annual_screening",
     "fractional_horizon_policy": "prorated_final_period",
     "overfunding_policy": "net_capital_cost_floor_zero",
@@ -97,11 +97,11 @@
   "metadata": {
     "generated_at": "2026-07-17T00:00:00+00:00",
     "tool": "Catalyst Finance scenario engine",
-    "version": "1.3.0",
+    "version": "1.4.0",
     "disclaimer": "Educational software only; not financial, investment, legal, accounting, tax, fiduciary, procurement, funding, lending, or assurance advice.",
     "migration": {
       "source_contract_version": "1.0.0",
-      "target_contract_version": "1.3.0",
+      "target_contract_version": "1.4.0",
       "preserved_fields": [
         "project.name",
         "project.category",

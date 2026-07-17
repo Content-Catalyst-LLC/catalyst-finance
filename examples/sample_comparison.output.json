@@ -1,0 +1,4372 @@
+{
+  "contract_version": "1.4.0",
+  "model_id": "catalyst-finance.comparison",
+  "definition": {
+    "contract_version": "1.4.0",
+    "model_id": "catalyst-finance.comparison",
+    "comparison_id": "retrofit-options",
+    "name": "Building retrofit alternatives",
+    "description": "Compare a downside, base, and upside implementation case with reproducible sensitivity and threshold analysis.",
+    "baseline_alternative_id": "base",
+    "alternatives": [
+      {
+        "alternative_id": "downside",
+        "label": "Downside case",
+        "kind": "downside",
+        "source": {
+          "workspace_id": "workspace_demo",
+          "scenario_id": "scenario_downside",
+          "revision_id": "revision_downside_003",
+          "revision_number": 3
+        },
+        "scenario": {
+          "contract_version": "1.4.0",
+          "model_id": "catalyst-finance.cash-flow",
+          "project": {
+            "name": "Building efficiency retrofit",
+            "category": "Capital project"
+          },
+          "context": {
+            "currency": "USD",
+            "price_basis": "nominal",
+            "discount_rate_basis": "nominal",
+            "period_frequency": "annual",
+            "time_basis": "end_of_period",
+            "rounding_policy": "half_up",
+            "monetary_decimals": 2,
+            "ratio_decimals": 4
+          },
+          "analysis_horizon_periods": 10,
+          "discount_rate_percent_annual": 8.0,
+          "finance_rate_percent_annual": 8.0,
+          "reinvestment_rate_percent_annual": 3.0,
+          "lines": [
+            {
+              "flow_id": "capex",
+              "label": "Initial capital cost",
+              "category": "capital_cost",
+              "amount": 290000.0,
+              "start_period": 0,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "grant",
+              "label": "Implementation grant",
+              "category": "grant",
+              "amount": 40000.0,
+              "start_period": 0,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "working-capital",
+              "label": "Initial working capital",
+              "category": "working_capital",
+              "amount": 15000.0,
+              "start_period": 0,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "savings",
+              "label": "Annual energy savings",
+              "category": "savings",
+              "amount": 50000.0,
+              "start_period": 2,
+              "end_period": 10,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 2.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "operations",
+              "label": "Annual operating cost",
+              "category": "operating_cost",
+              "amount": 12500.0,
+              "start_period": 1,
+              "end_period": 10,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 2.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "carbon-value",
+              "label": "Annual carbon value",
+              "category": "other_benefit",
+              "amount": 4500.0,
+              "start_period": 1,
+              "end_period": 10,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 2.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "residual",
+              "label": "Residual equipment value",
+              "category": "residual_value",
+              "amount": 20000.0,
+              "start_period": 10,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "working-capital-recovery",
+              "label": "Working capital recovery",
+              "category": "working_capital_recovery",
+              "amount": 15000.0,
+              "start_period": 10,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "decommission",
+              "label": "Decommissioning cost",
+              "category": "decommissioning_cost",
+              "amount": 5000.0,
+              "start_period": 10,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            }
+          ]
+        },
+        "non_financial_caveats": [
+          "Higher disruption risk",
+          "Benefits begin one year later"
+        ]
+      },
+      {
+        "alternative_id": "base",
+        "label": "Base case",
+        "kind": "base",
+        "source": {
+          "workspace_id": "workspace_demo",
+          "scenario_id": "scenario_base",
+          "revision_id": "revision_base_003",
+          "revision_number": 3
+        },
+        "scenario": {
+          "contract_version": "1.4.0",
+          "model_id": "catalyst-finance.cash-flow",
+          "project": {
+            "name": "Building efficiency retrofit",
+            "category": "Capital project"
+          },
+          "context": {
+            "currency": "USD",
+            "price_basis": "nominal",
+            "discount_rate_basis": "nominal",
+            "period_frequency": "annual",
+            "time_basis": "end_of_period",
+            "rounding_policy": "half_up",
+            "monetary_decimals": 2,
+            "ratio_decimals": 4
+          },
+          "analysis_horizon_periods": 10,
+          "discount_rate_percent_annual": 6.0,
+          "finance_rate_percent_annual": 6.0,
+          "reinvestment_rate_percent_annual": 3.0,
+          "lines": [
+            {
+              "flow_id": "capex",
+              "label": "Initial capital cost",
+              "category": "capital_cost",
+              "amount": 250000.0,
+              "start_period": 0,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "grant",
+              "label": "Implementation grant",
+              "category": "grant",
+              "amount": 40000.0,
+              "start_period": 0,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "working-capital",
+              "label": "Initial working capital",
+              "category": "working_capital",
+              "amount": 15000.0,
+              "start_period": 0,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "savings",
+              "label": "Annual energy savings",
+              "category": "savings",
+              "amount": 60000.0,
+              "start_period": 1,
+              "end_period": 10,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 2.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "operations",
+              "label": "Annual operating cost",
+              "category": "operating_cost",
+              "amount": 10000.0,
+              "start_period": 1,
+              "end_period": 10,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 2.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "carbon-value",
+              "label": "Annual carbon value",
+              "category": "other_benefit",
+              "amount": 6300.0,
+              "start_period": 1,
+              "end_period": 10,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 2.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "residual",
+              "label": "Residual equipment value",
+              "category": "residual_value",
+              "amount": 20000.0,
+              "start_period": 10,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "working-capital-recovery",
+              "label": "Working capital recovery",
+              "category": "working_capital_recovery",
+              "amount": 15000.0,
+              "start_period": 10,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "decommission",
+              "label": "Decommissioning cost",
+              "category": "decommissioning_cost",
+              "amount": 5000.0,
+              "start_period": 10,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            }
+          ]
+        },
+        "non_financial_caveats": [
+          "Requires coordinated building access"
+        ]
+      },
+      {
+        "alternative_id": "upside",
+        "label": "Upside case",
+        "kind": "upside",
+        "source": {
+          "workspace_id": "workspace_demo",
+          "scenario_id": "scenario_upside",
+          "revision_id": "revision_upside_003",
+          "revision_number": 3
+        },
+        "scenario": {
+          "contract_version": "1.4.0",
+          "model_id": "catalyst-finance.cash-flow",
+          "project": {
+            "name": "Building efficiency retrofit",
+            "category": "Capital project"
+          },
+          "context": {
+            "currency": "USD",
+            "price_basis": "nominal",
+            "discount_rate_basis": "nominal",
+            "period_frequency": "annual",
+            "time_basis": "end_of_period",
+            "rounding_policy": "half_up",
+            "monetary_decimals": 2,
+            "ratio_decimals": 4
+          },
+          "analysis_horizon_periods": 10,
+          "discount_rate_percent_annual": 5.0,
+          "finance_rate_percent_annual": 5.0,
+          "reinvestment_rate_percent_annual": 3.0,
+          "lines": [
+            {
+              "flow_id": "capex",
+              "label": "Initial capital cost",
+              "category": "capital_cost",
+              "amount": 235000.0,
+              "start_period": 0,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "grant",
+              "label": "Implementation grant",
+              "category": "grant",
+              "amount": 60000.0,
+              "start_period": 0,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "working-capital",
+              "label": "Initial working capital",
+              "category": "working_capital",
+              "amount": 15000.0,
+              "start_period": 0,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "savings",
+              "label": "Annual energy savings",
+              "category": "savings",
+              "amount": 70000.0,
+              "start_period": 1,
+              "end_period": 10,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 2.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "operations",
+              "label": "Annual operating cost",
+              "category": "operating_cost",
+              "amount": 8500.0,
+              "start_period": 1,
+              "end_period": 10,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 2.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "carbon-value",
+              "label": "Annual carbon value",
+              "category": "other_benefit",
+              "amount": 9000.0,
+              "start_period": 1,
+              "end_period": 10,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 2.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "residual",
+              "label": "Residual equipment value",
+              "category": "residual_value",
+              "amount": 20000.0,
+              "start_period": 10,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "working-capital-recovery",
+              "label": "Working capital recovery",
+              "category": "working_capital_recovery",
+              "amount": 15000.0,
+              "start_period": 10,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "decommission",
+              "label": "Decommissioning cost",
+              "category": "decommissioning_cost",
+              "amount": 5000.0,
+              "start_period": 10,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            }
+          ]
+        },
+        "non_financial_caveats": [
+          "Grant award is not yet confirmed",
+          "Aggressive savings verification required"
+        ]
+      }
+    ],
+    "selected_metrics": [
+      {
+        "metric_id": "npv",
+        "objective": "maximize",
+        "weight": 0.45
+      },
+      {
+        "metric_id": "discounted_payback_periods",
+        "objective": "minimize",
+        "weight": 0.2
+      },
+      {
+        "metric_id": "mirr_percent_annual",
+        "objective": "maximize",
+        "weight": 0.2
+      },
+      {
+        "metric_id": "benefit_cost_ratio",
+        "objective": "maximize",
+        "weight": 0.15
+      }
+    ],
+    "one_way_sensitivities": [
+      {
+        "sensitivity_id": "base-savings",
+        "alternative_id": "base",
+        "metric_id": "npv",
+        "parameter": {
+          "parameter_id": "annual-savings",
+          "label": "Annual energy savings",
+          "path": "line:savings:amount",
+          "operation": "set",
+          "value_kind": "continuous",
+          "unit": "USD/year"
+        },
+        "values": [
+          40000.0,
+          50000.0,
+          60000.0,
+          70000.0,
+          80000.0
+        ]
+      },
+      {
+        "sensitivity_id": "base-discount-rate",
+        "alternative_id": "base",
+        "metric_id": "npv",
+        "parameter": {
+          "parameter_id": "discount-rate",
+          "label": "Annual discount rate",
+          "path": "discount_rate_percent_annual",
+          "operation": "set",
+          "value_kind": "continuous",
+          "unit": "percent/year"
+        },
+        "values": [
+          2.0,
+          4.0,
+          6.0,
+          8.0,
+          10.0,
+          12.0
+        ]
+      },
+      {
+        "sensitivity_id": "upside-capex",
+        "alternative_id": "upside",
+        "metric_id": "npv",
+        "parameter": {
+          "parameter_id": "capital-cost",
+          "label": "Initial capital cost",
+          "path": "line:capex:amount",
+          "operation": "set",
+          "value_kind": "continuous",
+          "unit": "USD"
+        },
+        "values": [
+          200000.0,
+          225000.0,
+          250000.0,
+          275000.0,
+          300000.0
+        ]
+      },
+      {
+        "sensitivity_id": "downside-delay",
+        "alternative_id": "downside",
+        "metric_id": "npv",
+        "parameter": {
+          "parameter_id": "implementation-delay",
+          "label": "Implementation delay",
+          "path": "all",
+          "operation": "shift_periods",
+          "value_kind": "integer",
+          "unit": "periods"
+        },
+        "values": [
+          0.0,
+          1.0,
+          2.0,
+          3.0
+        ]
+      },
+      {
+        "sensitivity_id": "base-carbon",
+        "alternative_id": "base",
+        "metric_id": "npv",
+        "parameter": {
+          "parameter_id": "carbon-value",
+          "label": "Annual carbon value",
+          "path": "line:carbon-value:amount",
+          "operation": "set",
+          "value_kind": "continuous",
+          "unit": "USD/year"
+        },
+        "values": [
+          0.0,
+          3000.0,
+          6300.0,
+          9000.0,
+          12000.0
+        ]
+      }
+    ],
+    "two_way_sensitivities": [
+      {
+        "sensitivity_id": "savings-vs-rate",
+        "alternative_id": "base",
+        "metric_id": "npv",
+        "row_parameter": {
+          "parameter_id": "annual-savings",
+          "label": "Annual energy savings",
+          "path": "line:savings:amount",
+          "operation": "set",
+          "value_kind": "continuous",
+          "unit": "USD/year"
+        },
+        "row_values": [
+          45000.0,
+          60000.0,
+          75000.0
+        ],
+        "column_parameter": {
+          "parameter_id": "discount-rate",
+          "label": "Annual discount rate",
+          "path": "discount_rate_percent_annual",
+          "operation": "set",
+          "value_kind": "continuous",
+          "unit": "percent/year"
+        },
+        "column_values": [
+          4.0,
+          6.0,
+          8.0,
+          10.0
+        ]
+      }
+    ],
+    "break_even_definitions": [
+      {
+        "threshold_id": "savings-break-even",
+        "alternative_id": "base",
+        "metric_id": "npv",
+        "parameter": {
+          "parameter_id": "annual-savings",
+          "label": "Annual energy savings",
+          "path": "line:savings:amount",
+          "operation": "set",
+          "value_kind": "continuous",
+          "unit": "USD/year"
+        },
+        "target_value": 0.0,
+        "lower_bound": 0.0,
+        "upper_bound": 100000.0,
+        "tolerance": 0.01,
+        "max_iterations": 100
+      },
+      {
+        "threshold_id": "capital-cost-threshold",
+        "alternative_id": "base",
+        "metric_id": "npv",
+        "parameter": {
+          "parameter_id": "capital-cost",
+          "label": "Initial capital cost",
+          "path": "line:capex:amount",
+          "operation": "set",
+          "value_kind": "continuous",
+          "unit": "USD"
+        },
+        "target_value": 0.0,
+        "lower_bound": 100000.0,
+        "upper_bound": 700000.0,
+        "tolerance": 0.01,
+        "max_iterations": 100
+      },
+      {
+        "threshold_id": "delay-threshold",
+        "alternative_id": "base",
+        "metric_id": "npv",
+        "parameter": {
+          "parameter_id": "implementation-delay",
+          "label": "Implementation delay",
+          "path": "all",
+          "operation": "shift_periods",
+          "value_kind": "integer",
+          "unit": "periods"
+        },
+        "target_value": 0.0,
+        "lower_bound": 0.0,
+        "upper_bound": 10.0,
+        "tolerance": 0.01,
+        "max_iterations": 100
+      }
+    ]
+  },
+  "alternatives": [
+    {
+      "alternative_id": "downside",
+      "label": "Downside case",
+      "kind": "downside",
+      "source": {
+        "workspace_id": "workspace_demo",
+        "scenario_id": "scenario_downside",
+        "revision_id": "revision_downside_003",
+        "revision_number": 3
+      },
+      "non_financial_caveats": [
+        "Higher disruption risk",
+        "Benefits begin one year later"
+      ],
+      "metrics": {
+        "npv": 12527.56,
+        "net_cash_flow": 183086.05,
+        "discounted_payback_periods": 9.6669,
+        "irr_percent_annual": 8.8431,
+        "mirr_percent_annual": 6.4509,
+        "profitability_index": 1.0313,
+        "benefit_cost_ratio": 0.9313,
+        "equivalent_annual_value": 1866.98
+      },
+      "publication": {
+        "contract_version": "1.4.0",
+        "model_id": "catalyst-finance.cash-flow",
+        "project": {
+          "name": "Building efficiency retrofit",
+          "category": "Capital project"
+        },
+        "context": {
+          "currency": "USD",
+          "price_basis": "nominal",
+          "discount_rate_basis": "nominal",
+          "period_frequency": "annual",
+          "time_basis": "end_of_period",
+          "rounding_policy": "half_up",
+          "monetary_decimals": 2,
+          "ratio_decimals": 4
+        },
+        "assumptions": {
+          "contract_version": "1.4.0",
+          "model_id": "catalyst-finance.cash-flow",
+          "project": {
+            "name": "Building efficiency retrofit",
+            "category": "Capital project"
+          },
+          "context": {
+            "currency": "USD",
+            "price_basis": "nominal",
+            "discount_rate_basis": "nominal",
+            "period_frequency": "annual",
+            "time_basis": "end_of_period",
+            "rounding_policy": "half_up",
+            "monetary_decimals": 2,
+            "ratio_decimals": 4
+          },
+          "analysis_horizon_periods": 10,
+          "discount_rate_percent_annual": 8.0,
+          "finance_rate_percent_annual": 8.0,
+          "reinvestment_rate_percent_annual": 3.0,
+          "lines": [
+            {
+              "flow_id": "capex",
+              "label": "Initial capital cost",
+              "category": "capital_cost",
+              "amount": 290000.0,
+              "start_period": 0,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "grant",
+              "label": "Implementation grant",
+              "category": "grant",
+              "amount": 40000.0,
+              "start_period": 0,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "working-capital",
+              "label": "Initial working capital",
+              "category": "working_capital",
+              "amount": 15000.0,
+              "start_period": 0,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "savings",
+              "label": "Annual energy savings",
+              "category": "savings",
+              "amount": 50000.0,
+              "start_period": 2,
+              "end_period": 10,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 2.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "operations",
+              "label": "Annual operating cost",
+              "category": "operating_cost",
+              "amount": 12500.0,
+              "start_period": 1,
+              "end_period": 10,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 2.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "carbon-value",
+              "label": "Annual carbon value",
+              "category": "other_benefit",
+              "amount": 4500.0,
+              "start_period": 1,
+              "end_period": 10,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 2.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "residual",
+              "label": "Residual equipment value",
+              "category": "residual_value",
+              "amount": 20000.0,
+              "start_period": 10,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "working-capital-recovery",
+              "label": "Working capital recovery",
+              "category": "working_capital_recovery",
+              "amount": 15000.0,
+              "start_period": 10,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "decommission",
+              "label": "Decommissioning cost",
+              "category": "decommissioning_cost",
+              "amount": 5000.0,
+              "start_period": 10,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            }
+          ]
+        },
+        "periods": [
+          {
+            "period": 0,
+            "period_label": "Period 0",
+            "inflows": 40000.0,
+            "outflows": 305000.0,
+            "net_cash_flow": -265000.0,
+            "discounted_net_cash_flow": -265000.0,
+            "cumulative_cash_flow": -265000.0,
+            "cumulative_discounted_cash_flow": -265000.0,
+            "line_items": [
+              {
+                "flow_id": "capex",
+                "label": "Initial capital cost",
+                "category": "capital_cost",
+                "period": 0,
+                "amount": 290000.0,
+                "signed_amount": -290000.0,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "grant",
+                "label": "Implementation grant",
+                "category": "grant",
+                "period": 0,
+                "amount": 40000.0,
+                "signed_amount": 40000.0,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "working-capital",
+                "label": "Initial working capital",
+                "category": "working_capital",
+                "period": 0,
+                "amount": 15000.0,
+                "signed_amount": -15000.0,
+                "direction": "outflow"
+              }
+            ]
+          },
+          {
+            "period": 1,
+            "period_label": "Year 1",
+            "inflows": 4590.0,
+            "outflows": 12750.0,
+            "net_cash_flow": -8160.0,
+            "discounted_net_cash_flow": -7555.56,
+            "cumulative_cash_flow": -273160.0,
+            "cumulative_discounted_cash_flow": -272555.56,
+            "line_items": [
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 1,
+                "amount": 12750.0,
+                "signed_amount": -12750.0,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 1,
+                "amount": 4590.0,
+                "signed_amount": 4590.0,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 2,
+            "period_label": "Year 2",
+            "inflows": 56701.8,
+            "outflows": 13005.0,
+            "net_cash_flow": 43696.8,
+            "discounted_net_cash_flow": 37462.96,
+            "cumulative_cash_flow": -229463.2,
+            "cumulative_discounted_cash_flow": -235092.59,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 2,
+                "amount": 52020.0,
+                "signed_amount": 52020.0,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 2,
+                "amount": 13005.0,
+                "signed_amount": -13005.0,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 2,
+                "amount": 4681.8,
+                "signed_amount": 4681.8,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 3,
+            "period_label": "Year 3",
+            "inflows": 57835.84,
+            "outflows": 13265.1,
+            "net_cash_flow": 44570.74,
+            "discounted_net_cash_flow": 35381.69,
+            "cumulative_cash_flow": -184892.46,
+            "cumulative_discounted_cash_flow": -199710.91,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 3,
+                "amount": 53060.4,
+                "signed_amount": 53060.4,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 3,
+                "amount": 13265.1,
+                "signed_amount": -13265.1,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 3,
+                "amount": 4775.44,
+                "signed_amount": 4775.44,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 4,
+            "period_label": "Year 4",
+            "inflows": 58992.55,
+            "outflows": 13530.4,
+            "net_cash_flow": 45462.15,
+            "discounted_net_cash_flow": 33416.04,
+            "cumulative_cash_flow": -139430.31,
+            "cumulative_discounted_cash_flow": -166294.87,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 4,
+                "amount": 54121.61,
+                "signed_amount": 54121.61,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 4,
+                "amount": 13530.4,
+                "signed_amount": -13530.4,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 4,
+                "amount": 4870.94,
+                "signed_amount": 4870.94,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 5,
+            "period_label": "Year 5",
+            "inflows": 60172.4,
+            "outflows": 13801.01,
+            "net_cash_flow": 46371.39,
+            "discounted_net_cash_flow": 31559.59,
+            "cumulative_cash_flow": -93058.92,
+            "cumulative_discounted_cash_flow": -134735.28,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 5,
+                "amount": 55204.04,
+                "signed_amount": 55204.04,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 5,
+                "amount": 13801.01,
+                "signed_amount": -13801.01,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 5,
+                "amount": 4968.36,
+                "signed_amount": 4968.36,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 6,
+            "period_label": "Year 6",
+            "inflows": 61375.85,
+            "outflows": 14077.03,
+            "net_cash_flow": 47298.82,
+            "discounted_net_cash_flow": 29806.28,
+            "cumulative_cash_flow": -45760.1,
+            "cumulative_discounted_cash_flow": -104929.0,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 6,
+                "amount": 56308.12,
+                "signed_amount": 56308.12,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 6,
+                "amount": 14077.03,
+                "signed_amount": -14077.03,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 6,
+                "amount": 5067.73,
+                "signed_amount": 5067.73,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 7,
+            "period_label": "Year 7",
+            "inflows": 62603.37,
+            "outflows": 14358.57,
+            "net_cash_flow": 48244.8,
+            "discounted_net_cash_flow": 28150.38,
+            "cumulative_cash_flow": 2484.7,
+            "cumulative_discounted_cash_flow": -76778.62,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 7,
+                "amount": 57434.28,
+                "signed_amount": 57434.28,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 7,
+                "amount": 14358.57,
+                "signed_amount": -14358.57,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 7,
+                "amount": 5169.09,
+                "signed_amount": 5169.09,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 8,
+            "period_label": "Year 8",
+            "inflows": 63855.44,
+            "outflows": 14645.74,
+            "net_cash_flow": 49209.69,
+            "discounted_net_cash_flow": 26586.47,
+            "cumulative_cash_flow": 51694.39,
+            "cumulative_discounted_cash_flow": -50192.15,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 8,
+                "amount": 58582.97,
+                "signed_amount": 58582.97,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 8,
+                "amount": 14645.74,
+                "signed_amount": -14645.74,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 8,
+                "amount": 5272.47,
+                "signed_amount": 5272.47,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 9,
+            "period_label": "Year 9",
+            "inflows": 65132.54,
+            "outflows": 14938.66,
+            "net_cash_flow": 50193.89,
+            "discounted_net_cash_flow": 25109.44,
+            "cumulative_cash_flow": 101888.28,
+            "cumulative_discounted_cash_flow": -25082.71,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 9,
+                "amount": 59754.63,
+                "signed_amount": 59754.63,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 9,
+                "amount": 14938.66,
+                "signed_amount": -14938.66,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 9,
+                "amount": 5377.92,
+                "signed_amount": 5377.92,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 10,
+            "period_label": "Year 10",
+            "inflows": 101435.2,
+            "outflows": 20237.43,
+            "net_cash_flow": 81197.77,
+            "discounted_net_cash_flow": 37610.28,
+            "cumulative_cash_flow": 183086.05,
+            "cumulative_discounted_cash_flow": 12527.56,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 10,
+                "amount": 60949.72,
+                "signed_amount": 60949.72,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 10,
+                "amount": 15237.43,
+                "signed_amount": -15237.43,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 10,
+                "amount": 5485.47,
+                "signed_amount": 5485.47,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "residual",
+                "label": "Residual equipment value",
+                "category": "residual_value",
+                "period": 10,
+                "amount": 20000.0,
+                "signed_amount": 20000.0,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "working-capital-recovery",
+                "label": "Working capital recovery",
+                "category": "working_capital_recovery",
+                "period": 10,
+                "amount": 15000.0,
+                "signed_amount": 15000.0,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "decommission",
+                "label": "Decommissioning cost",
+                "category": "decommissioning_cost",
+                "period": 10,
+                "amount": 5000.0,
+                "signed_amount": -5000.0,
+                "direction": "outflow"
+              }
+            ]
+          }
+        ],
+        "metrics": {
+          "total_inflows": 632694.99,
+          "total_outflows": 449608.94,
+          "net_cash_flow": 183086.05,
+          "present_value_inflows": 412359.6,
+          "present_value_outflows": 399832.03,
+          "npv": 12527.56,
+          "simple_payback_periods": 6.9485,
+          "discounted_payback_periods": 9.6669,
+          "irr_percent_annual": 8.8431,
+          "irr_roots_percent_annual": [
+            8.8431
+          ],
+          "irr_status": "unique",
+          "mirr_percent_annual": 6.4509,
+          "profitability_index": 1.0313,
+          "benefit_cost_ratio": 0.9313,
+          "equivalent_annual_value": 1866.98,
+          "terminal_value": 30000.0,
+          "sign_changes": 1,
+          "metric_trace": [
+            {
+              "metric_id": "npv",
+              "label": "Net present value",
+              "value": 12527.56,
+              "included_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "grant",
+                "rebate",
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital",
+                "working_capital_recovery",
+                "other_benefit",
+                "other_cost"
+              ],
+              "excluded_categories": [],
+              "included_flow_ids": [
+                "capex",
+                "grant",
+                "working-capital",
+                "savings",
+                "operations",
+                "carbon-value",
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "\u03a3 net cash flow_t / (1 + periodic discount rate)^t",
+              "notes": "Includes every modeled cash-flow category."
+            },
+            {
+              "metric_id": "simple_payback",
+              "label": "Simple payback",
+              "value": 6.9485,
+              "included_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "grant",
+                "rebate",
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital",
+                "working_capital_recovery",
+                "other_benefit",
+                "other_cost"
+              ],
+              "excluded_categories": [],
+              "included_flow_ids": [
+                "capex",
+                "grant",
+                "working-capital",
+                "savings",
+                "operations",
+                "carbon-value",
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "First undiscounted cumulative crossing, interpolated within period",
+              "notes": "Does not discount cash flows after the recovery point."
+            },
+            {
+              "metric_id": "discounted_payback",
+              "label": "Discounted payback",
+              "value": 9.6669,
+              "included_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "grant",
+                "rebate",
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital",
+                "working_capital_recovery",
+                "other_benefit",
+                "other_cost"
+              ],
+              "excluded_categories": [],
+              "included_flow_ids": [
+                "capex",
+                "grant",
+                "working-capital",
+                "savings",
+                "operations",
+                "carbon-value",
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "First discounted cumulative crossing, interpolated within period",
+              "notes": "Uses the disclosed annual discount rate converted to the selected frequency."
+            },
+            {
+              "metric_id": "irr",
+              "label": "Internal rate of return",
+              "value": 8.8431,
+              "included_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "grant",
+                "rebate",
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital",
+                "working_capital_recovery",
+                "other_benefit",
+                "other_cost"
+              ],
+              "excluded_categories": [],
+              "included_flow_ids": [
+                "capex",
+                "grant",
+                "working-capital",
+                "savings",
+                "operations",
+                "carbon-value",
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "Rate where NPV equals zero",
+              "notes": "All detected roots are reported; multiple sign changes suppress a single IRR."
+            },
+            {
+              "metric_id": "mirr",
+              "label": "Modified internal rate of return",
+              "value": 6.4509,
+              "included_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "grant",
+                "rebate",
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital",
+                "working_capital_recovery",
+                "other_benefit",
+                "other_cost"
+              ],
+              "excluded_categories": [],
+              "included_flow_ids": [
+                "capex",
+                "grant",
+                "working-capital",
+                "savings",
+                "operations",
+                "carbon-value",
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "(FV positive flows / PV negative flows)^(1/n) - 1",
+              "notes": "Uses disclosed finance and reinvestment rates."
+            },
+            {
+              "metric_id": "profitability_index",
+              "label": "Profitability index",
+              "value": 1.0313,
+              "included_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "grant",
+                "rebate",
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital",
+                "working_capital_recovery",
+                "other_benefit",
+                "other_cost"
+              ],
+              "excluded_categories": [],
+              "included_flow_ids": [
+                "capex",
+                "grant",
+                "working-capital",
+                "savings",
+                "operations",
+                "carbon-value",
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "PV of all inflows / PV of all outflows",
+              "notes": "Includes grants and rebates as project inflows."
+            },
+            {
+              "metric_id": "benefit_cost_ratio",
+              "label": "Benefit-cost ratio",
+              "value": 0.9313,
+              "included_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital",
+                "working_capital_recovery",
+                "other_benefit",
+                "other_cost"
+              ],
+              "excluded_categories": [
+                "grant",
+                "rebate"
+              ],
+              "included_flow_ids": [
+                "capex",
+                "working-capital",
+                "savings",
+                "operations",
+                "carbon-value",
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "PV of benefits / PV of costs",
+              "notes": "Grants and rebates are excluded as transfers rather than treated as benefits."
+            },
+            {
+              "metric_id": "equivalent_annual_value",
+              "label": "Equivalent annual value",
+              "value": 1866.98,
+              "included_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "grant",
+                "rebate",
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital",
+                "working_capital_recovery",
+                "other_benefit",
+                "other_cost"
+              ],
+              "excluded_categories": [],
+              "included_flow_ids": [
+                "capex",
+                "grant",
+                "working-capital",
+                "savings",
+                "operations",
+                "carbon-value",
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "NPV \u00d7 annual capital-recovery factor",
+              "notes": "Expresses NPV as an equivalent annual amount over the analysis horizon."
+            },
+            {
+              "metric_id": "terminal_value",
+              "label": "Terminal value",
+              "value": 30000.0,
+              "included_categories": [
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital_recovery"
+              ],
+              "excluded_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "grant",
+                "rebate",
+                "working_capital",
+                "other_benefit",
+                "other_cost"
+              ],
+              "included_flow_ids": [
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "Residual value + working-capital recovery - decommissioning cost in final period",
+              "notes": "Reports only terminal categories occurring in the final analysis period."
+            }
+          ]
+        },
+        "interpretation": {
+          "basis_status": "matched",
+          "flags": [
+            "Nominal/real price and discount-rate bases match.",
+            "Cash-flow table reconciles across 11 periods including period 0."
+          ]
+        },
+        "methodology": {
+          "model_id": "catalyst-finance.cash-flow",
+          "model_version": "1.4.0",
+          "timing_policy": "period_zero_then_end_of_period",
+          "annual_to_period_rate_policy": "effective_rate_conversion",
+          "escalation_policy": "effective_annual_compounding",
+          "payback_policy": "linear_interpolation_within_crossing_period",
+          "irr_policy": "all_detected_roots_and_ambiguity_flag",
+          "transfer_policy": "grants_and_rebates_excluded_from_bcr"
+        },
+        "metadata": {
+          "generated_at": "2026-07-17T00:00:00+00:00",
+          "tool": "Catalyst Finance cash-flow engine",
+          "version": "1.4.0",
+          "disclaimer": "Educational software only; not financial, investment, legal, accounting, tax, fiduciary, procurement, funding, lending, or assurance advice."
+        }
+      }
+    },
+    {
+      "alternative_id": "base",
+      "label": "Base case",
+      "kind": "base",
+      "source": {
+        "workspace_id": "workspace_demo",
+        "scenario_id": "scenario_base",
+        "revision_id": "revision_base_003",
+        "revision_number": 3
+      },
+      "non_financial_caveats": [
+        "Requires coordinated building access"
+      ],
+      "metrics": {
+        "npv": 250183.43,
+        "net_cash_flow": 433798.68,
+        "discounted_payback_periods": 4.4361,
+        "irr_percent_annual": 24.3368,
+        "mirr_percent_annual": 12.755,
+        "profitability_index": 1.7164,
+        "benefit_cost_ratio": 1.6019,
+        "equivalent_annual_value": 33991.91
+      },
+      "publication": {
+        "contract_version": "1.4.0",
+        "model_id": "catalyst-finance.cash-flow",
+        "project": {
+          "name": "Building efficiency retrofit",
+          "category": "Capital project"
+        },
+        "context": {
+          "currency": "USD",
+          "price_basis": "nominal",
+          "discount_rate_basis": "nominal",
+          "period_frequency": "annual",
+          "time_basis": "end_of_period",
+          "rounding_policy": "half_up",
+          "monetary_decimals": 2,
+          "ratio_decimals": 4
+        },
+        "assumptions": {
+          "contract_version": "1.4.0",
+          "model_id": "catalyst-finance.cash-flow",
+          "project": {
+            "name": "Building efficiency retrofit",
+            "category": "Capital project"
+          },
+          "context": {
+            "currency": "USD",
+            "price_basis": "nominal",
+            "discount_rate_basis": "nominal",
+            "period_frequency": "annual",
+            "time_basis": "end_of_period",
+            "rounding_policy": "half_up",
+            "monetary_decimals": 2,
+            "ratio_decimals": 4
+          },
+          "analysis_horizon_periods": 10,
+          "discount_rate_percent_annual": 6.0,
+          "finance_rate_percent_annual": 6.0,
+          "reinvestment_rate_percent_annual": 3.0,
+          "lines": [
+            {
+              "flow_id": "capex",
+              "label": "Initial capital cost",
+              "category": "capital_cost",
+              "amount": 250000.0,
+              "start_period": 0,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "grant",
+              "label": "Implementation grant",
+              "category": "grant",
+              "amount": 40000.0,
+              "start_period": 0,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "working-capital",
+              "label": "Initial working capital",
+              "category": "working_capital",
+              "amount": 15000.0,
+              "start_period": 0,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "savings",
+              "label": "Annual energy savings",
+              "category": "savings",
+              "amount": 60000.0,
+              "start_period": 1,
+              "end_period": 10,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 2.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "operations",
+              "label": "Annual operating cost",
+              "category": "operating_cost",
+              "amount": 10000.0,
+              "start_period": 1,
+              "end_period": 10,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 2.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "carbon-value",
+              "label": "Annual carbon value",
+              "category": "other_benefit",
+              "amount": 6300.0,
+              "start_period": 1,
+              "end_period": 10,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 2.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "residual",
+              "label": "Residual equipment value",
+              "category": "residual_value",
+              "amount": 20000.0,
+              "start_period": 10,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "working-capital-recovery",
+              "label": "Working capital recovery",
+              "category": "working_capital_recovery",
+              "amount": 15000.0,
+              "start_period": 10,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "decommission",
+              "label": "Decommissioning cost",
+              "category": "decommissioning_cost",
+              "amount": 5000.0,
+              "start_period": 10,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            }
+          ]
+        },
+        "periods": [
+          {
+            "period": 0,
+            "period_label": "Period 0",
+            "inflows": 40000.0,
+            "outflows": 265000.0,
+            "net_cash_flow": -225000.0,
+            "discounted_net_cash_flow": -225000.0,
+            "cumulative_cash_flow": -225000.0,
+            "cumulative_discounted_cash_flow": -225000.0,
+            "line_items": [
+              {
+                "flow_id": "capex",
+                "label": "Initial capital cost",
+                "category": "capital_cost",
+                "period": 0,
+                "amount": 250000.0,
+                "signed_amount": -250000.0,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "grant",
+                "label": "Implementation grant",
+                "category": "grant",
+                "period": 0,
+                "amount": 40000.0,
+                "signed_amount": 40000.0,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "working-capital",
+                "label": "Initial working capital",
+                "category": "working_capital",
+                "period": 0,
+                "amount": 15000.0,
+                "signed_amount": -15000.0,
+                "direction": "outflow"
+              }
+            ]
+          },
+          {
+            "period": 1,
+            "period_label": "Year 1",
+            "inflows": 67626.0,
+            "outflows": 10200.0,
+            "net_cash_flow": 57426.0,
+            "discounted_net_cash_flow": 54175.47,
+            "cumulative_cash_flow": -167574.0,
+            "cumulative_discounted_cash_flow": -170824.53,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 1,
+                "amount": 61200.0,
+                "signed_amount": 61200.0,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 1,
+                "amount": 10200.0,
+                "signed_amount": -10200.0,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 1,
+                "amount": 6426.0,
+                "signed_amount": 6426.0,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 2,
+            "period_label": "Year 2",
+            "inflows": 68978.52,
+            "outflows": 10404.0,
+            "net_cash_flow": 58574.52,
+            "discounted_net_cash_flow": 52131.11,
+            "cumulative_cash_flow": -108999.48,
+            "cumulative_discounted_cash_flow": -118693.41,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 2,
+                "amount": 62424.0,
+                "signed_amount": 62424.0,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 2,
+                "amount": 10404.0,
+                "signed_amount": -10404.0,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 2,
+                "amount": 6554.52,
+                "signed_amount": 6554.52,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 3,
+            "period_label": "Year 3",
+            "inflows": 70358.09,
+            "outflows": 10612.08,
+            "net_cash_flow": 59746.01,
+            "discounted_net_cash_flow": 50163.9,
+            "cumulative_cash_flow": -49253.47,
+            "cumulative_discounted_cash_flow": -68529.51,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 3,
+                "amount": 63672.48,
+                "signed_amount": 63672.48,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 3,
+                "amount": 10612.08,
+                "signed_amount": -10612.08,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 3,
+                "amount": 6685.61,
+                "signed_amount": 6685.61,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 4,
+            "period_label": "Year 4",
+            "inflows": 71765.25,
+            "outflows": 10824.32,
+            "net_cash_flow": 60940.93,
+            "discounted_net_cash_flow": 48270.92,
+            "cumulative_cash_flow": 11687.46,
+            "cumulative_discounted_cash_flow": -20258.59,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 4,
+                "amount": 64945.93,
+                "signed_amount": 64945.93,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 4,
+                "amount": 10824.32,
+                "signed_amount": -10824.32,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 4,
+                "amount": 6819.32,
+                "signed_amount": 6819.32,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 5,
+            "period_label": "Year 5",
+            "inflows": 73200.56,
+            "outflows": 11040.81,
+            "net_cash_flow": 62159.75,
+            "discounted_net_cash_flow": 46449.38,
+            "cumulative_cash_flow": 73847.21,
+            "cumulative_discounted_cash_flow": 26190.79,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 5,
+                "amount": 66244.85,
+                "signed_amount": 66244.85,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 5,
+                "amount": 11040.81,
+                "signed_amount": -11040.81,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 5,
+                "amount": 6955.71,
+                "signed_amount": 6955.71,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 6,
+            "period_label": "Year 6",
+            "inflows": 74664.57,
+            "outflows": 11261.62,
+            "net_cash_flow": 63402.94,
+            "discounted_net_cash_flow": 44696.57,
+            "cumulative_cash_flow": 137250.15,
+            "cumulative_discounted_cash_flow": 70887.37,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 6,
+                "amount": 67569.75,
+                "signed_amount": 67569.75,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 6,
+                "amount": 11261.62,
+                "signed_amount": -11261.62,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 6,
+                "amount": 7094.82,
+                "signed_amount": 7094.82,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 7,
+            "period_label": "Year 7",
+            "inflows": 76157.86,
+            "outflows": 11486.86,
+            "net_cash_flow": 64671.0,
+            "discounted_net_cash_flow": 43009.91,
+            "cumulative_cash_flow": 201921.16,
+            "cumulative_discounted_cash_flow": 113897.28,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 7,
+                "amount": 68921.14,
+                "signed_amount": 68921.14,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 7,
+                "amount": 11486.86,
+                "signed_amount": -11486.86,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 7,
+                "amount": 7236.72,
+                "signed_amount": 7236.72,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 8,
+            "period_label": "Year 8",
+            "inflows": 77681.02,
+            "outflows": 11716.59,
+            "net_cash_flow": 65964.42,
+            "discounted_net_cash_flow": 41386.9,
+            "cumulative_cash_flow": 267885.58,
+            "cumulative_discounted_cash_flow": 155284.17,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 8,
+                "amount": 70299.56,
+                "signed_amount": 70299.56,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 8,
+                "amount": 11716.59,
+                "signed_amount": -11716.59,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 8,
+                "amount": 7381.45,
+                "signed_amount": 7381.45,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 9,
+            "period_label": "Year 9",
+            "inflows": 79234.64,
+            "outflows": 11950.93,
+            "net_cash_flow": 67283.71,
+            "discounted_net_cash_flow": 39825.13,
+            "cumulative_cash_flow": 335169.29,
+            "cumulative_discounted_cash_flow": 195109.3,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 9,
+                "amount": 71705.55,
+                "signed_amount": 71705.55,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 9,
+                "amount": 11950.93,
+                "signed_amount": -11950.93,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 9,
+                "amount": 7529.08,
+                "signed_amount": 7529.08,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 10,
+            "period_label": "Year 10",
+            "inflows": 115819.33,
+            "outflows": 17189.94,
+            "net_cash_flow": 98629.39,
+            "discounted_net_cash_flow": 55074.13,
+            "cumulative_cash_flow": 433798.68,
+            "cumulative_discounted_cash_flow": 250183.43,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 10,
+                "amount": 73139.67,
+                "signed_amount": 73139.67,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 10,
+                "amount": 12189.94,
+                "signed_amount": -12189.94,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 10,
+                "amount": 7679.66,
+                "signed_amount": 7679.66,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "residual",
+                "label": "Residual equipment value",
+                "category": "residual_value",
+                "period": 10,
+                "amount": 20000.0,
+                "signed_amount": 20000.0,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "working-capital-recovery",
+                "label": "Working capital recovery",
+                "category": "working_capital_recovery",
+                "period": 10,
+                "amount": 15000.0,
+                "signed_amount": 15000.0,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "decommission",
+                "label": "Decommissioning cost",
+                "category": "decommissioning_cost",
+                "period": 10,
+                "amount": 5000.0,
+                "signed_amount": -5000.0,
+                "direction": "outflow"
+              }
+            ]
+          }
+        ],
+        "metrics": {
+          "total_inflows": 815485.83,
+          "total_outflows": 381687.15,
+          "net_cash_flow": 433798.68,
+          "present_value_inflows": 599401.98,
+          "present_value_outflows": 349218.54,
+          "npv": 250183.43,
+          "simple_payback_periods": 3.8082,
+          "discounted_payback_periods": 4.4361,
+          "irr_percent_annual": 24.3368,
+          "irr_roots_percent_annual": [
+            24.3368
+          ],
+          "irr_status": "unique",
+          "mirr_percent_annual": 12.755,
+          "profitability_index": 1.7164,
+          "benefit_cost_ratio": 1.6019,
+          "equivalent_annual_value": 33991.91,
+          "terminal_value": 30000.0,
+          "sign_changes": 1,
+          "metric_trace": [
+            {
+              "metric_id": "npv",
+              "label": "Net present value",
+              "value": 250183.43,
+              "included_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "grant",
+                "rebate",
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital",
+                "working_capital_recovery",
+                "other_benefit",
+                "other_cost"
+              ],
+              "excluded_categories": [],
+              "included_flow_ids": [
+                "capex",
+                "grant",
+                "working-capital",
+                "savings",
+                "operations",
+                "carbon-value",
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "\u03a3 net cash flow_t / (1 + periodic discount rate)^t",
+              "notes": "Includes every modeled cash-flow category."
+            },
+            {
+              "metric_id": "simple_payback",
+              "label": "Simple payback",
+              "value": 3.8082,
+              "included_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "grant",
+                "rebate",
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital",
+                "working_capital_recovery",
+                "other_benefit",
+                "other_cost"
+              ],
+              "excluded_categories": [],
+              "included_flow_ids": [
+                "capex",
+                "grant",
+                "working-capital",
+                "savings",
+                "operations",
+                "carbon-value",
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "First undiscounted cumulative crossing, interpolated within period",
+              "notes": "Does not discount cash flows after the recovery point."
+            },
+            {
+              "metric_id": "discounted_payback",
+              "label": "Discounted payback",
+              "value": 4.4361,
+              "included_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "grant",
+                "rebate",
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital",
+                "working_capital_recovery",
+                "other_benefit",
+                "other_cost"
+              ],
+              "excluded_categories": [],
+              "included_flow_ids": [
+                "capex",
+                "grant",
+                "working-capital",
+                "savings",
+                "operations",
+                "carbon-value",
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "First discounted cumulative crossing, interpolated within period",
+              "notes": "Uses the disclosed annual discount rate converted to the selected frequency."
+            },
+            {
+              "metric_id": "irr",
+              "label": "Internal rate of return",
+              "value": 24.3368,
+              "included_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "grant",
+                "rebate",
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital",
+                "working_capital_recovery",
+                "other_benefit",
+                "other_cost"
+              ],
+              "excluded_categories": [],
+              "included_flow_ids": [
+                "capex",
+                "grant",
+                "working-capital",
+                "savings",
+                "operations",
+                "carbon-value",
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "Rate where NPV equals zero",
+              "notes": "All detected roots are reported; multiple sign changes suppress a single IRR."
+            },
+            {
+              "metric_id": "mirr",
+              "label": "Modified internal rate of return",
+              "value": 12.755,
+              "included_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "grant",
+                "rebate",
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital",
+                "working_capital_recovery",
+                "other_benefit",
+                "other_cost"
+              ],
+              "excluded_categories": [],
+              "included_flow_ids": [
+                "capex",
+                "grant",
+                "working-capital",
+                "savings",
+                "operations",
+                "carbon-value",
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "(FV positive flows / PV negative flows)^(1/n) - 1",
+              "notes": "Uses disclosed finance and reinvestment rates."
+            },
+            {
+              "metric_id": "profitability_index",
+              "label": "Profitability index",
+              "value": 1.7164,
+              "included_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "grant",
+                "rebate",
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital",
+                "working_capital_recovery",
+                "other_benefit",
+                "other_cost"
+              ],
+              "excluded_categories": [],
+              "included_flow_ids": [
+                "capex",
+                "grant",
+                "working-capital",
+                "savings",
+                "operations",
+                "carbon-value",
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "PV of all inflows / PV of all outflows",
+              "notes": "Includes grants and rebates as project inflows."
+            },
+            {
+              "metric_id": "benefit_cost_ratio",
+              "label": "Benefit-cost ratio",
+              "value": 1.6019,
+              "included_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital",
+                "working_capital_recovery",
+                "other_benefit",
+                "other_cost"
+              ],
+              "excluded_categories": [
+                "grant",
+                "rebate"
+              ],
+              "included_flow_ids": [
+                "capex",
+                "working-capital",
+                "savings",
+                "operations",
+                "carbon-value",
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "PV of benefits / PV of costs",
+              "notes": "Grants and rebates are excluded as transfers rather than treated as benefits."
+            },
+            {
+              "metric_id": "equivalent_annual_value",
+              "label": "Equivalent annual value",
+              "value": 33991.91,
+              "included_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "grant",
+                "rebate",
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital",
+                "working_capital_recovery",
+                "other_benefit",
+                "other_cost"
+              ],
+              "excluded_categories": [],
+              "included_flow_ids": [
+                "capex",
+                "grant",
+                "working-capital",
+                "savings",
+                "operations",
+                "carbon-value",
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "NPV \u00d7 annual capital-recovery factor",
+              "notes": "Expresses NPV as an equivalent annual amount over the analysis horizon."
+            },
+            {
+              "metric_id": "terminal_value",
+              "label": "Terminal value",
+              "value": 30000.0,
+              "included_categories": [
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital_recovery"
+              ],
+              "excluded_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "grant",
+                "rebate",
+                "working_capital",
+                "other_benefit",
+                "other_cost"
+              ],
+              "included_flow_ids": [
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "Residual value + working-capital recovery - decommissioning cost in final period",
+              "notes": "Reports only terminal categories occurring in the final analysis period."
+            }
+          ]
+        },
+        "interpretation": {
+          "basis_status": "matched",
+          "flags": [
+            "Nominal/real price and discount-rate bases match.",
+            "Cash-flow table reconciles across 11 periods including period 0."
+          ]
+        },
+        "methodology": {
+          "model_id": "catalyst-finance.cash-flow",
+          "model_version": "1.4.0",
+          "timing_policy": "period_zero_then_end_of_period",
+          "annual_to_period_rate_policy": "effective_rate_conversion",
+          "escalation_policy": "effective_annual_compounding",
+          "payback_policy": "linear_interpolation_within_crossing_period",
+          "irr_policy": "all_detected_roots_and_ambiguity_flag",
+          "transfer_policy": "grants_and_rebates_excluded_from_bcr"
+        },
+        "metadata": {
+          "generated_at": "2026-07-17T00:00:00+00:00",
+          "tool": "Catalyst Finance cash-flow engine",
+          "version": "1.4.0",
+          "disclaimer": "Educational software only; not financial, investment, legal, accounting, tax, fiduciary, procurement, funding, lending, or assurance advice."
+        }
+      }
+    },
+    {
+      "alternative_id": "upside",
+      "label": "Upside case",
+      "kind": "upside",
+      "source": {
+        "workspace_id": "workspace_demo",
+        "scenario_id": "scenario_upside",
+        "revision_id": "revision_upside_003",
+        "revision_number": 3
+      },
+      "non_financial_caveats": [
+        "Grant award is not yet confirmed",
+        "Aggressive savings verification required"
+      ],
+      "metrics": {
+        "npv": 431606.08,
+        "net_cash_flow": 627394.44,
+        "discounted_payback_periods": 2.8508,
+        "irr_percent_annual": 38.2648,
+        "mirr_percent_annual": 17.191,
+        "profitability_index": 2.3248,
+        "benefit_cost_ratio": 2.1406,
+        "equivalent_annual_value": 55894.96
+      },
+      "publication": {
+        "contract_version": "1.4.0",
+        "model_id": "catalyst-finance.cash-flow",
+        "project": {
+          "name": "Building efficiency retrofit",
+          "category": "Capital project"
+        },
+        "context": {
+          "currency": "USD",
+          "price_basis": "nominal",
+          "discount_rate_basis": "nominal",
+          "period_frequency": "annual",
+          "time_basis": "end_of_period",
+          "rounding_policy": "half_up",
+          "monetary_decimals": 2,
+          "ratio_decimals": 4
+        },
+        "assumptions": {
+          "contract_version": "1.4.0",
+          "model_id": "catalyst-finance.cash-flow",
+          "project": {
+            "name": "Building efficiency retrofit",
+            "category": "Capital project"
+          },
+          "context": {
+            "currency": "USD",
+            "price_basis": "nominal",
+            "discount_rate_basis": "nominal",
+            "period_frequency": "annual",
+            "time_basis": "end_of_period",
+            "rounding_policy": "half_up",
+            "monetary_decimals": 2,
+            "ratio_decimals": 4
+          },
+          "analysis_horizon_periods": 10,
+          "discount_rate_percent_annual": 5.0,
+          "finance_rate_percent_annual": 5.0,
+          "reinvestment_rate_percent_annual": 3.0,
+          "lines": [
+            {
+              "flow_id": "capex",
+              "label": "Initial capital cost",
+              "category": "capital_cost",
+              "amount": 235000.0,
+              "start_period": 0,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "grant",
+              "label": "Implementation grant",
+              "category": "grant",
+              "amount": 60000.0,
+              "start_period": 0,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "working-capital",
+              "label": "Initial working capital",
+              "category": "working_capital",
+              "amount": 15000.0,
+              "start_period": 0,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "savings",
+              "label": "Annual energy savings",
+              "category": "savings",
+              "amount": 70000.0,
+              "start_period": 1,
+              "end_period": 10,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 2.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "operations",
+              "label": "Annual operating cost",
+              "category": "operating_cost",
+              "amount": 8500.0,
+              "start_period": 1,
+              "end_period": 10,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 2.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "carbon-value",
+              "label": "Annual carbon value",
+              "category": "other_benefit",
+              "amount": 9000.0,
+              "start_period": 1,
+              "end_period": 10,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 2.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "residual",
+              "label": "Residual equipment value",
+              "category": "residual_value",
+              "amount": 20000.0,
+              "start_period": 10,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "working-capital-recovery",
+              "label": "Working capital recovery",
+              "category": "working_capital_recovery",
+              "amount": 15000.0,
+              "start_period": 10,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            },
+            {
+              "flow_id": "decommission",
+              "label": "Decommissioning cost",
+              "category": "decommissioning_cost",
+              "amount": 5000.0,
+              "start_period": 10,
+              "end_period": null,
+              "interval_periods": 1,
+              "escalation_rate_percent_annual": 0.0,
+              "price_basis": "nominal",
+              "notes": ""
+            }
+          ]
+        },
+        "periods": [
+          {
+            "period": 0,
+            "period_label": "Period 0",
+            "inflows": 60000.0,
+            "outflows": 250000.0,
+            "net_cash_flow": -190000.0,
+            "discounted_net_cash_flow": -190000.0,
+            "cumulative_cash_flow": -190000.0,
+            "cumulative_discounted_cash_flow": -190000.0,
+            "line_items": [
+              {
+                "flow_id": "capex",
+                "label": "Initial capital cost",
+                "category": "capital_cost",
+                "period": 0,
+                "amount": 235000.0,
+                "signed_amount": -235000.0,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "grant",
+                "label": "Implementation grant",
+                "category": "grant",
+                "period": 0,
+                "amount": 60000.0,
+                "signed_amount": 60000.0,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "working-capital",
+                "label": "Initial working capital",
+                "category": "working_capital",
+                "period": 0,
+                "amount": 15000.0,
+                "signed_amount": -15000.0,
+                "direction": "outflow"
+              }
+            ]
+          },
+          {
+            "period": 1,
+            "period_label": "Year 1",
+            "inflows": 80580.0,
+            "outflows": 8670.0,
+            "net_cash_flow": 71910.0,
+            "discounted_net_cash_flow": 68485.71,
+            "cumulative_cash_flow": -118090.0,
+            "cumulative_discounted_cash_flow": -121514.29,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 1,
+                "amount": 71400.0,
+                "signed_amount": 71400.0,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 1,
+                "amount": 8670.0,
+                "signed_amount": -8670.0,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 1,
+                "amount": 9180.0,
+                "signed_amount": 9180.0,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 2,
+            "period_label": "Year 2",
+            "inflows": 82191.6,
+            "outflows": 8843.4,
+            "net_cash_flow": 73348.2,
+            "discounted_net_cash_flow": 66528.98,
+            "cumulative_cash_flow": -44741.8,
+            "cumulative_discounted_cash_flow": -54985.31,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 2,
+                "amount": 72828.0,
+                "signed_amount": 72828.0,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 2,
+                "amount": 8843.4,
+                "signed_amount": -8843.4,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 2,
+                "amount": 9363.6,
+                "signed_amount": 9363.6,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 3,
+            "period_label": "Year 3",
+            "inflows": 83835.43,
+            "outflows": 9020.27,
+            "net_cash_flow": 74815.16,
+            "discounted_net_cash_flow": 64628.15,
+            "cumulative_cash_flow": 30073.36,
+            "cumulative_discounted_cash_flow": 9642.85,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 3,
+                "amount": 74284.56,
+                "signed_amount": 74284.56,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 3,
+                "amount": 9020.27,
+                "signed_amount": -9020.27,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 3,
+                "amount": 9550.87,
+                "signed_amount": 9550.87,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 4,
+            "period_label": "Year 4",
+            "inflows": 85512.14,
+            "outflows": 9200.67,
+            "net_cash_flow": 76311.47,
+            "discounted_net_cash_flow": 62781.63,
+            "cumulative_cash_flow": 106384.83,
+            "cumulative_discounted_cash_flow": 72424.48,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 4,
+                "amount": 75770.25,
+                "signed_amount": 75770.25,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 4,
+                "amount": 9200.67,
+                "signed_amount": -9200.67,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 4,
+                "amount": 9741.89,
+                "signed_amount": 9741.89,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 5,
+            "period_label": "Year 5",
+            "inflows": 87222.38,
+            "outflows": 9384.69,
+            "net_cash_flow": 77837.7,
+            "discounted_net_cash_flow": 60987.87,
+            "cumulative_cash_flow": 184222.53,
+            "cumulative_discounted_cash_flow": 133412.35,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 5,
+                "amount": 77285.66,
+                "signed_amount": 77285.66,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 5,
+                "amount": 9384.69,
+                "signed_amount": -9384.69,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 5,
+                "amount": 9936.73,
+                "signed_amount": 9936.73,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 6,
+            "period_label": "Year 6",
+            "inflows": 88966.83,
+            "outflows": 9572.38,
+            "net_cash_flow": 79394.45,
+            "discounted_net_cash_flow": 59245.36,
+            "cumulative_cash_flow": 263616.98,
+            "cumulative_discounted_cash_flow": 192657.71,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 6,
+                "amount": 78831.37,
+                "signed_amount": 78831.37,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 6,
+                "amount": 9572.38,
+                "signed_amount": -9572.38,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 6,
+                "amount": 10135.46,
+                "signed_amount": 10135.46,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 7,
+            "period_label": "Year 7",
+            "inflows": 90746.17,
+            "outflows": 9763.83,
+            "net_cash_flow": 80982.34,
+            "discounted_net_cash_flow": 57552.64,
+            "cumulative_cash_flow": 344599.32,
+            "cumulative_discounted_cash_flow": 250210.35,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 7,
+                "amount": 80408.0,
+                "signed_amount": 80408.0,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 7,
+                "amount": 9763.83,
+                "signed_amount": -9763.83,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 7,
+                "amount": 10338.17,
+                "signed_amount": 10338.17,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 8,
+            "period_label": "Year 8",
+            "inflows": 92561.09,
+            "outflows": 9959.1,
+            "net_cash_flow": 82601.99,
+            "discounted_net_cash_flow": 55908.28,
+            "cumulative_cash_flow": 427201.3,
+            "cumulative_discounted_cash_flow": 306118.62,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 8,
+                "amount": 82016.16,
+                "signed_amount": 82016.16,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 8,
+                "amount": 9959.1,
+                "signed_amount": -9959.1,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 8,
+                "amount": 10544.93,
+                "signed_amount": 10544.93,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 9,
+            "period_label": "Year 9",
+            "inflows": 94412.31,
+            "outflows": 10158.29,
+            "net_cash_flow": 84254.03,
+            "discounted_net_cash_flow": 54310.9,
+            "cumulative_cash_flow": 511455.33,
+            "cumulative_discounted_cash_flow": 360429.52,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 9,
+                "amount": 83656.48,
+                "signed_amount": 83656.48,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 9,
+                "amount": 10158.29,
+                "signed_amount": -10158.29,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 9,
+                "amount": 10755.83,
+                "signed_amount": 10755.83,
+                "direction": "inflow"
+              }
+            ]
+          },
+          {
+            "period": 10,
+            "period_label": "Year 10",
+            "inflows": 131300.56,
+            "outflows": 15361.45,
+            "net_cash_flow": 115939.11,
+            "discounted_net_cash_flow": 71176.55,
+            "cumulative_cash_flow": 627394.44,
+            "cumulative_discounted_cash_flow": 431606.08,
+            "line_items": [
+              {
+                "flow_id": "savings",
+                "label": "Annual energy savings",
+                "category": "savings",
+                "period": 10,
+                "amount": 85329.61,
+                "signed_amount": 85329.61,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "operations",
+                "label": "Annual operating cost",
+                "category": "operating_cost",
+                "period": 10,
+                "amount": 10361.45,
+                "signed_amount": -10361.45,
+                "direction": "outflow"
+              },
+              {
+                "flow_id": "carbon-value",
+                "label": "Annual carbon value",
+                "category": "other_benefit",
+                "period": 10,
+                "amount": 10970.95,
+                "signed_amount": 10970.95,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "residual",
+                "label": "Residual equipment value",
+                "category": "residual_value",
+                "period": 10,
+                "amount": 20000.0,
+                "signed_amount": 20000.0,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "working-capital-recovery",
+                "label": "Working capital recovery",
+                "category": "working_capital_recovery",
+                "period": 10,
+                "amount": 15000.0,
+                "signed_amount": 15000.0,
+                "direction": "inflow"
+              },
+              {
+                "flow_id": "decommission",
+                "label": "Decommissioning cost",
+                "category": "decommissioning_cost",
+                "period": 10,
+                "amount": 5000.0,
+                "signed_amount": -5000.0,
+                "direction": "outflow"
+              }
+            ]
+          }
+        ],
+        "metrics": {
+          "total_inflows": 977328.52,
+          "total_outflows": 349934.08,
+          "net_cash_flow": 627394.44,
+          "present_value_inflows": 757400.52,
+          "present_value_outflows": 325794.44,
+          "npv": 431606.08,
+          "simple_payback_periods": 2.598,
+          "discounted_payback_periods": 2.8508,
+          "irr_percent_annual": 38.2648,
+          "irr_roots_percent_annual": [
+            38.2648
+          ],
+          "irr_status": "unique",
+          "mirr_percent_annual": 17.191,
+          "profitability_index": 2.3248,
+          "benefit_cost_ratio": 2.1406,
+          "equivalent_annual_value": 55894.96,
+          "terminal_value": 30000.0,
+          "sign_changes": 1,
+          "metric_trace": [
+            {
+              "metric_id": "npv",
+              "label": "Net present value",
+              "value": 431606.08,
+              "included_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "grant",
+                "rebate",
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital",
+                "working_capital_recovery",
+                "other_benefit",
+                "other_cost"
+              ],
+              "excluded_categories": [],
+              "included_flow_ids": [
+                "capex",
+                "grant",
+                "working-capital",
+                "savings",
+                "operations",
+                "carbon-value",
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "\u03a3 net cash flow_t / (1 + periodic discount rate)^t",
+              "notes": "Includes every modeled cash-flow category."
+            },
+            {
+              "metric_id": "simple_payback",
+              "label": "Simple payback",
+              "value": 2.598,
+              "included_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "grant",
+                "rebate",
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital",
+                "working_capital_recovery",
+                "other_benefit",
+                "other_cost"
+              ],
+              "excluded_categories": [],
+              "included_flow_ids": [
+                "capex",
+                "grant",
+                "working-capital",
+                "savings",
+                "operations",
+                "carbon-value",
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "First undiscounted cumulative crossing, interpolated within period",
+              "notes": "Does not discount cash flows after the recovery point."
+            },
+            {
+              "metric_id": "discounted_payback",
+              "label": "Discounted payback",
+              "value": 2.8508,
+              "included_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "grant",
+                "rebate",
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital",
+                "working_capital_recovery",
+                "other_benefit",
+                "other_cost"
+              ],
+              "excluded_categories": [],
+              "included_flow_ids": [
+                "capex",
+                "grant",
+                "working-capital",
+                "savings",
+                "operations",
+                "carbon-value",
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "First discounted cumulative crossing, interpolated within period",
+              "notes": "Uses the disclosed annual discount rate converted to the selected frequency."
+            },
+            {
+              "metric_id": "irr",
+              "label": "Internal rate of return",
+              "value": 38.2648,
+              "included_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "grant",
+                "rebate",
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital",
+                "working_capital_recovery",
+                "other_benefit",
+                "other_cost"
+              ],
+              "excluded_categories": [],
+              "included_flow_ids": [
+                "capex",
+                "grant",
+                "working-capital",
+                "savings",
+                "operations",
+                "carbon-value",
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "Rate where NPV equals zero",
+              "notes": "All detected roots are reported; multiple sign changes suppress a single IRR."
+            },
+            {
+              "metric_id": "mirr",
+              "label": "Modified internal rate of return",
+              "value": 17.191,
+              "included_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "grant",
+                "rebate",
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital",
+                "working_capital_recovery",
+                "other_benefit",
+                "other_cost"
+              ],
+              "excluded_categories": [],
+              "included_flow_ids": [
+                "capex",
+                "grant",
+                "working-capital",
+                "savings",
+                "operations",
+                "carbon-value",
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "(FV positive flows / PV negative flows)^(1/n) - 1",
+              "notes": "Uses disclosed finance and reinvestment rates."
+            },
+            {
+              "metric_id": "profitability_index",
+              "label": "Profitability index",
+              "value": 2.3248,
+              "included_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "grant",
+                "rebate",
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital",
+                "working_capital_recovery",
+                "other_benefit",
+                "other_cost"
+              ],
+              "excluded_categories": [],
+              "included_flow_ids": [
+                "capex",
+                "grant",
+                "working-capital",
+                "savings",
+                "operations",
+                "carbon-value",
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "PV of all inflows / PV of all outflows",
+              "notes": "Includes grants and rebates as project inflows."
+            },
+            {
+              "metric_id": "benefit_cost_ratio",
+              "label": "Benefit-cost ratio",
+              "value": 2.1406,
+              "included_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital",
+                "working_capital_recovery",
+                "other_benefit",
+                "other_cost"
+              ],
+              "excluded_categories": [
+                "grant",
+                "rebate"
+              ],
+              "included_flow_ids": [
+                "capex",
+                "working-capital",
+                "savings",
+                "operations",
+                "carbon-value",
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "PV of benefits / PV of costs",
+              "notes": "Grants and rebates are excluded as transfers rather than treated as benefits."
+            },
+            {
+              "metric_id": "equivalent_annual_value",
+              "label": "Equivalent annual value",
+              "value": 55894.96,
+              "included_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "grant",
+                "rebate",
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital",
+                "working_capital_recovery",
+                "other_benefit",
+                "other_cost"
+              ],
+              "excluded_categories": [],
+              "included_flow_ids": [
+                "capex",
+                "grant",
+                "working-capital",
+                "savings",
+                "operations",
+                "carbon-value",
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "NPV \u00d7 annual capital-recovery factor",
+              "notes": "Expresses NPV as an equivalent annual amount over the analysis horizon."
+            },
+            {
+              "metric_id": "terminal_value",
+              "label": "Terminal value",
+              "value": 30000.0,
+              "included_categories": [
+                "residual_value",
+                "decommissioning_cost",
+                "working_capital_recovery"
+              ],
+              "excluded_categories": [
+                "capital_cost",
+                "operating_cost",
+                "revenue",
+                "savings",
+                "avoided_cost",
+                "grant",
+                "rebate",
+                "working_capital",
+                "other_benefit",
+                "other_cost"
+              ],
+              "included_flow_ids": [
+                "residual",
+                "working-capital-recovery",
+                "decommission"
+              ],
+              "formula": "Residual value + working-capital recovery - decommissioning cost in final period",
+              "notes": "Reports only terminal categories occurring in the final analysis period."
+            }
+          ]
+        },
+        "interpretation": {
+          "basis_status": "matched",
+          "flags": [
+            "Nominal/real price and discount-rate bases match.",
+            "Cash-flow table reconciles across 11 periods including period 0."
+          ]
+        },
+        "methodology": {
+          "model_id": "catalyst-finance.cash-flow",
+          "model_version": "1.4.0",
+          "timing_policy": "period_zero_then_end_of_period",
+          "annual_to_period_rate_policy": "effective_rate_conversion",
+          "escalation_policy": "effective_annual_compounding",
+          "payback_policy": "linear_interpolation_within_crossing_period",
+          "irr_policy": "all_detected_roots_and_ambiguity_flag",
+          "transfer_policy": "grants_and_rebates_excluded_from_bcr"
+        },
+        "metadata": {
+          "generated_at": "2026-07-17T00:00:00+00:00",
+          "tool": "Catalyst Finance cash-flow engine",
+          "version": "1.4.0",
+          "disclaimer": "Educational software only; not financial, investment, legal, accounting, tax, fiduciary, procurement, funding, lending, or assurance advice."
+        }
+      }
+    }
+  ],
+  "aligned_metrics": [
+    {
+      "metric_id": "npv",
+      "label": "Net present value",
+      "objective": "maximize",
+      "baseline_value": 250183.43,
+      "values": [
+        {
+          "alternative_id": "downside",
+          "label": "Downside case",
+          "value": 12527.56,
+          "delta_from_baseline": -237655.87,
+          "rank": 3
+        },
+        {
+          "alternative_id": "base",
+          "label": "Base case",
+          "value": 250183.43,
+          "delta_from_baseline": 0.0,
+          "rank": 2
+        },
+        {
+          "alternative_id": "upside",
+          "label": "Upside case",
+          "value": 431606.08,
+          "delta_from_baseline": 181422.65,
+          "rank": 1
+        }
+      ]
+    },
+    {
+      "metric_id": "discounted_payback_periods",
+      "label": "Discounted payback",
+      "objective": "minimize",
+      "baseline_value": 4.4361,
+      "values": [
+        {
+          "alternative_id": "downside",
+          "label": "Downside case",
+          "value": 9.6669,
+          "delta_from_baseline": 5.2308,
+          "rank": 3
+        },
+        {
+          "alternative_id": "base",
+          "label": "Base case",
+          "value": 4.4361,
+          "delta_from_baseline": 0.0,
+          "rank": 2
+        },
+        {
+          "alternative_id": "upside",
+          "label": "Upside case",
+          "value": 2.8508,
+          "delta_from_baseline": -1.5853,
+          "rank": 1
+        }
+      ]
+    },
+    {
+      "metric_id": "mirr_percent_annual",
+      "label": "Modified internal rate of return",
+      "objective": "maximize",
+      "baseline_value": 12.755,
+      "values": [
+        {
+          "alternative_id": "downside",
+          "label": "Downside case",
+          "value": 6.4509,
+          "delta_from_baseline": -6.3041,
+          "rank": 3
+        },
+        {
+          "alternative_id": "base",
+          "label": "Base case",
+          "value": 12.755,
+          "delta_from_baseline": 0.0,
+          "rank": 2
+        },
+        {
+          "alternative_id": "upside",
+          "label": "Upside case",
+          "value": 17.191,
+          "delta_from_baseline": 4.436,
+          "rank": 1
+        }
+      ]
+    },
+    {
+      "metric_id": "benefit_cost_ratio",
+      "label": "Benefit-cost ratio",
+      "objective": "maximize",
+      "baseline_value": 1.6019,
+      "values": [
+        {
+          "alternative_id": "downside",
+          "label": "Downside case",
+          "value": 0.9313,
+          "delta_from_baseline": -0.6706,
+          "rank": 3
+        },
+        {
+          "alternative_id": "base",
+          "label": "Base case",
+          "value": 1.6019,
+          "delta_from_baseline": 0.0,
+          "rank": 2
+        },
+        {
+          "alternative_id": "upside",
+          "label": "Upside case",
+          "value": 2.1406,
+          "delta_from_baseline": 0.5387,
+          "rank": 1
+        }
+      ]
+    }
+  ],
+  "rankings": [
+    {
+      "alternative_id": "upside",
+      "label": "Upside case",
+      "rank": 1,
+      "weighted_score": 100.0,
+      "dominates": [
+        "base",
+        "downside"
+      ],
+      "dominated_by": [],
+      "financial_only": true
+    },
+    {
+      "alternative_id": "base",
+      "label": "Base case",
+      "rank": 2,
+      "weighted_score": 60.9249,
+      "dominates": [
+        "downside"
+      ],
+      "dominated_by": [
+        "upside"
+      ],
+      "financial_only": true
+    },
+    {
+      "alternative_id": "downside",
+      "label": "Downside case",
+      "rank": 3,
+      "weighted_score": 0.0,
+      "dominates": [],
+      "dominated_by": [
+        "base",
+        "upside"
+      ],
+      "financial_only": true
+    }
+  ],
+  "difference_explanations": [
+    {
+      "alternative_id": "downside",
+      "relative_to_alternative_id": "base",
+      "npv_delta": -237655.87,
+      "top_drivers": [
+        {
+          "path": "line:savings:amount",
+          "label": "Annual energy savings amount",
+          "baseline_value": 60000.0,
+          "alternative_value": 50000.0,
+          "npv_impact": -81426.57
+        },
+        {
+          "path": "line:savings:start_period",
+          "label": "Annual energy savings start period",
+          "baseline_value": 1,
+          "alternative_value": 2,
+          "npv_impact": -57735.85
+        },
+        {
+          "path": "discount_rate_percent_annual",
+          "label": "Discount rate",
+          "baseline_value": 6.0,
+          "alternative_value": 8.0,
+          "npv_impact": -44595.26
+        },
+        {
+          "path": "line:capex:amount",
+          "label": "Initial capital cost amount",
+          "baseline_value": 250000.0,
+          "alternative_value": 290000.0,
+          "npv_impact": -40000.0
+        },
+        {
+          "path": "line:operations:amount",
+          "label": "Annual operating cost amount",
+          "baseline_value": 10000.0,
+          "alternative_value": 12500.0,
+          "npv_impact": -20356.64
+        },
+        {
+          "path": "line:carbon-value:amount",
+          "label": "Annual carbon value amount",
+          "baseline_value": 6300.0,
+          "alternative_value": 4500.0,
+          "npv_impact": -14656.78
+        },
+        {
+          "path": "finance_rate_percent_annual",
+          "label": "Finance rate",
+          "baseline_value": 6.0,
+          "alternative_value": 8.0,
+          "npv_impact": 0.0
+        }
+      ],
+      "non_financial_caveats": [
+        "Higher disruption risk",
+        "Benefits begin one year later"
+      ],
+      "notes": [
+        "Driver impacts change one assumption at a time from the baseline; they are not additive when assumptions interact."
+      ]
+    },
+    {
+      "alternative_id": "upside",
+      "relative_to_alternative_id": "base",
+      "npv_delta": 181422.65,
+      "top_drivers": [
+        {
+          "path": "line:savings:amount",
+          "label": "Annual energy savings amount",
+          "baseline_value": 60000.0,
+          "alternative_value": 70000.0,
+          "npv_impact": 81426.57
+        },
+        {
+          "path": "discount_rate_percent_annual",
+          "label": "Discount rate",
+          "baseline_value": 6.0,
+          "alternative_value": 5.0,
+          "npv_impact": 24929.32
+        },
+        {
+          "path": "line:carbon-value:amount",
+          "label": "Annual carbon value amount",
+          "baseline_value": 6300.0,
+          "alternative_value": 9000.0,
+          "npv_impact": 21985.18
+        },
+        {
+          "path": "line:grant:amount",
+          "label": "Implementation grant amount",
+          "baseline_value": 40000.0,
+          "alternative_value": 60000.0,
+          "npv_impact": 20000.0
+        },
+        {
+          "path": "line:capex:amount",
+          "label": "Initial capital cost amount",
+          "baseline_value": 250000.0,
+          "alternative_value": 235000.0,
+          "npv_impact": 15000.0
+        },
+        {
+          "path": "line:operations:amount",
+          "label": "Annual operating cost amount",
+          "baseline_value": 10000.0,
+          "alternative_value": 8500.0,
+          "npv_impact": 12213.99
+        },
+        {
+          "path": "finance_rate_percent_annual",
+          "label": "Finance rate",
+          "baseline_value": 6.0,
+          "alternative_value": 5.0,
+          "npv_impact": 0.0
+        }
+      ],
+      "non_financial_caveats": [
+        "Grant award is not yet confirmed",
+        "Aggressive savings verification required"
+      ],
+      "notes": [
+        "Driver impacts change one assumption at a time from the baseline; they are not additive when assumptions interact."
+      ]
+    }
+  ],
+  "one_way_sensitivities": [
+    {
+      "sensitivity_id": "base-savings",
+      "alternative_id": "base",
+      "metric_id": "npv",
+      "parameter": {
+        "parameter_id": "annual-savings",
+        "label": "Annual energy savings",
+        "path": "line:savings:amount",
+        "operation": "set",
+        "value_kind": "continuous",
+        "unit": "USD/year"
+      },
+      "base_parameter_value": 60000.0,
+      "base_metric_value": 250183.43,
+      "points": [
+        {
+          "parameter_value": 40000.0,
+          "metric_value": 87330.29,
+          "baseline_metric_value": 87330.29,
+          "delta_from_baseline": 0.0
+        },
+        {
+          "parameter_value": 50000.0,
+          "metric_value": 168756.86,
+          "baseline_metric_value": 168756.86,
+          "delta_from_baseline": 0.0
+        },
+        {
+          "parameter_value": 60000.0,
+          "metric_value": 250183.43,
+          "baseline_metric_value": 250183.43,
+          "delta_from_baseline": 0.0
+        },
+        {
+          "parameter_value": 70000.0,
+          "metric_value": 331610.0,
+          "baseline_metric_value": 331610.0,
+          "delta_from_baseline": 0.0
+        },
+        {
+          "parameter_value": 80000.0,
+          "metric_value": 413036.57,
+          "baseline_metric_value": 413036.57,
+          "delta_from_baseline": 0.0
+        }
+      ],
+      "reproducibility_key": "4c72caee4582738647647674c6ea29bcf6099734ac2f229bceb50f55336f3748"
+    },
+    {
+      "sensitivity_id": "base-discount-rate",
+      "alternative_id": "base",
+      "metric_id": "npv",
+      "parameter": {
+        "parameter_id": "discount-rate",
+        "label": "Annual discount rate",
+        "path": "discount_rate_percent_annual",
+        "operation": "set",
+        "value_kind": "continuous",
+        "unit": "percent/year"
+      },
+      "base_parameter_value": 6.0,
+      "base_metric_value": 250183.43,
+      "points": [
+        {
+          "parameter_value": 2.0,
+          "metric_value": 362610.45,
+          "baseline_metric_value": 362610.45,
+          "delta_from_baseline": 0.0
+        },
+        {
+          "parameter_value": 4.0,
+          "metric_value": 302025.67,
+          "baseline_metric_value": 302025.67,
+          "delta_from_baseline": 0.0
+        },
+        {
+          "parameter_value": 6.0,
+          "metric_value": 250183.43,
+          "baseline_metric_value": 250183.43,
+          "delta_from_baseline": 0.0
+        },
+        {
+          "parameter_value": 8.0,
+          "metric_value": 205588.17,
+          "baseline_metric_value": 205588.17,
+          "delta_from_baseline": 0.0
+        },
+        {
+          "parameter_value": 10.0,
+          "metric_value": 167031.41,
+          "baseline_metric_value": 167031.41,
+          "delta_from_baseline": 0.0
+        },
+        {
+          "parameter_value": 12.0,
+          "metric_value": 133531.58,
+          "baseline_metric_value": 133531.58,
+          "delta_from_baseline": 0.0
+        }
+      ],
+      "reproducibility_key": "ad5fbc1209e6384767451bd1d115d051c9c307b7df94d809df2916b5b5182566"
+    },
+    {
+      "sensitivity_id": "upside-capex",
+      "alternative_id": "upside",
+      "metric_id": "npv",
+      "parameter": {
+        "parameter_id": "capital-cost",
+        "label": "Initial capital cost",
+        "path": "line:capex:amount",
+        "operation": "set",
+        "value_kind": "continuous",
+        "unit": "USD"
+      },
+      "base_parameter_value": 235000.0,
+      "base_metric_value": 431606.08,
+      "points": [
+        {
+          "parameter_value": 200000.0,
+          "metric_value": 466606.08,
+          "baseline_metric_value": 300183.43,
+          "delta_from_baseline": 166422.65
+        },
+        {
+          "parameter_value": 225000.0,
+          "metric_value": 441606.08,
+          "baseline_metric_value": 275183.43,
+          "delta_from_baseline": 166422.65
+        },
+        {
+          "parameter_value": 250000.0,
+          "metric_value": 416606.08,
+          "baseline_metric_value": 250183.43,
+          "delta_from_baseline": 166422.65
+        },
+        {
+          "parameter_value": 275000.0,
+          "metric_value": 391606.08,
+          "baseline_metric_value": 225183.43,
+          "delta_from_baseline": 166422.65
+        },
+        {
+          "parameter_value": 300000.0,
+          "metric_value": 366606.08,
+          "baseline_metric_value": 200183.43,
+          "delta_from_baseline": 166422.65
+        }
+      ],
+      "reproducibility_key": "0fa13795ee324955bb8600b08d13cccb7f0024e50f82ef0890ce02dd48c527d8"
+    },
+    {
+      "sensitivity_id": "downside-delay",
+      "alternative_id": "downside",
+      "metric_id": "npv",
+      "parameter": {
+        "parameter_id": "implementation-delay",
+        "label": "Implementation delay",
+        "path": "all",
+        "operation": "shift_periods",
+        "value_kind": "integer",
+        "unit": "periods"
+      },
+      "base_parameter_value": 0.0,
+      "base_metric_value": 12527.56,
+      "points": [
+        {
+          "parameter_value": 0.0,
+          "metric_value": 12527.56,
+          "baseline_metric_value": 250183.43,
+          "delta_from_baseline": -237655.87
+        },
+        {
+          "parameter_value": 1.0,
+          "metric_value": -24515.65,
+          "baseline_metric_value": 196007.96,
+          "delta_from_baseline": -220523.61
+        },
+        {
+          "parameter_value": 2.0,
+          "metric_value": -59500.9,
+          "baseline_metric_value": 143876.85,
+          "delta_from_baseline": -203377.75
+        },
+        {
+          "parameter_value": 3.0,
+          "metric_value": -92542.53,
+          "baseline_metric_value": 93712.94,
+          "delta_from_baseline": -186255.47
+        }
+      ],
+      "reproducibility_key": "084e75dd74be060f1cab07c5dd5315eb4d9a46ebc8380154b784613e7772d082"
+    },
+    {
+      "sensitivity_id": "base-carbon",
+      "alternative_id": "base",
+      "metric_id": "npv",
+      "parameter": {
+        "parameter_id": "carbon-value",
+        "label": "Annual carbon value",
+        "path": "line:carbon-value:amount",
+        "operation": "set",
+        "value_kind": "continuous",
+        "unit": "USD/year"
+      },
+      "base_parameter_value": 6300.0,
+      "base_metric_value": 250183.43,
+      "points": [
+        {
+          "parameter_value": 0.0,
+          "metric_value": 198884.69,
+          "baseline_metric_value": 198884.69,
+          "delta_from_baseline": 0.0
+        },
+        {
+          "parameter_value": 3000.0,
+          "metric_value": 223312.66,
+          "baseline_metric_value": 223312.66,
+          "delta_from_baseline": 0.0
+        },
+        {
+          "parameter_value": 6300.0,
+          "metric_value": 250183.43,
+          "baseline_metric_value": 250183.43,
+          "delta_from_baseline": 0.0
+        },
+        {
+          "parameter_value": 9000.0,
+          "metric_value": 272168.61,
+          "baseline_metric_value": 272168.61,
+          "delta_from_baseline": 0.0
+        },
+        {
+          "parameter_value": 12000.0,
+          "metric_value": 296596.58,
+          "baseline_metric_value": 296596.58,
+          "delta_from_baseline": 0.0
+        }
+      ],
+      "reproducibility_key": "d92d7401162e06b31eca3eeccc108b16e7b844a026751f63426304e742248fec"
+    }
+  ],
+  "two_way_sensitivities": [
+    {
+      "sensitivity_id": "savings-vs-rate",
+      "alternative_id": "base",
+      "metric_id": "npv",
+      "row_parameter": {
+        "parameter_id": "annual-savings",
+        "label": "Annual energy savings",
+        "path": "line:savings:amount",
+        "operation": "set",
+        "value_kind": "continuous",
+        "unit": "USD/year"
+      },
+      "column_parameter": {
+        "parameter_id": "discount-rate",
+        "label": "Annual discount rate",
+        "path": "discount_rate_percent_annual",
+        "operation": "set",
+        "value_kind": "continuous",
+        "unit": "percent/year"
+      },
+      "cells": [
+        {
+          "row_value": 45000.0,
+          "column_value": 4.0,
+          "metric_value": 167010.02
+        },
+        {
+          "row_value": 45000.0,
+          "column_value": 6.0,
+          "metric_value": 128043.58
+        },
+        {
+          "row_value": 45000.0,
+          "column_value": 8.0,
+          "metric_value": 94568.89
+        },
+        {
+          "row_value": 45000.0,
+          "column_value": 10.0,
+          "metric_value": 65664.15
+        },
+        {
+          "row_value": 60000.0,
+          "column_value": 4.0,
+          "metric_value": 302025.67
+        },
+        {
+          "row_value": 60000.0,
+          "column_value": 6.0,
+          "metric_value": 250183.43
+        },
+        {
+          "row_value": 60000.0,
+          "column_value": 8.0,
+          "metric_value": 205588.17
+        },
+        {
+          "row_value": 60000.0,
+          "column_value": 10.0,
+          "metric_value": 167031.41
+        },
+        {
+          "row_value": 75000.0,
+          "column_value": 4.0,
+          "metric_value": 437041.32
+        },
+        {
+          "row_value": 75000.0,
+          "column_value": 6.0,
+          "metric_value": 372323.29
+        },
+        {
+          "row_value": 75000.0,
+          "column_value": 8.0,
+          "metric_value": 316607.45
+        },
+        {
+          "row_value": 75000.0,
+          "column_value": 10.0,
+          "metric_value": 268398.67
+        }
+      ],
+      "reproducibility_key": "7dd544267e2a982a46ac50ae78e937d7b6b734825e9c82917528c19b041a11c5"
+    }
+  ],
+  "break_even_results": [
+    {
+      "threshold_id": "savings-break-even",
+      "alternative_id": "base",
+      "metric_id": "npv",
+      "parameter": {
+        "parameter_id": "annual-savings",
+        "label": "Annual energy savings",
+        "path": "line:savings:amount",
+        "operation": "set",
+        "value_kind": "continuous",
+        "unit": "USD/year"
+      },
+      "target_value": 0.0,
+      "status": "found",
+      "threshold_value": 29274.963379,
+      "metric_value": -0.0,
+      "crossings": [
+        {
+          "lower_value": 29000.0,
+          "upper_value": 30000.0,
+          "threshold_value": 29274.963379,
+          "metric_value": -0.0
+        }
+      ],
+      "iterations": 115,
+      "reproducibility_key": "42714bbfe37e3aaa6b5f7179ff91cc4d9933dfd6fa194d64b88f3b6a268159e9",
+      "notes": []
+    },
+    {
+      "threshold_id": "capital-cost-threshold",
+      "alternative_id": "base",
+      "metric_id": "npv",
+      "parameter": {
+        "parameter_id": "capital-cost",
+        "label": "Initial capital cost",
+        "path": "line:capex:amount",
+        "operation": "set",
+        "value_kind": "continuous",
+        "unit": "USD"
+      },
+      "target_value": 0.0,
+      "status": "found",
+      "threshold_value": 500183.433533,
+      "metric_value": -0.0,
+      "crossings": [
+        {
+          "lower_value": 496000.0,
+          "upper_value": 502000.0,
+          "threshold_value": 500183.433533,
+          "metric_value": -0.0
+        }
+      ],
+      "iterations": 119,
+      "reproducibility_key": "8ddf76956577a03419867de88e5587ccffa506088e305892ba1301043d573bd6",
+      "notes": []
+    },
+    {
+      "threshold_id": "delay-threshold",
+      "alternative_id": "base",
+      "metric_id": "npv",
+      "parameter": {
+        "parameter_id": "implementation-delay",
+        "label": "Implementation delay",
+        "path": "all",
+        "operation": "shift_periods",
+        "value_kind": "integer",
+        "unit": "periods"
+      },
+      "target_value": 0.0,
+      "status": "found",
+      "threshold_value": 5.0,
+      "metric_value": -1007.36,
+      "crossings": [
+        {
+          "lower_value": 4.0,
+          "upper_value": 5.0,
+          "threshold_value": 5.0,
+          "metric_value": -1007.36
+        }
+      ],
+      "iterations": 11,
+      "reproducibility_key": "d5d8285f76ac23e156205bca6829822d228a2f1bdfbe53ffa7dfecbc410275ef",
+      "notes": []
+    }
+  ],
+  "tornado": [
+    {
+      "sensitivity_id": "base-savings",
+      "alternative_id": "base",
+      "parameter_id": "annual-savings",
+      "label": "Annual energy savings",
+      "low_value": 40000.0,
+      "high_value": 80000.0,
+      "low_impact": -162853.14,
+      "high_impact": 162853.14,
+      "absolute_swing": 325706.28
+    },
+    {
+      "sensitivity_id": "base-discount-rate",
+      "alternative_id": "base",
+      "parameter_id": "discount-rate",
+      "label": "Annual discount rate",
+      "low_value": 2.0,
+      "high_value": 12.0,
+      "low_impact": 112427.02,
+      "high_impact": -116651.85,
+      "absolute_swing": 229078.87
+    },
+    {
+      "sensitivity_id": "downside-delay",
+      "alternative_id": "downside",
+      "parameter_id": "implementation-delay",
+      "label": "Implementation delay",
+      "low_value": 0.0,
+      "high_value": 3.0,
+      "low_impact": 0.0,
+      "high_impact": -105070.09,
+      "absolute_swing": 105070.09
+    },
+    {
+      "sensitivity_id": "upside-capex",
+      "alternative_id": "upside",
+      "parameter_id": "capital-cost",
+      "label": "Initial capital cost",
+      "low_value": 200000.0,
+      "high_value": 300000.0,
+      "low_impact": 35000.0,
+      "high_impact": -65000.0,
+      "absolute_swing": 100000.0
+    },
+    {
+      "sensitivity_id": "base-carbon",
+      "alternative_id": "base",
+      "parameter_id": "carbon-value",
+      "label": "Annual carbon value",
+      "low_value": 0.0,
+      "high_value": 12000.0,
+      "low_impact": -51298.74,
+      "high_impact": 46413.15,
+      "absolute_swing": 97711.89
+    }
+  ],
+  "crossover_points": [],
+  "methodology": {
+    "model_id": "catalyst-finance.comparison",
+    "model_version": "1.4.0",
+    "ranking_policy": "weighted_min_max_normalization",
+    "dominance_policy": "pareto_financial_metrics_only",
+    "sensitivity_policy": "deterministic_parameter_substitution",
+    "break_even_policy": "bounded_scan_then_bisection",
+    "difference_policy": "one_assumption_at_a_time_npv_impacts"
+  },
+  "metadata": {
+    "generated_at": "2026-07-17T00:00:00+00:00",
+    "tool": "Catalyst Finance comparison engine",
+    "version": "1.4.0",
+    "disclaimer": "Catalyst Finance provides transparent analytical support, not investment, accounting, tax, legal, or fiduciary advice. Rankings are financial-model outputs and do not replace governance review or non-financial judgment."
+  }
+}

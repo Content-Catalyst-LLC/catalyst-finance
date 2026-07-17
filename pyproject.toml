@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "catalyst-finance"
-version = "1.3.0"
+version = "1.4.0"
 description = "Transparent financial scenario and decision-support tools for Sustainable Catalyst."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -45,6 +45,7 @@ catalyst-finance-elasticity = "catalyst_finance.elasticity:main"
 catalyst-finance-api = "catalyst_finance.serve:main"
 catalyst-finance-workspace = "catalyst_finance.workspace_cli:main"
 catalyst-finance-cashflow = "catalyst_finance.cashflow_cli:main"
+catalyst-finance-compare = "catalyst_finance.comparison_cli:main"
 
 [project.urls]
 Repository = "https://github.com/Content-Catalyst-LLC/catalyst-finance"
@@ -90,4 +91,7 @@ files = [
   "catalyst_finance/workspace.py",
   "catalyst_finance/workspace_cli.py",
   "catalyst_finance/workspace_models.py",
+  "catalyst_finance/comparison.py",
+  "catalyst_finance/comparison_cli.py",
+  "catalyst_finance/comparison_models.py",
 ]

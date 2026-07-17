@@ -185,3 +185,56 @@
     grid-template-columns: 1fr;
   }
 }
+
+.scfin-comparison {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(20, 20, 20, 0.16);
+}
+
+.scfin-comparison__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-bottom: 1rem;
+}
+
+.scfin-comparison__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.scfin-comparison__panel {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid rgba(20, 20, 20, 0.14);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.scfin-comparison__panel h4 {
+  margin: 0 0 0.75rem;
+}
+
+.scfin-comparison__panel canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.scfin-comparison__panel ul {
+  margin: 0.75rem 0 0;
+  padding-left: 1.15rem;
+}
+
+.scfin-comparison__table th:first-child,
+.scfin-comparison__table td:first-child {
+  text-align: left;
+}
+
+@media (max-width: 920px) {
+  .scfin-comparison__grid {
+    grid-template-columns: 1fr;
+  }
+}

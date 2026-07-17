@@ -1,6 +1,13 @@
 # Changelog
 
-## 1.3.0 — 2026-07-17
+## 1.4.0 — 2026-07-17
+
+- Added revision-linked alternative comparison with aligned metrics, deltas, weighted rankings, and financial Pareto dominance.
+- Added one-way and two-way sensitivity, bounded break-even search, tornado data, crossover detection, and assumption-driver explanations.
+- Added versioned workspace comparison artifacts, comparison API/CLI surfaces, four export formats, browser parity, and a WordPress comparison studio.
+- Added v1.3.0 screening and cash-flow migration support.
+
+## 1.4.0 — 2026-07-17
 
 - Added monthly, quarterly, and annual period cash-flow contracts and calculation services.
 - Added phased and irregular capital, operating, benefit, grant, rebate, working-capital, residual, and decommissioning schedules.

@@ -1,0 +1,44 @@
+record_type,metric_or_analysis_id,alternative_id,label,value,delta_or_score,rank_or_status,source_revision_id
+aligned_metric,npv,downside,Downside case,12527.56,-237655.87,3,revision_downside_003
+aligned_metric,npv,base,Base case,250183.43,0.0,2,revision_base_003
+aligned_metric,npv,upside,Upside case,431606.08,181422.65,1,revision_upside_003
+aligned_metric,discounted_payback_periods,downside,Downside case,9.6669,5.2308,3,revision_downside_003
+aligned_metric,discounted_payback_periods,base,Base case,4.4361,0.0,2,revision_base_003
+aligned_metric,discounted_payback_periods,upside,Upside case,2.8508,-1.5853,1,revision_upside_003
+aligned_metric,mirr_percent_annual,downside,Downside case,6.4509,-6.3041,3,revision_downside_003
+aligned_metric,mirr_percent_annual,base,Base case,12.755,0.0,2,revision_base_003
+aligned_metric,mirr_percent_annual,upside,Upside case,17.191,4.436,1,revision_upside_003
+aligned_metric,benefit_cost_ratio,downside,Downside case,0.9313,-0.6706,3,revision_downside_003
+aligned_metric,benefit_cost_ratio,base,Base case,1.6019,0.0,2,revision_base_003
+aligned_metric,benefit_cost_ratio,upside,Upside case,2.1406,0.5387,1,revision_upside_003
+ranking,weighted_score,upside,Upside case,100.0,,1,revision_upside_003
+ranking,weighted_score,base,Base case,60.9249,,2,revision_base_003
+ranking,weighted_score,downside,Downside case,0.0,,3,revision_downside_003
+one_way_sensitivity,base-savings,base,Annual energy savings,87330.29,40000.0,,revision_base_003
+one_way_sensitivity,base-savings,base,Annual energy savings,168756.86,50000.0,,revision_base_003
+one_way_sensitivity,base-savings,base,Annual energy savings,250183.43,60000.0,,revision_base_003
+one_way_sensitivity,base-savings,base,Annual energy savings,331610.0,70000.0,,revision_base_003
+one_way_sensitivity,base-savings,base,Annual energy savings,413036.57,80000.0,,revision_base_003
+one_way_sensitivity,base-discount-rate,base,Annual discount rate,362610.45,2.0,,revision_base_003
+one_way_sensitivity,base-discount-rate,base,Annual discount rate,302025.67,4.0,,revision_base_003
+one_way_sensitivity,base-discount-rate,base,Annual discount rate,250183.43,6.0,,revision_base_003
+one_way_sensitivity,base-discount-rate,base,Annual discount rate,205588.17,8.0,,revision_base_003
+one_way_sensitivity,base-discount-rate,base,Annual discount rate,167031.41,10.0,,revision_base_003
+one_way_sensitivity,base-discount-rate,base,Annual discount rate,133531.58,12.0,,revision_base_003
+one_way_sensitivity,upside-capex,upside,Initial capital cost,466606.08,200000.0,,revision_upside_003
+one_way_sensitivity,upside-capex,upside,Initial capital cost,441606.08,225000.0,,revision_upside_003
+one_way_sensitivity,upside-capex,upside,Initial capital cost,416606.08,250000.0,,revision_upside_003
+one_way_sensitivity,upside-capex,upside,Initial capital cost,391606.08,275000.0,,revision_upside_003
+one_way_sensitivity,upside-capex,upside,Initial capital cost,366606.08,300000.0,,revision_upside_003
+one_way_sensitivity,downside-delay,downside,Implementation delay,12527.56,0.0,,revision_downside_003
+one_way_sensitivity,downside-delay,downside,Implementation delay,-24515.65,1.0,,revision_downside_003
+one_way_sensitivity,downside-delay,downside,Implementation delay,-59500.9,2.0,,revision_downside_003
+one_way_sensitivity,downside-delay,downside,Implementation delay,-92542.53,3.0,,revision_downside_003
+one_way_sensitivity,base-carbon,base,Annual carbon value,198884.69,0.0,,revision_base_003
+one_way_sensitivity,base-carbon,base,Annual carbon value,223312.66,3000.0,,revision_base_003
+one_way_sensitivity,base-carbon,base,Annual carbon value,250183.43,6300.0,,revision_base_003
+one_way_sensitivity,base-carbon,base,Annual carbon value,272168.61,9000.0,,revision_base_003
+one_way_sensitivity,base-carbon,base,Annual carbon value,296596.58,12000.0,,revision_base_003
+break_even,savings-break-even,base,Annual energy savings,29274.963379,-0.0,found,revision_base_003
+break_even,capital-cost-threshold,base,Initial capital cost,500183.433533,-0.0,found,revision_base_003
+break_even,delay-threshold,base,Implementation delay,5.0,-1007.36,found,revision_base_003

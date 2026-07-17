@@ -4,19 +4,19 @@ Catalyst Finance is an open-source financial scenario, cash-flow, and decision-s
 
 > Educational software only. This repository does not provide investment, legal, tax, accounting, fiduciary, assurance, lending, procurement, funding, or financial advice.
 
-## v1.3.0 — Cash-Flow Modeling and Capital Budgeting
+## v1.4.0 — Scenario Comparison, Sensitivity, and Break-Even
 
-This release adds a defensible period-by-period model while retaining the annual screening model and persistent v1.2.0 workspace.
+Catalyst Finance now compares complete, revision-linked cash-flow alternatives. The comparison model provides aligned metrics and deltas, weighted rankings, financial Pareto dominance, one-way and two-way sensitivity, bounded break-even thresholds, tornado and crossover data, assumption-driver explanations, and JSON/CSV/Markdown/printable-HTML exports.
 
-- Monthly, quarterly, and annual cash-flow schedules.
-- Initial and phased capital costs; recurring and irregular operating costs; revenue, savings, avoided costs, grants, rebates, residual value, decommissioning, working capital, and recovery.
-- Nominal/real basis matching and effective annual-to-period discount conversion.
-- Recurrence intervals and annual escalation.
-- NPV, simple and discounted payback, IRR roots and ambiguity status, MIRR, profitability index, benefit-cost ratio, equivalent annual value, cumulative cash flow, and terminal value.
-- Metric traces listing included and excluded categories, source flow IDs, formulas, and notes.
-- Conventional, irregular, negative, zero-cost, and multiple-sign-change benchmark fixtures.
-- Cash-flow CLI, FastAPI endpoint, workspace revision persistence, exact Python/JavaScript parity, and a WordPress capital-budgeting studio with tables and charts.
-- Screening migrations from v1.0.0, v1.1.0, and v1.2.0.
+```bash
+catalyst-finance-compare data/sample_comparison.json \
+  --json-output outputs/comparison.json \
+  --csv-output outputs/comparison.csv \
+  --markdown-output outputs/comparison.md \
+  --html-output outputs/comparison.html
+```
+
+The API endpoint is `POST /api/v1/compare`. The WordPress shortcode remains `[catalyst_finance_workspace]` and now includes the comparison studio.
 
 ## Install for development
 
@@ -116,7 +116,7 @@ Packages:
 
 ```text
 dist/catalyst-finance.zip
-dist/catalyst-finance-demo-v1.3.0.zip
+dist/catalyst-finance-demo-v1.4.0.zip
 ```
 
 Shortcodes:

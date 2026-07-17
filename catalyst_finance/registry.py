@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 
 from .cashflow_models import CASHFLOW_CONTRACT_VERSION, CASHFLOW_MODEL_ID
+from .comparison_models import COMPARISON_CONTRACT_VERSION, COMPARISON_MODEL_ID
 from .models import CONTRACT_VERSION, METHODOLOGY_VERSION, MODEL_ID
 
 MODEL_REGISTRY: dict[str, dict[str, Any]] = {
@@ -47,6 +48,24 @@ MODEL_REGISTRY: dict[str, dict[str, Any]] = {
             "working-capital recovery",
             "terminal value",
             "metric-to-cash-flow traceability",
+        ],
+    },
+    COMPARISON_MODEL_ID: {
+        "model_id": COMPARISON_MODEL_ID,
+        "name": "Catalyst Finance scenario comparison and sensitivity model",
+        "model_version": COMPARISON_CONTRACT_VERSION,
+        "contract_version": COMPARISON_CONTRACT_VERSION,
+        "status": "stable",
+        "period_frequency": ["monthly", "quarterly", "annual"],
+        "capabilities": [
+            "three-or-more alternative comparison",
+            "aligned metrics, deltas, and rankings",
+            "Pareto dominance checks",
+            "one-way and two-way sensitivity",
+            "break-even and threshold search",
+            "tornado and crossover data",
+            "assumption-driver explanations",
+            "revision traceability",
         ],
     },
 }

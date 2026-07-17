@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Catalyst Finance Demo
  * Description: Persistent finance workspace with screening and capital-budgeting models for Sustainable Catalyst.
- * Version: 1.3.0
+ * Version: 1.4.0
  * Author: Content Catalyst LLC
  * License: MIT
  */
@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('CATALYST_FINANCE_DEMO_VERSION', '1.3.0');
+define('CATALYST_FINANCE_DEMO_VERSION', '1.4.0');
 
 function catalyst_finance_demo_assets() {
     $base = plugin_dir_url(__FILE__);
@@ -36,9 +36,16 @@ function catalyst_finance_demo_assets() {
         true
     );
     wp_enqueue_script(
+        'catalyst-finance-comparison-engine',
+        $base . 'assets/catalyst-finance-comparison-engine.js',
+        array('catalyst-finance-cashflow-engine'),
+        CATALYST_FINANCE_DEMO_VERSION,
+        true
+    );
+    wp_enqueue_script(
         'catalyst-finance-demo',
         $base . 'assets/catalyst-finance-demo.js',
-        array('catalyst-finance-engine', 'catalyst-finance-cashflow-engine'),
+        array('catalyst-finance-engine', 'catalyst-finance-cashflow-engine', 'catalyst-finance-comparison-engine'),
         CATALYST_FINANCE_DEMO_VERSION,
         true
     );
@@ -56,7 +63,7 @@ function catalyst_finance_demo_shortcode($atts = array()) {
     ?>
     <section class="scfin-demo" data-scfin-demo data-scfin-mode="<?php echo esc_attr($mode); ?>">
       <div class="scfin-demo__header">
-        <p class="scfin-demo__eyebrow">Catalyst Finance v1.3.0</p>
+        <p class="scfin-demo__eyebrow">Catalyst Finance v1.4.0</p>
         <h3><?php echo $mode === 'public' ? 'Explore a finance scenario' : 'Persistent finance scenario workspace'; ?></h3>
         <p><?php echo $mode === 'public'
             ? 'Review a read-only example using the canonical finance screening model.'
@@ -285,6 +292,50 @@ function catalyst_finance_demo_shortcode($atts = array()) {
         </div>
       </section>
 
+
+      <section class="scfin-comparison" data-scfin-comparison-studio>
+        <div class="scfin-capital__header">
+          <p class="scfin-demo__eyebrow">Alternative analysis</p>
+          <h3>Scenario comparison and sensitivity studio</h3>
+          <p>Compare downside, base, and upside revisions using aligned metrics, weighted rankings, financial dominance, sensitivity ranges, and reproducible break-even thresholds.</p>
+        </div>
+        <div class="scfin-comparison__actions">
+          <button type="button" data-scfin-comparison-refresh>Refresh comparison</button>
+          <button type="button" data-scfin-comparison-download>Download comparison bundle</button>
+        </div>
+        <div class="scfin-comparison__grid">
+          <div class="scfin-comparison__panel">
+            <h4>Ranked alternatives</h4>
+            <div class="scfin-capital__table-wrap">
+              <table class="scfin-capital__table scfin-comparison__table">
+                <thead><tr><th>Rank</th><th>Alternative</th><th>Score</th><th>NPV</th><th>Discounted payback</th><th>Dominance</th></tr></thead>
+                <tbody data-scfin-comparison-ranking></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="scfin-comparison__panel">
+            <h4>Aligned metric deltas</h4>
+            <div class="scfin-capital__table-wrap">
+              <table class="scfin-capital__table scfin-comparison__table">
+                <thead><tr><th>Metric</th><th>Downside</th><th>Base</th><th>Upside</th></tr></thead>
+                <tbody data-scfin-comparison-metrics></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="scfin-comparison__panel">
+            <h4>Tornado sensitivity</h4>
+            <canvas width="760" height="300" data-scfin-comparison-tornado aria-label="Sensitivity tornado chart"></canvas>
+            <ul data-scfin-comparison-tornado-list></ul>
+          </div>
+          <div class="scfin-comparison__panel">
+            <h4>Break-even thresholds</h4>
+            <ul data-scfin-comparison-thresholds></ul>
+            <h4>Non-financial caveats</h4>
+            <ul data-scfin-comparison-caveats></ul>
+          </div>
+        </div>
+        <details class="scfin-demo__details"><summary>Versioned comparison artifact</summary><pre data-scfin-comparison-json></pre></details>
+      </section>
       <p class="scfin-demo__disclaimer">Educational scenario tool only. Not financial, investment, tax, accounting, legal, assurance, or fiduciary advice. Browser workspace data remains in this browser until exported or deleted.</p>
     </section>
     <?php

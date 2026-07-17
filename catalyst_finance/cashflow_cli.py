@@ -11,7 +11,8 @@ from typing import Any
 from pydantic import ValidationError
 
 from .cashflow import evaluate_cash_flow
-from .cashflow_models import CashFlowPublication, CashFlowScenarioInput
+from .cashflow_migration import normalize_cash_flow
+from .cashflow_models import CashFlowPublication
 from .models import validation_issues
 
 
@@ -97,7 +98,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     try:
         raw: Any = json.loads(args.input.read_text(encoding="utf-8"))
-        scenario = CashFlowScenarioInput.model_validate(raw)
+        scenario = normalize_cash_flow(raw)
         publication = evaluate_cash_flow(scenario)
     except (OSError, json.JSONDecodeError, ValidationError, ValueError) as exc:
         print(

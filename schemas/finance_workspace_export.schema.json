@@ -1,5 +1,74 @@
 {
   "$defs": {
+    "BreakEvenDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "threshold_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Threshold Id",
+          "type": "string"
+        },
+        "alternative_id": {
+          "title": "Alternative Id",
+          "type": "string"
+        },
+        "metric_id": {
+          "default": "npv",
+          "enum": [
+            "npv",
+            "net_cash_flow",
+            "discounted_payback_periods",
+            "irr_percent_annual",
+            "mirr_percent_annual",
+            "profitability_index",
+            "benefit_cost_ratio",
+            "equivalent_annual_value"
+          ],
+          "title": "Metric Id",
+          "type": "string"
+        },
+        "parameter": {
+          "$ref": "#/$defs/SensitivityParameter"
+        },
+        "target_value": {
+          "default": 0,
+          "title": "Target Value",
+          "type": "number"
+        },
+        "lower_bound": {
+          "title": "Lower Bound",
+          "type": "number"
+        },
+        "upper_bound": {
+          "title": "Upper Bound",
+          "type": "number"
+        },
+        "tolerance": {
+          "default": 0.0001,
+          "exclusiveMinimum": 0,
+          "title": "Tolerance",
+          "type": "number"
+        },
+        "max_iterations": {
+          "default": 100,
+          "maximum": 500,
+          "minimum": 10,
+          "title": "Max Iterations",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "threshold_id",
+        "alternative_id",
+        "parameter",
+        "lower_bound",
+        "upper_bound"
+      ],
+      "title": "BreakEvenDefinition",
+      "type": "object"
+    },
     "CashFlowContext": {
       "additionalProperties": false,
       "properties": {
@@ -170,8 +239,8 @@
       "additionalProperties": false,
       "properties": {
         "contract_version": {
-          "const": "1.3.0",
-          "default": "1.3.0",
+          "const": "1.4.0",
+          "default": "1.4.0",
           "title": "Contract Version",
           "type": "string"
         },
@@ -233,6 +302,187 @@
         "lines"
       ],
       "title": "CashFlowScenarioInput",
+      "type": "object"
+    },
+    "ComparisonAlternative": {
+      "additionalProperties": false,
+      "properties": {
+        "alternative_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Alternative Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "kind": {
+          "default": "custom",
+          "enum": [
+            "base",
+            "downside",
+            "upside",
+            "custom"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/SourceRevision"
+        },
+        "scenario": {
+          "$ref": "#/$defs/CashFlowScenarioInput"
+        },
+        "non_financial_caveats": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 50,
+          "title": "Non Financial Caveats",
+          "type": "array"
+        }
+      },
+      "required": [
+        "alternative_id",
+        "label",
+        "source",
+        "scenario"
+      ],
+      "title": "ComparisonAlternative",
+      "type": "object"
+    },
+    "ComparisonDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": "1.4.0",
+          "default": "1.4.0",
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "model_id": {
+          "const": "catalyst-finance.comparison",
+          "default": "catalyst-finance.comparison",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "comparison_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Comparison Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "maxLength": 4000,
+          "title": "Description",
+          "type": "string"
+        },
+        "baseline_alternative_id": {
+          "title": "Baseline Alternative Id",
+          "type": "string"
+        },
+        "alternatives": {
+          "items": {
+            "$ref": "#/$defs/ComparisonAlternative"
+          },
+          "maxItems": 50,
+          "minItems": 3,
+          "title": "Alternatives",
+          "type": "array"
+        },
+        "selected_metrics": {
+          "items": {
+            "$ref": "#/$defs/MetricSelection"
+          },
+          "maxItems": 20,
+          "minItems": 1,
+          "title": "Selected Metrics",
+          "type": "array"
+        },
+        "one_way_sensitivities": {
+          "items": {
+            "$ref": "#/$defs/OneWaySensitivityDefinition"
+          },
+          "maxItems": 50,
+          "title": "One Way Sensitivities",
+          "type": "array"
+        },
+        "two_way_sensitivities": {
+          "items": {
+            "$ref": "#/$defs/TwoWaySensitivityDefinition"
+          },
+          "maxItems": 20,
+          "title": "Two Way Sensitivities",
+          "type": "array"
+        },
+        "break_even_definitions": {
+          "items": {
+            "$ref": "#/$defs/BreakEvenDefinition"
+          },
+          "maxItems": 50,
+          "title": "Break Even Definitions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "comparison_id",
+        "name",
+        "baseline_alternative_id",
+        "alternatives",
+        "selected_metrics"
+      ],
+      "title": "ComparisonDefinition",
+      "type": "object"
+    },
+    "ComparisonRevision": {
+      "additionalProperties": false,
+      "properties": {
+        "revision_id": {
+          "maxLength": 100,
+          "minLength": 5,
+          "pattern": "^[a-z]+_[A-Za-z0-9_-]+$",
+          "title": "Revision Id",
+          "type": "string"
+        },
+        "revision_number": {
+          "minimum": 1,
+          "title": "Revision Number",
+          "type": "integer"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "change_note": {
+          "default": "",
+          "maxLength": 1000,
+          "title": "Change Note",
+          "type": "string"
+        },
+        "definition": {
+          "$ref": "#/$defs/ComparisonDefinition"
+        }
+      },
+      "required": [
+        "revision_id",
+        "revision_number",
+        "created_at",
+        "definition"
+      ],
+      "title": "ComparisonRevision",
       "type": "object"
     },
     "FinanceContext": {
@@ -419,8 +669,8 @@
       "additionalProperties": false,
       "properties": {
         "contract_version": {
-          "const": "1.3.0",
-          "default": "1.3.0",
+          "const": "1.4.0",
+          "default": "1.4.0",
           "title": "Contract Version",
           "type": "string"
         },
@@ -451,8 +701,8 @@
       "additionalProperties": false,
       "properties": {
         "workspace_contract_version": {
-          "const": "1.3.0",
-          "default": "1.3.0",
+          "const": "1.4.0",
+          "default": "1.4.0",
           "title": "Workspace Contract Version",
           "type": "string"
         },
@@ -510,6 +760,13 @@
           },
           "title": "Scenarios",
           "type": "array"
+        },
+        "comparisons": {
+          "items": {
+            "$ref": "#/$defs/WorkspaceComparison"
+          },
+          "title": "Comparisons",
+          "type": "array"
         }
       },
       "required": [
@@ -519,6 +776,97 @@
         "updated_at"
       ],
       "title": "FinanceWorkspace",
+      "type": "object"
+    },
+    "MetricSelection": {
+      "additionalProperties": false,
+      "properties": {
+        "metric_id": {
+          "enum": [
+            "npv",
+            "net_cash_flow",
+            "discounted_payback_periods",
+            "irr_percent_annual",
+            "mirr_percent_annual",
+            "profitability_index",
+            "benefit_cost_ratio",
+            "equivalent_annual_value"
+          ],
+          "title": "Metric Id",
+          "type": "string"
+        },
+        "objective": {
+          "default": "maximize",
+          "enum": [
+            "maximize",
+            "minimize"
+          ],
+          "title": "Objective",
+          "type": "string"
+        },
+        "weight": {
+          "default": 1,
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "title": "Weight",
+          "type": "number"
+        }
+      },
+      "required": [
+        "metric_id"
+      ],
+      "title": "MetricSelection",
+      "type": "object"
+    },
+    "OneWaySensitivityDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "sensitivity_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Sensitivity Id",
+          "type": "string"
+        },
+        "alternative_id": {
+          "title": "Alternative Id",
+          "type": "string"
+        },
+        "metric_id": {
+          "default": "npv",
+          "enum": [
+            "npv",
+            "net_cash_flow",
+            "discounted_payback_periods",
+            "irr_percent_annual",
+            "mirr_percent_annual",
+            "profitability_index",
+            "benefit_cost_ratio",
+            "equivalent_annual_value"
+          ],
+          "title": "Metric Id",
+          "type": "string"
+        },
+        "parameter": {
+          "$ref": "#/$defs/SensitivityParameter"
+        },
+        "values": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 101,
+          "minItems": 2,
+          "title": "Values",
+          "type": "array"
+        }
+      },
+      "required": [
+        "sensitivity_id",
+        "alternative_id",
+        "parameter",
+        "values"
+      ],
+      "title": "OneWaySensitivityDefinition",
       "type": "object"
     },
     "ScenarioRevision": {
@@ -551,8 +899,8 @@
           "type": "string"
         },
         "model_version": {
-          "const": "1.3.0",
-          "default": "1.3.0",
+          "const": "1.4.0",
+          "default": "1.4.0",
           "title": "Model Version",
           "type": "string"
         },
@@ -581,6 +929,226 @@
         "scenario"
       ],
       "title": "ScenarioRevision",
+      "type": "object"
+    },
+    "SensitivityParameter": {
+      "additionalProperties": false,
+      "properties": {
+        "parameter_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Parameter Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "path": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Path",
+          "type": "string"
+        },
+        "operation": {
+          "default": "set",
+          "enum": [
+            "set",
+            "multiply",
+            "shift_periods"
+          ],
+          "title": "Operation",
+          "type": "string"
+        },
+        "value_kind": {
+          "default": "continuous",
+          "enum": [
+            "continuous",
+            "integer"
+          ],
+          "title": "Value Kind",
+          "type": "string"
+        },
+        "unit": {
+          "default": "",
+          "maxLength": 80,
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "parameter_id",
+        "label",
+        "path"
+      ],
+      "title": "SensitivityParameter",
+      "type": "object"
+    },
+    "SourceRevision": {
+      "additionalProperties": false,
+      "properties": {
+        "workspace_id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Workspace Id",
+          "type": "string"
+        },
+        "scenario_id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Scenario Id",
+          "type": "string"
+        },
+        "revision_id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Revision Id",
+          "type": "string"
+        },
+        "revision_number": {
+          "minimum": 1,
+          "title": "Revision Number",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "workspace_id",
+        "scenario_id",
+        "revision_id",
+        "revision_number"
+      ],
+      "title": "SourceRevision",
+      "type": "object"
+    },
+    "TwoWaySensitivityDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "sensitivity_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Sensitivity Id",
+          "type": "string"
+        },
+        "alternative_id": {
+          "title": "Alternative Id",
+          "type": "string"
+        },
+        "metric_id": {
+          "default": "npv",
+          "enum": [
+            "npv",
+            "net_cash_flow",
+            "discounted_payback_periods",
+            "irr_percent_annual",
+            "mirr_percent_annual",
+            "profitability_index",
+            "benefit_cost_ratio",
+            "equivalent_annual_value"
+          ],
+          "title": "Metric Id",
+          "type": "string"
+        },
+        "row_parameter": {
+          "$ref": "#/$defs/SensitivityParameter"
+        },
+        "row_values": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 25,
+          "minItems": 2,
+          "title": "Row Values",
+          "type": "array"
+        },
+        "column_parameter": {
+          "$ref": "#/$defs/SensitivityParameter"
+        },
+        "column_values": {
+          "items": {
+            "type": "number"
+          },
+          "maxItems": 25,
+          "minItems": 2,
+          "title": "Column Values",
+          "type": "array"
+        }
+      },
+      "required": [
+        "sensitivity_id",
+        "alternative_id",
+        "row_parameter",
+        "row_values",
+        "column_parameter",
+        "column_values"
+      ],
+      "title": "TwoWaySensitivityDefinition",
+      "type": "object"
+    },
+    "WorkspaceComparison": {
+      "additionalProperties": false,
+      "properties": {
+        "comparison_id": {
+          "maxLength": 100,
+          "minLength": 5,
+          "pattern": "^[a-z]+_[A-Za-z0-9_-]+$",
+          "title": "Comparison Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "status": {
+          "default": "active",
+          "enum": [
+            "draft",
+            "active",
+            "archived"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        },
+        "current_revision_id": {
+          "maxLength": 100,
+          "minLength": 5,
+          "pattern": "^[a-z]+_[A-Za-z0-9_-]+$",
+          "title": "Current Revision Id",
+          "type": "string"
+        },
+        "revisions": {
+          "items": {
+            "$ref": "#/$defs/ComparisonRevision"
+          },
+          "minItems": 1,
+          "title": "Revisions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "comparison_id",
+        "name",
+        "created_at",
+        "updated_at",
+        "current_revision_id",
+        "revisions"
+      ],
+      "title": "WorkspaceComparison",
       "type": "object"
     },
     "WorkspaceDefaults": {
@@ -634,8 +1202,8 @@
           "type": "string"
         },
         "default_model_version": {
-          "const": "1.3.0",
-          "default": "1.3.0",
+          "const": "1.4.0",
+          "default": "1.4.0",
           "title": "Default Model Version",
           "type": "string"
         }
@@ -835,8 +1403,8 @@
   "additionalProperties": false,
   "properties": {
     "export_contract_version": {
-      "const": "1.3.0",
-      "default": "1.3.0",
+      "const": "1.4.0",
+      "default": "1.4.0",
       "title": "Export Contract Version",
       "type": "string"
     },
@@ -856,5 +1424,5 @@
   "title": "WorkspaceExport",
   "type": "object",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.3.0/finance_workspace_export.schema.json"
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.4.0/finance_workspace_export.schema.json"
 }

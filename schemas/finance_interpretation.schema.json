@@ -26,5 +26,5 @@
   "title": "FinanceInterpretation",
   "type": "object",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.3.0/finance_interpretation.schema.json"
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.4.0/finance_interpretation.schema.json"
 }

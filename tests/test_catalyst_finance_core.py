@@ -21,7 +21,7 @@ def canonical(**overrides: object) -> FinanceScenarioInput:
     assumptions.update(overrides)
     return FinanceScenarioInput.model_validate(
         {
-            "contract_version": "1.3.0",
+            "contract_version": "1.4.0",
             "model_id": "catalyst-finance.screening",
             "project": {"name": "Efficiency retrofit", "category": "Energy"},
             "context": {
@@ -62,7 +62,7 @@ def test_evaluate_positive_case_has_contract_and_trace() -> None:
         canonical(), generated_at="2026-07-17T00:00:00+00:00"
     )
     payload = publication.model_dump(mode="json")
-    assert payload["contract_version"] == "1.3.0"
+    assert payload["contract_version"] == "1.4.0"
     assert payload["model_id"] == "catalyst-finance.screening"
     assert payload["results"]["net_capital_cost"] == 90000
     assert payload["results"]["net_annual_benefit"] == 24500
@@ -147,7 +147,7 @@ def test_backward_compatible_domain_evaluate() -> None:
             implementation_risk_percent=25,
         ),
     )
-    assert payload["metadata"]["version"] == "1.3.0"
+    assert payload["metadata"]["version"] == "1.4.0"
 
 
 def test_evaluate_payload_migrates_v100_without_losing_values() -> None:
