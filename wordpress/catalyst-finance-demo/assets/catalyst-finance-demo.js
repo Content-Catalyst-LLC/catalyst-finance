@@ -1,8 +1,8 @@
 (function () {
   'use strict';
 
-  const WORKSPACE_VERSION = '1.2.0';
-  const STORAGE_PREFIX = 'catalyst-finance-workspace-v1.2.0';
+  const WORKSPACE_VERSION = '1.3.0';
+  const STORAGE_PREFIX = 'catalyst-finance-workspace-v1.3.0';
 
   const TEMPLATES = {
     'capital-project': {
@@ -234,7 +234,7 @@
     return { workspace: defaultWorkspace(), recovered: false };
   }
   function validateWorkspace(workspace) {
-    if (!workspace || workspace.workspace_contract_version !== WORKSPACE_VERSION) throw new Error('Workspace contract_version must be 1.2.0.');
+    if (!workspace || workspace.workspace_contract_version !== WORKSPACE_VERSION) throw new Error('Workspace contract_version must be 1.3.0.');
     if (!workspace.workspace_id || !Array.isArray(workspace.scenarios)) throw new Error('Workspace ID and scenarios are required.');
     const scenarioIds = new Set();
     workspace.scenarios.forEach(record => {
@@ -259,7 +259,7 @@
         if (navigator.clipboard) navigator.clipboard.writeText(text);
       });
       root.querySelector('[data-scfin-download]').addEventListener('click', function () {
-        downloadJson('catalyst-finance-scenario-v1.2.0.json', root._scfinPayload);
+        downloadJson('catalyst-finance-scenario-v1.3.0.json', root._scfinPayload);
       });
       root.querySelector('[data-scfin-print]').addEventListener('click', function () { window.print(); });
       return;
@@ -347,7 +347,7 @@
     });
     root.querySelector('[data-scfin-export-workspace]').addEventListener('click', function () {
       const bundle = { export_contract_version: WORKSPACE_VERSION, exported_at: now(), workspace: state.workspace };
-      downloadJson('catalyst-finance-workspace-v1.2.0.json', bundle);
+      downloadJson('catalyst-finance-workspace-v1.3.0.json', bundle);
     });
     root.querySelector('[data-scfin-import-workspace]').addEventListener('change', function (event) {
       const file = event.target.files[0]; if (!file) return;
@@ -370,7 +370,7 @@
       if (navigator.clipboard) navigator.clipboard.writeText(text);
     });
     root.querySelector('[data-scfin-download]').addEventListener('click', function () {
-      downloadJson('catalyst-finance-scenario-v1.2.0.json', root._scfinPayload || CatalystFinanceEngine.evaluate(inputFromForm(form, state.workspace.defaults.currency)));
+      downloadJson('catalyst-finance-scenario-v1.3.0.json', root._scfinPayload || CatalystFinanceEngine.evaluate(inputFromForm(form, state.workspace.defaults.currency)));
     });
     root.querySelector('[data-scfin-print]').addEventListener('click', function () { window.print(); });
 
@@ -378,7 +378,118 @@
     loadCurrent();
   }
 
+
+  function cashFlowScenario(form) {
+    const value = function (name) { return Number(form.elements[name].value || 0); };
+    const horizon = Math.max(1, Math.floor(value('horizon')));
+    const basis = form.elements.basis.value;
+    const lines = [
+      { flow_id: 'capital', label: 'Initial capital cost', category: 'capital_cost', amount: value('capitalCost'), start_period: 0, price_basis: basis },
+      { flow_id: 'grant', label: 'Grant or rebate', category: 'grant', amount: value('grant'), start_period: 0, price_basis: basis },
+      { flow_id: 'benefit', label: 'Recurring benefit', category: 'savings', amount: value('benefit'), start_period: 1, end_period: horizon, escalation_rate_percent_annual: value('escalation'), price_basis: basis },
+      { flow_id: 'operations', label: 'Recurring operating cost', category: 'operating_cost', amount: value('operatingCost'), start_period: 1, end_period: horizon, escalation_rate_percent_annual: value('escalation'), price_basis: basis },
+      { flow_id: 'working-capital', label: 'Working capital', category: 'working_capital', amount: value('workingCapital'), start_period: 0, price_basis: basis },
+      { flow_id: 'working-capital-recovery', label: 'Working-capital recovery', category: 'working_capital_recovery', amount: value('workingCapitalRecovery'), start_period: horizon, price_basis: basis },
+      { flow_id: 'residual', label: 'Residual value', category: 'residual_value', amount: value('residualValue'), start_period: horizon, price_basis: basis },
+      { flow_id: 'decommission', label: 'Decommissioning cost', category: 'decommissioning_cost', amount: value('decommissioningCost'), start_period: horizon, price_basis: basis }
+    ];
+    if (value('phasedCapital') > 0) lines.push({ flow_id: 'phase-two', label: 'Phased capital', category: 'capital_cost', amount: value('phasedCapital'), start_period: Math.min(2, horizon), price_basis: basis });
+    return {
+      contract_version: '1.3.0',
+      model_id: 'catalyst-finance.cash-flow',
+      project: { name: 'Browser capital-budgeting scenario', category: 'Capital project' },
+      context: {
+        currency: 'USD', price_basis: basis, discount_rate_basis: basis,
+        period_frequency: form.elements.frequency.value, time_basis: 'end_of_period',
+        rounding_policy: 'half_up', monetary_decimals: 2, ratio_decimals: 4
+      },
+      analysis_horizon_periods: horizon,
+      discount_rate_percent_annual: value('discountRate'),
+      finance_rate_percent_annual: value('discountRate'),
+      reinvestment_rate_percent_annual: Math.min(value('discountRate'), 3),
+      lines: lines
+    };
+  }
+
+  function drawSeries(canvas, values, waterfall) {
+    const context = canvas.getContext('2d');
+    const width = canvas.width; const height = canvas.height; const pad = 36;
+    context.clearRect(0, 0, width, height);
+    const minimum = Math.min(0, ...values); const maximum = Math.max(0, ...values);
+    const range = Math.max(1, maximum - minimum);
+    const y = function (value) { return pad + (maximum - value) / range * (height - pad * 2); };
+    const zero = y(0);
+    context.strokeStyle = '#8a8a8a'; context.lineWidth = 1;
+    context.beginPath(); context.moveTo(pad, zero); context.lineTo(width - pad, zero); context.stroke();
+    if (waterfall) {
+      const slot = (width - pad * 2) / Math.max(values.length, 1);
+      values.forEach(function (value, index) {
+        const top = value >= 0 ? y(value) : zero;
+        const barHeight = Math.max(1, Math.abs(y(value) - zero));
+        context.fillStyle = value >= 0 ? '#2f6f4e' : '#8a2d2d';
+        context.fillRect(pad + index * slot + 2, top, Math.max(2, slot - 4), barHeight);
+      });
+    } else {
+      context.strokeStyle = '#5b1d2a'; context.lineWidth = 3; context.beginPath();
+      values.forEach(function (value, index) {
+        const x = pad + index * (width - pad * 2) / Math.max(values.length - 1, 1);
+        if (index === 0) context.moveTo(x, y(value)); else context.lineTo(x, y(value));
+      });
+      context.stroke();
+    }
+  }
+
+  function initializeCapitalBudgeting(root) {
+    const section = root.querySelector('[data-scfin-capital-budgeting]');
+    if (!section || typeof CatalystFinanceCashFlowEngine === 'undefined') return;
+    const form = section.querySelector('[data-scfin-cf-form]');
+    const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+    function render() {
+      try {
+        const result = CatalystFinanceCashFlowEngine.evaluate(cashFlowScenario(form));
+        root._scfinCashFlowPayload = result;
+        section.querySelector('[data-scfin-cf-npv]').textContent = money.format(result.metrics.npv);
+        section.querySelector('[data-scfin-cf-payback]').textContent = result.metrics.simple_payback_periods === null ? 'Not reached' : result.metrics.simple_payback_periods + ' periods';
+        const irr = result.metrics.irr_percent_annual === null ? result.metrics.irr_status.replaceAll('_', ' ') : result.metrics.irr_percent_annual + '%';
+        const mirr = result.metrics.mirr_percent_annual === null ? '—' : result.metrics.mirr_percent_annual + '%';
+        section.querySelector('[data-scfin-cf-irr]').textContent = irr + ' / ' + mirr;
+        const bcr = result.metrics.benefit_cost_ratio === null ? '—' : result.metrics.benefit_cost_ratio;
+        section.querySelector('[data-scfin-cf-bcr]').textContent = bcr + ' / ' + money.format(result.metrics.equivalent_annual_value);
+        const table = section.querySelector('[data-scfin-cf-table]'); table.innerHTML = '';
+        result.periods.forEach(function (row) {
+          const tr = document.createElement('tr');
+          [row.period_label, money.format(row.inflows), money.format(row.outflows), money.format(row.net_cash_flow), money.format(row.discounted_net_cash_flow), money.format(row.cumulative_cash_flow)].forEach(function (text) {
+            const td = document.createElement('td'); td.textContent = text; tr.appendChild(td);
+          });
+          table.appendChild(tr);
+        });
+        drawSeries(section.querySelector('[data-scfin-cf-curve]'), result.periods.map(function (row) { return row.cumulative_cash_flow; }), false);
+        drawSeries(section.querySelector('[data-scfin-cf-waterfall]'), result.periods.map(function (row) { return row.net_cash_flow; }), true);
+        const trace = section.querySelector('[data-scfin-cf-trace]'); trace.innerHTML = '';
+        result.metrics.metric_trace.forEach(function (metric) {
+          const li = document.createElement('li'); li.textContent = metric.label + ': ' + metric.formula + '. ' + metric.notes; trace.appendChild(li);
+        });
+        result.interpretation.flags.forEach(function (flag) {
+          const li = document.createElement('li'); li.textContent = flag; trace.appendChild(li);
+        });
+        section.querySelector('[data-scfin-cf-json]').textContent = JSON.stringify(result, null, 2);
+      } catch (error) {
+        section.querySelector('[data-scfin-cf-json]').textContent = String(error.message || error);
+      }
+    }
+    form.addEventListener('input', render); form.addEventListener('change', render);
+    section.querySelector('[data-scfin-cf-download]').addEventListener('click', function () { downloadJson('catalyst-finance-cash-flow-v1.3.0.json', root._scfinCashFlowPayload); });
+    section.querySelector('[data-scfin-cf-copy]').addEventListener('click', function () {
+      if (navigator.clipboard) navigator.clipboard.writeText(JSON.stringify(root._scfinCashFlowPayload, null, 2));
+    });
+    if (root.getAttribute('data-scfin-mode') === 'public') Array.from(form.elements).forEach(function (field) { if (field.tagName !== 'BUTTON') field.disabled = true; });
+    render();
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('[data-scfin-demo]').forEach(initializeWorkspace);
+    document.querySelectorAll('[data-scfin-demo]').forEach(function (root, index) {
+      initializeWorkspace(root, index);
+      initializeCapitalBudgeting(root);
+    });
   });
 })();

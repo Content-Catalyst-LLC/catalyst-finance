@@ -46,6 +46,7 @@ def verify(path: Path) -> None:
             f"{PLUGIN_DIR.name}/assets/catalyst-finance-demo.css",
             f"{PLUGIN_DIR.name}/assets/catalyst-finance-demo.js",
             f"{PLUGIN_DIR.name}/assets/catalyst-finance-engine.js",
+            f"{PLUGIN_DIR.name}/assets/catalyst-finance-cashflow-engine.js",
             f"{PLUGIN_DIR.name}/README.md",
         }
         missing = sorted(required.difference(names))

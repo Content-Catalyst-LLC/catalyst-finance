@@ -56,6 +56,13 @@ def reproduce(output_dir: Path) -> list[Path]:
             "legacy_v1.1.0_scenario.migrated",
         )
     )
+    generated.extend(
+        _write(
+            ROOT / "data" / "legacy_v1.2.0_scenario.json",
+            output_dir,
+            "legacy_v1.2.0_scenario.migrated",
+        )
+    )
     return generated
 
 

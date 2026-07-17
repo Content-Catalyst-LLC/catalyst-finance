@@ -1,0 +1,4 @@
+period,period_label,inflows,outflows,net_cash_flow,discounted_net_cash_flow,cumulative_cash_flow,cumulative_discounted_cash_flow
+0,Period 0,0.0,100.0,-100.0,-100.0,-100.0,-100.0
+1,Year 1,230.0,0.0,230.0,209.09,130.0,109.09
+2,Year 2,0.0,132.0,-132.0,-109.09,-2.0,-0.0

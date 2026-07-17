@@ -1,0 +1,814 @@
+{
+  "$defs": {
+    "CashFlowContext": {
+      "additionalProperties": false,
+      "properties": {
+        "currency": {
+          "default": "USD",
+          "pattern": "^[A-Z]{3}$",
+          "title": "Currency",
+          "type": "string"
+        },
+        "price_basis": {
+          "default": "nominal",
+          "enum": [
+            "nominal",
+            "real"
+          ],
+          "title": "Price Basis",
+          "type": "string"
+        },
+        "discount_rate_basis": {
+          "default": "nominal",
+          "enum": [
+            "nominal",
+            "real"
+          ],
+          "title": "Discount Rate Basis",
+          "type": "string"
+        },
+        "period_frequency": {
+          "default": "annual",
+          "enum": [
+            "monthly",
+            "quarterly",
+            "annual"
+          ],
+          "title": "Period Frequency",
+          "type": "string"
+        },
+        "time_basis": {
+          "const": "end_of_period",
+          "default": "end_of_period",
+          "title": "Time Basis",
+          "type": "string"
+        },
+        "rounding_policy": {
+          "const": "half_up",
+          "default": "half_up",
+          "title": "Rounding Policy",
+          "type": "string"
+        },
+        "monetary_decimals": {
+          "default": 2,
+          "maximum": 6,
+          "minimum": 0,
+          "title": "Monetary Decimals",
+          "type": "integer"
+        },
+        "ratio_decimals": {
+          "default": 4,
+          "maximum": 6,
+          "minimum": 0,
+          "title": "Ratio Decimals",
+          "type": "integer"
+        }
+      },
+      "title": "CashFlowContext",
+      "type": "object"
+    },
+    "CashFlowInterpretation": {
+      "additionalProperties": false,
+      "properties": {
+        "basis_status": {
+          "const": "matched",
+          "default": "matched",
+          "title": "Basis Status",
+          "type": "string"
+        },
+        "flags": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Flags",
+          "type": "array"
+        }
+      },
+      "required": [
+        "flags"
+      ],
+      "title": "CashFlowInterpretation",
+      "type": "object"
+    },
+    "CashFlowLine": {
+      "additionalProperties": false,
+      "properties": {
+        "flow_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Flow Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "capital_cost",
+            "operating_cost",
+            "revenue",
+            "savings",
+            "avoided_cost",
+            "grant",
+            "rebate",
+            "residual_value",
+            "decommissioning_cost",
+            "working_capital",
+            "working_capital_recovery",
+            "other_benefit",
+            "other_cost"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "amount": {
+          "minimum": 0,
+          "title": "Amount",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "start_period": {
+          "minimum": 0,
+          "title": "Start Period",
+          "type": "integer"
+        },
+        "end_period": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "End Period"
+        },
+        "interval_periods": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Interval Periods",
+          "type": "integer"
+        },
+        "escalation_rate_percent_annual": {
+          "default": 0,
+          "exclusiveMinimum": -100,
+          "maximum": 1000,
+          "title": "Escalation Rate Percent Annual",
+          "type": "number",
+          "x-unit": "percent_per_year"
+        },
+        "price_basis": {
+          "default": "nominal",
+          "enum": [
+            "nominal",
+            "real"
+          ],
+          "title": "Price Basis",
+          "type": "string"
+        },
+        "notes": {
+          "default": "",
+          "maxLength": 4000,
+          "title": "Notes",
+          "type": "string"
+        }
+      },
+      "required": [
+        "flow_id",
+        "label",
+        "category",
+        "amount",
+        "start_period"
+      ],
+      "title": "CashFlowLine",
+      "type": "object"
+    },
+    "CashFlowMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "generated_at": {
+          "title": "Generated At",
+          "type": "string"
+        },
+        "tool": {
+          "const": "Catalyst Finance cash-flow engine",
+          "default": "Catalyst Finance cash-flow engine",
+          "title": "Tool",
+          "type": "string"
+        },
+        "version": {
+          "const": "1.3.0",
+          "default": "1.3.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "disclaimer": {
+          "title": "Disclaimer",
+          "type": "string"
+        }
+      },
+      "required": [
+        "generated_at",
+        "disclaimer"
+      ],
+      "title": "CashFlowMetadata",
+      "type": "object"
+    },
+    "CashFlowMethodology": {
+      "additionalProperties": false,
+      "properties": {
+        "model_id": {
+          "const": "catalyst-finance.cash-flow",
+          "default": "catalyst-finance.cash-flow",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "model_version": {
+          "const": "1.3.0",
+          "default": "1.3.0",
+          "title": "Model Version",
+          "type": "string"
+        },
+        "timing_policy": {
+          "const": "period_zero_then_end_of_period",
+          "default": "period_zero_then_end_of_period",
+          "title": "Timing Policy",
+          "type": "string"
+        },
+        "annual_to_period_rate_policy": {
+          "const": "effective_rate_conversion",
+          "default": "effective_rate_conversion",
+          "title": "Annual To Period Rate Policy",
+          "type": "string"
+        },
+        "escalation_policy": {
+          "const": "effective_annual_compounding",
+          "default": "effective_annual_compounding",
+          "title": "Escalation Policy",
+          "type": "string"
+        },
+        "payback_policy": {
+          "const": "linear_interpolation_within_crossing_period",
+          "default": "linear_interpolation_within_crossing_period",
+          "title": "Payback Policy",
+          "type": "string"
+        },
+        "irr_policy": {
+          "const": "all_detected_roots_and_ambiguity_flag",
+          "default": "all_detected_roots_and_ambiguity_flag",
+          "title": "Irr Policy",
+          "type": "string"
+        },
+        "transfer_policy": {
+          "const": "grants_and_rebates_excluded_from_bcr",
+          "default": "grants_and_rebates_excluded_from_bcr",
+          "title": "Transfer Policy",
+          "type": "string"
+        }
+      },
+      "title": "CashFlowMethodology",
+      "type": "object"
+    },
+    "CashFlowMetrics": {
+      "additionalProperties": false,
+      "properties": {
+        "total_inflows": {
+          "title": "Total Inflows",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "total_outflows": {
+          "title": "Total Outflows",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "net_cash_flow": {
+          "title": "Net Cash Flow",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "present_value_inflows": {
+          "title": "Present Value Inflows",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "present_value_outflows": {
+          "title": "Present Value Outflows",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "npv": {
+          "title": "Npv",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "simple_payback_periods": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Simple Payback Periods"
+        },
+        "discounted_payback_periods": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Discounted Payback Periods"
+        },
+        "irr_percent_annual": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Irr Percent Annual"
+        },
+        "irr_roots_percent_annual": {
+          "items": {
+            "type": "number"
+          },
+          "title": "Irr Roots Percent Annual",
+          "type": "array"
+        },
+        "irr_status": {
+          "enum": [
+            "unique",
+            "ambiguous_multiple_sign_changes",
+            "no_root",
+            "not_applicable"
+          ],
+          "title": "Irr Status",
+          "type": "string"
+        },
+        "mirr_percent_annual": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Mirr Percent Annual"
+        },
+        "profitability_index": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Profitability Index"
+        },
+        "benefit_cost_ratio": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Benefit Cost Ratio"
+        },
+        "equivalent_annual_value": {
+          "title": "Equivalent Annual Value",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "terminal_value": {
+          "title": "Terminal Value",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "sign_changes": {
+          "title": "Sign Changes",
+          "type": "integer"
+        },
+        "metric_trace": {
+          "items": {
+            "$ref": "#/$defs/MetricTrace"
+          },
+          "minItems": 8,
+          "title": "Metric Trace",
+          "type": "array"
+        }
+      },
+      "required": [
+        "total_inflows",
+        "total_outflows",
+        "net_cash_flow",
+        "present_value_inflows",
+        "present_value_outflows",
+        "npv",
+        "simple_payback_periods",
+        "discounted_payback_periods",
+        "irr_percent_annual",
+        "irr_roots_percent_annual",
+        "irr_status",
+        "mirr_percent_annual",
+        "profitability_index",
+        "benefit_cost_ratio",
+        "equivalent_annual_value",
+        "terminal_value",
+        "sign_changes",
+        "metric_trace"
+      ],
+      "title": "CashFlowMetrics",
+      "type": "object"
+    },
+    "CashFlowScenarioInput": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": "1.3.0",
+          "default": "1.3.0",
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "model_id": {
+          "const": "catalyst-finance.cash-flow",
+          "default": "catalyst-finance.cash-flow",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "project": {
+          "$ref": "#/$defs/FinanceProject"
+        },
+        "context": {
+          "$ref": "#/$defs/CashFlowContext"
+        },
+        "analysis_horizon_periods": {
+          "maximum": 1200,
+          "minimum": 1,
+          "title": "Analysis Horizon Periods",
+          "type": "integer"
+        },
+        "discount_rate_percent_annual": {
+          "exclusiveMinimum": -100,
+          "maximum": 1000,
+          "title": "Discount Rate Percent Annual",
+          "type": "number",
+          "x-unit": "percent_per_year"
+        },
+        "finance_rate_percent_annual": {
+          "default": 0,
+          "exclusiveMinimum": -100,
+          "maximum": 1000,
+          "title": "Finance Rate Percent Annual",
+          "type": "number",
+          "x-unit": "percent_per_year"
+        },
+        "reinvestment_rate_percent_annual": {
+          "default": 0,
+          "exclusiveMinimum": -100,
+          "maximum": 1000,
+          "title": "Reinvestment Rate Percent Annual",
+          "type": "number",
+          "x-unit": "percent_per_year"
+        },
+        "lines": {
+          "items": {
+            "$ref": "#/$defs/CashFlowLine"
+          },
+          "maxItems": 1000,
+          "minItems": 1,
+          "title": "Lines",
+          "type": "array"
+        }
+      },
+      "required": [
+        "project",
+        "analysis_horizon_periods",
+        "discount_rate_percent_annual",
+        "lines"
+      ],
+      "title": "CashFlowScenarioInput",
+      "type": "object"
+    },
+    "ExpandedCashFlowLine": {
+      "additionalProperties": false,
+      "properties": {
+        "flow_id": {
+          "title": "Flow Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "capital_cost",
+            "operating_cost",
+            "revenue",
+            "savings",
+            "avoided_cost",
+            "grant",
+            "rebate",
+            "residual_value",
+            "decommissioning_cost",
+            "working_capital",
+            "working_capital_recovery",
+            "other_benefit",
+            "other_cost"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "period": {
+          "title": "Period",
+          "type": "integer"
+        },
+        "amount": {
+          "title": "Amount",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "signed_amount": {
+          "title": "Signed Amount",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "direction": {
+          "enum": [
+            "inflow",
+            "outflow"
+          ],
+          "title": "Direction",
+          "type": "string"
+        }
+      },
+      "required": [
+        "flow_id",
+        "label",
+        "category",
+        "period",
+        "amount",
+        "signed_amount",
+        "direction"
+      ],
+      "title": "ExpandedCashFlowLine",
+      "type": "object"
+    },
+    "FinanceProject": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "category": {
+          "default": "Sustainability finance",
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Category",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "FinanceProject",
+      "type": "object"
+    },
+    "MetricTrace": {
+      "additionalProperties": false,
+      "properties": {
+        "metric_id": {
+          "title": "Metric Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        },
+        "included_categories": {
+          "items": {
+            "enum": [
+              "capital_cost",
+              "operating_cost",
+              "revenue",
+              "savings",
+              "avoided_cost",
+              "grant",
+              "rebate",
+              "residual_value",
+              "decommissioning_cost",
+              "working_capital",
+              "working_capital_recovery",
+              "other_benefit",
+              "other_cost"
+            ],
+            "type": "string"
+          },
+          "title": "Included Categories",
+          "type": "array"
+        },
+        "excluded_categories": {
+          "items": {
+            "enum": [
+              "capital_cost",
+              "operating_cost",
+              "revenue",
+              "savings",
+              "avoided_cost",
+              "grant",
+              "rebate",
+              "residual_value",
+              "decommissioning_cost",
+              "working_capital",
+              "working_capital_recovery",
+              "other_benefit",
+              "other_cost"
+            ],
+            "type": "string"
+          },
+          "title": "Excluded Categories",
+          "type": "array"
+        },
+        "included_flow_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Included Flow Ids",
+          "type": "array"
+        },
+        "formula": {
+          "title": "Formula",
+          "type": "string"
+        },
+        "notes": {
+          "title": "Notes",
+          "type": "string"
+        }
+      },
+      "required": [
+        "metric_id",
+        "label",
+        "value",
+        "included_categories",
+        "excluded_categories",
+        "included_flow_ids",
+        "formula",
+        "notes"
+      ],
+      "title": "MetricTrace",
+      "type": "object"
+    },
+    "PeriodCashFlow": {
+      "additionalProperties": false,
+      "properties": {
+        "period": {
+          "title": "Period",
+          "type": "integer"
+        },
+        "period_label": {
+          "title": "Period Label",
+          "type": "string"
+        },
+        "inflows": {
+          "title": "Inflows",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "outflows": {
+          "title": "Outflows",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "net_cash_flow": {
+          "title": "Net Cash Flow",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "discounted_net_cash_flow": {
+          "title": "Discounted Net Cash Flow",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "cumulative_cash_flow": {
+          "title": "Cumulative Cash Flow",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "cumulative_discounted_cash_flow": {
+          "title": "Cumulative Discounted Cash Flow",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "line_items": {
+          "items": {
+            "$ref": "#/$defs/ExpandedCashFlowLine"
+          },
+          "title": "Line Items",
+          "type": "array"
+        }
+      },
+      "required": [
+        "period",
+        "period_label",
+        "inflows",
+        "outflows",
+        "net_cash_flow",
+        "discounted_net_cash_flow",
+        "cumulative_cash_flow",
+        "cumulative_discounted_cash_flow",
+        "line_items"
+      ],
+      "title": "PeriodCashFlow",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "const": "1.3.0",
+      "default": "1.3.0",
+      "title": "Contract Version",
+      "type": "string"
+    },
+    "model_id": {
+      "const": "catalyst-finance.cash-flow",
+      "default": "catalyst-finance.cash-flow",
+      "title": "Model Id",
+      "type": "string"
+    },
+    "project": {
+      "$ref": "#/$defs/FinanceProject"
+    },
+    "context": {
+      "$ref": "#/$defs/CashFlowContext"
+    },
+    "assumptions": {
+      "$ref": "#/$defs/CashFlowScenarioInput"
+    },
+    "periods": {
+      "items": {
+        "$ref": "#/$defs/PeriodCashFlow"
+      },
+      "title": "Periods",
+      "type": "array"
+    },
+    "metrics": {
+      "$ref": "#/$defs/CashFlowMetrics"
+    },
+    "interpretation": {
+      "$ref": "#/$defs/CashFlowInterpretation"
+    },
+    "methodology": {
+      "$ref": "#/$defs/CashFlowMethodology"
+    },
+    "metadata": {
+      "$ref": "#/$defs/CashFlowMetadata"
+    }
+  },
+  "required": [
+    "project",
+    "context",
+    "assumptions",
+    "periods",
+    "metrics",
+    "interpretation",
+    "methodology",
+    "metadata"
+  ],
+  "title": "CashFlowPublication",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.3.0/cash_flow_publication.schema.json"
+}

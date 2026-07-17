@@ -1,0 +1,520 @@
+{
+  "contract_version": "1.3.0",
+  "model_id": "catalyst-finance.cash-flow",
+  "project": {
+    "name": "Negative case",
+    "category": "Benchmark"
+  },
+  "context": {
+    "currency": "USD",
+    "price_basis": "nominal",
+    "discount_rate_basis": "nominal",
+    "period_frequency": "annual",
+    "time_basis": "end_of_period",
+    "rounding_policy": "half_up",
+    "monetary_decimals": 2,
+    "ratio_decimals": 4
+  },
+  "assumptions": {
+    "contract_version": "1.3.0",
+    "model_id": "catalyst-finance.cash-flow",
+    "project": {
+      "name": "Negative case",
+      "category": "Benchmark"
+    },
+    "context": {
+      "currency": "USD",
+      "price_basis": "nominal",
+      "discount_rate_basis": "nominal",
+      "period_frequency": "annual",
+      "time_basis": "end_of_period",
+      "rounding_policy": "half_up",
+      "monetary_decimals": 2,
+      "ratio_decimals": 4
+    },
+    "analysis_horizon_periods": 4,
+    "discount_rate_percent_annual": 6.0,
+    "finance_rate_percent_annual": 6.0,
+    "reinvestment_rate_percent_annual": 3.0,
+    "lines": [
+      {
+        "flow_id": "capital",
+        "label": "Capital",
+        "category": "capital_cost",
+        "amount": 100000.0,
+        "start_period": 0,
+        "end_period": null,
+        "interval_periods": 1,
+        "escalation_rate_percent_annual": 0.0,
+        "price_basis": "nominal",
+        "notes": ""
+      },
+      {
+        "flow_id": "benefits",
+        "label": "Limited savings",
+        "category": "savings",
+        "amount": 12000.0,
+        "start_period": 1,
+        "end_period": 4,
+        "interval_periods": 1,
+        "escalation_rate_percent_annual": 0.0,
+        "price_basis": "nominal",
+        "notes": ""
+      },
+      {
+        "flow_id": "costs",
+        "label": "Operating costs",
+        "category": "operating_cost",
+        "amount": 8000.0,
+        "start_period": 1,
+        "end_period": 4,
+        "interval_periods": 1,
+        "escalation_rate_percent_annual": 0.0,
+        "price_basis": "nominal",
+        "notes": ""
+      }
+    ]
+  },
+  "periods": [
+    {
+      "period": 0,
+      "period_label": "Period 0",
+      "inflows": 0.0,
+      "outflows": 100000.0,
+      "net_cash_flow": -100000.0,
+      "discounted_net_cash_flow": -100000.0,
+      "cumulative_cash_flow": -100000.0,
+      "cumulative_discounted_cash_flow": -100000.0,
+      "line_items": [
+        {
+          "flow_id": "capital",
+          "label": "Capital",
+          "category": "capital_cost",
+          "period": 0,
+          "amount": 100000.0,
+          "signed_amount": -100000.0,
+          "direction": "outflow"
+        }
+      ]
+    },
+    {
+      "period": 1,
+      "period_label": "Year 1",
+      "inflows": 12000.0,
+      "outflows": 8000.0,
+      "net_cash_flow": 4000.0,
+      "discounted_net_cash_flow": 3773.58,
+      "cumulative_cash_flow": -96000.0,
+      "cumulative_discounted_cash_flow": -96226.42,
+      "line_items": [
+        {
+          "flow_id": "benefits",
+          "label": "Limited savings",
+          "category": "savings",
+          "period": 1,
+          "amount": 12000.0,
+          "signed_amount": 12000.0,
+          "direction": "inflow"
+        },
+        {
+          "flow_id": "costs",
+          "label": "Operating costs",
+          "category": "operating_cost",
+          "period": 1,
+          "amount": 8000.0,
+          "signed_amount": -8000.0,
+          "direction": "outflow"
+        }
+      ]
+    },
+    {
+      "period": 2,
+      "period_label": "Year 2",
+      "inflows": 12000.0,
+      "outflows": 8000.0,
+      "net_cash_flow": 4000.0,
+      "discounted_net_cash_flow": 3559.99,
+      "cumulative_cash_flow": -92000.0,
+      "cumulative_discounted_cash_flow": -92666.43,
+      "line_items": [
+        {
+          "flow_id": "benefits",
+          "label": "Limited savings",
+          "category": "savings",
+          "period": 2,
+          "amount": 12000.0,
+          "signed_amount": 12000.0,
+          "direction": "inflow"
+        },
+        {
+          "flow_id": "costs",
+          "label": "Operating costs",
+          "category": "operating_cost",
+          "period": 2,
+          "amount": 8000.0,
+          "signed_amount": -8000.0,
+          "direction": "outflow"
+        }
+      ]
+    },
+    {
+      "period": 3,
+      "period_label": "Year 3",
+      "inflows": 12000.0,
+      "outflows": 8000.0,
+      "net_cash_flow": 4000.0,
+      "discounted_net_cash_flow": 3358.48,
+      "cumulative_cash_flow": -88000.0,
+      "cumulative_discounted_cash_flow": -89307.95,
+      "line_items": [
+        {
+          "flow_id": "benefits",
+          "label": "Limited savings",
+          "category": "savings",
+          "period": 3,
+          "amount": 12000.0,
+          "signed_amount": 12000.0,
+          "direction": "inflow"
+        },
+        {
+          "flow_id": "costs",
+          "label": "Operating costs",
+          "category": "operating_cost",
+          "period": 3,
+          "amount": 8000.0,
+          "signed_amount": -8000.0,
+          "direction": "outflow"
+        }
+      ]
+    },
+    {
+      "period": 4,
+      "period_label": "Year 4",
+      "inflows": 12000.0,
+      "outflows": 8000.0,
+      "net_cash_flow": 4000.0,
+      "discounted_net_cash_flow": 3168.37,
+      "cumulative_cash_flow": -84000.0,
+      "cumulative_discounted_cash_flow": -86139.58,
+      "line_items": [
+        {
+          "flow_id": "benefits",
+          "label": "Limited savings",
+          "category": "savings",
+          "period": 4,
+          "amount": 12000.0,
+          "signed_amount": 12000.0,
+          "direction": "inflow"
+        },
+        {
+          "flow_id": "costs",
+          "label": "Operating costs",
+          "category": "operating_cost",
+          "period": 4,
+          "amount": 8000.0,
+          "signed_amount": -8000.0,
+          "direction": "outflow"
+        }
+      ]
+    }
+  ],
+  "metrics": {
+    "total_inflows": 48000.0,
+    "total_outflows": 132000.0,
+    "net_cash_flow": -84000.0,
+    "present_value_inflows": 41581.27,
+    "present_value_outflows": 127720.84,
+    "npv": -86139.58,
+    "simple_payback_periods": null,
+    "discounted_payback_periods": null,
+    "irr_percent_annual": -47.1075,
+    "irr_roots_percent_annual": [
+      -47.1075
+    ],
+    "irr_status": "unique",
+    "mirr_percent_annual": -36.0408,
+    "profitability_index": 0.3256,
+    "benefit_cost_ratio": 0.3256,
+    "equivalent_annual_value": -24859.15,
+    "terminal_value": 0.0,
+    "sign_changes": 1,
+    "metric_trace": [
+      {
+        "metric_id": "npv",
+        "label": "Net present value",
+        "value": -86139.58,
+        "included_categories": [
+          "capital_cost",
+          "operating_cost",
+          "revenue",
+          "savings",
+          "avoided_cost",
+          "grant",
+          "rebate",
+          "residual_value",
+          "decommissioning_cost",
+          "working_capital",
+          "working_capital_recovery",
+          "other_benefit",
+          "other_cost"
+        ],
+        "excluded_categories": [],
+        "included_flow_ids": [
+          "capital",
+          "benefits",
+          "costs"
+        ],
+        "formula": "\u03a3 net cash flow_t / (1 + periodic discount rate)^t",
+        "notes": "Includes every modeled cash-flow category."
+      },
+      {
+        "metric_id": "simple_payback",
+        "label": "Simple payback",
+        "value": null,
+        "included_categories": [
+          "capital_cost",
+          "operating_cost",
+          "revenue",
+          "savings",
+          "avoided_cost",
+          "grant",
+          "rebate",
+          "residual_value",
+          "decommissioning_cost",
+          "working_capital",
+          "working_capital_recovery",
+          "other_benefit",
+          "other_cost"
+        ],
+        "excluded_categories": [],
+        "included_flow_ids": [
+          "capital",
+          "benefits",
+          "costs"
+        ],
+        "formula": "First undiscounted cumulative crossing, interpolated within period",
+        "notes": "Does not discount cash flows after the recovery point."
+      },
+      {
+        "metric_id": "discounted_payback",
+        "label": "Discounted payback",
+        "value": null,
+        "included_categories": [
+          "capital_cost",
+          "operating_cost",
+          "revenue",
+          "savings",
+          "avoided_cost",
+          "grant",
+          "rebate",
+          "residual_value",
+          "decommissioning_cost",
+          "working_capital",
+          "working_capital_recovery",
+          "other_benefit",
+          "other_cost"
+        ],
+        "excluded_categories": [],
+        "included_flow_ids": [
+          "capital",
+          "benefits",
+          "costs"
+        ],
+        "formula": "First discounted cumulative crossing, interpolated within period",
+        "notes": "Uses the disclosed annual discount rate converted to the selected frequency."
+      },
+      {
+        "metric_id": "irr",
+        "label": "Internal rate of return",
+        "value": -47.1075,
+        "included_categories": [
+          "capital_cost",
+          "operating_cost",
+          "revenue",
+          "savings",
+          "avoided_cost",
+          "grant",
+          "rebate",
+          "residual_value",
+          "decommissioning_cost",
+          "working_capital",
+          "working_capital_recovery",
+          "other_benefit",
+          "other_cost"
+        ],
+        "excluded_categories": [],
+        "included_flow_ids": [
+          "capital",
+          "benefits",
+          "costs"
+        ],
+        "formula": "Rate where NPV equals zero",
+        "notes": "All detected roots are reported; multiple sign changes suppress a single IRR."
+      },
+      {
+        "metric_id": "mirr",
+        "label": "Modified internal rate of return",
+        "value": -36.0408,
+        "included_categories": [
+          "capital_cost",
+          "operating_cost",
+          "revenue",
+          "savings",
+          "avoided_cost",
+          "grant",
+          "rebate",
+          "residual_value",
+          "decommissioning_cost",
+          "working_capital",
+          "working_capital_recovery",
+          "other_benefit",
+          "other_cost"
+        ],
+        "excluded_categories": [],
+        "included_flow_ids": [
+          "capital",
+          "benefits",
+          "costs"
+        ],
+        "formula": "(FV positive flows / PV negative flows)^(1/n) - 1",
+        "notes": "Uses disclosed finance and reinvestment rates."
+      },
+      {
+        "metric_id": "profitability_index",
+        "label": "Profitability index",
+        "value": 0.3256,
+        "included_categories": [
+          "capital_cost",
+          "operating_cost",
+          "revenue",
+          "savings",
+          "avoided_cost",
+          "grant",
+          "rebate",
+          "residual_value",
+          "decommissioning_cost",
+          "working_capital",
+          "working_capital_recovery",
+          "other_benefit",
+          "other_cost"
+        ],
+        "excluded_categories": [],
+        "included_flow_ids": [
+          "capital",
+          "benefits",
+          "costs"
+        ],
+        "formula": "PV of all inflows / PV of all outflows",
+        "notes": "Includes grants and rebates as project inflows."
+      },
+      {
+        "metric_id": "benefit_cost_ratio",
+        "label": "Benefit-cost ratio",
+        "value": 0.3256,
+        "included_categories": [
+          "capital_cost",
+          "operating_cost",
+          "revenue",
+          "savings",
+          "avoided_cost",
+          "residual_value",
+          "decommissioning_cost",
+          "working_capital",
+          "working_capital_recovery",
+          "other_benefit",
+          "other_cost"
+        ],
+        "excluded_categories": [
+          "grant",
+          "rebate"
+        ],
+        "included_flow_ids": [
+          "capital",
+          "benefits",
+          "costs"
+        ],
+        "formula": "PV of benefits / PV of costs",
+        "notes": "Grants and rebates are excluded as transfers rather than treated as benefits."
+      },
+      {
+        "metric_id": "equivalent_annual_value",
+        "label": "Equivalent annual value",
+        "value": -24859.15,
+        "included_categories": [
+          "capital_cost",
+          "operating_cost",
+          "revenue",
+          "savings",
+          "avoided_cost",
+          "grant",
+          "rebate",
+          "residual_value",
+          "decommissioning_cost",
+          "working_capital",
+          "working_capital_recovery",
+          "other_benefit",
+          "other_cost"
+        ],
+        "excluded_categories": [],
+        "included_flow_ids": [
+          "capital",
+          "benefits",
+          "costs"
+        ],
+        "formula": "NPV \u00d7 annual capital-recovery factor",
+        "notes": "Expresses NPV as an equivalent annual amount over the analysis horizon."
+      },
+      {
+        "metric_id": "terminal_value",
+        "label": "Terminal value",
+        "value": 0.0,
+        "included_categories": [
+          "residual_value",
+          "decommissioning_cost",
+          "working_capital_recovery"
+        ],
+        "excluded_categories": [
+          "capital_cost",
+          "operating_cost",
+          "revenue",
+          "savings",
+          "avoided_cost",
+          "grant",
+          "rebate",
+          "working_capital",
+          "other_benefit",
+          "other_cost"
+        ],
+        "included_flow_ids": [],
+        "formula": "Residual value + working-capital recovery - decommissioning cost in final period",
+        "notes": "Reports only terminal categories occurring in the final analysis period."
+      }
+    ]
+  },
+  "interpretation": {
+    "basis_status": "matched",
+    "flags": [
+      "Nominal/real price and discount-rate bases match.",
+      "Cash-flow table reconciles across 5 periods including period 0.",
+      "Simple payback is not achieved within the selected horizon.",
+      "Discounted payback is not achieved within the selected horizon.",
+      "No net terminal value is modeled in the final period."
+    ]
+  },
+  "methodology": {
+    "model_id": "catalyst-finance.cash-flow",
+    "model_version": "1.3.0",
+    "timing_policy": "period_zero_then_end_of_period",
+    "annual_to_period_rate_policy": "effective_rate_conversion",
+    "escalation_policy": "effective_annual_compounding",
+    "payback_policy": "linear_interpolation_within_crossing_period",
+    "irr_policy": "all_detected_roots_and_ambiguity_flag",
+    "transfer_policy": "grants_and_rebates_excluded_from_bcr"
+  },
+  "metadata": {
+    "generated_at": "2026-07-17T00:00:00+00:00",
+    "tool": "Catalyst Finance cash-flow engine",
+    "version": "1.3.0",
+    "disclaimer": "Educational software only; not financial, investment, legal, accounting, tax, fiduciary, procurement, funding, lending, or assurance advice."
+  }
+}

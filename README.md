@@ -1,27 +1,22 @@
 # Catalyst Finance
 
-Catalyst Finance is an open-source financial scenario and decision-support workspace for Sustainable Catalyst. It keeps costs, benefits, assumptions, methodology, risk, interpretation, narrative, workspace history, and review boundaries visible and reproducible.
+Catalyst Finance is an open-source financial scenario, cash-flow, and decision-support workspace for Sustainable Catalyst. It keeps assumptions, period schedules, methodology, metric traces, workspace history, and review boundaries visible and reproducible.
 
 > Educational software only. This repository does not provide investment, legal, tax, accounting, fiduciary, assurance, lending, procurement, funding, or financial advice.
 
-## v1.2.0 — Persistent Scenarios and Workspace Management
+## v1.3.0 — Cash-Flow Modeling and Capital Budgeting
 
-This release turns the canonical finance model into a reusable workspace rather than a disposable calculator.
+This release adds a defensible period-by-period model while retaining the annual screening model and persistent v1.2.0 workspace.
 
-- Versioned workspace, project, scenario, alternative, note, tag, status, and revision contracts.
-- Immutable workspace, project, scenario, and revision identifiers.
-- Explicit save and append-only scenario revision history.
-- Atomic JSON persistence and SQLite persistence behind one repository interface.
-- Autosave recovery that does not overwrite the last explicit save.
-- Complete workspace import/export without identifier loss.
-- Create, duplicate, rename, archive, restore, import, export, and delete operations.
-- Five templates: capital project, operating change, pricing decision, sustainability investment, and public-value initiative.
-- Workspace defaults for currency, locale, time basis, price basis, discount-rate basis, model ID, and model version.
-- FastAPI workspace endpoints and a `catalyst-finance-workspace` command.
-- A multi-scenario WordPress browser workspace with `localStorage` persistence and a public read-only mode.
-- Migration of v1.0.0 and v1.1.0 scenario inputs into the v1.2.0 contract.
-
-The annual screening calculation model remains intentionally stable in this release. Period-by-period cash-flow modeling begins in v1.3.0.
+- Monthly, quarterly, and annual cash-flow schedules.
+- Initial and phased capital costs; recurring and irregular operating costs; revenue, savings, avoided costs, grants, rebates, residual value, decommissioning, working capital, and recovery.
+- Nominal/real basis matching and effective annual-to-period discount conversion.
+- Recurrence intervals and annual escalation.
+- NPV, simple and discounted payback, IRR roots and ambiguity status, MIRR, profitability index, benefit-cost ratio, equivalent annual value, cumulative cash flow, and terminal value.
+- Metric traces listing included and excluded categories, source flow IDs, formulas, and notes.
+- Conventional, irregular, negative, zero-cost, and multiple-sign-change benchmark fixtures.
+- Cash-flow CLI, FastAPI endpoint, workspace revision persistence, exact Python/JavaScript parity, and a WordPress capital-budgeting studio with tables and charts.
+- Screening migrations from v1.0.0, v1.1.0, and v1.2.0.
 
 ## Install for development
 
@@ -38,7 +33,7 @@ The plotting dependency for the compatibility elasticity utility is optional:
 python -m pip install -e '.[plots]'
 ```
 
-## Evaluate one scenario
+## Annual screening model
 
 ```bash
 catalyst-finance \
@@ -47,7 +42,17 @@ catalyst-finance \
   --markdown-out outputs/sample_finance_scenario.output.md
 ```
 
-Legacy v1.0.0 and v1.1.0 inputs are migrated with a preservation record.
+## Cash-flow and capital-budgeting model
+
+```bash
+catalyst-finance-cashflow \
+  data/sample_cash_flow_scenario.json \
+  --json-output outputs/sample_cash_flow_scenario.output.json \
+  --markdown-output outputs/sample_cash_flow_scenario.output.md \
+  --csv-output outputs/sample_cash_flow_scenario.periods.csv
+```
+
+The cash-flow input contract uses non-negative amounts plus explicit categories. The engine applies the sign convention, expands recurring schedules, validates basis consistency, and records exactly which flows feed every metric.
 
 ## Persistent workspace CLI
 
@@ -67,16 +72,7 @@ catalyst-finance-workspace \
   list
 ```
 
-Typical lifecycle:
-
-```bash
-catalyst-finance-workspace --directory ./workspaces create "Portfolio review"
-catalyst-finance-workspace --directory ./workspaces add-scenario WORKSPACE_ID "Retrofit" --template sustainability-investment
-catalyst-finance-workspace --directory ./workspaces export WORKSPACE_ID workspace-export.json
-catalyst-finance-workspace --directory ./restored import workspace-export.json
-```
-
-The Python service also supports projects, revision saves, autosave recovery, duplication, rename, archive, restore, metadata updates, and deletion.
+Screening and cash-flow scenarios can both be preserved in append-only workspace revisions. Workspace import/export retains identifiers and revision history.
 
 ## API
 
@@ -91,6 +87,7 @@ GET  /healthz
 GET  /api/v1/version
 GET  /api/v1/models
 POST /api/v1/evaluate
+POST /api/v1/cash-flow/evaluate
 GET  /api/v1/templates
 GET  /api/v1/workspaces
 POST /api/v1/workspaces
@@ -119,37 +116,29 @@ Packages:
 
 ```text
 dist/catalyst-finance.zip
-dist/catalyst-finance-demo-v1.2.0.zip
+dist/catalyst-finance-demo-v1.3.0.zip
 ```
 
-Persistent browser workspace:
+Shortcodes:
 
 ```text
 [catalyst_finance_workspace]
-```
-
-Equivalent primary shortcode:
-
-```text
 [catalyst_finance_demo]
-```
-
-Public read-only demonstration:
-
-```text
 [catalyst_finance_demo mode="public"]
 ```
 
-Browser workspace data is stored only in that browser until the user exports or deletes it. The browser engine retains exact Python calculation parity.
+The module includes the persistent screening workspace and a capital-budgeting studio with cash-flow tables, cumulative curves, period waterfalls, metric explanations, and contract-valid JSON exports.
 
 ## Contracts and examples
 
 - `schemas/finance_input.schema.json`
 - `schemas/finance_publication.schema.json`
+- `schemas/cash_flow_input.schema.json`
+- `schemas/cash_flow_publication.schema.json`
 - `schemas/finance_workspace.schema.json`
 - `schemas/finance_workspace_export.schema.json`
-- `schemas/finance_workspace_scenario.schema.json`
-- `schemas/finance_scenario_template.schema.json`
+- `examples/sample_cash_flow_scenario.output.json`
+- `examples/sample_cash_flow_scenario.periods.csv`
 - `examples/sample_finance_workspace.export.json`
 
 ## Validation
@@ -158,11 +147,11 @@ Browser workspace data is stored only in that browser until the user exports or 
 python scripts/check_release.py
 ```
 
-The release gate checks versions, generated schemas, reproducible scenario and workspace fixtures, both migration paths, JSON/SQLite behavior, autosave recovery, API lifecycle operations, Python/JavaScript parity, Ruff, formatting, Mypy, PHP, JavaScript, and deterministic ZIP integrity.
+The release gate checks synchronized versions, generated schemas, reproducible screening and cash-flow fixtures, all three screening migration paths, JSON/SQLite workspace behavior, API lifecycle operations, exact Python/JavaScript parity for both models, Ruff, formatting, strict Mypy, PHP, JavaScript, and deterministic ZIP integrity.
 
 ## Product boundary
 
-Catalyst Finance supports structured financial reasoning and screening. It does not make autonomous investment, lending, pricing, procurement, funding, tax, accounting, or fiduciary decisions. Real decisions require qualified human review, context-specific evidence, and appropriate professional advice.
+Catalyst Finance supports structured financial reasoning and scenario review. It does not make autonomous investment, lending, pricing, procurement, funding, tax, accounting, or fiduciary decisions. Real decisions require qualified human review, context-specific evidence, and appropriate professional advice.
 
 ## License
 

@@ -1,6 +1,6 @@
 # Repository Architecture
 
-Catalyst Finance v1.2.0 separates five boundaries:
+Catalyst Finance v1.3.0 separates five boundaries:
 
 1. Scenario contracts and migration.
 2. Pure calculation, interpretation, and narrative.

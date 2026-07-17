@@ -1,0 +1,20 @@
+{
+  "contract_version": "1.3.0",
+  "model_id": "catalyst-finance.cash-flow",
+  "project": {"name": "Phased service launch", "category": "Irregular cash flow"},
+  "context": {"currency": "USD", "price_basis": "real", "discount_rate_basis": "real", "period_frequency": "quarterly", "time_basis": "end_of_period", "rounding_policy": "half_up", "monetary_decimals": 2, "ratio_decimals": 4},
+  "analysis_horizon_periods": 12,
+  "discount_rate_percent_annual": 5,
+  "finance_rate_percent_annual": 5,
+  "reinvestment_rate_percent_annual": 2,
+  "lines": [
+    {"flow_id": "phase-one", "label": "Phase one capital", "category": "capital_cost", "amount": 60000, "start_period": 0, "price_basis": "real"},
+    {"flow_id": "phase-two", "label": "Phase two capital", "category": "capital_cost", "amount": 40000, "start_period": 2, "price_basis": "real"},
+    {"flow_id": "rebate", "label": "Milestone rebate", "category": "rebate", "amount": 10000, "start_period": 3, "price_basis": "real"},
+    {"flow_id": "quarterly-operations", "label": "Quarterly operations", "category": "operating_cost", "amount": 3500, "start_period": 1, "end_period": 12, "price_basis": "real"},
+    {"flow_id": "launch-revenue", "label": "Launch revenue", "category": "revenue", "amount": 30000, "start_period": 4, "price_basis": "real"},
+    {"flow_id": "expansion-revenue", "label": "Expansion revenue", "category": "revenue", "amount": 45000, "start_period": 7, "price_basis": "real"},
+    {"flow_id": "renewal-revenue", "label": "Renewal revenue", "category": "revenue", "amount": 70000, "start_period": 12, "price_basis": "real"},
+    {"flow_id": "closure", "label": "Closure cost", "category": "decommissioning_cost", "amount": 8000, "start_period": 12, "price_basis": "real"}
+  ]
+}

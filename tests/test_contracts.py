@@ -6,7 +6,7 @@ from catalyst_finance.models import FinanceScenarioInput, validation_issues
 
 def base_payload() -> dict[str, object]:
     return {
-        "contract_version": "1.2.0",
+        "contract_version": "1.3.0",
         "model_id": "catalyst-finance.screening",
         "project": {"name": "Test", "category": "Test"},
         "context": {
@@ -70,7 +70,7 @@ def test_v110_contract_migrates_without_value_loss() -> None:
     payload = base_payload()
     payload["contract_version"] = "1.1.0"
     scenario, migration = normalize_scenario(payload)
-    assert scenario.contract_version == "1.2.0"
+    assert scenario.contract_version == "1.3.0"
     assert scenario.project.model_dump() == payload["project"]
     assert scenario.context.model_dump() == payload["context"]
     assert scenario.assumptions.model_dump() == payload["assumptions"]

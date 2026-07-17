@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Catalyst Finance Demo
- * Description: Persistent browser-based Catalyst Finance scenario workspace for Sustainable Catalyst.
- * Version: 1.2.0
+ * Description: Persistent finance workspace with screening and capital-budgeting models for Sustainable Catalyst.
+ * Version: 1.3.0
  * Author: Content Catalyst LLC
  * License: MIT
  */
@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('CATALYST_FINANCE_DEMO_VERSION', '1.2.0');
+define('CATALYST_FINANCE_DEMO_VERSION', '1.3.0');
 
 function catalyst_finance_demo_assets() {
     $base = plugin_dir_url(__FILE__);
@@ -29,9 +29,16 @@ function catalyst_finance_demo_assets() {
         true
     );
     wp_enqueue_script(
+        'catalyst-finance-cashflow-engine',
+        $base . 'assets/catalyst-finance-cashflow-engine.js',
+        array(),
+        CATALYST_FINANCE_DEMO_VERSION,
+        true
+    );
+    wp_enqueue_script(
         'catalyst-finance-demo',
         $base . 'assets/catalyst-finance-demo.js',
-        array('catalyst-finance-engine'),
+        array('catalyst-finance-engine', 'catalyst-finance-cashflow-engine'),
         CATALYST_FINANCE_DEMO_VERSION,
         true
     );
@@ -49,7 +56,7 @@ function catalyst_finance_demo_shortcode($atts = array()) {
     ?>
     <section class="scfin-demo" data-scfin-demo data-scfin-mode="<?php echo esc_attr($mode); ?>">
       <div class="scfin-demo__header">
-        <p class="scfin-demo__eyebrow">Catalyst Finance v1.2.0</p>
+        <p class="scfin-demo__eyebrow">Catalyst Finance v1.3.0</p>
         <h3><?php echo $mode === 'public' ? 'Explore a finance scenario' : 'Persistent finance scenario workspace'; ?></h3>
         <p><?php echo $mode === 'public'
             ? 'Review a read-only example using the canonical finance screening model.'
@@ -213,6 +220,70 @@ function catalyst_finance_demo_shortcode($atts = array()) {
           </details>
         </div>
       </div>
+
+      <section class="scfin-capital" data-scfin-capital-budgeting>
+        <div class="scfin-capital__header">
+          <p class="scfin-demo__eyebrow">Period cash-flow model</p>
+          <h3>Capital budgeting studio</h3>
+          <p>Build a period-level case with phased capital, recurring benefits and costs, working capital, terminal value, and explicit nominal or real assumptions.</p>
+        </div>
+        <div class="scfin-capital__layout">
+          <form class="scfin-capital__form" data-scfin-cf-form>
+            <div class="scfin-demo__two">
+              <label><span>Frequency</span><select name="frequency"><option value="annual">Annual</option><option value="quarterly">Quarterly</option><option value="monthly">Monthly</option></select></label>
+              <label><span>Horizon (periods)</span><input name="horizon" type="number" min="1" max="1200" value="10"></label>
+            </div>
+            <div class="scfin-demo__two">
+              <label><span>Price basis</span><select name="basis"><option value="nominal">Nominal</option><option value="real">Real</option></select></label>
+              <label><span>Annual discount rate (%)</span><input name="discountRate" type="number" min="-99" max="1000" step="0.1" value="6"></label>
+            </div>
+            <div class="scfin-demo__two">
+              <label><span>Initial capital cost</span><input name="capitalCost" type="number" min="0" step="1000" value="250000"></label>
+              <label><span>Grant / rebate</span><input name="grant" type="number" min="0" step="1000" value="40000"></label>
+            </div>
+            <div class="scfin-demo__two">
+              <label><span>Recurring benefit per period</span><input name="benefit" type="number" min="0" step="1000" value="60000"></label>
+              <label><span>Recurring operating cost</span><input name="operatingCost" type="number" min="0" step="500" value="10000"></label>
+            </div>
+            <div class="scfin-demo__two">
+              <label><span>Annual escalation (%)</span><input name="escalation" type="number" min="-99" max="1000" step="0.1" value="2"></label>
+              <label><span>Phased capital in period 2</span><input name="phasedCapital" type="number" min="0" step="1000" value="0"></label>
+            </div>
+            <div class="scfin-demo__two">
+              <label><span>Working capital at period 0</span><input name="workingCapital" type="number" min="0" step="1000" value="15000"></label>
+              <label><span>Working-capital recovery</span><input name="workingCapitalRecovery" type="number" min="0" step="1000" value="15000"></label>
+            </div>
+            <div class="scfin-demo__two">
+              <label><span>Residual value</span><input name="residualValue" type="number" min="0" step="1000" value="20000"></label>
+              <label><span>Decommissioning cost</span><input name="decommissioningCost" type="number" min="0" step="1000" value="5000"></label>
+            </div>
+            <div class="scfin-demo__actions">
+              <button type="button" data-scfin-cf-download>Download analysis</button>
+              <button type="button" data-scfin-cf-copy>Copy JSON</button>
+            </div>
+          </form>
+          <div class="scfin-capital__output" aria-live="polite">
+            <div class="scfin-demo__metrics scfin-capital__metrics">
+              <div><span>NPV</span><strong data-scfin-cf-npv>—</strong></div>
+              <div><span>Payback</span><strong data-scfin-cf-payback>—</strong></div>
+              <div><span>IRR / MIRR</span><strong data-scfin-cf-irr>—</strong></div>
+              <div><span>BCR / EAV</span><strong data-scfin-cf-bcr>—</strong></div>
+            </div>
+            <div class="scfin-capital__charts">
+              <figure><figcaption>Cumulative cash flow</figcaption><canvas width="760" height="250" data-scfin-cf-curve></canvas></figure>
+              <figure><figcaption>Period waterfall</figcaption><canvas width="760" height="250" data-scfin-cf-waterfall></canvas></figure>
+            </div>
+            <div class="scfin-capital__table-wrap">
+              <table class="scfin-capital__table">
+                <thead><tr><th>Period</th><th>Inflows</th><th>Outflows</th><th>Net</th><th>Discounted</th><th>Cumulative</th></tr></thead>
+                <tbody data-scfin-cf-table></tbody>
+              </table>
+            </div>
+            <details class="scfin-demo__details" open><summary>Metric explanations and review flags</summary><ul data-scfin-cf-trace></ul></details>
+            <details class="scfin-demo__details"><summary>Contract-valid capital-budgeting JSON</summary><pre data-scfin-cf-json></pre></details>
+          </div>
+        </div>
+      </section>
 
       <p class="scfin-demo__disclaimer">Educational scenario tool only. Not financial, investment, tax, accounting, legal, assurance, or fiduciary advice. Browser workspace data remains in this browser until exported or deleted.</p>
     </section>

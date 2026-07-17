@@ -29,9 +29,12 @@ def test_version_endpoint() -> None:
 def test_model_registry_endpoint() -> None:
     response = CLIENT.get("/api/v1/models")
     assert response.status_code == 200
-    model = response.json()["models"][0]
-    assert model["model_id"] == "catalyst-finance.screening"
-    assert model["model_version"] == "1.2.0"
+    models = response.json()["models"]
+    assert [model["model_id"] for model in models] == [
+        "catalyst-finance.screening",
+        "catalyst-finance.cash-flow",
+    ]
+    assert all(model["model_version"] == "1.3.0" for model in models)
 
 
 def test_evaluate_endpoint_uses_canonical_contract() -> None:
@@ -39,7 +42,7 @@ def test_evaluate_endpoint_uses_canonical_contract() -> None:
     response = CLIENT.post("/api/v1/evaluate", json=payload)
     assert response.status_code == 200
     result = response.json()
-    assert result["contract_version"] == "1.2.0"
+    assert result["contract_version"] == "1.3.0"
     assert result["results"]["score_components"]
 
 
@@ -110,3 +113,23 @@ def test_templates_api() -> None:
     response = CLIENT.get("/api/v1/templates")
     assert response.status_code == 200
     assert len(response.json()["templates"]) == 5
+
+
+def test_cash_flow_evaluate_endpoint() -> None:
+    payload = json.loads((ROOT / "data" / "sample_cash_flow_scenario.json").read_text())
+    response = CLIENT.post("/api/v1/cash-flow/evaluate", json=payload)
+    assert response.status_code == 200
+    result = response.json()
+    assert result["model_id"] == "catalyst-finance.cash-flow"
+    assert result["metrics"]["npv"] == 198884.69
+    assert len(result["periods"]) == 11
+
+
+def test_cash_flow_endpoint_returns_basis_error() -> None:
+    payload = json.loads((ROOT / "data" / "sample_cash_flow_scenario.json").read_text())
+    payload["context"]["discount_rate_basis"] = "real"
+    response = CLIENT.post("/api/v1/cash-flow/evaluate", json=payload)
+    assert response.status_code == 422
+    detail = response.json()["detail"]
+    assert detail["error"] == "invalid_cash_flow_scenario"
+    assert any("must match" in issue["message"] for issue in detail["issues"])

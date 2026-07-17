@@ -9,6 +9,8 @@ from typing import Any, cast
 from fastapi import FastAPI, HTTPException
 from pydantic import Field, ValidationError
 
+from .cashflow import evaluate_cash_flow
+from .cashflow_models import CashFlowScenarioInput
 from .engine import evaluate_payload
 from .models import ContractModel, validation_issues
 from .registry import get_model, list_models
@@ -100,6 +102,23 @@ def create_app(repository: WorkspaceRepository | None = None) -> FastAPI:
         if record is None:
             raise HTTPException(status_code=404, detail="Unknown finance model")
         return record
+
+    @application.post("/api/v1/cash-flow/evaluate", tags=["capital budgeting"])
+    def evaluate_cash_flow_endpoint(payload: dict[str, Any]) -> dict[str, Any]:
+        try:
+            scenario = CashFlowScenarioInput.model_validate(payload)
+            return cast(
+                dict[str, Any],
+                evaluate_cash_flow(scenario).model_dump(mode="json"),
+            )
+        except (ValidationError, ValueError) as exc:
+            raise HTTPException(
+                status_code=422,
+                detail={
+                    "error": "invalid_cash_flow_scenario",
+                    "issues": validation_issues(exc),
+                },
+            ) from exc
 
     @application.post("/api/v1/evaluate", tags=["evaluation"])
     def evaluate_endpoint(payload: dict[str, Any]) -> dict[str, Any]:

@@ -1,12 +1,15 @@
 # Changelog
 
-## 1.2.0 — 2026-07-17
+## 1.3.0 — 2026-07-17
 
-- Added versioned persistent workspaces, projects, scenarios, alternatives, notes, tags, status, and append-only revisions.
-- Added atomic JSON and SQLite repositories behind one protocol.
-- Added autosave recovery, explicit save, identifier-preserving import/export, templates, workspace CLI, and API routes.
-- Upgraded the WordPress module to a multi-scenario local workspace with public read-only mode.
-- Added v1.1.0 migration and expanded release validation to workspace contracts.
+- Added monthly, quarterly, and annual period cash-flow contracts and calculation services.
+- Added phased and irregular capital, operating, benefit, grant, rebate, working-capital, residual, and decommissioning schedules.
+- Added nominal/real basis validation, escalation, effective rate conversion, and period reconciliation.
+- Added NPV, simple and discounted payback, IRR root detection and ambiguity flags, MIRR, profitability index, benefit-cost ratio, equivalent annual value, and terminal value.
+- Added machine-readable metric traces with included categories, excluded categories, source flow IDs, formulas, and review notes.
+- Added conventional, irregular, negative, zero-cost, and multiple-sign-change benchmark fixtures.
+- Added cash-flow CLI exports, FastAPI evaluation, workspace revision support, exact JavaScript parity, and a WordPress capital-budgeting studio.
+- Added v1.2.0 screening migration and expanded release validation.
 
 ## 1.1.0 — 2026-07-17
 

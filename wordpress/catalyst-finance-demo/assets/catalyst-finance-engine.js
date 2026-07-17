@@ -5,7 +5,7 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
-  const CONTRACT_VERSION = '1.2.0';
+  const CONTRACT_VERSION = '1.3.0';
   const MODEL_ID = 'catalyst-finance.screening';
   const DISCLAIMER = 'Educational software only; not financial, investment, legal, accounting, tax, fiduciary, procurement, funding, lending, or assurance advice.';
   const REVIEW_BOUNDARY = 'Educational scenario output only. Validate assumptions and obtain qualified human review before financial, investment, tax, accounting, legal, fiduciary, procurement, funding, or assurance decisions.';
@@ -78,29 +78,33 @@
     };
   }
 
-  function migrateV110(payload) {
+  function migrateVersioned(payload, sourceVersion) {
     const scenario = JSON.parse(JSON.stringify(payload));
     scenario.contract_version = CONTRACT_VERSION;
     return {
       scenario: scenario,
       migration: {
-        source_contract_version: '1.1.0',
+        source_contract_version: sourceVersion,
         target_contract_version: CONTRACT_VERSION,
         preserved_fields: V110_FIELDS.slice()
       }
     };
   }
 
+  function migrateV110(payload) { return migrateVersioned(payload, '1.1.0'); }
+  function migrateV120(payload) { return migrateVersioned(payload, '1.2.0'); }
+
   function normalizeScenario(payload) {
     if (payload && !payload.contract_version && payload.inputs) return migrateLegacy(payload);
     if (payload && payload.contract_version === '1.1.0') return migrateV110(payload);
+    if (payload && payload.contract_version === '1.2.0') return migrateV120(payload);
     return { scenario: payload, migration: null };
   }
 
   function validateScenario(scenario) {
     const issues = [];
     if (!scenario || typeof scenario !== 'object') issues.push('scenario must be an object');
-    if (!scenario || scenario.contract_version !== CONTRACT_VERSION) issues.push('contract_version must be 1.2.0');
+    if (!scenario || scenario.contract_version !== CONTRACT_VERSION) issues.push('contract_version must be 1.3.0');
     if (!scenario || scenario.model_id !== MODEL_ID) issues.push('model_id must be catalyst-finance.screening');
     if (!scenario || !scenario.project || !String(scenario.project.name || '').trim()) issues.push('project.name is required');
     if (!scenario || !scenario.context) issues.push('context is required');
@@ -209,7 +213,7 @@
       interpretation: { risk_level: riskLevel, flags: flags },
       narrative: { decision_note: decisionNote, review_boundary: REVIEW_BOUNDARY },
       methodology: {
-        model_id: MODEL_ID, model_version: '1.2.0', calculation_basis: 'annual_screening',
+        model_id: MODEL_ID, model_version: '1.3.0', calculation_basis: 'annual_screening',
         fractional_horizon_policy: 'prorated_final_period', overfunding_policy: 'net_capital_cost_floor_zero',
         zero_cost_ratio_policy: 'undefined_null', missing_emissions_policy: 'exclude_carbon_value',
         score_policy: 'transparent_weighted_components'
@@ -229,6 +233,7 @@
     evaluate: evaluate,
     migrateLegacy: migrateLegacy,
     migrateV110: migrateV110,
+    migrateV120: migrateV120,
     presentValueAnnuity: presentValueAnnuity,
     roundHalfUp: roundHalfUp
   };

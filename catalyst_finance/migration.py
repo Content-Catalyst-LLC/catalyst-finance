@@ -1,4 +1,4 @@
-"""Migration into the Catalyst Finance v1.2.0 input contract."""
+"""Migration into the Catalyst Finance v1.3.0 screening contract."""
 
 from __future__ import annotations
 
@@ -29,7 +29,7 @@ LEGACY_FIELDS = [
     "inputs.implementation_risk_percent",
 ]
 
-V110_FIELDS = [
+VERSIONED_FIELDS = [
     "model_id",
     "project.name",
     "project.category",
@@ -59,10 +59,6 @@ def is_legacy_v100(payload: dict[str, Any]) -> bool:
     return "contract_version" not in payload and "inputs" in payload
 
 
-def is_v110(payload: dict[str, Any]) -> bool:
-    return payload.get("contract_version") == "1.1.0"
-
-
 def migrate_v100(
     payload: dict[str, Any],
 ) -> tuple[FinanceScenarioInput, MigrationRecord]:
@@ -77,22 +73,20 @@ def migrate_v100(
         context=FinanceContext(),
         assumptions=FinanceInputs.model_validate(input_data),
     )
-    migration = MigrationRecord(
+    return scenario, MigrationRecord(
         source_contract_version="1.0.0",
         preserved_fields=list(LEGACY_FIELDS),
     )
-    return scenario, migration
 
 
-def migrate_v110(
-    payload: dict[str, Any],
+def migrate_versioned(
+    payload: dict[str, Any], source_version: str
 ) -> tuple[FinanceScenarioInput, MigrationRecord]:
     migrated = dict(payload)
     migrated["contract_version"] = CONTRACT_VERSION
-    scenario = FinanceScenarioInput.model_validate(migrated)
-    return scenario, MigrationRecord(
-        source_contract_version="1.1.0",
-        preserved_fields=list(V110_FIELDS),
+    return FinanceScenarioInput.model_validate(migrated), MigrationRecord(
+        source_contract_version=source_version,
+        preserved_fields=list(VERSIONED_FIELDS),
     )
 
 
@@ -101,6 +95,7 @@ def normalize_scenario(
 ) -> tuple[FinanceScenarioInput, MigrationRecord | None]:
     if is_legacy_v100(payload):
         return migrate_v100(payload)
-    if is_v110(payload):
-        return migrate_v110(payload)
+    version = payload.get("contract_version")
+    if version in {"1.1.0", "1.2.0"}:
+        return migrate_versioned(payload, str(version))
     return FinanceScenarioInput.model_validate(payload), None

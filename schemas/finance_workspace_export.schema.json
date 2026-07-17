@@ -1,5 +1,240 @@
 {
   "$defs": {
+    "CashFlowContext": {
+      "additionalProperties": false,
+      "properties": {
+        "currency": {
+          "default": "USD",
+          "pattern": "^[A-Z]{3}$",
+          "title": "Currency",
+          "type": "string"
+        },
+        "price_basis": {
+          "default": "nominal",
+          "enum": [
+            "nominal",
+            "real"
+          ],
+          "title": "Price Basis",
+          "type": "string"
+        },
+        "discount_rate_basis": {
+          "default": "nominal",
+          "enum": [
+            "nominal",
+            "real"
+          ],
+          "title": "Discount Rate Basis",
+          "type": "string"
+        },
+        "period_frequency": {
+          "default": "annual",
+          "enum": [
+            "monthly",
+            "quarterly",
+            "annual"
+          ],
+          "title": "Period Frequency",
+          "type": "string"
+        },
+        "time_basis": {
+          "const": "end_of_period",
+          "default": "end_of_period",
+          "title": "Time Basis",
+          "type": "string"
+        },
+        "rounding_policy": {
+          "const": "half_up",
+          "default": "half_up",
+          "title": "Rounding Policy",
+          "type": "string"
+        },
+        "monetary_decimals": {
+          "default": 2,
+          "maximum": 6,
+          "minimum": 0,
+          "title": "Monetary Decimals",
+          "type": "integer"
+        },
+        "ratio_decimals": {
+          "default": 4,
+          "maximum": 6,
+          "minimum": 0,
+          "title": "Ratio Decimals",
+          "type": "integer"
+        }
+      },
+      "title": "CashFlowContext",
+      "type": "object"
+    },
+    "CashFlowLine": {
+      "additionalProperties": false,
+      "properties": {
+        "flow_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Flow Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "category": {
+          "enum": [
+            "capital_cost",
+            "operating_cost",
+            "revenue",
+            "savings",
+            "avoided_cost",
+            "grant",
+            "rebate",
+            "residual_value",
+            "decommissioning_cost",
+            "working_capital",
+            "working_capital_recovery",
+            "other_benefit",
+            "other_cost"
+          ],
+          "title": "Category",
+          "type": "string"
+        },
+        "amount": {
+          "minimum": 0,
+          "title": "Amount",
+          "type": "number",
+          "x-unit": "currency"
+        },
+        "start_period": {
+          "minimum": 0,
+          "title": "Start Period",
+          "type": "integer"
+        },
+        "end_period": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "End Period"
+        },
+        "interval_periods": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Interval Periods",
+          "type": "integer"
+        },
+        "escalation_rate_percent_annual": {
+          "default": 0,
+          "exclusiveMinimum": -100,
+          "maximum": 1000,
+          "title": "Escalation Rate Percent Annual",
+          "type": "number",
+          "x-unit": "percent_per_year"
+        },
+        "price_basis": {
+          "default": "nominal",
+          "enum": [
+            "nominal",
+            "real"
+          ],
+          "title": "Price Basis",
+          "type": "string"
+        },
+        "notes": {
+          "default": "",
+          "maxLength": 4000,
+          "title": "Notes",
+          "type": "string"
+        }
+      },
+      "required": [
+        "flow_id",
+        "label",
+        "category",
+        "amount",
+        "start_period"
+      ],
+      "title": "CashFlowLine",
+      "type": "object"
+    },
+    "CashFlowScenarioInput": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": "1.3.0",
+          "default": "1.3.0",
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "model_id": {
+          "const": "catalyst-finance.cash-flow",
+          "default": "catalyst-finance.cash-flow",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "project": {
+          "$ref": "#/$defs/FinanceProject"
+        },
+        "context": {
+          "$ref": "#/$defs/CashFlowContext"
+        },
+        "analysis_horizon_periods": {
+          "maximum": 1200,
+          "minimum": 1,
+          "title": "Analysis Horizon Periods",
+          "type": "integer"
+        },
+        "discount_rate_percent_annual": {
+          "exclusiveMinimum": -100,
+          "maximum": 1000,
+          "title": "Discount Rate Percent Annual",
+          "type": "number",
+          "x-unit": "percent_per_year"
+        },
+        "finance_rate_percent_annual": {
+          "default": 0,
+          "exclusiveMinimum": -100,
+          "maximum": 1000,
+          "title": "Finance Rate Percent Annual",
+          "type": "number",
+          "x-unit": "percent_per_year"
+        },
+        "reinvestment_rate_percent_annual": {
+          "default": 0,
+          "exclusiveMinimum": -100,
+          "maximum": 1000,
+          "title": "Reinvestment Rate Percent Annual",
+          "type": "number",
+          "x-unit": "percent_per_year"
+        },
+        "lines": {
+          "items": {
+            "$ref": "#/$defs/CashFlowLine"
+          },
+          "maxItems": 1000,
+          "minItems": 1,
+          "title": "Lines",
+          "type": "array"
+        }
+      },
+      "required": [
+        "project",
+        "analysis_horizon_periods",
+        "discount_rate_percent_annual",
+        "lines"
+      ],
+      "title": "CashFlowScenarioInput",
+      "type": "object"
+    },
     "FinanceContext": {
       "additionalProperties": false,
       "properties": {
@@ -184,8 +419,8 @@
       "additionalProperties": false,
       "properties": {
         "contract_version": {
-          "const": "1.2.0",
-          "default": "1.2.0",
+          "const": "1.3.0",
+          "default": "1.3.0",
           "title": "Contract Version",
           "type": "string"
         },
@@ -216,8 +451,8 @@
       "additionalProperties": false,
       "properties": {
         "workspace_contract_version": {
-          "const": "1.2.0",
-          "default": "1.2.0",
+          "const": "1.3.0",
+          "default": "1.3.0",
           "title": "Workspace Contract Version",
           "type": "string"
         },
@@ -307,14 +542,17 @@
           "type": "string"
         },
         "model_id": {
-          "const": "catalyst-finance.screening",
           "default": "catalyst-finance.screening",
+          "enum": [
+            "catalyst-finance.screening",
+            "catalyst-finance.cash-flow"
+          ],
           "title": "Model Id",
           "type": "string"
         },
         "model_version": {
-          "const": "1.2.0",
-          "default": "1.2.0",
+          "const": "1.3.0",
+          "default": "1.3.0",
           "title": "Model Version",
           "type": "string"
         },
@@ -325,7 +563,15 @@
           "type": "string"
         },
         "scenario": {
-          "$ref": "#/$defs/FinanceScenarioInput"
+          "anyOf": [
+            {
+              "$ref": "#/$defs/FinanceScenarioInput"
+            },
+            {
+              "$ref": "#/$defs/CashFlowScenarioInput"
+            }
+          ],
+          "title": "Scenario"
         }
       },
       "required": [
@@ -379,14 +625,17 @@
           "type": "string"
         },
         "default_model_id": {
-          "const": "catalyst-finance.screening",
           "default": "catalyst-finance.screening",
+          "enum": [
+            "catalyst-finance.screening",
+            "catalyst-finance.cash-flow"
+          ],
           "title": "Default Model Id",
           "type": "string"
         },
         "default_model_version": {
-          "const": "1.2.0",
-          "default": "1.2.0",
+          "const": "1.3.0",
+          "default": "1.3.0",
           "title": "Default Model Version",
           "type": "string"
         }
@@ -586,8 +835,8 @@
   "additionalProperties": false,
   "properties": {
     "export_contract_version": {
-      "const": "1.2.0",
-      "default": "1.2.0",
+      "const": "1.3.0",
+      "default": "1.3.0",
       "title": "Export Contract Version",
       "type": "string"
     },
@@ -607,5 +856,5 @@
   "title": "WorkspaceExport",
   "type": "object",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.2.0/finance_workspace_export.schema.json"
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.3.0/finance_workspace_export.schema.json"
 }

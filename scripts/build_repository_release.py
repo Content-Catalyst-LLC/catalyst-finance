@@ -34,6 +34,8 @@ def included_files() -> list[Path]:
         relative = path.relative_to(ROOT)
         if any(part in EXCLUDED_PARTS for part in relative.parts):
             continue
+        if any(part.endswith(".egg-info") for part in relative.parts):
+            continue
         if path.suffix in EXCLUDED_SUFFIXES:
             continue
         if path.name == ".DS_Store" or path.name.endswith("~"):

@@ -1,4 +1,4 @@
-"""Workspace lifecycle and revision services for Catalyst Finance v1.2.0."""
+"""Workspace lifecycle and revision services for Catalyst Finance v1.3.0."""
 
 from __future__ import annotations
 
@@ -7,14 +7,16 @@ import uuid
 from collections.abc import Callable
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
+from .cashflow_models import CashFlowScenarioInput
 from .migration import normalize_scenario
 from .models import FinanceScenarioInput
 from .repositories import WorkspaceNotFoundError, WorkspaceRepository
 from .templates import get_template
 from .workspace_models import (
     FinanceWorkspace,
+    ScenarioPayload,
     ScenarioRevision,
     WorkspaceDefaults,
     WorkspaceExport,
@@ -36,6 +38,18 @@ def random_id(prefix: str) -> str:
 
 class WorkspaceConflictError(ValueError):
     """Raised when an import would overwrite an existing workspace."""
+
+
+def normalize_workspace_scenario(
+    scenario: ScenarioPayload | dict[str, Any],
+) -> ScenarioPayload:
+    if isinstance(scenario, (FinanceScenarioInput, CashFlowScenarioInput)):
+        return scenario
+    if scenario.get("model_id") == "catalyst-finance.cash-flow":
+        return cast(
+            CashFlowScenarioInput, CashFlowScenarioInput.model_validate(scenario)
+        )
+    return normalize_scenario(scenario)[0]
 
 
 class WorkspaceService:
@@ -150,7 +164,7 @@ class WorkspaceService:
         workspace_id: str,
         name: str,
         *,
-        scenario: FinanceScenarioInput | dict[str, Any] | None = None,
+        scenario: ScenarioPayload | dict[str, Any] | None = None,
         project_id: str | None = None,
         alternative_label: str = "Base",
         template_id: str | None = "capital-project",
@@ -175,16 +189,15 @@ class WorkspaceService:
                     )
                 }
             )
-        elif isinstance(scenario, FinanceScenarioInput):
-            scenario_input = scenario
         else:
-            scenario_input, _ = normalize_scenario(scenario)
+            scenario_input = normalize_workspace_scenario(scenario)
         now = self.clock()
         revision = ScenarioRevision(
             revision_id=self.id_factory("revision"),
             revision_number=1,
             created_at=now,
             change_note="Initial scenario",
+            model_id=scenario_input.model_id,
             scenario=scenario_input,
         )
         record = WorkspaceScenario(
@@ -213,7 +226,7 @@ class WorkspaceService:
         self,
         workspace_id: str,
         scenario_id: str,
-        scenario: FinanceScenarioInput | dict[str, Any],
+        scenario: ScenarioPayload | dict[str, Any],
         *,
         change_note: str = "Saved revision",
     ) -> FinanceWorkspace:
@@ -230,7 +243,7 @@ class WorkspaceService:
         self,
         workspace_id: str,
         scenario_id: str,
-        scenario: FinanceScenarioInput | dict[str, Any],
+        scenario: ScenarioPayload | dict[str, Any],
     ) -> FinanceWorkspace:
         workspace = self.repository.get(workspace_id)
         return self._revision_workspace(
@@ -245,16 +258,12 @@ class WorkspaceService:
         self,
         workspace: FinanceWorkspace,
         scenario_id: str,
-        scenario: FinanceScenarioInput | dict[str, Any],
+        scenario: ScenarioPayload | dict[str, Any],
         *,
         change_note: str,
         autosave: bool,
     ) -> FinanceWorkspace:
-        scenario_input = (
-            scenario
-            if isinstance(scenario, FinanceScenarioInput)
-            else normalize_scenario(scenario)[0]
-        )
+        scenario_input = normalize_workspace_scenario(scenario)
         now = self.clock()
         found = False
         records: list[WorkspaceScenario] = []
@@ -263,11 +272,14 @@ class WorkspaceService:
                 records.append(record)
                 continue
             found = True
+            if scenario_input.model_id != record.current_revision.model_id:
+                raise ValueError("scenario revisions cannot change the model_id")
             revision = ScenarioRevision(
                 revision_id=self.id_factory("revision"),
                 revision_number=len(record.revisions) + 1,
                 created_at=now,
                 change_note=change_note,
+                model_id=scenario_input.model_id,
                 scenario=scenario_input,
             )
             records.append(
@@ -310,6 +322,7 @@ class WorkspaceService:
             revision_number=1,
             created_at=now,
             change_note=f"Duplicated from {source.scenario_id}",
+            model_id=source.current_revision.model_id,
             scenario=source.current_revision.scenario,
         )
         duplicate = WorkspaceScenario(

@@ -239,3 +239,32 @@ def test_sqlite_and_json_exports_are_contract_equivalent(tmp_path: Path) -> None
     assert json.dumps(payloads[0], sort_keys=True) == json.dumps(
         payloads[1], sort_keys=True
     )
+
+
+def test_workspace_persists_cash_flow_scenarios(tmp_path: Path) -> None:
+    import json
+
+    from catalyst_finance.cashflow_models import CashFlowScenarioInput
+
+    repository = JsonWorkspaceRepository(tmp_path / "cashflow-workspaces")
+    service = WorkspaceService(repository, clock=TickClock(), id_factory=Ids())
+    workspace = service.create_workspace("Capital budgeting")
+    payload = json.loads(
+        (
+            Path(__file__).resolve().parents[1]
+            / "data"
+            / "sample_cash_flow_scenario.json"
+        ).read_text(encoding="utf-8")
+    )
+    scenario = CashFlowScenarioInput.model_validate(payload)
+    workspace = service.create_scenario(
+        workspace.workspace_id,
+        "Retrofit cash flow",
+        scenario=scenario,
+        template_id=None,
+    )
+    record = workspace.scenarios[0]
+    assert record.current_revision.model_id == "catalyst-finance.cash-flow"
+    assert record.current_revision.scenario.model_id == "catalyst-finance.cash-flow"
+    reopened = service.get_workspace(workspace.workspace_id)
+    assert reopened.scenarios[0].current_revision.scenario == scenario

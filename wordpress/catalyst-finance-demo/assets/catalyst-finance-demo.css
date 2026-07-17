@@ -84,3 +84,104 @@
   .scfin-demo__workspace-files,
   .scfin-demo__save-status { grid-column: 1; }
 }
+
+.scfin-capital {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(20, 20, 20, 0.16);
+}
+
+.scfin-capital__header {
+  max-width: 860px;
+  margin-bottom: 1.25rem;
+}
+
+.scfin-capital__header h3 {
+  margin: 0.15rem 0 0.55rem;
+}
+
+.scfin-capital__layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.82fr) minmax(0, 1.5fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.scfin-capital__form,
+.scfin-capital__output {
+  border: 1px solid rgba(20, 20, 20, 0.16);
+  border-radius: 14px;
+  background: #fff;
+  padding: 1rem;
+}
+
+.scfin-capital__form label {
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: 0.85rem;
+}
+
+.scfin-capital__form input,
+.scfin-capital__form select {
+  width: 100%;
+}
+
+.scfin-capital__metrics {
+  margin-bottom: 1rem;
+}
+
+.scfin-capital__charts {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.scfin-capital__charts figure {
+  margin: 0;
+  padding: 0.75rem;
+  border: 1px solid rgba(20, 20, 20, 0.12);
+  border-radius: 10px;
+  background: #fafafa;
+}
+
+.scfin-capital__charts figcaption {
+  margin-bottom: 0.45rem;
+  font-weight: 700;
+}
+
+.scfin-capital__charts canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.scfin-capital__table-wrap {
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.scfin-capital__table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.scfin-capital__table th,
+.scfin-capital__table td {
+  padding: 0.55rem 0.65rem;
+  border-bottom: 1px solid rgba(20, 20, 20, 0.12);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.scfin-capital__table th:first-child,
+.scfin-capital__table td:first-child {
+  text-align: left;
+}
+
+@media (max-width: 920px) {
+  .scfin-capital__layout {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,4 +1,4 @@
-"""Versioned workspace records for Catalyst Finance v1.2.0."""
+"""Versioned workspace records for Catalyst Finance v1.3.0."""
 
 from __future__ import annotations
 
@@ -7,6 +7,9 @@ from typing import Annotated, Literal
 
 from pydantic import Field, model_validator
 
+from .cashflow_models import (
+    CashFlowScenarioInput,
+)
 from .models import (
     CONTRACT_VERSION,
     MODEL_ID,
@@ -15,7 +18,7 @@ from .models import (
     FinanceScenarioInput,
 )
 
-WORKSPACE_CONTRACT_VERSION: Literal["1.2.0"] = "1.2.0"
+WORKSPACE_CONTRACT_VERSION: Literal["1.3.0"] = "1.3.0"
 
 Identifier = Annotated[
     str, Field(min_length=5, max_length=100, pattern=r"^[a-z]+_[A-Za-z0-9_-]+$")
@@ -31,8 +34,10 @@ class WorkspaceDefaults(ContractModel):
     time_basis: Literal["end_of_period"] = "end_of_period"
     price_basis: Literal["nominal", "real"] = "nominal"
     discount_rate_basis: Literal["nominal", "real"] = "nominal"
-    default_model_id: Literal["catalyst-finance.screening"] = MODEL_ID
-    default_model_version: Literal["1.2.0"] = CONTRACT_VERSION
+    default_model_id: Literal[
+        "catalyst-finance.screening", "catalyst-finance.cash-flow"
+    ] = MODEL_ID
+    default_model_version: Literal["1.3.0"] = CONTRACT_VERSION
 
     @model_validator(mode="after")
     def matching_basis(self) -> WorkspaceDefaults:
@@ -61,14 +66,19 @@ class WorkspaceProject(ContractModel):
     updated_at: datetime
 
 
+ScenarioPayload = FinanceScenarioInput | CashFlowScenarioInput
+
+
 class ScenarioRevision(ContractModel):
     revision_id: Identifier
     revision_number: Annotated[int, Field(ge=1)]
     created_at: datetime
-    model_id: Literal["catalyst-finance.screening"] = MODEL_ID
-    model_version: Literal["1.2.0"] = CONTRACT_VERSION
+    model_id: Literal["catalyst-finance.screening", "catalyst-finance.cash-flow"] = (
+        MODEL_ID
+    )
+    model_version: Literal["1.3.0"] = CONTRACT_VERSION
     change_note: str = Field(default="", max_length=1000)
-    scenario: FinanceScenarioInput
+    scenario: ScenarioPayload
 
 
 class WorkspaceScenario(ContractModel):
@@ -109,7 +119,7 @@ class WorkspaceScenario(ContractModel):
 
 
 class FinanceWorkspace(ContractModel):
-    workspace_contract_version: Literal["1.2.0"] = WORKSPACE_CONTRACT_VERSION
+    workspace_contract_version: Literal["1.3.0"] = WORKSPACE_CONTRACT_VERSION
     workspace_id: Identifier
     name: str = Field(min_length=1, max_length=200)
     description: str = Field(default="", max_length=4000)
@@ -141,7 +151,7 @@ class FinanceWorkspace(ContractModel):
 
 
 class WorkspaceExport(ContractModel):
-    export_contract_version: Literal["1.2.0"] = WORKSPACE_CONTRACT_VERSION
+    export_contract_version: Literal["1.3.0"] = WORKSPACE_CONTRACT_VERSION
     exported_at: datetime
     workspace: FinanceWorkspace
 
@@ -151,4 +161,4 @@ class ScenarioTemplate(ContractModel):
     name: str = Field(min_length=1, max_length=160)
     description: str = Field(min_length=1, max_length=1000)
     category: str = Field(min_length=1, max_length=120)
-    scenario: FinanceScenarioInput
+    scenario: ScenarioPayload

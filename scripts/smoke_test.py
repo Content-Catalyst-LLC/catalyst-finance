@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Portable v1.2.0 smoke tests that do not require a running server."""
+"""Portable v1.3.0 smoke tests that do not require a running server."""
 
 from __future__ import annotations
 
@@ -27,7 +27,10 @@ def main() -> int:
         assert client.get("/healthz").json() == {"ok": True}
         assert client.get("/api/v1/version").json()["version"] == __version__
         models = client.get("/api/v1/models").json()["models"]
-        assert models[0]["model_id"] == "catalyst-finance.screening"
+        assert [item["model_id"] for item in models] == [
+            "catalyst-finance.screening",
+            "catalyst-finance.cash-flow",
+        ]
         assert len(client.get("/api/v1/templates").json()["templates"]) == 5
 
         scenario = json.loads(
@@ -40,13 +43,26 @@ def main() -> int:
         assert publication.results.npv > 0
         assert len(publication.results.score_components) == 4
 
+        cashflow = json.loads(
+            (ROOT / "data" / "sample_cash_flow_scenario.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        cashflow_response = client.post("/api/v1/cash-flow/evaluate", json=cashflow)
+        assert cashflow_response.status_code == 200
+        cashflow_publication = cashflow_response.json()
+        assert cashflow_publication["model_id"] == "catalyst-finance.cash-flow"
+        assert cashflow_publication["metadata"]["version"] == __version__
+        assert cashflow_publication["metrics"]["npv"] == 198884.69
+        assert len(cashflow_publication["periods"]) == 11
+
         service = WorkspaceService(repository)
         workspace = service.create_workspace("Smoke workspace")
         workspace = service.create_scenario(workspace.workspace_id, "Smoke scenario")
         reopened = service.get_workspace(workspace.workspace_id)
         assert reopened.scenarios[0].revisions[0].model_version == __version__
 
-    print("Catalyst Finance v1.2.0 smoke tests passed.")
+    print("Catalyst Finance v1.3.0 smoke tests passed.")
     return 0
 
 

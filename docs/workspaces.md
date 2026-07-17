@@ -1,6 +1,6 @@
 # Persistent Workspace Contract
 
-Catalyst Finance v1.2.0 stores a complete decision workspace as a versioned document.
+Catalyst Finance v1.3.0 stores a complete decision workspace as a versioned document.
 
 ## Hierarchy
 
