@@ -1,0 +1,4 @@
+summary_id,label,budget_profit,actual_profit,profit_variance,break_even_units,margin_of_safety_units
+implementation,Implementation services,28400.0,25970.0,-2430.0,156.25,91.75
+support,Ongoing support,31950.0,36565.0,4615.0,273.684211,366.315789
+total,All operating units,60350.0,62535.0,2185.0,476.567657,411.432343

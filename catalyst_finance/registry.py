@@ -7,6 +7,7 @@ from typing import Any
 from .cashflow_models import CASHFLOW_CONTRACT_VERSION, CASHFLOW_MODEL_ID
 from .comparison_models import COMPARISON_CONTRACT_VERSION, COMPARISON_MODEL_ID
 from .models import CONTRACT_VERSION, METHODOLOGY_VERSION, MODEL_ID
+from .operating_models import OPERATING_CONTRACT_VERSION, OPERATING_MODEL_ID
 from .pricing_models import PRICING_CONTRACT_VERSION, PRICING_MODEL_ID
 from .uncertainty_models import UNCERTAINTY_CONTRACT_VERSION, UNCERTAINTY_MODEL_ID
 
@@ -102,6 +103,25 @@ MODEL_REGISTRY: dict[str, dict[str, Any]] = {
             "point and local elasticity classification",
             "break-even quantity and margin analysis",
             "current-price recommendation deltas",
+        ],
+    },
+    OPERATING_MODEL_ID: {
+        "model_id": OPERATING_MODEL_ID,
+        "name": "Catalyst Finance cost, budget, and operating-economics model",
+        "model_version": OPERATING_CONTRACT_VERSION,
+        "contract_version": OPERATING_CONTRACT_VERSION,
+        "status": "stable",
+        "period_frequency": ["monthly", "quarterly", "annual"],
+        "capabilities": [
+            "static, flexible, and actual operating statements",
+            "sales volume and sales price variances",
+            "variable and fixed cost spending variances",
+            "unit economics and contribution margins",
+            "break-even and margin-of-safety analysis",
+            "degree of operating leverage",
+            "target-profit volume",
+            "cost-center and unit rollups",
+            "variance reconciliation",
         ],
     },
 }

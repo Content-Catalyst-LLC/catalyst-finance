@@ -1,4 +1,4 @@
-# Catalyst Finance Workspace v1.6.0
+# Catalyst Finance Workspace v1.7.0
 
 Shortcodes:
 
@@ -6,4 +6,4 @@ Shortcodes:
 - `[catalyst_finance_demo]`
 - `[catalyst_finance_demo mode="public"]`
 
-The browser module includes annual screening, period cash-flow capital budgeting, alternative comparison, uncertainty and stress testing, and the demand, elasticity, pricing, and revenue studio. The pricing surface provides segmented demand curves, capacity constraints, cost-to-serve, revenue/contribution/profit optima, break-even quantities, recommendation deltas, charts, tables, flags, and a downloadable v1.6.0 publication. Browser data remains local until exported.
+The browser module includes annual screening, period cash-flow capital budgeting, alternative comparison, uncertainty and stress testing, pricing and elasticity, and operating economics. The operating surface reconciles static budget, flexible budget, and actual results; explains favorable and unfavorable variances; and reports contribution margin, break-even, margin of safety, operating leverage, and target-profit volume. Browser data remains local until exported.

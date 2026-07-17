@@ -1,8 +1,8 @@
 {
-  "contract_version": "1.6.0",
+  "contract_version": "1.7.0",
   "model_id": "catalyst-finance.uncertainty",
   "definition": {
-    "contract_version": "1.6.0",
+    "contract_version": "1.7.0",
     "model_id": "catalyst-finance.uncertainty",
     "uncertainty_id": "retrofit-risk-analysis",
     "name": "Building efficiency retrofit uncertainty analysis",
@@ -14,7 +14,7 @@
       "revision_number": 1
     },
     "scenario": {
-      "contract_version": "1.6.0",
+      "contract_version": "1.7.0",
       "model_id": "catalyst-finance.cash-flow",
       "project": {
         "name": "Building efficiency retrofit",
@@ -1370,7 +1370,7 @@
   ],
   "methodology": {
     "model_id": "catalyst-finance.uncertainty",
-    "model_version": "1.6.0",
+    "model_version": "1.7.0",
     "random_generator": "xorshift32_box_muller",
     "correlation_policy": "gaussian_copula_cholesky",
     "percentile_policy": "linear_interpolation",
@@ -1379,12 +1379,12 @@
   },
   "metadata": {
     "generated_at": "2026-07-17T00:00:00+00:00",
-    "version": "1.6.0",
+    "version": "1.7.0",
     "configured_iterations": 500,
     "completed_iterations": 500,
     "rejected_iterations": 24,
     "seed": 20260717,
-    "reproducibility_key": "b3c0176031fe5ce11c3bce61b738bf0a03071e48bd4abd347b17dd18a087a007",
+    "reproducibility_key": "e222213fa99a77ab2ed41f545786f5e04195c34d941aca3c38d1720ff9fcf215",
     "disclaimer": "Catalyst Finance provides transparent analytical support, not investment, accounting, tax, legal, or fiduciary advice. Probability estimates depend on the stated distributions, correlations, model structure, and evidence."
   }
 }

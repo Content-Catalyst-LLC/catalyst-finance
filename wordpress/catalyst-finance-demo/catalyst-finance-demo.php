@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Catalyst Finance Demo
- * Description: Persistent finance workspace with screening, capital budgeting, comparison, uncertainty, pricing, revenue, and stress testing for Sustainable Catalyst.
- * Version: 1.6.0
+ * Description: Persistent finance workspace with screening, capital budgeting, comparison, uncertainty, pricing, budgets, variances, and operating economics for Sustainable Catalyst.
+ * Version: 1.7.0
  * Author: Content Catalyst LLC
  * License: MIT
  */
@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('CATALYST_FINANCE_DEMO_VERSION', '1.6.0');
+define('CATALYST_FINANCE_DEMO_VERSION', '1.7.0');
 
 function catalyst_finance_demo_assets() {
     $base = plugin_dir_url(__FILE__);
@@ -57,9 +57,16 @@ function catalyst_finance_demo_assets() {
         true
     );
     wp_enqueue_script(
+        'catalyst-finance-operating-engine',
+        $base . 'assets/catalyst-finance-operating-engine.js',
+        array(),
+        CATALYST_FINANCE_DEMO_VERSION,
+        true
+    );
+    wp_enqueue_script(
         'catalyst-finance-demo',
         $base . 'assets/catalyst-finance-demo.js',
-        array('catalyst-finance-engine', 'catalyst-finance-cashflow-engine', 'catalyst-finance-comparison-engine', 'catalyst-finance-uncertainty-engine', 'catalyst-finance-pricing-engine'),
+        array('catalyst-finance-engine', 'catalyst-finance-cashflow-engine', 'catalyst-finance-comparison-engine', 'catalyst-finance-uncertainty-engine', 'catalyst-finance-pricing-engine', 'catalyst-finance-operating-engine'),
         CATALYST_FINANCE_DEMO_VERSION,
         true
     );
@@ -77,7 +84,7 @@ function catalyst_finance_demo_shortcode($atts = array()) {
     ?>
     <section class="scfin-demo" data-scfin-demo data-scfin-mode="<?php echo esc_attr($mode); ?>">
       <div class="scfin-demo__header">
-        <p class="scfin-demo__eyebrow">Catalyst Finance v1.6.0</p>
+        <p class="scfin-demo__eyebrow">Catalyst Finance v1.7.0</p>
         <h3><?php echo $mode === 'public' ? 'Explore a finance scenario' : 'Persistent finance scenario workspace'; ?></h3>
         <p><?php echo $mode === 'public'
             ? 'Review a read-only example using the canonical finance screening model.'
@@ -443,6 +450,52 @@ function catalyst_finance_demo_shortcode($atts = array()) {
             </div>
             <ul data-scfin-pricing-flags></ul>
             <details class="scfin-demo__details"><summary>Versioned pricing publication</summary><pre data-scfin-pricing-json></pre></details>
+          </div>
+        </div>
+      </section>
+
+      <section class="scfin-operating" data-scfin-operating-studio>
+        <div class="scfin-capital__header">
+          <p class="scfin-demo__eyebrow">Budget and cost control</p>
+          <h3>Operating economics studio</h3>
+          <p>Reconcile a static budget, flexible budget, and actual result while reviewing contribution margin, break-even volume, margin of safety, operating leverage, and favorable or unfavorable variances.</p>
+        </div>
+        <div class="scfin-operating__layout">
+          <form class="scfin-operating__form" data-scfin-operating-form>
+            <div class="scfin-demo__two">
+              <label><span>Budget units</span><input name="budgetUnits" type="number" min="0" step="1" value="120"></label>
+              <label><span>Actual units</span><input name="actualUnits" type="number" min="0" step="1" value="130"></label>
+            </div>
+            <div class="scfin-demo__two">
+              <label><span>Budget price</span><input name="budgetPrice" type="number" min="0" step="1" value="600"></label>
+              <label><span>Actual price</span><input name="actualPrice" type="number" min="0" step="1" value="620"></label>
+            </div>
+            <div class="scfin-demo__two">
+              <label><span>Budget variable cost / unit</span><input name="budgetVariable" type="number" min="0" step="1" value="280"></label>
+              <label><span>Actual variable cost / unit</span><input name="actualVariable" type="number" min="0" step="1" value="290"></label>
+            </div>
+            <div class="scfin-demo__two">
+              <label><span>Budget fixed + overhead</span><input name="budgetFixed" type="number" min="0" step="100" value="25000"></label>
+              <label><span>Actual fixed + overhead</span><input name="actualFixed" type="number" min="0" step="100" value="25700"></label>
+            </div>
+            <label><span>Target operating profit</span><input name="targetProfit" type="number" step="100" value="25000"></label>
+            <div class="scfin-demo__actions">
+              <button type="button" data-scfin-operating-run>Evaluate operations</button>
+              <button type="button" data-scfin-operating-download>Download publication</button>
+            </div>
+          </form>
+          <div class="scfin-operating__output" aria-live="polite">
+            <div class="scfin-demo__metrics">
+              <div><span>Actual operating profit</span><strong data-scfin-operating-profit>—</strong></div>
+              <div><span>Profit variance</span><strong data-scfin-operating-variance>—</strong></div>
+              <div><span>Break-even units</span><strong data-scfin-operating-breakeven>—</strong></div>
+              <div><span>Margin of safety</span><strong data-scfin-operating-safety>—</strong></div>
+            </div>
+            <div class="scfin-capital__table-wrap">
+              <table class="scfin-capital__table"><thead><tr><th>Variance</th><th>Amount</th><th>Status</th></tr></thead><tbody data-scfin-operating-table></tbody></table>
+            </div>
+            <ul data-scfin-operating-flags></ul>
+            <details class="scfin-demo__details"><summary>Versioned operating publication</summary><pre data-scfin-operating-json></pre></details>
           </div>
         </div>
       </section>

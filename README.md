@@ -4,17 +4,17 @@ Catalyst Finance is an open-source financial scenario, cash-flow, and decision-s
 
 > Educational software only. This repository does not provide investment, legal, tax, accounting, fiduciary, assurance, lending, procurement, funding, or financial advice.
 
-## v1.6.0 — Demand, Elasticity, Pricing, and Revenue Studio
+## v1.7.0 — Cost, Budget, and Operating Economics
 
-Catalyst Finance now includes a canonical pricing model with linear, constant-elasticity, and observed demand curves; multi-segment aggregation; capacity allocation; cost-to-serve; revenue, contribution, and profit optima; break-even quantities; and current-price recommendations.
+Catalyst Finance now includes a canonical operating model with static, flexible, and actual budgets; reconciled favorable and unfavorable variances; unit and cost-center rollups; contribution margins; break-even and margin-of-safety analysis; operating leverage; and target-profit volume.
 
 ```bash
-catalyst-finance-pricing data/sample_pricing.json \
-  --output outputs/sample_pricing.output.json \
-  --csv outputs/sample_pricing.curve.csv
+catalyst-finance-operating data/sample_operating.json \
+  --output outputs/sample_operating.output.json \
+  --csv outputs/sample_operating.summary.csv
 ```
 
-The API endpoint is `POST /api/v1/pricing/evaluate`. The WordPress shortcode remains `[catalyst_finance_workspace]` and now includes the Pricing and Elasticity Studio.
+The API endpoint is `POST /api/v1/operating/evaluate`. The WordPress shortcode remains `[catalyst_finance_workspace]` and now includes the Operating Economics Studio.
 
 ## Install for development
 
@@ -89,6 +89,7 @@ POST /api/v1/cash-flow/evaluate
 POST /api/v1/compare
 POST /api/v1/uncertainty/evaluate
 POST /api/v1/pricing/evaluate
+POST /api/v1/operating/evaluate
 GET  /api/v1/templates
 GET  /api/v1/workspaces
 POST /api/v1/workspaces
@@ -117,7 +118,7 @@ Packages:
 
 ```text
 dist/catalyst-finance.zip
-dist/catalyst-finance-demo-v1.6.0.zip
+dist/catalyst-finance-demo-v1.7.0.zip
 ```
 
 Shortcodes:
@@ -128,7 +129,7 @@ Shortcodes:
 [catalyst_finance_demo mode="public"]
 ```
 
-The module includes persistent screening, capital budgeting, comparison, uncertainty, and pricing studios with contract-valid local exports.
+The module includes persistent screening, capital budgeting, comparison, uncertainty, pricing, and operating-economics studios with contract-valid local exports.
 
 ## Contracts and examples
 
@@ -144,6 +145,8 @@ The module includes persistent screening, capital budgeting, comparison, uncerta
 - `schemas/uncertainty_publication.schema.json`
 - `schemas/pricing_definition.schema.json`
 - `schemas/pricing_publication.schema.json`
+- `schemas/operating_definition.schema.json`
+- `schemas/operating_publication.schema.json`
 - `examples/sample_cash_flow_scenario.output.json`
 - `examples/sample_cash_flow_scenario.periods.csv`
 - `examples/sample_finance_workspace.export.json`
@@ -152,6 +155,8 @@ The module includes persistent screening, capital budgeting, comparison, uncerta
 - `examples/sample_uncertainty.summary.csv`
 - `examples/sample_pricing.output.json`
 - `examples/sample_pricing.curve.csv`
+- `examples/sample_operating.output.json`
+- `examples/sample_operating.summary.csv`
 
 ## Validation
 
@@ -159,7 +164,7 @@ The module includes persistent screening, capital budgeting, comparison, uncerta
 python scripts/check_release.py
 ```
 
-The release gate checks synchronized versions, generated schemas, reproducible screening and cash-flow fixtures, all three screening migration paths, JSON/SQLite workspace behavior, API lifecycle operations, exact Python/JavaScript parity for screening, cash-flow, comparison, uncertainty, and pricing models, Ruff, formatting, strict Mypy, PHP, JavaScript, and deterministic ZIP integrity.
+The release gate checks synchronized versions, generated schemas, reproducible screening and cash-flow fixtures, all three screening migration paths, JSON/SQLite workspace behavior, API lifecycle operations, exact Python/JavaScript parity for screening, cash-flow, comparison, uncertainty, pricing, and operating models, Ruff, formatting, strict Mypy, PHP, JavaScript, and deterministic ZIP integrity.
 
 ## Product boundary
 

@@ -1,8 +1,8 @@
 {
-  "contract_version": "1.6.0",
+  "contract_version": "1.7.0",
   "model_id": "catalyst-finance.comparison",
   "definition": {
-    "contract_version": "1.6.0",
+    "contract_version": "1.7.0",
     "model_id": "catalyst-finance.comparison",
     "comparison_id": "retrofit-options",
     "name": "Building retrofit alternatives",
@@ -20,7 +20,7 @@
           "revision_number": 3
         },
         "scenario": {
-          "contract_version": "1.6.0",
+          "contract_version": "1.7.0",
           "model_id": "catalyst-finance.cash-flow",
           "project": {
             "name": "Building efficiency retrofit",
@@ -167,7 +167,7 @@
           "revision_number": 3
         },
         "scenario": {
-          "contract_version": "1.6.0",
+          "contract_version": "1.7.0",
           "model_id": "catalyst-finance.cash-flow",
           "project": {
             "name": "Building efficiency retrofit",
@@ -313,7 +313,7 @@
           "revision_number": 3
         },
         "scenario": {
-          "contract_version": "1.6.0",
+          "contract_version": "1.7.0",
           "model_id": "catalyst-finance.cash-flow",
           "project": {
             "name": "Building efficiency retrofit",
@@ -691,7 +691,7 @@
         "equivalent_annual_value": 1866.98
       },
       "publication": {
-        "contract_version": "1.6.0",
+        "contract_version": "1.7.0",
         "model_id": "catalyst-finance.cash-flow",
         "project": {
           "name": "Building efficiency retrofit",
@@ -708,7 +708,7 @@
           "ratio_decimals": 4
         },
         "assumptions": {
-          "contract_version": "1.6.0",
+          "contract_version": "1.7.0",
           "model_id": "catalyst-finance.cash-flow",
           "project": {
             "name": "Building efficiency retrofit",
@@ -1621,7 +1621,7 @@
         },
         "methodology": {
           "model_id": "catalyst-finance.cash-flow",
-          "model_version": "1.6.0",
+          "model_version": "1.7.0",
           "timing_policy": "period_zero_then_end_of_period",
           "annual_to_period_rate_policy": "effective_rate_conversion",
           "escalation_policy": "effective_annual_compounding",
@@ -1632,7 +1632,7 @@
         "metadata": {
           "generated_at": "2026-07-17T00:00:00+00:00",
           "tool": "Catalyst Finance cash-flow engine",
-          "version": "1.6.0",
+          "version": "1.7.0",
           "disclaimer": "Educational software only; not financial, investment, legal, accounting, tax, fiduciary, procurement, funding, lending, or assurance advice."
         }
       }
@@ -1661,7 +1661,7 @@
         "equivalent_annual_value": 33991.91
       },
       "publication": {
-        "contract_version": "1.6.0",
+        "contract_version": "1.7.0",
         "model_id": "catalyst-finance.cash-flow",
         "project": {
           "name": "Building efficiency retrofit",
@@ -1678,7 +1678,7 @@
           "ratio_decimals": 4
         },
         "assumptions": {
-          "contract_version": "1.6.0",
+          "contract_version": "1.7.0",
           "model_id": "catalyst-finance.cash-flow",
           "project": {
             "name": "Building efficiency retrofit",
@@ -2600,7 +2600,7 @@
         },
         "methodology": {
           "model_id": "catalyst-finance.cash-flow",
-          "model_version": "1.6.0",
+          "model_version": "1.7.0",
           "timing_policy": "period_zero_then_end_of_period",
           "annual_to_period_rate_policy": "effective_rate_conversion",
           "escalation_policy": "effective_annual_compounding",
@@ -2611,7 +2611,7 @@
         "metadata": {
           "generated_at": "2026-07-17T00:00:00+00:00",
           "tool": "Catalyst Finance cash-flow engine",
-          "version": "1.6.0",
+          "version": "1.7.0",
           "disclaimer": "Educational software only; not financial, investment, legal, accounting, tax, fiduciary, procurement, funding, lending, or assurance advice."
         }
       }
@@ -2641,7 +2641,7 @@
         "equivalent_annual_value": 55894.96
       },
       "publication": {
-        "contract_version": "1.6.0",
+        "contract_version": "1.7.0",
         "model_id": "catalyst-finance.cash-flow",
         "project": {
           "name": "Building efficiency retrofit",
@@ -2658,7 +2658,7 @@
           "ratio_decimals": 4
         },
         "assumptions": {
-          "contract_version": "1.6.0",
+          "contract_version": "1.7.0",
           "model_id": "catalyst-finance.cash-flow",
           "project": {
             "name": "Building efficiency retrofit",
@@ -3580,7 +3580,7 @@
         },
         "methodology": {
           "model_id": "catalyst-finance.cash-flow",
-          "model_version": "1.6.0",
+          "model_version": "1.7.0",
           "timing_policy": "period_zero_then_end_of_period",
           "annual_to_period_rate_policy": "effective_rate_conversion",
           "escalation_policy": "effective_annual_compounding",
@@ -3591,7 +3591,7 @@
         "metadata": {
           "generated_at": "2026-07-17T00:00:00+00:00",
           "tool": "Catalyst Finance cash-flow engine",
-          "version": "1.6.0",
+          "version": "1.7.0",
           "disclaimer": "Educational software only; not financial, investment, legal, accounting, tax, fiduciary, procurement, funding, lending, or assurance advice."
         }
       }
@@ -3929,7 +3929,7 @@
           "delta_from_baseline": 0.0
         }
       ],
-      "reproducibility_key": "944c16468a6e1e18e91388351670dc1c54705fdf70fc0ae4f8c46f930a2f9db3"
+      "reproducibility_key": "f5c284a9856a8dbc9bd509485f577410fb3c27aa957202d1b7bd966182cfd57b"
     },
     {
       "sensitivity_id": "base-discount-rate",
@@ -3983,7 +3983,7 @@
           "delta_from_baseline": 0.0
         }
       ],
-      "reproducibility_key": "a44e508a597db02c32045a9b84aa1e83fac99bc9df75cb80aa0423cc1718536c"
+      "reproducibility_key": "272d1761d59ff5f3b449427512d5fb86de7deba78b1b976eb27fb0c64f3ffa7d"
     },
     {
       "sensitivity_id": "upside-capex",
@@ -4031,7 +4031,7 @@
           "delta_from_baseline": 166422.65
         }
       ],
-      "reproducibility_key": "6f0b94883a2445472a1ae8fa0a0d6ed432306d9f74c4bfeed58fe0cfedd36a94"
+      "reproducibility_key": "42791cf6b99665e3f1b906d7942779155b3bf2f9e632bb607be43852a721da70"
     },
     {
       "sensitivity_id": "downside-delay",
@@ -4073,7 +4073,7 @@
           "delta_from_baseline": -186255.47
         }
       ],
-      "reproducibility_key": "7a79495c670d205e2cacca505b8b28310bb73e6bafa5db12f951e9ffb07051bb"
+      "reproducibility_key": "c6f18167d770f6c3f3f24169e148b7a18d5929c180ffda484eff62fc05ecf1de"
     },
     {
       "sensitivity_id": "base-carbon",
@@ -4121,7 +4121,7 @@
           "delta_from_baseline": 0.0
         }
       ],
-      "reproducibility_key": "cbae0a64dea352b0d124b15f6e0cf5320b1fd45da5f1fb3f66547bc0929a565c"
+      "reproducibility_key": "41879f90c1d10fc095cc16e962446be8d3436701ab6c70ac8a4f4e2348980fd7"
     }
   ],
   "two_way_sensitivities": [
@@ -4207,7 +4207,7 @@
           "metric_value": 268398.67
         }
       ],
-      "reproducibility_key": "12d604fcfa25be43cbd160f8e80a757449ee051d19072cf4ca2b946fc5117933"
+      "reproducibility_key": "98b0813eb308a4e9b8215de182948c260c574b0573c00e462440cc0d450f8b42"
     }
   ],
   "break_even_results": [
@@ -4236,7 +4236,7 @@
         }
       ],
       "iterations": 115,
-      "reproducibility_key": "b71c719730effc3948bf5eb86a34d333bc5aed9dbda1c51565a92790ca6d19e7",
+      "reproducibility_key": "4b7f142b80d46d58704eb01f4a34b1093c2eec90a1f066fc9b008a586b1e8490",
       "notes": []
     },
     {
@@ -4264,7 +4264,7 @@
         }
       ],
       "iterations": 119,
-      "reproducibility_key": "883c0d558dbf2c540c929b5e5fac8dbfbf811bb5a93992003550bc10b3153893",
+      "reproducibility_key": "99165051edbeda083e1a0f1c707ec4487bf4ade778f8a3453d0364268538d93e",
       "notes": []
     },
     {
@@ -4292,7 +4292,7 @@
         }
       ],
       "iterations": 11,
-      "reproducibility_key": "9359b0784ccdd4512c392b0a520369546c622dacf298c87859830572306494e9",
+      "reproducibility_key": "a32237051a86765426e0b61621f2588668efa95f240363d3b7f3b76270098b97",
       "notes": []
     }
   ],
@@ -4356,7 +4356,7 @@
   "crossover_points": [],
   "methodology": {
     "model_id": "catalyst-finance.comparison",
-    "model_version": "1.6.0",
+    "model_version": "1.7.0",
     "ranking_policy": "weighted_min_max_normalization",
     "dominance_policy": "pareto_financial_metrics_only",
     "sensitivity_policy": "deterministic_parameter_substitution",
@@ -4366,7 +4366,7 @@
   "metadata": {
     "generated_at": "2026-07-17T00:00:00+00:00",
     "tool": "Catalyst Finance comparison engine",
-    "version": "1.6.0",
+    "version": "1.7.0",
     "disclaimer": "Catalyst Finance provides transparent analytical support, not investment, accounting, tax, legal, or fiduciary advice. Rankings are financial-model outputs and do not replace governance review or non-financial judgment."
   }
 }

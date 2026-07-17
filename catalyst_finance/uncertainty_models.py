@@ -1,4 +1,4 @@
-"""Uncertainty, Monte Carlo, and stress-testing contracts for v1.6.0."""
+"""Uncertainty, Monte Carlo, and stress-testing contracts for v1.7.0."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from .cashflow_models import CashFlowScenarioInput
 from .comparison_models import MetricId, SensitivityParameter, SourceRevision
 from .models import ContractModel
 
-UNCERTAINTY_CONTRACT_VERSION: Literal["1.6.0"] = "1.6.0"
+UNCERTAINTY_CONTRACT_VERSION: Literal["1.7.0"] = "1.7.0"
 UNCERTAINTY_MODEL_ID: Literal["catalyst-finance.uncertainty"] = (
     "catalyst-finance.uncertainty"
 )
@@ -134,7 +134,7 @@ class StressCase(ContractModel):
 
 
 class UncertaintyDefinition(ContractModel):
-    contract_version: Literal["1.6.0"] = UNCERTAINTY_CONTRACT_VERSION
+    contract_version: Literal["1.7.0"] = UNCERTAINTY_CONTRACT_VERSION
     model_id: Literal["catalyst-finance.uncertainty"] = UNCERTAINTY_MODEL_ID
     uncertainty_id: str = Field(
         min_length=1, max_length=100, pattern=r"^[A-Za-z0-9_-]+$"
@@ -242,7 +242,7 @@ class StressCaseResult(ContractModel):
 
 class UncertaintyMethodology(ContractModel):
     model_id: Literal["catalyst-finance.uncertainty"] = UNCERTAINTY_MODEL_ID
-    model_version: Literal["1.6.0"] = UNCERTAINTY_CONTRACT_VERSION
+    model_version: Literal["1.7.0"] = UNCERTAINTY_CONTRACT_VERSION
     random_generator: Literal["xorshift32_box_muller"] = "xorshift32_box_muller"
     correlation_policy: Literal["gaussian_copula_cholesky"] = "gaussian_copula_cholesky"
     percentile_policy: Literal["linear_interpolation"] = "linear_interpolation"
@@ -256,7 +256,7 @@ class UncertaintyMethodology(ContractModel):
 
 class UncertaintyMetadata(ContractModel):
     generated_at: str
-    version: Literal["1.6.0"] = UNCERTAINTY_CONTRACT_VERSION
+    version: Literal["1.7.0"] = UNCERTAINTY_CONTRACT_VERSION
     configured_iterations: int
     completed_iterations: int
     rejected_iterations: int
@@ -266,7 +266,7 @@ class UncertaintyMetadata(ContractModel):
 
 
 class UncertaintyPublication(ContractModel):
-    contract_version: Literal["1.6.0"] = UNCERTAINTY_CONTRACT_VERSION
+    contract_version: Literal["1.7.0"] = UNCERTAINTY_CONTRACT_VERSION
     model_id: Literal["catalyst-finance.uncertainty"] = UNCERTAINTY_MODEL_ID
     definition: UncertaintyDefinition
     base_metrics: dict[str, float | None]

@@ -1,5 +1,5 @@
 {
-  "contract_version": "1.6.0",
+  "contract_version": "1.7.0",
   "model_id": "catalyst-finance.pricing",
   "pricing_id": "pricing_transit_pass",
   "name": "Regional transit pass pricing",

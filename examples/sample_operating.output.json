@@ -1,0 +1,509 @@
+{
+  "contract_version": "1.7.0",
+  "model_id": "catalyst-finance.operating",
+  "definition": {
+    "contract_version": "1.7.0",
+    "model_id": "catalyst-finance.operating",
+    "operating_id": "sample-operations",
+    "name": "Community retrofit operating plan",
+    "description": "Budget-to-actual operating economics for implementation and support services.",
+    "source": {
+      "workspace_id": "workspace_demo",
+      "scenario_id": "scenario_operations",
+      "revision_id": "revision_operating_001",
+      "revision_number": 1
+    },
+    "currency": "USD",
+    "period_frequency": "monthly",
+    "target_operating_profit": 25000.0,
+    "units": [
+      {
+        "unit_id": "implementation",
+        "label": "Implementation services",
+        "cost_center": "Delivery",
+        "periods": [
+          {
+            "period": 1,
+            "label": "January",
+            "budget_units": 120.0,
+            "actual_units": 130.0,
+            "budget_unit_price": 600.0,
+            "actual_unit_price": 620.0,
+            "budget_variable_cost_per_unit": 280.0,
+            "actual_variable_cost_per_unit": 290.0,
+            "budget_direct_fixed_cost": 18000.0,
+            "actual_direct_fixed_cost": 18500.0,
+            "budget_allocated_overhead": 7000.0,
+            "actual_allocated_overhead": 7200.0
+          },
+          {
+            "period": 2,
+            "label": "February",
+            "budget_units": 125.0,
+            "actual_units": 118.0,
+            "budget_unit_price": 600.0,
+            "actual_unit_price": 590.0,
+            "budget_variable_cost_per_unit": 280.0,
+            "actual_variable_cost_per_unit": 300.0,
+            "budget_direct_fixed_cost": 18000.0,
+            "actual_direct_fixed_cost": 18100.0,
+            "budget_allocated_overhead": 7000.0,
+            "actual_allocated_overhead": 7350.0
+          }
+        ]
+      },
+      {
+        "unit_id": "support",
+        "label": "Ongoing support",
+        "cost_center": "Client Success",
+        "periods": [
+          {
+            "period": 1,
+            "label": "January",
+            "budget_units": 300.0,
+            "actual_units": 315.0,
+            "budget_unit_price": 140.0,
+            "actual_unit_price": 145.0,
+            "budget_variable_cost_per_unit": 45.0,
+            "actual_variable_cost_per_unit": 44.0,
+            "budget_direct_fixed_cost": 9000.0,
+            "actual_direct_fixed_cost": 9200.0,
+            "budget_allocated_overhead": 4000.0,
+            "actual_allocated_overhead": 4100.0
+          },
+          {
+            "period": 2,
+            "label": "February",
+            "budget_units": 310.0,
+            "actual_units": 325.0,
+            "budget_unit_price": 140.0,
+            "actual_unit_price": 142.0,
+            "budget_variable_cost_per_unit": 45.0,
+            "actual_variable_cost_per_unit": 46.0,
+            "budget_direct_fixed_cost": 9000.0,
+            "actual_direct_fixed_cost": 9100.0,
+            "budget_allocated_overhead": 4000.0,
+            "actual_allocated_overhead": 4050.0
+          }
+        ]
+      }
+    ]
+  },
+  "rows": [
+    {
+      "unit_id": "implementation",
+      "unit_label": "Implementation services",
+      "cost_center": "Delivery",
+      "period": 1,
+      "label": "January",
+      "budget_units": 120.0,
+      "actual_units": 130.0,
+      "budget_revenue": 72000.0,
+      "flexible_revenue": 78000.0,
+      "actual_revenue": 80600.0,
+      "budget_variable_cost": 33600.0,
+      "flexible_variable_cost": 36400.0,
+      "actual_variable_cost": 37700.0,
+      "budget_fixed_cost": 25000.0,
+      "actual_fixed_cost": 25700.0,
+      "budget_contribution": 38400.0,
+      "flexible_contribution": 41600.0,
+      "actual_contribution": 42900.0,
+      "budget_operating_profit": 13400.0,
+      "flexible_operating_profit": 16600.0,
+      "actual_operating_profit": 17200.0,
+      "budget_contribution_per_unit": 320.0,
+      "actual_contribution_per_unit": 330.0,
+      "contribution_margin_percent": 53.225806,
+      "break_even_units": 78.125,
+      "break_even_revenue": 46875.0,
+      "margin_of_safety_units": 51.875,
+      "margin_of_safety_percent": 39.903846,
+      "degree_of_operating_leverage": 2.494186,
+      "target_profit_units": 156.25,
+      "variances": [
+        {
+          "variance_id": "sales_volume",
+          "label": "Sales volume variance",
+          "amount": 3200.0,
+          "status": "favorable",
+          "rationale": "Actual versus budget volume valued at the budget contribution margin per unit."
+        },
+        {
+          "variance_id": "sales_price",
+          "label": "Sales price variance",
+          "amount": 2600.0,
+          "status": "favorable",
+          "rationale": "Actual volume multiplied by the difference between actual and budget unit price."
+        },
+        {
+          "variance_id": "variable_cost_spending",
+          "label": "Variable cost spending variance",
+          "amount": -1300.0,
+          "status": "unfavorable",
+          "rationale": "Actual volume multiplied by budget variable cost less actual variable cost."
+        },
+        {
+          "variance_id": "fixed_cost_spending",
+          "label": "Fixed cost spending variance",
+          "amount": -700.0,
+          "status": "unfavorable",
+          "rationale": "Budget direct fixed cost and allocated overhead less the corresponding actual amount."
+        },
+        {
+          "variance_id": "operating_profit",
+          "label": "Operating profit variance",
+          "amount": 3800.0,
+          "status": "favorable",
+          "rationale": "Actual operating profit less static-budget operating profit."
+        }
+      ],
+      "variance_reconciliation": 3800.0
+    },
+    {
+      "unit_id": "implementation",
+      "unit_label": "Implementation services",
+      "cost_center": "Delivery",
+      "period": 2,
+      "label": "February",
+      "budget_units": 125.0,
+      "actual_units": 118.0,
+      "budget_revenue": 75000.0,
+      "flexible_revenue": 70800.0,
+      "actual_revenue": 69620.0,
+      "budget_variable_cost": 35000.0,
+      "flexible_variable_cost": 33040.0,
+      "actual_variable_cost": 35400.0,
+      "budget_fixed_cost": 25000.0,
+      "actual_fixed_cost": 25450.0,
+      "budget_contribution": 40000.0,
+      "flexible_contribution": 37760.0,
+      "actual_contribution": 34220.0,
+      "budget_operating_profit": 15000.0,
+      "flexible_operating_profit": 12760.0,
+      "actual_operating_profit": 8770.0,
+      "budget_contribution_per_unit": 320.0,
+      "actual_contribution_per_unit": 290.0,
+      "contribution_margin_percent": 49.152542,
+      "break_even_units": 78.125,
+      "break_even_revenue": 46875.0,
+      "margin_of_safety_units": 39.875,
+      "margin_of_safety_percent": 33.792373,
+      "degree_of_operating_leverage": 3.901938,
+      "target_profit_units": 156.25,
+      "variances": [
+        {
+          "variance_id": "sales_volume",
+          "label": "Sales volume variance",
+          "amount": -2240.0,
+          "status": "unfavorable",
+          "rationale": "Actual versus budget volume valued at the budget contribution margin per unit."
+        },
+        {
+          "variance_id": "sales_price",
+          "label": "Sales price variance",
+          "amount": -1180.0,
+          "status": "unfavorable",
+          "rationale": "Actual volume multiplied by the difference between actual and budget unit price."
+        },
+        {
+          "variance_id": "variable_cost_spending",
+          "label": "Variable cost spending variance",
+          "amount": -2360.0,
+          "status": "unfavorable",
+          "rationale": "Actual volume multiplied by budget variable cost less actual variable cost."
+        },
+        {
+          "variance_id": "fixed_cost_spending",
+          "label": "Fixed cost spending variance",
+          "amount": -450.0,
+          "status": "unfavorable",
+          "rationale": "Budget direct fixed cost and allocated overhead less the corresponding actual amount."
+        },
+        {
+          "variance_id": "operating_profit",
+          "label": "Operating profit variance",
+          "amount": -6230.0,
+          "status": "unfavorable",
+          "rationale": "Actual operating profit less static-budget operating profit."
+        }
+      ],
+      "variance_reconciliation": -6230.0
+    },
+    {
+      "unit_id": "support",
+      "unit_label": "Ongoing support",
+      "cost_center": "Client Success",
+      "period": 1,
+      "label": "January",
+      "budget_units": 300.0,
+      "actual_units": 315.0,
+      "budget_revenue": 42000.0,
+      "flexible_revenue": 44100.0,
+      "actual_revenue": 45675.0,
+      "budget_variable_cost": 13500.0,
+      "flexible_variable_cost": 14175.0,
+      "actual_variable_cost": 13860.0,
+      "budget_fixed_cost": 13000.0,
+      "actual_fixed_cost": 13300.0,
+      "budget_contribution": 28500.0,
+      "flexible_contribution": 29925.0,
+      "actual_contribution": 31815.0,
+      "budget_operating_profit": 15500.0,
+      "flexible_operating_profit": 16925.0,
+      "actual_operating_profit": 18515.0,
+      "budget_contribution_per_unit": 95.0,
+      "actual_contribution_per_unit": 101.0,
+      "contribution_margin_percent": 69.655172,
+      "break_even_units": 136.842105,
+      "break_even_revenue": 19157.894737,
+      "margin_of_safety_units": 178.157895,
+      "margin_of_safety_percent": 56.558062,
+      "degree_of_operating_leverage": 1.718336,
+      "target_profit_units": 400.0,
+      "variances": [
+        {
+          "variance_id": "sales_volume",
+          "label": "Sales volume variance",
+          "amount": 1425.0,
+          "status": "favorable",
+          "rationale": "Actual versus budget volume valued at the budget contribution margin per unit."
+        },
+        {
+          "variance_id": "sales_price",
+          "label": "Sales price variance",
+          "amount": 1575.0,
+          "status": "favorable",
+          "rationale": "Actual volume multiplied by the difference between actual and budget unit price."
+        },
+        {
+          "variance_id": "variable_cost_spending",
+          "label": "Variable cost spending variance",
+          "amount": 315.0,
+          "status": "favorable",
+          "rationale": "Actual volume multiplied by budget variable cost less actual variable cost."
+        },
+        {
+          "variance_id": "fixed_cost_spending",
+          "label": "Fixed cost spending variance",
+          "amount": -300.0,
+          "status": "unfavorable",
+          "rationale": "Budget direct fixed cost and allocated overhead less the corresponding actual amount."
+        },
+        {
+          "variance_id": "operating_profit",
+          "label": "Operating profit variance",
+          "amount": 3015.0,
+          "status": "favorable",
+          "rationale": "Actual operating profit less static-budget operating profit."
+        }
+      ],
+      "variance_reconciliation": 3015.0
+    },
+    {
+      "unit_id": "support",
+      "unit_label": "Ongoing support",
+      "cost_center": "Client Success",
+      "period": 2,
+      "label": "February",
+      "budget_units": 310.0,
+      "actual_units": 325.0,
+      "budget_revenue": 43400.0,
+      "flexible_revenue": 45500.0,
+      "actual_revenue": 46150.0,
+      "budget_variable_cost": 13950.0,
+      "flexible_variable_cost": 14625.0,
+      "actual_variable_cost": 14950.0,
+      "budget_fixed_cost": 13000.0,
+      "actual_fixed_cost": 13150.0,
+      "budget_contribution": 29450.0,
+      "flexible_contribution": 30875.0,
+      "actual_contribution": 31200.0,
+      "budget_operating_profit": 16450.0,
+      "flexible_operating_profit": 17875.0,
+      "actual_operating_profit": 18050.0,
+      "budget_contribution_per_unit": 95.0,
+      "actual_contribution_per_unit": 96.0,
+      "contribution_margin_percent": 67.605634,
+      "break_even_units": 136.842105,
+      "break_even_revenue": 19157.894737,
+      "margin_of_safety_units": 188.157895,
+      "margin_of_safety_percent": 57.894737,
+      "degree_of_operating_leverage": 1.728532,
+      "target_profit_units": 400.0,
+      "variances": [
+        {
+          "variance_id": "sales_volume",
+          "label": "Sales volume variance",
+          "amount": 1425.0,
+          "status": "favorable",
+          "rationale": "Actual versus budget volume valued at the budget contribution margin per unit."
+        },
+        {
+          "variance_id": "sales_price",
+          "label": "Sales price variance",
+          "amount": 650.0,
+          "status": "favorable",
+          "rationale": "Actual volume multiplied by the difference between actual and budget unit price."
+        },
+        {
+          "variance_id": "variable_cost_spending",
+          "label": "Variable cost spending variance",
+          "amount": -325.0,
+          "status": "unfavorable",
+          "rationale": "Actual volume multiplied by budget variable cost less actual variable cost."
+        },
+        {
+          "variance_id": "fixed_cost_spending",
+          "label": "Fixed cost spending variance",
+          "amount": -150.0,
+          "status": "unfavorable",
+          "rationale": "Budget direct fixed cost and allocated overhead less the corresponding actual amount."
+        },
+        {
+          "variance_id": "operating_profit",
+          "label": "Operating profit variance",
+          "amount": 1600.0,
+          "status": "favorable",
+          "rationale": "Actual operating profit less static-budget operating profit."
+        }
+      ],
+      "variance_reconciliation": 1600.0
+    }
+  ],
+  "unit_summaries": [
+    {
+      "summary_id": "implementation",
+      "label": "Implementation services",
+      "budget_units": 245.0,
+      "actual_units": 248.0,
+      "budget_revenue": 147000.0,
+      "actual_revenue": 150220.0,
+      "budget_variable_cost": 68600.0,
+      "actual_variable_cost": 73100.0,
+      "budget_fixed_cost": 50000.0,
+      "actual_fixed_cost": 51150.0,
+      "budget_contribution": 78400.0,
+      "actual_contribution": 77120.0,
+      "budget_operating_profit": 28400.0,
+      "actual_operating_profit": 25970.0,
+      "operating_profit_variance": -2430.0,
+      "contribution_margin_percent": 51.338038,
+      "break_even_units": 156.25,
+      "margin_of_safety_units": 91.75,
+      "degree_of_operating_leverage": 2.96958,
+      "target_profit_units": 234.375
+    },
+    {
+      "summary_id": "support",
+      "label": "Ongoing support",
+      "budget_units": 610.0,
+      "actual_units": 640.0,
+      "budget_revenue": 85400.0,
+      "actual_revenue": 91825.0,
+      "budget_variable_cost": 27450.0,
+      "actual_variable_cost": 28810.0,
+      "budget_fixed_cost": 26000.0,
+      "actual_fixed_cost": 26450.0,
+      "budget_contribution": 57950.0,
+      "actual_contribution": 63015.0,
+      "budget_operating_profit": 31950.0,
+      "actual_operating_profit": 36565.0,
+      "operating_profit_variance": 4615.0,
+      "contribution_margin_percent": 68.625102,
+      "break_even_units": 273.684211,
+      "margin_of_safety_units": 366.315789,
+      "degree_of_operating_leverage": 1.723369,
+      "target_profit_units": 536.842105
+    }
+  ],
+  "cost_center_summaries": [
+    {
+      "summary_id": "cost-center-1",
+      "label": "Client Success",
+      "budget_units": 610.0,
+      "actual_units": 640.0,
+      "budget_revenue": 85400.0,
+      "actual_revenue": 91825.0,
+      "budget_variable_cost": 27450.0,
+      "actual_variable_cost": 28810.0,
+      "budget_fixed_cost": 26000.0,
+      "actual_fixed_cost": 26450.0,
+      "budget_contribution": 57950.0,
+      "actual_contribution": 63015.0,
+      "budget_operating_profit": 31950.0,
+      "actual_operating_profit": 36565.0,
+      "operating_profit_variance": 4615.0,
+      "contribution_margin_percent": 68.625102,
+      "break_even_units": 273.684211,
+      "margin_of_safety_units": 366.315789,
+      "degree_of_operating_leverage": 1.723369,
+      "target_profit_units": 536.842105
+    },
+    {
+      "summary_id": "cost-center-2",
+      "label": "Delivery",
+      "budget_units": 245.0,
+      "actual_units": 248.0,
+      "budget_revenue": 147000.0,
+      "actual_revenue": 150220.0,
+      "budget_variable_cost": 68600.0,
+      "actual_variable_cost": 73100.0,
+      "budget_fixed_cost": 50000.0,
+      "actual_fixed_cost": 51150.0,
+      "budget_contribution": 78400.0,
+      "actual_contribution": 77120.0,
+      "budget_operating_profit": 28400.0,
+      "actual_operating_profit": 25970.0,
+      "operating_profit_variance": -2430.0,
+      "contribution_margin_percent": 51.338038,
+      "break_even_units": 156.25,
+      "margin_of_safety_units": 91.75,
+      "degree_of_operating_leverage": 2.96958,
+      "target_profit_units": 234.375
+    }
+  ],
+  "total_summary": {
+    "summary_id": "total",
+    "label": "All operating units",
+    "budget_units": 855.0,
+    "actual_units": 888.0,
+    "budget_revenue": 232400.0,
+    "actual_revenue": 242045.0,
+    "budget_variable_cost": 96050.0,
+    "actual_variable_cost": 101910.0,
+    "budget_fixed_cost": 76000.0,
+    "actual_fixed_cost": 77600.0,
+    "budget_contribution": 136350.0,
+    "actual_contribution": 140135.0,
+    "budget_operating_profit": 60350.0,
+    "actual_operating_profit": 62535.0,
+    "operating_profit_variance": 2185.0,
+    "contribution_margin_percent": 57.896259,
+    "break_even_units": 476.567657,
+    "margin_of_safety_units": 411.432343,
+    "degree_of_operating_leverage": 2.240905,
+    "target_profit_units": 633.333333
+  },
+  "flags": [
+    "No operating loss, break-even shortfall, or high-leverage flag was detected."
+  ],
+  "methodology": {
+    "model_id": "catalyst-finance.operating",
+    "model_version": "1.7.0",
+    "budget_policy": "static_flexible_actual",
+    "variance_sign_policy": "positive_is_favorable",
+    "volume_variance_policy": "budget_contribution_margin",
+    "fixed_cost_policy": "direct_plus_allocated_overhead",
+    "break_even_policy": "budget_contribution_margin_per_unit",
+    "aggregation_policy": "sum_rows_then_recompute_ratios"
+  },
+  "metadata": {
+    "generated_at": "2026-07-17T00:00:00+00:00",
+    "version": "1.7.0",
+    "row_count": 4,
+    "unit_count": 2,
+    "cost_center_count": 2,
+    "disclaimer": "Decision-support output only. Validate accounting classifications, allocation bases, taxes, timing, capacity, and source-system controls before operational use."
+  }
+}

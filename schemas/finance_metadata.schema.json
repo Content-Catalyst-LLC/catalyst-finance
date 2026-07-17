@@ -8,8 +8,8 @@
           "type": "string"
         },
         "target_contract_version": {
-          "const": "1.6.0",
-          "default": "1.6.0",
+          "const": "1.7.0",
+          "default": "1.7.0",
           "title": "Target Contract Version",
           "type": "string"
         },
@@ -42,8 +42,8 @@
       "type": "string"
     },
     "version": {
-      "const": "1.6.0",
-      "default": "1.6.0",
+      "const": "1.7.0",
+      "default": "1.7.0",
       "title": "Version",
       "type": "string"
     },
@@ -70,5 +70,5 @@
   "title": "FinanceMetadata",
   "type": "object",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.6.0/finance_metadata.schema.json"
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.7.0/finance_metadata.schema.json"
 }

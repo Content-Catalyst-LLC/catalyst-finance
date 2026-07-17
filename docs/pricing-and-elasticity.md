@@ -1,6 +1,6 @@
 # Demand, Elasticity, Pricing, and Revenue
 
-Catalyst Finance v1.6.0 evaluates declared demand assumptions across an inclusive price grid. It supports three curve forms:
+Catalyst Finance v1.7.0 evaluates declared demand assumptions across an inclusive price grid. It supports three curve forms:
 
 - **Linear:** `Q = a - bP`, constrained to non-negative quantity.
 - **Constant elasticity:** `Q = Qref × (P / Pref)^e`, where `e < 0`.

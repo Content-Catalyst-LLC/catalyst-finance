@@ -1,6 +1,6 @@
 # Pricing Analysis Review Checklist
 
-Before relying on a v1.6.0 pricing publication, confirm:
+Before relying on a v1.7.0 pricing publication, confirm:
 
 1. Demand curves are supported by recent, representative evidence.
 2. Observed points cover the decision-relevant price range; endpoint clamping is not mistaken for extrapolation.

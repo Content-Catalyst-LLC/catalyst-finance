@@ -1,8 +1,8 @@
 {
-  "export_contract_version": "1.6.0",
+  "export_contract_version": "1.7.0",
   "exported_at": "2026-07-17T00:00:00Z",
   "workspace": {
-    "workspace_contract_version": "1.6.0",
+    "workspace_contract_version": "1.7.0",
     "workspace_id": "workspace_001",
     "name": "Facilities investment review",
     "description": "Persistent finance scenarios for the facilities portfolio.",
@@ -14,7 +14,7 @@
       "price_basis": "nominal",
       "discount_rate_basis": "nominal",
       "default_model_id": "catalyst-finance.screening",
-      "default_model_version": "1.6.0"
+      "default_model_version": "1.7.0"
     },
     "created_at": "2026-07-17T00:00:00Z",
     "updated_at": "2026-07-17T00:00:00Z",
@@ -55,10 +55,10 @@
             "revision_number": 1,
             "created_at": "2026-07-17T00:00:00Z",
             "model_id": "catalyst-finance.screening",
-            "model_version": "1.6.0",
+            "model_version": "1.7.0",
             "change_note": "Initial scenario",
             "scenario": {
-              "contract_version": "1.6.0",
+              "contract_version": "1.7.0",
               "model_id": "catalyst-finance.screening",
               "project": {
                 "name": "Building efficiency retrofit",
@@ -94,10 +94,10 @@
             "revision_number": 2,
             "created_at": "2026-07-17T00:00:00Z",
             "model_id": "catalyst-finance.screening",
-            "model_version": "1.6.0",
+            "model_version": "1.7.0",
             "change_note": "Updated grant and evidence confidence",
             "scenario": {
-              "contract_version": "1.6.0",
+              "contract_version": "1.7.0",
               "model_id": "catalyst-finance.screening",
               "project": {
                 "name": "Building efficiency retrofit",
@@ -133,6 +133,7 @@
     ],
     "comparisons": [],
     "uncertainty_analyses": [],
-    "pricing_analyses": []
+    "pricing_analyses": [],
+    "operating_analyses": []
   }
 }

@@ -193,8 +193,8 @@
   "additionalProperties": false,
   "properties": {
     "contract_version": {
-      "const": "1.6.0",
-      "default": "1.6.0",
+      "const": "1.7.0",
+      "default": "1.7.0",
       "title": "Contract Version",
       "type": "string"
     },
@@ -258,5 +258,5 @@
   "title": "CashFlowScenarioInput",
   "type": "object",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.6.0/cash_flow_input.schema.json"
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.7.0/cash_flow_input.schema.json"
 }

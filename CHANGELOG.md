@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.6.0 — 2026-07-17
+## 1.7.0 — 2026-07-17
 
 - Added a canonical demand, elasticity, pricing, and revenue model with linear, constant-elasticity, and observed demand curves.
 - Added multi-segment aggregation, proportional capacity allocation, cost-to-serve, break-even quantity, and contribution-margin analysis.

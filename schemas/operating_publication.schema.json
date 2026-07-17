@@ -1,0 +1,815 @@
+{
+  "$defs": {
+    "OperatingDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": "1.7.0",
+          "default": "1.7.0",
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "model_id": {
+          "const": "catalyst-finance.operating",
+          "default": "catalyst-finance.operating",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "operating_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Operating Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "maxLength": 4000,
+          "title": "Description",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/SourceRevision"
+        },
+        "currency": {
+          "default": "USD",
+          "pattern": "^[A-Z]{3}$",
+          "title": "Currency",
+          "type": "string"
+        },
+        "period_frequency": {
+          "default": "monthly",
+          "enum": [
+            "monthly",
+            "quarterly",
+            "annual"
+          ],
+          "title": "Period Frequency",
+          "type": "string"
+        },
+        "target_operating_profit": {
+          "default": 0,
+          "title": "Target Operating Profit",
+          "type": "number"
+        },
+        "units": {
+          "items": {
+            "$ref": "#/$defs/OperatingUnitInput"
+          },
+          "maxItems": 100,
+          "minItems": 1,
+          "title": "Units",
+          "type": "array"
+        }
+      },
+      "required": [
+        "operating_id",
+        "name",
+        "source",
+        "units"
+      ],
+      "title": "OperatingDefinition",
+      "type": "object"
+    },
+    "OperatingMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "generated_at": {
+          "title": "Generated At",
+          "type": "string"
+        },
+        "version": {
+          "const": "1.7.0",
+          "default": "1.7.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "row_count": {
+          "title": "Row Count",
+          "type": "integer"
+        },
+        "unit_count": {
+          "title": "Unit Count",
+          "type": "integer"
+        },
+        "cost_center_count": {
+          "title": "Cost Center Count",
+          "type": "integer"
+        },
+        "disclaimer": {
+          "title": "Disclaimer",
+          "type": "string"
+        }
+      },
+      "required": [
+        "generated_at",
+        "row_count",
+        "unit_count",
+        "cost_center_count",
+        "disclaimer"
+      ],
+      "title": "OperatingMetadata",
+      "type": "object"
+    },
+    "OperatingMethodology": {
+      "additionalProperties": false,
+      "properties": {
+        "model_id": {
+          "const": "catalyst-finance.operating",
+          "default": "catalyst-finance.operating",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "model_version": {
+          "const": "1.7.0",
+          "default": "1.7.0",
+          "title": "Model Version",
+          "type": "string"
+        },
+        "budget_policy": {
+          "const": "static_flexible_actual",
+          "default": "static_flexible_actual",
+          "title": "Budget Policy",
+          "type": "string"
+        },
+        "variance_sign_policy": {
+          "const": "positive_is_favorable",
+          "default": "positive_is_favorable",
+          "title": "Variance Sign Policy",
+          "type": "string"
+        },
+        "volume_variance_policy": {
+          "const": "budget_contribution_margin",
+          "default": "budget_contribution_margin",
+          "title": "Volume Variance Policy",
+          "type": "string"
+        },
+        "fixed_cost_policy": {
+          "const": "direct_plus_allocated_overhead",
+          "default": "direct_plus_allocated_overhead",
+          "title": "Fixed Cost Policy",
+          "type": "string"
+        },
+        "break_even_policy": {
+          "const": "budget_contribution_margin_per_unit",
+          "default": "budget_contribution_margin_per_unit",
+          "title": "Break Even Policy",
+          "type": "string"
+        },
+        "aggregation_policy": {
+          "const": "sum_rows_then_recompute_ratios",
+          "default": "sum_rows_then_recompute_ratios",
+          "title": "Aggregation Policy",
+          "type": "string"
+        }
+      },
+      "title": "OperatingMethodology",
+      "type": "object"
+    },
+    "OperatingPeriodInput": {
+      "additionalProperties": false,
+      "properties": {
+        "period": {
+          "maximum": 1200,
+          "minimum": 1,
+          "title": "Period",
+          "type": "integer"
+        },
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "budget_units": {
+          "minimum": 0,
+          "title": "Budget Units",
+          "type": "number"
+        },
+        "actual_units": {
+          "minimum": 0,
+          "title": "Actual Units",
+          "type": "number"
+        },
+        "budget_unit_price": {
+          "minimum": 0,
+          "title": "Budget Unit Price",
+          "type": "number"
+        },
+        "actual_unit_price": {
+          "minimum": 0,
+          "title": "Actual Unit Price",
+          "type": "number"
+        },
+        "budget_variable_cost_per_unit": {
+          "minimum": 0,
+          "title": "Budget Variable Cost Per Unit",
+          "type": "number"
+        },
+        "actual_variable_cost_per_unit": {
+          "minimum": 0,
+          "title": "Actual Variable Cost Per Unit",
+          "type": "number"
+        },
+        "budget_direct_fixed_cost": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Budget Direct Fixed Cost",
+          "type": "number"
+        },
+        "actual_direct_fixed_cost": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Actual Direct Fixed Cost",
+          "type": "number"
+        },
+        "budget_allocated_overhead": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Budget Allocated Overhead",
+          "type": "number"
+        },
+        "actual_allocated_overhead": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Actual Allocated Overhead",
+          "type": "number"
+        }
+      },
+      "required": [
+        "period",
+        "label",
+        "budget_units",
+        "actual_units",
+        "budget_unit_price",
+        "actual_unit_price",
+        "budget_variable_cost_per_unit",
+        "actual_variable_cost_per_unit"
+      ],
+      "title": "OperatingPeriodInput",
+      "type": "object"
+    },
+    "OperatingPeriodResult": {
+      "additionalProperties": false,
+      "properties": {
+        "unit_id": {
+          "title": "Unit Id",
+          "type": "string"
+        },
+        "unit_label": {
+          "title": "Unit Label",
+          "type": "string"
+        },
+        "cost_center": {
+          "title": "Cost Center",
+          "type": "string"
+        },
+        "period": {
+          "title": "Period",
+          "type": "integer"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "budget_units": {
+          "title": "Budget Units",
+          "type": "number"
+        },
+        "actual_units": {
+          "title": "Actual Units",
+          "type": "number"
+        },
+        "budget_revenue": {
+          "title": "Budget Revenue",
+          "type": "number"
+        },
+        "flexible_revenue": {
+          "title": "Flexible Revenue",
+          "type": "number"
+        },
+        "actual_revenue": {
+          "title": "Actual Revenue",
+          "type": "number"
+        },
+        "budget_variable_cost": {
+          "title": "Budget Variable Cost",
+          "type": "number"
+        },
+        "flexible_variable_cost": {
+          "title": "Flexible Variable Cost",
+          "type": "number"
+        },
+        "actual_variable_cost": {
+          "title": "Actual Variable Cost",
+          "type": "number"
+        },
+        "budget_fixed_cost": {
+          "title": "Budget Fixed Cost",
+          "type": "number"
+        },
+        "actual_fixed_cost": {
+          "title": "Actual Fixed Cost",
+          "type": "number"
+        },
+        "budget_contribution": {
+          "title": "Budget Contribution",
+          "type": "number"
+        },
+        "flexible_contribution": {
+          "title": "Flexible Contribution",
+          "type": "number"
+        },
+        "actual_contribution": {
+          "title": "Actual Contribution",
+          "type": "number"
+        },
+        "budget_operating_profit": {
+          "title": "Budget Operating Profit",
+          "type": "number"
+        },
+        "flexible_operating_profit": {
+          "title": "Flexible Operating Profit",
+          "type": "number"
+        },
+        "actual_operating_profit": {
+          "title": "Actual Operating Profit",
+          "type": "number"
+        },
+        "budget_contribution_per_unit": {
+          "title": "Budget Contribution Per Unit",
+          "type": "number"
+        },
+        "actual_contribution_per_unit": {
+          "title": "Actual Contribution Per Unit",
+          "type": "number"
+        },
+        "contribution_margin_percent": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Contribution Margin Percent"
+        },
+        "break_even_units": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Break Even Units"
+        },
+        "break_even_revenue": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Break Even Revenue"
+        },
+        "margin_of_safety_units": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Margin Of Safety Units"
+        },
+        "margin_of_safety_percent": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Margin Of Safety Percent"
+        },
+        "degree_of_operating_leverage": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Degree Of Operating Leverage"
+        },
+        "target_profit_units": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Target Profit Units"
+        },
+        "variances": {
+          "items": {
+            "$ref": "#/$defs/VarianceResult"
+          },
+          "maxItems": 5,
+          "minItems": 5,
+          "title": "Variances",
+          "type": "array"
+        },
+        "variance_reconciliation": {
+          "title": "Variance Reconciliation",
+          "type": "number"
+        }
+      },
+      "required": [
+        "unit_id",
+        "unit_label",
+        "cost_center",
+        "period",
+        "label",
+        "budget_units",
+        "actual_units",
+        "budget_revenue",
+        "flexible_revenue",
+        "actual_revenue",
+        "budget_variable_cost",
+        "flexible_variable_cost",
+        "actual_variable_cost",
+        "budget_fixed_cost",
+        "actual_fixed_cost",
+        "budget_contribution",
+        "flexible_contribution",
+        "actual_contribution",
+        "budget_operating_profit",
+        "flexible_operating_profit",
+        "actual_operating_profit",
+        "budget_contribution_per_unit",
+        "actual_contribution_per_unit",
+        "contribution_margin_percent",
+        "break_even_units",
+        "break_even_revenue",
+        "margin_of_safety_units",
+        "margin_of_safety_percent",
+        "degree_of_operating_leverage",
+        "target_profit_units",
+        "variances",
+        "variance_reconciliation"
+      ],
+      "title": "OperatingPeriodResult",
+      "type": "object"
+    },
+    "OperatingSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "summary_id": {
+          "title": "Summary Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "budget_units": {
+          "title": "Budget Units",
+          "type": "number"
+        },
+        "actual_units": {
+          "title": "Actual Units",
+          "type": "number"
+        },
+        "budget_revenue": {
+          "title": "Budget Revenue",
+          "type": "number"
+        },
+        "actual_revenue": {
+          "title": "Actual Revenue",
+          "type": "number"
+        },
+        "budget_variable_cost": {
+          "title": "Budget Variable Cost",
+          "type": "number"
+        },
+        "actual_variable_cost": {
+          "title": "Actual Variable Cost",
+          "type": "number"
+        },
+        "budget_fixed_cost": {
+          "title": "Budget Fixed Cost",
+          "type": "number"
+        },
+        "actual_fixed_cost": {
+          "title": "Actual Fixed Cost",
+          "type": "number"
+        },
+        "budget_contribution": {
+          "title": "Budget Contribution",
+          "type": "number"
+        },
+        "actual_contribution": {
+          "title": "Actual Contribution",
+          "type": "number"
+        },
+        "budget_operating_profit": {
+          "title": "Budget Operating Profit",
+          "type": "number"
+        },
+        "actual_operating_profit": {
+          "title": "Actual Operating Profit",
+          "type": "number"
+        },
+        "operating_profit_variance": {
+          "title": "Operating Profit Variance",
+          "type": "number"
+        },
+        "contribution_margin_percent": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Contribution Margin Percent"
+        },
+        "break_even_units": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Break Even Units"
+        },
+        "margin_of_safety_units": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Margin Of Safety Units"
+        },
+        "degree_of_operating_leverage": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Degree Of Operating Leverage"
+        },
+        "target_profit_units": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Target Profit Units"
+        }
+      },
+      "required": [
+        "summary_id",
+        "label",
+        "budget_units",
+        "actual_units",
+        "budget_revenue",
+        "actual_revenue",
+        "budget_variable_cost",
+        "actual_variable_cost",
+        "budget_fixed_cost",
+        "actual_fixed_cost",
+        "budget_contribution",
+        "actual_contribution",
+        "budget_operating_profit",
+        "actual_operating_profit",
+        "operating_profit_variance",
+        "contribution_margin_percent",
+        "break_even_units",
+        "margin_of_safety_units",
+        "degree_of_operating_leverage",
+        "target_profit_units"
+      ],
+      "title": "OperatingSummary",
+      "type": "object"
+    },
+    "OperatingUnitInput": {
+      "additionalProperties": false,
+      "properties": {
+        "unit_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Unit Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "cost_center": {
+          "default": "General",
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Cost Center",
+          "type": "string"
+        },
+        "periods": {
+          "items": {
+            "$ref": "#/$defs/OperatingPeriodInput"
+          },
+          "maxItems": 1200,
+          "minItems": 1,
+          "title": "Periods",
+          "type": "array"
+        }
+      },
+      "required": [
+        "unit_id",
+        "label",
+        "periods"
+      ],
+      "title": "OperatingUnitInput",
+      "type": "object"
+    },
+    "SourceRevision": {
+      "additionalProperties": false,
+      "properties": {
+        "workspace_id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Workspace Id",
+          "type": "string"
+        },
+        "scenario_id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Scenario Id",
+          "type": "string"
+        },
+        "revision_id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Revision Id",
+          "type": "string"
+        },
+        "revision_number": {
+          "minimum": 1,
+          "title": "Revision Number",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "workspace_id",
+        "scenario_id",
+        "revision_id",
+        "revision_number"
+      ],
+      "title": "SourceRevision",
+      "type": "object"
+    },
+    "VarianceResult": {
+      "additionalProperties": false,
+      "properties": {
+        "variance_id": {
+          "title": "Variance Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "amount": {
+          "title": "Amount",
+          "type": "number"
+        },
+        "status": {
+          "enum": [
+            "favorable",
+            "unfavorable",
+            "neutral"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "rationale": {
+          "title": "Rationale",
+          "type": "string"
+        }
+      },
+      "required": [
+        "variance_id",
+        "label",
+        "amount",
+        "status",
+        "rationale"
+      ],
+      "title": "VarianceResult",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "const": "1.7.0",
+      "default": "1.7.0",
+      "title": "Contract Version",
+      "type": "string"
+    },
+    "model_id": {
+      "const": "catalyst-finance.operating",
+      "default": "catalyst-finance.operating",
+      "title": "Model Id",
+      "type": "string"
+    },
+    "definition": {
+      "$ref": "#/$defs/OperatingDefinition"
+    },
+    "rows": {
+      "items": {
+        "$ref": "#/$defs/OperatingPeriodResult"
+      },
+      "minItems": 1,
+      "title": "Rows",
+      "type": "array"
+    },
+    "unit_summaries": {
+      "items": {
+        "$ref": "#/$defs/OperatingSummary"
+      },
+      "minItems": 1,
+      "title": "Unit Summaries",
+      "type": "array"
+    },
+    "cost_center_summaries": {
+      "items": {
+        "$ref": "#/$defs/OperatingSummary"
+      },
+      "minItems": 1,
+      "title": "Cost Center Summaries",
+      "type": "array"
+    },
+    "total_summary": {
+      "$ref": "#/$defs/OperatingSummary"
+    },
+    "flags": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Flags",
+      "type": "array"
+    },
+    "methodology": {
+      "$ref": "#/$defs/OperatingMethodology"
+    },
+    "metadata": {
+      "$ref": "#/$defs/OperatingMetadata"
+    }
+  },
+  "required": [
+    "definition",
+    "rows",
+    "unit_summaries",
+    "cost_center_summaries",
+    "total_summary",
+    "flags",
+    "methodology",
+    "metadata"
+  ],
+  "title": "OperatingPublication",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.7.0/operating_publication.schema.json"
+}

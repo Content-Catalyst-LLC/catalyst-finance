@@ -5,7 +5,7 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
-  const CONTRACT_VERSION = '1.6.0';
+  const CONTRACT_VERSION = '1.7.0';
   const MODEL_ID = 'catalyst-finance.cash-flow';
   const DISCLAIMER = 'Educational software only; not financial, investment, legal, accounting, tax, fiduciary, procurement, funding, lending, or assurance advice.';
   const INFLOW = new Set(['revenue', 'savings', 'avoided_cost', 'grant', 'rebate', 'residual_value', 'working_capital_recovery', 'other_benefit']);
@@ -31,7 +31,7 @@
 
   function validate(scenario) {
     const issues = [];
-    if (!scenario || scenario.contract_version !== CONTRACT_VERSION) issues.push('contract_version must be 1.6.0');
+    if (!scenario || scenario.contract_version !== CONTRACT_VERSION) issues.push('contract_version must be 1.7.0');
     if (!scenario || scenario.model_id !== MODEL_ID) issues.push('model_id must be catalyst-finance.cash-flow');
     if (!scenario || !scenario.context) issues.push('context is required');
     if (!scenario || !scenario.project || !String(scenario.project.name || '').trim()) issues.push('project.name is required');

@@ -9,7 +9,9 @@ from .uncertainty_models import UNCERTAINTY_CONTRACT_VERSION, UncertaintyDefinit
 
 def normalize_uncertainty(payload: dict[str, Any]) -> UncertaintyDefinition:
     migrated = (
-        _upgrade(payload) if payload.get("contract_version") == "1.5.0" else payload
+        _upgrade(payload)
+        if payload.get("contract_version") in {"1.5.0", "1.6.0"}
+        else payload
     )
     return UncertaintyDefinition.model_validate(migrated)
 
@@ -18,7 +20,7 @@ def _upgrade(value: Any) -> Any:
     if isinstance(value, dict):
         output = {key: _upgrade(item) for key, item in value.items()}
         for key in ("contract_version", "model_version", "methodology_version"):
-            if output.get(key) == "1.5.0":
+            if output.get(key) in {"1.5.0", "1.6.0"}:
                 output[key] = UNCERTAINTY_CONTRACT_VERSION
         return output
     if isinstance(value, list):

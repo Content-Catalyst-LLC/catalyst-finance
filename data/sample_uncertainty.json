@@ -1,5 +1,5 @@
 {
-  "contract_version": "1.6.0",
+  "contract_version": "1.7.0",
   "model_id": "catalyst-finance.uncertainty",
   "uncertainty_id": "retrofit-risk-analysis",
   "name": "Building efficiency retrofit uncertainty analysis",
@@ -11,7 +11,7 @@
     "revision_number": 1
   },
   "scenario": {
-    "contract_version": "1.6.0",
+    "contract_version": "1.7.0",
     "model_id": "catalyst-finance.cash-flow",
     "project": {
       "name": "Building efficiency retrofit",

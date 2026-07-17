@@ -16,6 +16,9 @@ from .comparison_migration import normalize_comparison
 from .comparison_models import ComparisonDefinition
 from .engine import evaluate_payload
 from .models import ContractModel, validation_issues
+from .operating import evaluate_operating
+from .operating_migration import normalize_operating
+from .operating_models import OperatingDefinition
 from .pricing import evaluate_pricing
 from .pricing_migration import normalize_pricing
 from .pricing_models import PricingDefinition
@@ -89,6 +92,16 @@ class CreatePricingRequest(ContractModel):
 class PricingRevisionRequest(ContractModel):
     definition: PricingDefinition
     change_note: str = Field(default="Saved pricing revision", max_length=1000)
+
+
+class CreateOperatingRequest(ContractModel):
+    definition: OperatingDefinition
+    name: str | None = Field(default=None, max_length=240)
+
+
+class OperatingRevisionRequest(ContractModel):
+    definition: OperatingDefinition
+    change_note: str = Field(default="Saved operating revision", max_length=1000)
 
 
 class RenameRequest(ContractModel):
@@ -206,6 +219,23 @@ def create_app(repository: WorkspaceRepository | None = None) -> FastAPI:
                 status_code=422,
                 detail={
                     "error": "invalid_pricing_definition",
+                    "issues": validation_issues(exc),
+                },
+            ) from exc
+
+    @application.post("/api/v1/operating/evaluate", tags=["operating economics"])
+    def evaluate_operating_endpoint(payload: dict[str, Any]) -> dict[str, Any]:
+        try:
+            definition = normalize_operating(payload)
+            return cast(
+                dict[str, Any],
+                evaluate_operating(definition).model_dump(mode="json"),
+            )
+        except (ValidationError, ValueError) as exc:
+            raise HTTPException(
+                status_code=422,
+                detail={
+                    "error": "invalid_operating_definition",
                     "issues": validation_issues(exc),
                 },
             ) from exc
@@ -577,6 +607,61 @@ def create_app(repository: WorkspaceRepository | None = None) -> FastAPI:
             return cast(
                 dict[str, Any],
                 service.delete_pricing_analysis(workspace_id, analysis_id).model_dump(
+                    mode="json"
+                ),
+            )
+        except WorkspaceNotFoundError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    @application.post(
+        "/api/v1/workspaces/{workspace_id}/operating-analyses",
+        tags=["operating economics"],
+        status_code=201,
+    )
+    def create_operating_endpoint(
+        workspace_id: str, payload: CreateOperatingRequest
+    ) -> dict[str, Any]:
+        try:
+            return cast(
+                dict[str, Any],
+                service.create_operating_analysis(
+                    workspace_id, payload.definition, name=payload.name
+                ).model_dump(mode="json"),
+            )
+        except WorkspaceNotFoundError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    @application.post(
+        "/api/v1/workspaces/{workspace_id}/operating-analyses/{analysis_id}/revisions",
+        tags=["operating economics"],
+    )
+    def save_operating_revision_endpoint(
+        workspace_id: str, analysis_id: str, payload: OperatingRevisionRequest
+    ) -> dict[str, Any]:
+        try:
+            return cast(
+                dict[str, Any],
+                service.save_operating_revision(
+                    workspace_id,
+                    analysis_id,
+                    payload.definition,
+                    change_note=payload.change_note,
+                ).model_dump(mode="json"),
+            )
+        except WorkspaceNotFoundError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    @application.delete(
+        "/api/v1/workspaces/{workspace_id}/operating-analyses/{analysis_id}",
+        tags=["operating economics"],
+    )
+    def delete_operating_endpoint(
+        workspace_id: str, analysis_id: str
+    ) -> dict[str, Any]:
+        try:
+            return cast(
+                dict[str, Any],
+                service.delete_operating_analysis(workspace_id, analysis_id).model_dump(
                     mode="json"
                 ),
             )

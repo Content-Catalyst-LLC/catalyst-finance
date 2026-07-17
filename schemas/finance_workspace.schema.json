@@ -239,8 +239,8 @@
       "additionalProperties": false,
       "properties": {
         "contract_version": {
-          "const": "1.6.0",
-          "default": "1.6.0",
+          "const": "1.7.0",
+          "default": "1.7.0",
           "title": "Contract Version",
           "type": "string"
         },
@@ -359,8 +359,8 @@
       "additionalProperties": false,
       "properties": {
         "contract_version": {
-          "const": "1.6.0",
-          "default": "1.6.0",
+          "const": "1.7.0",
+          "default": "1.7.0",
           "title": "Contract Version",
           "type": "string"
         },
@@ -970,8 +970,8 @@
       "additionalProperties": false,
       "properties": {
         "contract_version": {
-          "const": "1.6.0",
-          "default": "1.6.0",
+          "const": "1.7.0",
+          "default": "1.7.0",
           "title": "Contract Version",
           "type": "string"
         },
@@ -1156,6 +1156,246 @@
       "title": "OneWaySensitivityDefinition",
       "type": "object"
     },
+    "OperatingDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "contract_version": {
+          "const": "1.7.0",
+          "default": "1.7.0",
+          "title": "Contract Version",
+          "type": "string"
+        },
+        "model_id": {
+          "const": "catalyst-finance.operating",
+          "default": "catalyst-finance.operating",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "operating_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Operating Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "maxLength": 4000,
+          "title": "Description",
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/SourceRevision"
+        },
+        "currency": {
+          "default": "USD",
+          "pattern": "^[A-Z]{3}$",
+          "title": "Currency",
+          "type": "string"
+        },
+        "period_frequency": {
+          "default": "monthly",
+          "enum": [
+            "monthly",
+            "quarterly",
+            "annual"
+          ],
+          "title": "Period Frequency",
+          "type": "string"
+        },
+        "target_operating_profit": {
+          "default": 0,
+          "title": "Target Operating Profit",
+          "type": "number"
+        },
+        "units": {
+          "items": {
+            "$ref": "#/$defs/OperatingUnitInput"
+          },
+          "maxItems": 100,
+          "minItems": 1,
+          "title": "Units",
+          "type": "array"
+        }
+      },
+      "required": [
+        "operating_id",
+        "name",
+        "source",
+        "units"
+      ],
+      "title": "OperatingDefinition",
+      "type": "object"
+    },
+    "OperatingPeriodInput": {
+      "additionalProperties": false,
+      "properties": {
+        "period": {
+          "maximum": 1200,
+          "minimum": 1,
+          "title": "Period",
+          "type": "integer"
+        },
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "budget_units": {
+          "minimum": 0,
+          "title": "Budget Units",
+          "type": "number"
+        },
+        "actual_units": {
+          "minimum": 0,
+          "title": "Actual Units",
+          "type": "number"
+        },
+        "budget_unit_price": {
+          "minimum": 0,
+          "title": "Budget Unit Price",
+          "type": "number"
+        },
+        "actual_unit_price": {
+          "minimum": 0,
+          "title": "Actual Unit Price",
+          "type": "number"
+        },
+        "budget_variable_cost_per_unit": {
+          "minimum": 0,
+          "title": "Budget Variable Cost Per Unit",
+          "type": "number"
+        },
+        "actual_variable_cost_per_unit": {
+          "minimum": 0,
+          "title": "Actual Variable Cost Per Unit",
+          "type": "number"
+        },
+        "budget_direct_fixed_cost": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Budget Direct Fixed Cost",
+          "type": "number"
+        },
+        "actual_direct_fixed_cost": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Actual Direct Fixed Cost",
+          "type": "number"
+        },
+        "budget_allocated_overhead": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Budget Allocated Overhead",
+          "type": "number"
+        },
+        "actual_allocated_overhead": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Actual Allocated Overhead",
+          "type": "number"
+        }
+      },
+      "required": [
+        "period",
+        "label",
+        "budget_units",
+        "actual_units",
+        "budget_unit_price",
+        "actual_unit_price",
+        "budget_variable_cost_per_unit",
+        "actual_variable_cost_per_unit"
+      ],
+      "title": "OperatingPeriodInput",
+      "type": "object"
+    },
+    "OperatingRevision": {
+      "additionalProperties": false,
+      "properties": {
+        "revision_id": {
+          "maxLength": 100,
+          "minLength": 5,
+          "pattern": "^[a-z]+_[A-Za-z0-9_-]+$",
+          "title": "Revision Id",
+          "type": "string"
+        },
+        "revision_number": {
+          "minimum": 1,
+          "title": "Revision Number",
+          "type": "integer"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "change_note": {
+          "default": "",
+          "maxLength": 1000,
+          "title": "Change Note",
+          "type": "string"
+        },
+        "definition": {
+          "$ref": "#/$defs/OperatingDefinition"
+        }
+      },
+      "required": [
+        "revision_id",
+        "revision_number",
+        "created_at",
+        "definition"
+      ],
+      "title": "OperatingRevision",
+      "type": "object"
+    },
+    "OperatingUnitInput": {
+      "additionalProperties": false,
+      "properties": {
+        "unit_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Unit Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "cost_center": {
+          "default": "General",
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Cost Center",
+          "type": "string"
+        },
+        "periods": {
+          "items": {
+            "$ref": "#/$defs/OperatingPeriodInput"
+          },
+          "maxItems": 1200,
+          "minItems": 1,
+          "title": "Periods",
+          "type": "array"
+        }
+      },
+      "required": [
+        "unit_id",
+        "label",
+        "periods"
+      ],
+      "title": "OperatingUnitInput",
+      "type": "object"
+    },
     "PricingConstraints": {
       "additionalProperties": false,
       "properties": {
@@ -1238,8 +1478,8 @@
       "additionalProperties": false,
       "properties": {
         "contract_version": {
-          "const": "1.6.0",
-          "default": "1.6.0",
+          "const": "1.7.0",
+          "default": "1.7.0",
           "title": "Contract Version",
           "type": "string"
         },
@@ -1426,8 +1666,8 @@
           "type": "string"
         },
         "model_version": {
-          "const": "1.6.0",
-          "default": "1.6.0",
+          "const": "1.7.0",
+          "default": "1.7.0",
           "title": "Model Version",
           "type": "string"
         },
@@ -1677,8 +1917,8 @@
       "additionalProperties": false,
       "properties": {
         "contract_version": {
-          "const": "1.6.0",
-          "default": "1.6.0",
+          "const": "1.7.0",
+          "default": "1.7.0",
           "title": "Contract Version",
           "type": "string"
         },
@@ -1975,13 +2215,76 @@
           "type": "string"
         },
         "default_model_version": {
-          "const": "1.6.0",
-          "default": "1.6.0",
+          "const": "1.7.0",
+          "default": "1.7.0",
           "title": "Default Model Version",
           "type": "string"
         }
       },
       "title": "WorkspaceDefaults",
+      "type": "object"
+    },
+    "WorkspaceOperatingAnalysis": {
+      "additionalProperties": false,
+      "properties": {
+        "analysis_id": {
+          "maxLength": 100,
+          "minLength": 5,
+          "pattern": "^[a-z]+_[A-Za-z0-9_-]+$",
+          "title": "Analysis Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "status": {
+          "default": "active",
+          "enum": [
+            "draft",
+            "active",
+            "archived"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        },
+        "current_revision_id": {
+          "maxLength": 100,
+          "minLength": 5,
+          "pattern": "^[a-z]+_[A-Za-z0-9_-]+$",
+          "title": "Current Revision Id",
+          "type": "string"
+        },
+        "revisions": {
+          "items": {
+            "$ref": "#/$defs/OperatingRevision"
+          },
+          "minItems": 1,
+          "title": "Revisions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "analysis_id",
+        "name",
+        "created_at",
+        "updated_at",
+        "current_revision_id",
+        "revisions"
+      ],
+      "title": "WorkspaceOperatingAnalysis",
       "type": "object"
     },
     "WorkspacePricingAnalysis": {
@@ -2302,8 +2605,8 @@
   "additionalProperties": false,
   "properties": {
     "workspace_contract_version": {
-      "const": "1.6.0",
-      "default": "1.6.0",
+      "const": "1.7.0",
+      "default": "1.7.0",
       "title": "Workspace Contract Version",
       "type": "string"
     },
@@ -2382,6 +2685,13 @@
       },
       "title": "Pricing Analyses",
       "type": "array"
+    },
+    "operating_analyses": {
+      "items": {
+        "$ref": "#/$defs/WorkspaceOperatingAnalysis"
+      },
+      "title": "Operating Analyses",
+      "type": "array"
     }
   },
   "required": [
@@ -2393,5 +2703,5 @@
   "title": "FinanceWorkspace",
   "type": "object",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.6.0/finance_workspace.schema.json"
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.7.0/finance_workspace.schema.json"
 }

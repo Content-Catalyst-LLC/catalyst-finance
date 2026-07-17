@@ -1,0 +1,241 @@
+{
+  "$defs": {
+    "OperatingPeriodInput": {
+      "additionalProperties": false,
+      "properties": {
+        "period": {
+          "maximum": 1200,
+          "minimum": 1,
+          "title": "Period",
+          "type": "integer"
+        },
+        "label": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "budget_units": {
+          "minimum": 0,
+          "title": "Budget Units",
+          "type": "number"
+        },
+        "actual_units": {
+          "minimum": 0,
+          "title": "Actual Units",
+          "type": "number"
+        },
+        "budget_unit_price": {
+          "minimum": 0,
+          "title": "Budget Unit Price",
+          "type": "number"
+        },
+        "actual_unit_price": {
+          "minimum": 0,
+          "title": "Actual Unit Price",
+          "type": "number"
+        },
+        "budget_variable_cost_per_unit": {
+          "minimum": 0,
+          "title": "Budget Variable Cost Per Unit",
+          "type": "number"
+        },
+        "actual_variable_cost_per_unit": {
+          "minimum": 0,
+          "title": "Actual Variable Cost Per Unit",
+          "type": "number"
+        },
+        "budget_direct_fixed_cost": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Budget Direct Fixed Cost",
+          "type": "number"
+        },
+        "actual_direct_fixed_cost": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Actual Direct Fixed Cost",
+          "type": "number"
+        },
+        "budget_allocated_overhead": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Budget Allocated Overhead",
+          "type": "number"
+        },
+        "actual_allocated_overhead": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Actual Allocated Overhead",
+          "type": "number"
+        }
+      },
+      "required": [
+        "period",
+        "label",
+        "budget_units",
+        "actual_units",
+        "budget_unit_price",
+        "actual_unit_price",
+        "budget_variable_cost_per_unit",
+        "actual_variable_cost_per_unit"
+      ],
+      "title": "OperatingPeriodInput",
+      "type": "object"
+    },
+    "OperatingUnitInput": {
+      "additionalProperties": false,
+      "properties": {
+        "unit_id": {
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "title": "Unit Id",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "cost_center": {
+          "default": "General",
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Cost Center",
+          "type": "string"
+        },
+        "periods": {
+          "items": {
+            "$ref": "#/$defs/OperatingPeriodInput"
+          },
+          "maxItems": 1200,
+          "minItems": 1,
+          "title": "Periods",
+          "type": "array"
+        }
+      },
+      "required": [
+        "unit_id",
+        "label",
+        "periods"
+      ],
+      "title": "OperatingUnitInput",
+      "type": "object"
+    },
+    "SourceRevision": {
+      "additionalProperties": false,
+      "properties": {
+        "workspace_id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Workspace Id",
+          "type": "string"
+        },
+        "scenario_id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Scenario Id",
+          "type": "string"
+        },
+        "revision_id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Revision Id",
+          "type": "string"
+        },
+        "revision_number": {
+          "minimum": 1,
+          "title": "Revision Number",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "workspace_id",
+        "scenario_id",
+        "revision_id",
+        "revision_number"
+      ],
+      "title": "SourceRevision",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "const": "1.7.0",
+      "default": "1.7.0",
+      "title": "Contract Version",
+      "type": "string"
+    },
+    "model_id": {
+      "const": "catalyst-finance.operating",
+      "default": "catalyst-finance.operating",
+      "title": "Model Id",
+      "type": "string"
+    },
+    "operating_id": {
+      "maxLength": 100,
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_-]+$",
+      "title": "Operating Id",
+      "type": "string"
+    },
+    "name": {
+      "maxLength": 240,
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "description": {
+      "default": "",
+      "maxLength": 4000,
+      "title": "Description",
+      "type": "string"
+    },
+    "source": {
+      "$ref": "#/$defs/SourceRevision"
+    },
+    "currency": {
+      "default": "USD",
+      "pattern": "^[A-Z]{3}$",
+      "title": "Currency",
+      "type": "string"
+    },
+    "period_frequency": {
+      "default": "monthly",
+      "enum": [
+        "monthly",
+        "quarterly",
+        "annual"
+      ],
+      "title": "Period Frequency",
+      "type": "string"
+    },
+    "target_operating_profit": {
+      "default": 0,
+      "title": "Target Operating Profit",
+      "type": "number"
+    },
+    "units": {
+      "items": {
+        "$ref": "#/$defs/OperatingUnitInput"
+      },
+      "maxItems": 100,
+      "minItems": 1,
+      "title": "Units",
+      "type": "array"
+    }
+  },
+  "required": [
+    "operating_id",
+    "name",
+    "source",
+    "units"
+  ],
+  "title": "OperatingDefinition",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/1.7.0/operating_definition.schema.json"
+}

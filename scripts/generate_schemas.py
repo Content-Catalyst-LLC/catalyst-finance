@@ -26,6 +26,10 @@ from catalyst_finance.models import (  # noqa: E402
     FinanceResults,
     FinanceScenarioInput,
 )
+from catalyst_finance.operating_models import (  # noqa: E402
+    OperatingDefinition,
+    OperatingPublication,
+)
 from catalyst_finance.pricing_models import (  # noqa: E402
     PricingDefinition,
     PricingPublication,
@@ -42,6 +46,8 @@ from catalyst_finance.workspace_models import (  # noqa: E402
 )
 
 SCHEMAS: list[tuple[str, type[Any]]] = [
+    ("operating_definition.schema.json", OperatingDefinition),
+    ("operating_publication.schema.json", OperatingPublication),
     ("pricing_definition.schema.json", PricingDefinition),
     ("pricing_publication.schema.json", PricingPublication),
     ("uncertainty_definition.schema.json", UncertaintyDefinition),
@@ -69,7 +75,7 @@ def generate(output_dir: Path | None = None) -> None:
         schema = model.model_json_schema(ref_template="#/$defs/{model}")
         schema["$schema"] = "https://json-schema.org/draft/2020-12/schema"
         schema["$id"] = (
-            "https://sustainablecatalyst.com/schemas/catalyst-finance/1.6.0/" + filename
+            "https://sustainablecatalyst.com/schemas/catalyst-finance/1.7.0/" + filename
         )
         path = output_dir / filename
         path.write_text(json.dumps(schema, indent=2) + "\n", encoding="utf-8")
