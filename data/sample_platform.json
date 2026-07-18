@@ -1,0 +1,492 @@
+{
+  "contract_version": "2.0.0",
+  "model_id": "catalyst-finance.platform",
+  "platform_id": "platform_connected_finance",
+  "name": "Connected Financial Decision Intelligence Platform",
+  "description": "Cross-product portfolio and governed handoff view for institutional finance decisions.",
+  "source": {
+    "workspace_id": "workspace_finance",
+    "scenario_id": "scenario_platform",
+    "revision_id": "revision_platform_1",
+    "revision_number": 1
+  },
+  "products": [
+    {
+      "product_id": "catalyst-finance",
+      "name": "Catalyst Finance",
+      "version": "2.0.0",
+      "role": "finance",
+      "status": "online",
+      "artifact_kinds": [
+        "cash-flow",
+        "comparison",
+        "pricing",
+        "sustainable-finance",
+        "governance",
+        "platform"
+      ],
+      "supported_contracts": [
+        "catalyst-finance/2.0.0"
+      ],
+      "accepted_classifications": [
+        "public",
+        "internal",
+        "confidential"
+      ]
+    },
+    {
+      "product_id": "decision-studio",
+      "name": "Decision Studio",
+      "version": "2.0.0",
+      "role": "decision",
+      "status": "online",
+      "artifact_kinds": [
+        "decision-packet",
+        "briefing"
+      ],
+      "supported_contracts": [
+        "sustainable-catalyst/decision-handoff/2.0.0"
+      ],
+      "accepted_classifications": [
+        "public",
+        "internal",
+        "confidential"
+      ]
+    },
+    {
+      "product_id": "knowledge-library",
+      "name": "Knowledge Library",
+      "version": "4.0.0",
+      "role": "knowledge",
+      "status": "online",
+      "artifact_kinds": [
+        "source-record",
+        "evidence-record",
+        "public-brief"
+      ],
+      "supported_contracts": [
+        "sustainable-catalyst/knowledge-handoff/2.0.0"
+      ],
+      "accepted_classifications": [
+        "public"
+      ]
+    },
+    {
+      "product_id": "workbench",
+      "name": "Workbench",
+      "version": "5.0.0",
+      "role": "compute",
+      "status": "online",
+      "artifact_kinds": [
+        "calculation-run",
+        "model-output"
+      ],
+      "supported_contracts": [
+        "sustainable-catalyst/compute-handoff/2.0.0"
+      ],
+      "accepted_classifications": [
+        "public",
+        "internal",
+        "confidential"
+      ]
+    },
+    {
+      "product_id": "site-intelligence",
+      "name": "Site Intelligence",
+      "version": "3.0.0",
+      "role": "intelligence",
+      "status": "degraded",
+      "artifact_kinds": [
+        "market-signal",
+        "country-dossier",
+        "risk-signal"
+      ],
+      "supported_contracts": [
+        "sustainable-catalyst/intelligence-handoff/2.0.0"
+      ],
+      "accepted_classifications": [
+        "public",
+        "internal"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact_id": "artifact_market",
+      "revision_id": "revision_market",
+      "source_product_id": "site-intelligence",
+      "model_id": "site-intelligence.market-signals",
+      "model_version": "2.0.0",
+      "title": "Regional energy and market signal",
+      "artifact_kind": "market-signal",
+      "status": "approved",
+      "governance_status": "approved",
+      "classification": "internal",
+      "include_in_portfolio": false,
+      "checksum_sha256": "c40625276dc5b38afc5388b79ab84eca7591b97ae0e27f5e6474b1883d17052e",
+      "financial": {
+        "currency": "USD",
+        "base_npv": 0,
+        "adjusted_npv": 0,
+        "capital_required": 0,
+        "annual_value": 0,
+        "confidence_percent": 100,
+        "downside_probability_percent": 0
+      },
+      "headline_metrics": {
+        "energy_price_growth_percent": 4.2,
+        "policy_risk": "moderate"
+      }
+    },
+    {
+      "artifact_id": "artifact_compute",
+      "revision_id": "revision_compute",
+      "source_product_id": "workbench",
+      "model_id": "workbench.calculation-run",
+      "model_version": "2.0.0",
+      "title": "Engineering savings verification",
+      "artifact_kind": "calculation-run",
+      "status": "approved",
+      "governance_status": "approved",
+      "classification": "internal",
+      "include_in_portfolio": false,
+      "checksum_sha256": "dbe346ae8aa7cb3ba10044bba2cc46aeba6d9240b3cd30b9eb25becd662c7803",
+      "financial": {
+        "currency": "USD",
+        "base_npv": 0,
+        "adjusted_npv": 0,
+        "capital_required": 0,
+        "annual_value": 0,
+        "confidence_percent": 100,
+        "downside_probability_percent": 0
+      },
+      "headline_metrics": {
+        "verified_annual_savings": 128000
+      }
+    },
+    {
+      "artifact_id": "artifact_cashflow",
+      "revision_id": "revision_cashflow",
+      "source_product_id": "catalyst-finance",
+      "model_id": "catalyst-finance.cash-flow",
+      "model_version": "2.0.0",
+      "title": "Retrofit capital-budgeting case",
+      "artifact_kind": "cash-flow",
+      "status": "approved",
+      "governance_status": "approved",
+      "classification": "internal",
+      "include_in_portfolio": true,
+      "checksum_sha256": "43a3ac504729990508e2c42bb8868e0018a594e070d764ed721c7b4aaf0a97e9",
+      "financial": {
+        "currency": "USD",
+        "base_npv": 500000,
+        "adjusted_npv": 500000,
+        "capital_required": 1000000,
+        "annual_value": 128000,
+        "confidence_percent": 90,
+        "downside_probability_percent": 15
+      },
+      "headline_metrics": {
+        "npv": 500000,
+        "irr_percent": 14.8
+      }
+    },
+    {
+      "artifact_id": "artifact_comparison",
+      "revision_id": "revision_comparison",
+      "source_product_id": "catalyst-finance",
+      "model_id": "catalyst-finance.comparison",
+      "model_version": "2.0.0",
+      "title": "Retrofit alternatives comparison",
+      "artifact_kind": "comparison",
+      "status": "approved",
+      "governance_status": "approved",
+      "classification": "internal",
+      "include_in_portfolio": false,
+      "checksum_sha256": "5dbe0c60fe8c56f6f0339f77e9508b69cddf886cc5df0d60827eac56d8f9f0a7",
+      "financial": {
+        "currency": "USD",
+        "base_npv": 0,
+        "adjusted_npv": 0,
+        "capital_required": 0,
+        "annual_value": 0,
+        "confidence_percent": 100,
+        "downside_probability_percent": 0
+      },
+      "headline_metrics": {
+        "recommended_alternative": "deep-retrofit",
+        "alternative_count": 3
+      }
+    },
+    {
+      "artifact_id": "artifact_sustainable",
+      "revision_id": "revision_sustainable",
+      "source_product_id": "catalyst-finance",
+      "model_id": "catalyst-finance.sustainable",
+      "model_version": "2.0.0",
+      "title": "Sustainable value adjustment",
+      "artifact_kind": "sustainable-finance",
+      "status": "published",
+      "governance_status": "published",
+      "classification": "public",
+      "include_in_portfolio": true,
+      "checksum_sha256": "c0c7bde18d7e91fadbcd352f4cb170ad82c9bc3cb9f2a8599e7d2425be891ba8",
+      "financial": {
+        "currency": "USD",
+        "base_npv": 125000,
+        "adjusted_npv": 1526250.9,
+        "capital_required": 1800000,
+        "annual_value": 78000,
+        "confidence_percent": 85,
+        "downside_probability_percent": 20
+      },
+      "headline_metrics": {
+        "avoided_emissions_tco2e": 4500,
+        "adjusted_project_npv": 1526250.9
+      }
+    },
+    {
+      "artifact_id": "artifact_governance",
+      "revision_id": "revision_governance",
+      "source_product_id": "catalyst-finance",
+      "model_id": "catalyst-finance.governance",
+      "model_version": "2.0.0",
+      "title": "Governed retrofit finance brief",
+      "artifact_kind": "governance-publication",
+      "status": "published",
+      "governance_status": "published",
+      "classification": "public",
+      "include_in_portfolio": false,
+      "checksum_sha256": "f7309e624fd662548e17d317ca7f3228c55e1b5be26c968656924c72edae512d",
+      "financial": {
+        "currency": "USD",
+        "base_npv": 0,
+        "adjusted_npv": 0,
+        "capital_required": 0,
+        "annual_value": 0,
+        "confidence_percent": 100,
+        "downside_probability_percent": 0
+      },
+      "headline_metrics": {
+        "fully_traced_headline_claims": 2,
+        "approvals": 2
+      }
+    },
+    {
+      "artifact_id": "artifact_pricing",
+      "revision_id": "revision_pricing",
+      "source_product_id": "catalyst-finance",
+      "model_id": "catalyst-finance.pricing",
+      "model_version": "2.0.0",
+      "title": "Service pricing expansion case",
+      "artifact_kind": "pricing",
+      "status": "approved",
+      "governance_status": "approved",
+      "classification": "confidential",
+      "include_in_portfolio": true,
+      "checksum_sha256": "6d55e3f3c970897b231426bf8bdf4ac027c65b61b2f347f43720ab6b10a21c89",
+      "financial": {
+        "currency": "USD",
+        "base_npv": 210000,
+        "adjusted_npv": 260000,
+        "capital_required": 180000,
+        "annual_value": 92000,
+        "confidence_percent": 82,
+        "downside_probability_percent": 25
+      },
+      "headline_metrics": {
+        "recommended_price": 55,
+        "profit_gain": 92000
+      }
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "case_retrofit",
+      "name": "Institutional efficiency retrofit",
+      "objective": "Select and publish a governed investment pathway for a deep energy retrofit.",
+      "owner": "Capital Planning",
+      "status": "decided",
+      "priority": "high",
+      "artifact_ids": [
+        "artifact_market",
+        "artifact_compute",
+        "artifact_cashflow",
+        "artifact_comparison",
+        "artifact_sustainable",
+        "artifact_governance"
+      ],
+      "required_product_ids": [
+        "decision-studio",
+        "knowledge-library"
+      ],
+      "decision_packet_id": "packet_retrofit",
+      "knowledge_collection_id": "collection_retrofit"
+    },
+    {
+      "case_id": "case_pricing",
+      "name": "Advisory service pricing expansion",
+      "objective": "Choose a price and operating plan that improves contribution while preserving demand.",
+      "owner": "Advisory Operations",
+      "status": "in_review",
+      "priority": "normal",
+      "artifact_ids": [
+        "artifact_pricing"
+      ],
+      "required_product_ids": [
+        "decision-studio"
+      ],
+      "decision_packet_id": "packet_pricing"
+    }
+  ],
+  "dependencies": [
+    {
+      "edge_id": "edge_market_cashflow",
+      "upstream_artifact_id": "artifact_market",
+      "downstream_artifact_id": "artifact_cashflow",
+      "relationship": "informs",
+      "required": true,
+      "note": "Market escalation informs operating savings."
+    },
+    {
+      "edge_id": "edge_compute_cashflow",
+      "upstream_artifact_id": "artifact_compute",
+      "downstream_artifact_id": "artifact_cashflow",
+      "relationship": "calculation_for",
+      "required": true,
+      "note": "Engineering run verifies savings assumptions."
+    },
+    {
+      "edge_id": "edge_cashflow_comparison",
+      "upstream_artifact_id": "artifact_cashflow",
+      "downstream_artifact_id": "artifact_comparison",
+      "relationship": "calculation_for",
+      "required": true,
+      "note": "Capital-budgeting result enters alternative comparison."
+    },
+    {
+      "edge_id": "edge_comparison_sustainable",
+      "upstream_artifact_id": "artifact_comparison",
+      "downstream_artifact_id": "artifact_sustainable",
+      "relationship": "informs",
+      "required": true,
+      "note": "Selected alternative receives sustainable-value adjustment."
+    },
+    {
+      "edge_id": "edge_sustainable_governance",
+      "upstream_artifact_id": "artifact_sustainable",
+      "downstream_artifact_id": "artifact_governance",
+      "relationship": "evidence_for",
+      "required": true,
+      "note": "Adjusted value supports governed claims."
+    }
+  ],
+  "handoffs": [
+    {
+      "handoff_id": "handoff_market_finance",
+      "source_product_id": "site-intelligence",
+      "target_product_id": "catalyst-finance",
+      "artifact_id": "artifact_market",
+      "artifact_revision_id": "revision_market",
+      "contract_id": "sustainable-catalyst/intelligence-handoff/2.0.0",
+      "classification": "internal",
+      "status": "completed",
+      "payload_hash_sha256": "565db2baf7af740b173d2141fef0ce6d1b5ab0603a11e6b74bc5fb87da9b29ad",
+      "requested_at": "2026-07-17T18:00:00+00:00",
+      "updated_at": "2026-07-17T18:05:00+00:00",
+      "destination_id": "signal_retrofit",
+      "error_code": null,
+      "note": ""
+    },
+    {
+      "handoff_id": "handoff_compute_finance",
+      "source_product_id": "workbench",
+      "target_product_id": "catalyst-finance",
+      "artifact_id": "artifact_compute",
+      "artifact_revision_id": "revision_compute",
+      "contract_id": "sustainable-catalyst/compute-handoff/2.0.0",
+      "classification": "internal",
+      "status": "completed",
+      "payload_hash_sha256": "fb3d99bab97f853f3b0dea6ea6c9c121e07959de8009ebe5c09f9c6b73b13c99",
+      "requested_at": "2026-07-17T18:00:00+00:00",
+      "updated_at": "2026-07-17T18:05:00+00:00",
+      "destination_id": "run_retrofit",
+      "error_code": null,
+      "note": ""
+    },
+    {
+      "handoff_id": "handoff_retrofit_decision",
+      "source_product_id": "catalyst-finance",
+      "target_product_id": "decision-studio",
+      "artifact_id": "artifact_sustainable",
+      "artifact_revision_id": "revision_sustainable",
+      "contract_id": "sustainable-catalyst/decision-handoff/2.0.0",
+      "classification": "internal",
+      "status": "completed",
+      "payload_hash_sha256": "d66be0bfd46e20226a31b16ffa9a03edd9ea79694b520067b4272ed65a2081af",
+      "requested_at": "2026-07-17T18:00:00+00:00",
+      "updated_at": "2026-07-17T18:05:00+00:00",
+      "destination_id": "packet_retrofit",
+      "error_code": null,
+      "note": ""
+    },
+    {
+      "handoff_id": "handoff_governance_library",
+      "source_product_id": "catalyst-finance",
+      "target_product_id": "knowledge-library",
+      "artifact_id": "artifact_governance",
+      "artifact_revision_id": "revision_governance",
+      "contract_id": "sustainable-catalyst/knowledge-handoff/2.0.0",
+      "classification": "public",
+      "status": "completed",
+      "payload_hash_sha256": "e7617e79da14fb8f72483d2d2280b22e19110f51ca0f554816b94e07d0f77048",
+      "requested_at": "2026-07-17T18:00:00+00:00",
+      "updated_at": "2026-07-17T18:05:00+00:00",
+      "destination_id": "collection_retrofit",
+      "error_code": null,
+      "note": ""
+    },
+    {
+      "handoff_id": "handoff_pricing_decision",
+      "source_product_id": "catalyst-finance",
+      "target_product_id": "decision-studio",
+      "artifact_id": "artifact_pricing",
+      "artifact_revision_id": "revision_pricing",
+      "contract_id": "sustainable-catalyst/decision-handoff/2.0.0",
+      "classification": "confidential",
+      "status": "completed",
+      "payload_hash_sha256": "41515b1e57bc87649a19d90f5e3c28d808d5256858616ce1e84f100987367d79",
+      "requested_at": "2026-07-17T18:00:00+00:00",
+      "updated_at": "2026-07-17T18:05:00+00:00",
+      "destination_id": "packet_pricing",
+      "error_code": null,
+      "note": ""
+    },
+    {
+      "handoff_id": "handoff_pricing_library",
+      "source_product_id": "catalyst-finance",
+      "target_product_id": "knowledge-library",
+      "artifact_id": "artifact_pricing",
+      "artifact_revision_id": "revision_pricing",
+      "contract_id": "sustainable-catalyst/knowledge-handoff/2.0.0",
+      "classification": "confidential",
+      "status": "rejected",
+      "payload_hash_sha256": "353573fd968f62554db0f4ace1b0d694a31ee9e981b34d5822702488de95cab6",
+      "requested_at": "2026-07-17T18:00:00+00:00",
+      "updated_at": "2026-07-17T18:05:00+00:00",
+      "destination_id": null,
+      "error_code": "classification_not_accepted",
+      "note": "Confidential pricing case cannot enter the public library."
+    }
+  ],
+  "policy": {
+    "require_governance_for_completed_handoffs": true,
+    "require_approved_artifact_for_completed_handoffs": true,
+    "require_checksums": true,
+    "minimum_case_confidence_percent": 70,
+    "allowed_public_statuses": [
+      "approved",
+      "published"
+    ]
+  }
+}

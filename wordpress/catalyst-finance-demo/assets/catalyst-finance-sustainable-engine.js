@@ -1,6 +1,6 @@
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.CatalystFinanceSustainableEngine=api;})(typeof self!=='undefined'?self:this,function(){
 'use strict';
-const CONTRACT_VERSION = '1.9.0';
+const CONTRACT_VERSION = '2.0.0';
 const MODEL_ID = 'catalyst-finance.sustainable';
 const DISCLAIMER='Decision-support output only. Validate emissions boundaries, additionality, credit eligibility, natural-capital valuation, discount rates, accounting treatment, legal rights, and assurance evidence before reporting or investment use.';
 function round(v,d){const f=Math.pow(10,d);return(v<0?-1:1)*Math.floor(Math.abs(v)*f+0.5+1e-12)/f;}

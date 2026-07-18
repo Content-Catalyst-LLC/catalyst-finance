@@ -9,6 +9,7 @@ from .comparison_models import COMPARISON_CONTRACT_VERSION, COMPARISON_MODEL_ID
 from .governance_models import GOVERNANCE_CONTRACT_VERSION, GOVERNANCE_MODEL_ID
 from .models import CONTRACT_VERSION, METHODOLOGY_VERSION, MODEL_ID
 from .operating_models import OPERATING_CONTRACT_VERSION, OPERATING_MODEL_ID
+from .platform_models import PLATFORM_CONTRACT_VERSION, PLATFORM_MODEL_ID
 from .pricing_models import PRICING_CONTRACT_VERSION, PRICING_MODEL_ID
 from .sustainable_models import SUSTAINABLE_CONTRACT_VERSION, SUSTAINABLE_MODEL_ID
 from .uncertainty_models import UNCERTAINTY_CONTRACT_VERSION, UNCERTAINTY_MODEL_ID
@@ -158,6 +159,23 @@ MODEL_REGISTRY: dict[str, dict[str, Any]] = {
             "green-financing interest savings",
             "adjusted project value and review flags",
             "revision traceability",
+        ],
+    },
+    PLATFORM_MODEL_ID: {
+        "model_id": PLATFORM_MODEL_ID,
+        "name": "Catalyst Finance connected financial decision-intelligence platform",
+        "model_version": PLATFORM_CONTRACT_VERSION,
+        "contract_version": PLATFORM_CONTRACT_VERSION,
+        "status": "stable",
+        "period_frequency": "connected portfolio lifecycle",
+        "capabilities": [
+            "cross-product capability registry",
+            "portfolio value and risk aggregation",
+            "decision-case readiness assessment",
+            "acyclic artifact dependency graphs",
+            "classification and governance-gated handoffs",
+            "product health and integration manifests",
+            "reproducible connected-platform run records",
         ],
     },
 }

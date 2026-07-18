@@ -1,0 +1,493 @@
+{
+  "$defs": {
+    "CaseAssessment": {
+      "additionalProperties": false,
+      "properties": {
+        "case_id": {
+          "title": "Case Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "blocked",
+            "ready_for_review",
+            "decision_ready",
+            "decided"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "readiness_score": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Readiness Score",
+          "type": "number"
+        },
+        "artifact_count": {
+          "title": "Artifact Count",
+          "type": "integer"
+        },
+        "approved_artifact_count": {
+          "title": "Approved Artifact Count",
+          "type": "integer"
+        },
+        "governance_ready_artifact_count": {
+          "title": "Governance Ready Artifact Count",
+          "type": "integer"
+        },
+        "completed_handoff_count": {
+          "title": "Completed Handoff Count",
+          "type": "integer"
+        },
+        "required_handoff_count": {
+          "title": "Required Handoff Count",
+          "type": "integer"
+        },
+        "risk_adjusted_value": {
+          "title": "Risk Adjusted Value",
+          "type": "number"
+        },
+        "blocked_reasons": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Blocked Reasons",
+          "type": "array"
+        }
+      },
+      "required": [
+        "case_id",
+        "name",
+        "status",
+        "readiness_score",
+        "artifact_count",
+        "approved_artifact_count",
+        "governance_ready_artifact_count",
+        "completed_handoff_count",
+        "required_handoff_count",
+        "risk_adjusted_value",
+        "blocked_reasons"
+      ],
+      "title": "CaseAssessment",
+      "type": "object"
+    },
+    "HandoffSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "total": {
+          "title": "Total",
+          "type": "integer"
+        },
+        "queued": {
+          "title": "Queued",
+          "type": "integer"
+        },
+        "accepted": {
+          "title": "Accepted",
+          "type": "integer"
+        },
+        "completed": {
+          "title": "Completed",
+          "type": "integer"
+        },
+        "rejected": {
+          "title": "Rejected",
+          "type": "integer"
+        },
+        "failed": {
+          "title": "Failed",
+          "type": "integer"
+        },
+        "noncompliant_handoff_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Noncompliant Handoff Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "total",
+        "queued",
+        "accepted",
+        "completed",
+        "rejected",
+        "failed",
+        "noncompliant_handoff_ids"
+      ],
+      "title": "HandoffSummary",
+      "type": "object"
+    },
+    "PlatformMetadata": {
+      "additionalProperties": false,
+      "properties": {
+        "generated_at": {
+          "title": "Generated At",
+          "type": "string"
+        },
+        "version": {
+          "const": "2.0.0",
+          "default": "2.0.0",
+          "title": "Version",
+          "type": "string"
+        },
+        "disclaimer": {
+          "title": "Disclaimer",
+          "type": "string"
+        }
+      },
+      "required": [
+        "generated_at",
+        "disclaimer"
+      ],
+      "title": "PlatformMetadata",
+      "type": "object"
+    },
+    "PlatformMethodology": {
+      "additionalProperties": false,
+      "properties": {
+        "model_id": {
+          "const": "catalyst-finance.platform",
+          "default": "catalyst-finance.platform",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "model_version": {
+          "const": "2.0.0",
+          "default": "2.0.0",
+          "title": "Model Version",
+          "type": "string"
+        },
+        "aggregation_policy": {
+          "const": "artifact_level_no_cross_case_deduplication",
+          "default": "artifact_level_no_cross_case_deduplication",
+          "title": "Aggregation Policy",
+          "type": "string"
+        },
+        "risk_adjustment_policy": {
+          "const": "adjusted_npv_x_confidence_x_inverse_downside",
+          "default": "adjusted_npv_x_confidence_x_inverse_downside",
+          "title": "Risk Adjustment Policy",
+          "type": "string"
+        },
+        "graph_policy": {
+          "const": "acyclic_required_dependencies",
+          "default": "acyclic_required_dependencies",
+          "title": "Graph Policy",
+          "type": "string"
+        },
+        "handoff_policy": {
+          "const": "classification_and_governance_gated",
+          "default": "classification_and_governance_gated",
+          "title": "Handoff Policy",
+          "type": "string"
+        }
+      },
+      "title": "PlatformMethodology",
+      "type": "object"
+    },
+    "PlatformRunRecord": {
+      "additionalProperties": false,
+      "properties": {
+        "run_id": {
+          "title": "Run Id",
+          "type": "string"
+        },
+        "generated_at": {
+          "title": "Generated At",
+          "type": "string"
+        },
+        "input_hash": {
+          "title": "Input Hash",
+          "type": "string"
+        },
+        "output_hash": {
+          "title": "Output Hash",
+          "type": "string"
+        },
+        "dependency_head": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Dependency Head"
+        },
+        "platform_id": {
+          "title": "Platform Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "generated_at",
+        "input_hash",
+        "output_hash",
+        "dependency_head",
+        "platform_id"
+      ],
+      "title": "PlatformRunRecord",
+      "type": "object"
+    },
+    "PortfolioSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "artifact_count": {
+          "title": "Artifact Count",
+          "type": "integer"
+        },
+        "case_count": {
+          "title": "Case Count",
+          "type": "integer"
+        },
+        "currency": {
+          "title": "Currency",
+          "type": "string"
+        },
+        "total_base_npv": {
+          "title": "Total Base Npv",
+          "type": "number"
+        },
+        "total_adjusted_npv": {
+          "title": "Total Adjusted Npv",
+          "type": "number"
+        },
+        "total_capital_required": {
+          "title": "Total Capital Required",
+          "type": "number"
+        },
+        "total_annual_value": {
+          "title": "Total Annual Value",
+          "type": "number"
+        },
+        "risk_adjusted_value": {
+          "title": "Risk Adjusted Value",
+          "type": "number"
+        },
+        "value_to_capital_ratio": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value To Capital Ratio"
+        },
+        "weighted_confidence_percent": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Weighted Confidence Percent",
+          "type": "number"
+        },
+        "weighted_downside_probability_percent": {
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Weighted Downside Probability Percent",
+          "type": "number"
+        }
+      },
+      "required": [
+        "artifact_count",
+        "case_count",
+        "currency",
+        "total_base_npv",
+        "total_adjusted_npv",
+        "total_capital_required",
+        "total_annual_value",
+        "risk_adjusted_value",
+        "value_to_capital_ratio",
+        "weighted_confidence_percent",
+        "weighted_downside_probability_percent"
+      ],
+      "title": "PortfolioSummary",
+      "type": "object"
+    },
+    "ProductHealth": {
+      "additionalProperties": false,
+      "properties": {
+        "product_id": {
+          "title": "Product Id",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "healthy",
+            "warning",
+            "blocked"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "artifact_count": {
+          "title": "Artifact Count",
+          "type": "integer"
+        },
+        "inbound_handoff_count": {
+          "title": "Inbound Handoff Count",
+          "type": "integer"
+        },
+        "outbound_handoff_count": {
+          "title": "Outbound Handoff Count",
+          "type": "integer"
+        },
+        "completed_handoff_count": {
+          "title": "Completed Handoff Count",
+          "type": "integer"
+        },
+        "failed_or_rejected_handoff_count": {
+          "title": "Failed Or Rejected Handoff Count",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "product_id",
+        "status",
+        "artifact_count",
+        "inbound_handoff_count",
+        "outbound_handoff_count",
+        "completed_handoff_count",
+        "failed_or_rejected_handoff_count"
+      ],
+      "title": "ProductHealth",
+      "type": "object"
+    },
+    "SourceRevision": {
+      "additionalProperties": false,
+      "properties": {
+        "workspace_id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Workspace Id",
+          "type": "string"
+        },
+        "scenario_id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Scenario Id",
+          "type": "string"
+        },
+        "revision_id": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Revision Id",
+          "type": "string"
+        },
+        "revision_number": {
+          "minimum": 1,
+          "title": "Revision Number",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "workspace_id",
+        "scenario_id",
+        "revision_id",
+        "revision_number"
+      ],
+      "title": "SourceRevision",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "const": "2.0.0",
+      "default": "2.0.0",
+      "title": "Contract Version",
+      "type": "string"
+    },
+    "model_id": {
+      "const": "catalyst-finance.platform",
+      "default": "catalyst-finance.platform",
+      "title": "Model Id",
+      "type": "string"
+    },
+    "platform_id": {
+      "title": "Platform Id",
+      "type": "string"
+    },
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "source": {
+      "$ref": "#/$defs/SourceRevision"
+    },
+    "portfolio": {
+      "$ref": "#/$defs/PortfolioSummary"
+    },
+    "product_health": {
+      "items": {
+        "$ref": "#/$defs/ProductHealth"
+      },
+      "title": "Product Health",
+      "type": "array"
+    },
+    "case_assessments": {
+      "items": {
+        "$ref": "#/$defs/CaseAssessment"
+      },
+      "title": "Case Assessments",
+      "type": "array"
+    },
+    "handoffs": {
+      "$ref": "#/$defs/HandoffSummary"
+    },
+    "dependency_order": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Dependency Order",
+      "type": "array"
+    },
+    "integration_manifest": {
+      "additionalProperties": true,
+      "title": "Integration Manifest",
+      "type": "object"
+    },
+    "flags": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Flags",
+      "type": "array"
+    },
+    "methodology": {
+      "$ref": "#/$defs/PlatformMethodology"
+    },
+    "run_record": {
+      "$ref": "#/$defs/PlatformRunRecord"
+    },
+    "metadata": {
+      "$ref": "#/$defs/PlatformMetadata"
+    }
+  },
+  "required": [
+    "platform_id",
+    "name",
+    "source",
+    "portfolio",
+    "product_health",
+    "case_assessments",
+    "handoffs",
+    "dependency_order",
+    "integration_manifest",
+    "flags",
+    "methodology",
+    "run_record",
+    "metadata"
+  ],
+  "title": "PlatformPublication",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sustainablecatalyst.com/schemas/catalyst-finance/2.0.0/platform_publication.schema.json"
+}

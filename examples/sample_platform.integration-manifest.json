@@ -1,0 +1,35 @@
+{
+  "contract_version": "2.0.0",
+  "platform_id": "platform_connected_finance",
+  "product_ids": [
+    "catalyst-finance",
+    "decision-studio",
+    "knowledge-library",
+    "site-intelligence",
+    "workbench"
+  ],
+  "artifact_ids": [
+    "artifact_compute",
+    "artifact_market",
+    "artifact_cashflow",
+    "artifact_comparison",
+    "artifact_pricing",
+    "artifact_sustainable",
+    "artifact_governance"
+  ],
+  "case_ids": [
+    "case_pricing",
+    "case_retrofit"
+  ],
+  "api_routes": {
+    "evaluate": "/api/v1/platform/evaluate",
+    "models": "/api/v1/models",
+    "workspaces": "/api/v1/workspaces"
+  },
+  "handoff_contracts": [
+    "sustainable-catalyst/compute-handoff/2.0.0",
+    "sustainable-catalyst/decision-handoff/2.0.0",
+    "sustainable-catalyst/intelligence-handoff/2.0.0",
+    "sustainable-catalyst/knowledge-handoff/2.0.0"
+  ]
+}

@@ -1,8 +1,8 @@
 {
-  "contract_version": "1.9.0",
+  "contract_version": "2.0.0",
   "model_id": "catalyst-finance.sustainable",
   "definition": {
-    "contract_version": "1.9.0",
+    "contract_version": "2.0.0",
     "model_id": "catalyst-finance.sustainable",
     "analysis_id": "sample-sustainable",
     "name": "Community retrofit sustainable value",
@@ -184,7 +184,7 @@
   ],
   "methodology": {
     "model_id": "catalyst-finance.sustainable",
-    "model_version": "1.9.0",
+    "model_version": "2.0.0",
     "carbon_double_count_policy": "select_one_valuation_basis",
     "credit_quantity_policy": "capped_at_avoided_emissions",
     "natural_capital_policy": "confidence_adjusted_stock_plus_discounted_services_less_restoration",
@@ -193,7 +193,7 @@
   },
   "metadata": {
     "generated_at": "2026-07-17T00:00:00+00:00",
-    "version": "1.9.0",
+    "version": "2.0.0",
     "asset_count": 2,
     "transition_item_count": 3,
     "disclaimer": "Decision-support output only. Validate emissions boundaries, additionality, credit eligibility, natural-capital valuation, discount rates, accounting treatment, legal rights, and assurance evidence before reporting or investment use."

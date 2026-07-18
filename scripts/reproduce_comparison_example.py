@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reproduce the Catalyst Finance v1.9.0 comparison bundle."""
+"""Reproduce the Catalyst Finance v2.0.0 comparison bundle."""
 
 from __future__ import annotations
 

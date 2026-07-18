@@ -27,7 +27,7 @@ def publication(definition: PricingDefinition):
 
 
 def test_contract_and_grid(definition: PricingDefinition, publication) -> None:
-    assert definition.contract_version == "1.9.0"
+    assert definition.contract_version == "2.0.0"
     assert len(definition.segments) == 3
     assert len(publication.rows) == 51
     assert publication.rows[0].price == 30
@@ -107,7 +107,7 @@ def test_v15_pricing_definition_migration(definition: PricingDefinition) -> None
     payload = definition.model_dump(mode="json")
     payload["contract_version"] = "1.5.0"
     upgraded = normalize_pricing(payload)
-    assert upgraded.contract_version == "1.9.0"
+    assert upgraded.contract_version == "2.0.0"
 
 
 def test_checked_in_publication_is_reproducible(publication) -> None:

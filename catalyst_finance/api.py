@@ -22,6 +22,9 @@ from .models import ContractModel, validation_issues
 from .operating import evaluate_operating
 from .operating_migration import normalize_operating
 from .operating_models import OperatingDefinition
+from .platform import evaluate_platform
+from .platform_migration import normalize_platform
+from .platform_models import PlatformDefinition
 from .pricing import evaluate_pricing
 from .pricing_migration import normalize_pricing
 from .pricing_models import PricingDefinition
@@ -119,6 +122,18 @@ class SustainableRevisionRequest(ContractModel):
     definition: SustainableDefinition
     change_note: str = Field(
         default="Saved sustainable-finance revision", max_length=1000
+    )
+
+
+class CreatePlatformRequest(ContractModel):
+    definition: PlatformDefinition
+    name: str | None = Field(default=None, max_length=240)
+
+
+class PlatformRevisionRequest(ContractModel):
+    definition: PlatformDefinition
+    change_note: str = Field(
+        default="Saved connected-platform revision", max_length=1000
     )
 
 
@@ -296,6 +311,22 @@ def create_app(repository: WorkspaceRepository | None = None) -> FastAPI:
                 status_code=422,
                 detail={
                     "error": "invalid_governance_definition",
+                    "issues": validation_issues(exc),
+                },
+            ) from exc
+
+    @application.post("/api/v1/platform/evaluate", tags=["connected platform"])
+    def evaluate_platform_endpoint(payload: dict[str, Any]) -> dict[str, Any]:
+        try:
+            definition = normalize_platform(payload)
+            return cast(
+                dict[str, Any], evaluate_platform(definition).model_dump(mode="json")
+            )
+        except (ValidationError, ValueError) as exc:
+            raise HTTPException(
+                status_code=422,
+                detail={
+                    "error": "invalid_platform_definition",
                     "issues": validation_issues(exc),
                 },
             ) from exc
@@ -834,6 +865,59 @@ def create_app(repository: WorkspaceRepository | None = None) -> FastAPI:
                 service.delete_governance_analysis(
                     workspace_id, analysis_id
                 ).model_dump(mode="json"),
+            )
+        except WorkspaceNotFoundError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    @application.post(
+        "/api/v1/workspaces/{workspace_id}/platform-analyses",
+        tags=["connected platform"],
+        status_code=201,
+    )
+    def create_platform_endpoint(
+        workspace_id: str, payload: CreatePlatformRequest
+    ) -> dict[str, Any]:
+        try:
+            return cast(
+                dict[str, Any],
+                service.create_platform_analysis(
+                    workspace_id, payload.definition, name=payload.name
+                ).model_dump(mode="json"),
+            )
+        except WorkspaceNotFoundError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    @application.post(
+        "/api/v1/workspaces/{workspace_id}/platform-analyses/{analysis_id}/revisions",
+        tags=["connected platform"],
+    )
+    def save_platform_revision_endpoint(
+        workspace_id: str, analysis_id: str, payload: PlatformRevisionRequest
+    ) -> dict[str, Any]:
+        try:
+            return cast(
+                dict[str, Any],
+                service.save_platform_revision(
+                    workspace_id,
+                    analysis_id,
+                    payload.definition,
+                    change_note=payload.change_note,
+                ).model_dump(mode="json"),
+            )
+        except WorkspaceNotFoundError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    @application.delete(
+        "/api/v1/workspaces/{workspace_id}/platform-analyses/{analysis_id}",
+        tags=["connected platform"],
+    )
+    def delete_platform_endpoint(workspace_id: str, analysis_id: str) -> dict[str, Any]:
+        try:
+            return cast(
+                dict[str, Any],
+                service.delete_platform_analysis(workspace_id, analysis_id).model_dump(
+                    mode="json"
+                ),
             )
         except WorkspaceNotFoundError as exc:
             raise HTTPException(status_code=404, detail=str(exc)) from exc

@@ -170,3 +170,23 @@ def test_pricing_browser_engine_matches_python() -> None:
         text=True,
     )
     assert json.loads(completed.stdout) == python_payload
+
+
+@pytest.mark.skipif(shutil.which("node") is None, reason="Node.js not installed")
+def test_platform_browser_engine_matches_python() -> None:
+    from catalyst_finance.platform import evaluate_platform
+    from catalyst_finance.platform_models import PlatformDefinition
+
+    path = ROOT / "data/sample_platform.json"
+    definition = PlatformDefinition.model_validate(json.loads(path.read_text()))
+    python_payload = evaluate_platform(definition, generated_at=FIXED).model_dump(
+        mode="json"
+    )
+    completed = subprocess.run(
+        ["node", "scripts/browser_platform_parity.js", str(path), FIXED],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    assert json.loads(completed.stdout) == python_payload

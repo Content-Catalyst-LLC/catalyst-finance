@@ -1,5 +1,5 @@
 {
-  "contract_version": "1.9.0",
+  "contract_version": "2.0.0",
   "model_id": "catalyst-finance.governance",
   "governance_id": "gov_efficiency_case",
   "name": "Efficiency retrofit governed finance case",
@@ -13,7 +13,7 @@
   "artifact": {
     "artifact_id": "sustainable_efficiency",
     "model_id": "catalyst-finance.sustainable",
-    "model_version": "1.9.0",
+    "model_version": "2.0.0",
     "revision_id": "revision_8",
     "title": "Efficiency retrofit sustainable value analysis",
     "headline_metrics": {
@@ -200,7 +200,7 @@
     {
       "methodology_id": "method_sustainable_v190",
       "name": "Catalyst Finance sustainable-value methodology",
-      "version": "1.9.0",
+      "version": "2.0.0",
       "purpose": "Reconcile financial and sustainable value without double counting.",
       "model_ids": ["catalyst-finance.sustainable", "catalyst-finance.governance"],
       "data_quality_notes": ["Carbon policy source is institutionally approved."],

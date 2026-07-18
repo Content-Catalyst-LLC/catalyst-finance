@@ -1,4 +1,4 @@
-"""Evidence, review, governance, and publication contracts for v1.9.0."""
+"""Evidence, review, governance, and publication contracts for v2.0.0."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from pydantic import Field, HttpUrl, model_validator
 from .comparison_models import SourceRevision
 from .models import ContractModel
 
-GOVERNANCE_CONTRACT_VERSION: Literal["1.9.0"] = "1.9.0"
+GOVERNANCE_CONTRACT_VERSION: Literal["2.0.0"] = "2.0.0"
 GOVERNANCE_MODEL_ID: Literal["catalyst-finance.governance"] = (
     "catalyst-finance.governance"
 )
@@ -154,7 +154,7 @@ class PublicationControls(ContractModel):
 
 
 class GovernanceDefinition(ContractModel):
-    contract_version: Literal["1.9.0"] = GOVERNANCE_CONTRACT_VERSION
+    contract_version: Literal["2.0.0"] = GOVERNANCE_CONTRACT_VERSION
     model_id: Literal["catalyst-finance.governance"] = GOVERNANCE_MODEL_ID
     governance_id: IdentifierText
     name: str = Field(min_length=1, max_length=240)
@@ -286,7 +286,7 @@ class ImmutableRunRecord(ContractModel):
 
 class HandoffRecord(ContractModel):
     target: Literal["knowledge_library", "decision_studio"]
-    contract_version: Literal["1.9.0"] = GOVERNANCE_CONTRACT_VERSION
+    contract_version: Literal["2.0.0"] = GOVERNANCE_CONTRACT_VERSION
     handoff_id: str
     source_governance_id: str
     artifact_id: str
@@ -300,7 +300,7 @@ class HandoffRecord(ContractModel):
 
 class GovernanceMethodology(ContractModel):
     model_id: Literal["catalyst-finance.governance"] = GOVERNANCE_MODEL_ID
-    model_version: Literal["1.9.0"] = GOVERNANCE_CONTRACT_VERSION
+    model_version: Literal["2.0.0"] = GOVERNANCE_CONTRACT_VERSION
     trace_policy: Literal["headline_metric_to_assumption_and_evidence"] = (
         "headline_metric_to_assumption_and_evidence"
     )
@@ -315,12 +315,12 @@ class GovernanceMethodology(ContractModel):
 
 class GovernanceMetadata(ContractModel):
     generated_at: str
-    version: Literal["1.9.0"] = GOVERNANCE_CONTRACT_VERSION
+    version: Literal["2.0.0"] = GOVERNANCE_CONTRACT_VERSION
     disclaimer: str
 
 
 class GovernancePublication(ContractModel):
-    contract_version: Literal["1.9.0"] = GOVERNANCE_CONTRACT_VERSION
+    contract_version: Literal["2.0.0"] = GOVERNANCE_CONTRACT_VERSION
     model_id: Literal["catalyst-finance.governance"] = GOVERNANCE_MODEL_ID
     definition: GovernanceDefinition
     readiness: ReadinessSummary

@@ -6,7 +6,7 @@ A governed finance brief linking headline value claims to assumptions, sources, 
 
 - Artifact: `sustainable_efficiency`
 - Revision: `revision_8`
-- Model: `catalyst-finance.sustainable` v1.9.0
+- Model: `catalyst-finance.sustainable` v2.0.0
 - Publication state: `published`
 - Review readiness: `published`
 

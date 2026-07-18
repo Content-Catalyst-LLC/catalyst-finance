@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Catalyst Finance v1.9.0 release-integrity contract."""
+"""Catalyst Finance v2.0.0 release-integrity contract."""
 
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ import tomllib
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-VERSION = "1.9.0"
+VERSION = "2.0.0"
 FIXED = "2026-07-17T00:00:00+00:00"
 MODELS = {
     "screening": "catalyst-finance.screening",
@@ -31,6 +31,7 @@ MODELS = {
     "operating": "catalyst-finance.operating",
     "sustainable": "catalyst-finance.sustainable",
     "governance": "catalyst-finance.governance",
+    "platform": "catalyst-finance.platform",
 }
 BROWSERS = {
     "screening": "catalyst-finance-engine.js",
@@ -41,6 +42,7 @@ BROWSERS = {
     "operating": "catalyst-finance-operating-engine.js",
     "sustainable": "catalyst-finance-sustainable-engine.js",
     "governance": "catalyst-finance-governance-engine.js",
+    "platform": "catalyst-finance-platform-engine.js",
 }
 
 
@@ -163,6 +165,7 @@ def check_versions() -> None:
         "operating_model_id": MODELS["operating"],
         "sustainable_model_id": MODELS["sustainable"],
         "governance_model_id": MODELS["governance"],
+        "platform_model_id": MODELS["platform"],
     }
     if any(manifest.get(k) != v for k, v in expected.items()):
         raise ReleaseError("Manifest model identifier contract failed.")
@@ -172,12 +175,31 @@ def check_versions() -> None:
 def check_layout() -> None:
     required = [
         "app.py",
+        "catalyst_finance/platform.py",
+        "catalyst_finance/platform_cli.py",
+        "catalyst_finance/platform_migration.py",
+        "catalyst_finance/platform_models.py",
+        "data/sample_platform.json",
+        "data/legacy_v1.9.0_platform.json",
+        "schemas/platform_definition.schema.json",
+        "schemas/platform_publication.schema.json",
+        "examples/sample_platform.output.json",
+        "examples/sample_platform.integration-manifest.json",
+        "scripts/browser_platform_parity.js",
+        "scripts/reproduce_platform_example.py",
+        "tests/test_platform.py",
+        "tests/test_platform_cli.py",
+        "tests/test_api_platform.py",
+        "tests/test_workspace_platform.py",
+        "docs/connected-financial-decision-intelligence-platform.md",
+        "docs/platform-integration-review-checklist.md",
+        "wordpress/catalyst-finance-demo/assets/catalyst-finance-platform-engine.js",
         "catalyst_finance/governance.py",
         "catalyst_finance/governance_cli.py",
         "catalyst_finance/governance_migration.py",
         "catalyst_finance/governance_models.py",
         "data/sample_governance.json",
-        "data/legacy_v1.8.0_governance.json",
+        "data/legacy_v1.9.0_governance.json",
         "schemas/governance_definition.schema.json",
         "schemas/governance_publication.schema.json",
         "examples/sample_governance.output.json",
@@ -193,7 +215,7 @@ def check_layout() -> None:
         "tests/test_workspace_governance.py",
         "docs/evidence-review-governance-publication.md",
         "docs/governance-review-checklist.md",
-        "release/v1.9.0.md",
+        "release/v2.0.0.md",
         "wordpress/catalyst-finance-demo/assets/catalyst-finance-governance-engine.js",
     ]
     required += [
@@ -327,11 +349,53 @@ def check_governance_contract() -> None:
 
     if (
         normalize_governance(
-            load("data/legacy_v1.8.0_governance.json")
+            load("data/legacy_v1.9.0_governance.json")
         ).contract_version
         != VERSION
     ):
-        raise ReleaseError("v1.8 governance migration failed.")
+        raise ReleaseError("v1.9 governance migration failed.")
+
+
+def check_platform_contract() -> None:
+    definition = load("data/sample_platform.json")
+    publication = load("examples/sample_platform.output.json")
+    validate(
+        load("schemas/platform_definition.schema.json"),
+        definition,
+        "Platform definition",
+    )
+    validate(
+        load("schemas/platform_publication.schema.json"),
+        publication,
+        "Platform publication",
+    )
+    portfolio = publication["portfolio"]
+    if (
+        portfolio["artifact_count"] != 7
+        or portfolio["case_count"] != 2
+        or portfolio["risk_adjusted_value"] != 1580250.61
+    ):
+        raise ReleaseError("Connected-platform portfolio contract failed.")
+    cases = publication["case_assessments"]
+    if [item["status"] for item in cases] != ["decided", "decision_ready"]:
+        raise ReleaseError("Connected-platform case-readiness contract failed.")
+    handoffs = publication["handoffs"]
+    if (
+        handoffs["completed"] != 5
+        or handoffs["rejected"] != 1
+        or handoffs["noncompliant_handoff_ids"] != ["handoff_pricing_library"]
+    ):
+        raise ReleaseError("Connected-platform handoff contract failed.")
+    manifest = publication["integration_manifest"]
+    if manifest["api_routes"]["evaluate"] != "/api/v1/platform/evaluate":
+        raise ReleaseError("Connected-platform integration manifest failed.")
+    from catalyst_finance.platform_migration import normalize_platform
+
+    if (
+        normalize_platform(load("data/legacy_v1.9.0_platform.json")).contract_version
+        != VERSION
+    ):
+        raise ReleaseError("v1.9 platform migration failed.")
 
 
 def compare_generated(paths: list[Path], temp: Path, label: str) -> None:
@@ -347,6 +411,7 @@ def check_reproducibility() -> None:
     from scripts.reproduce_comparison_example import reproduce as comparison
     from scripts.reproduce_examples import reproduce as screening
     from scripts.reproduce_governance_example import reproduce as governance
+    from scripts.reproduce_platform_example import reproduce as platform
     from scripts.reproduce_pricing_example import reproduce as pricing
     from scripts.reproduce_sustainable_example import reproduce as sustainable
     from scripts.reproduce_uncertainty_example import reproduce as uncertainty
@@ -366,6 +431,7 @@ def check_reproducibility() -> None:
         ("pricing", pricing),
         ("sustainable", sustainable),
         ("governance", governance),
+        ("platform", platform),
     ]:
         with tempfile.TemporaryDirectory() as tmp:
             compare_generated(func(Path(tmp)), Path(tmp), label)
@@ -389,7 +455,7 @@ def check_reproducibility() -> None:
         for name, data in before.items()
     ):
         raise ReleaseError("Reproducible operating example mismatch.")
-    print("PASS: schemas and all eight model publications reproduce byte-for-byte.")
+    print("PASS: schemas and all nine model publications reproduce byte-for-byte.")
 
 
 def check_migrations() -> None:
@@ -397,6 +463,7 @@ def check_migrations() -> None:
     from catalyst_finance.comparison_migration import normalize_comparison
     from catalyst_finance.migration import normalize_scenario
     from catalyst_finance.operating_migration import normalize_operating
+    from catalyst_finance.platform_migration import normalize_platform
     from catalyst_finance.pricing_migration import normalize_pricing
     from catalyst_finance.sustainable_migration import normalize_sustainable
     from catalyst_finance.uncertainty_migration import normalize_uncertainty
@@ -405,57 +472,64 @@ def check_migrations() -> None:
     checks = [
         (
             "screening",
-            normalize_scenario(load("data/legacy_v1.8.0_scenario.json"))[
+            normalize_scenario(load("data/legacy_v1.9.0_scenario.json"))[
                 0
             ].contract_version,
         ),
         (
             "cash-flow",
             normalize_cash_flow(
-                load("data/legacy_v1.8.0_cash_flow_scenario.json")
+                load("data/legacy_v1.9.0_cash_flow_scenario.json")
             ).contract_version,
         ),
         (
             "comparison",
             normalize_comparison(
-                load("data/legacy_v1.8.0_comparison.json")
+                load("data/legacy_v1.9.0_comparison.json")
             ).contract_version,
         ),
         (
             "uncertainty",
             normalize_uncertainty(
-                load("data/legacy_v1.8.0_uncertainty.json")
+                load("data/legacy_v1.9.0_uncertainty.json")
             ).contract_version,
         ),
         (
             "pricing",
-            normalize_pricing(load("data/legacy_v1.8.0_pricing.json")).contract_version,
+            normalize_pricing(load("data/legacy_v1.9.0_pricing.json")).contract_version,
         ),
         (
             "operating",
             normalize_operating(
-                load("data/legacy_v1.8.0_operating.json")
+                load("data/legacy_v1.9.0_operating.json")
             ).contract_version,
         ),
         (
             "sustainable",
             normalize_sustainable(
-                load("data/legacy_v1.8.0_sustainable.json")
+                load("data/legacy_v1.9.0_sustainable.json")
+            ).contract_version,
+        ),
+        (
+            "platform",
+            normalize_platform(
+                load("data/legacy_v1.9.0_platform.json")
             ).contract_version,
         ),
     ]
     bad = [name for name, v in checks if v != VERSION]
     workspace = migrate_workspace_payload(
-        load("data/legacy_v1.8.0_workspace.export.json")
+        load("data/legacy_v1.9.0_workspace.export.json")
     )
     if (
         workspace["export_contract_version"] != VERSION
         or "governance_analyses" not in workspace["workspace"]
+        or "platform_analyses" not in workspace["workspace"]
     ):
         bad.append("workspace")
     if bad:
-        raise ReleaseError(f"v1.8 migration failed: {bad}")
-    print("PASS: complete v1.8.0 migration coverage passed.")
+        raise ReleaseError(f"v1.9 migration failed: {bad}")
+    print("PASS: complete v1.9.0 migration coverage passed.")
 
 
 def check_plugin() -> None:
@@ -474,6 +548,10 @@ def check_plugin() -> None:
                 if n.endswith((".php", ".js", ".md"))
             )
             tokens = [
+                "data-scfin-platform-studio",
+                "data-scfin-platform-run",
+                "CatalystFinancePlatformEngine",
+                "integration_manifest",
                 "data-scfin-governance-studio",
                 "data-scfin-governance-run",
                 "CatalystFinanceGovernanceEngine",
@@ -491,9 +569,9 @@ def check_plugin() -> None:
             missing = [t for t in tokens if t not in combined]
             if missing:
                 raise ReleaseError(
-                    f"WordPress governance controls incomplete: {missing}"
+                    f"WordPress connected-platform controls incomplete: {missing}"
                 )
-    print("PASS: deterministic WordPress package and eight-studio contract passed.")
+    print("PASS: deterministic WordPress package and nine-studio contract passed.")
 
 
 def check_syntax(portable: bool) -> None:
@@ -522,6 +600,7 @@ def check_syntax(portable: bool) -> None:
                 "operating",
                 "sustainable",
                 "governance",
+                "platform",
             ]
         ],
         "scripts/browser_parity.js",
@@ -551,6 +630,7 @@ def main() -> int:
         check_static(args.portable)
         run([sys.executable, "-m", "pytest", "-q"])
         check_governance_contract()
+        check_platform_contract()
         check_reproducibility()
         check_migrations()
         check_plugin()
@@ -560,7 +640,7 @@ def main() -> int:
     except (ReleaseError, KeyError, TypeError, ValueError, json.JSONDecodeError) as exc:
         print("ERROR:", exc, file=sys.stderr)
         return 1
-    print("Catalyst Finance v1.9.0 release contract passed.")
+    print("Catalyst Finance v2.0.0 release contract passed.")
     return 0
 
 

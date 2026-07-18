@@ -1,0 +1,180 @@
+{
+  "contract_version": "2.0.0",
+  "model_id": "catalyst-finance.platform",
+  "platform_id": "platform_connected_finance",
+  "name": "Connected Financial Decision Intelligence Platform",
+  "source": {
+    "workspace_id": "workspace_finance",
+    "scenario_id": "scenario_platform",
+    "revision_id": "revision_platform_1",
+    "revision_number": 1
+  },
+  "portfolio": {
+    "artifact_count": 7,
+    "case_count": 2,
+    "currency": "USD",
+    "total_base_npv": 835000.0,
+    "total_adjusted_npv": 2286250.9,
+    "total_capital_required": 2980000.0,
+    "total_annual_value": 298000.0,
+    "risk_adjusted_value": 1580250.61,
+    "value_to_capital_ratio": 0.7672,
+    "weighted_confidence_percent": 85.75,
+    "weighted_downside_probability_percent": 19.48
+  },
+  "product_health": [
+    {
+      "product_id": "catalyst-finance",
+      "status": "warning",
+      "artifact_count": 5,
+      "inbound_handoff_count": 2,
+      "outbound_handoff_count": 4,
+      "completed_handoff_count": 5,
+      "failed_or_rejected_handoff_count": 1
+    },
+    {
+      "product_id": "decision-studio",
+      "status": "healthy",
+      "artifact_count": 0,
+      "inbound_handoff_count": 2,
+      "outbound_handoff_count": 0,
+      "completed_handoff_count": 2,
+      "failed_or_rejected_handoff_count": 0
+    },
+    {
+      "product_id": "knowledge-library",
+      "status": "warning",
+      "artifact_count": 0,
+      "inbound_handoff_count": 2,
+      "outbound_handoff_count": 0,
+      "completed_handoff_count": 1,
+      "failed_or_rejected_handoff_count": 1
+    },
+    {
+      "product_id": "site-intelligence",
+      "status": "warning",
+      "artifact_count": 1,
+      "inbound_handoff_count": 0,
+      "outbound_handoff_count": 1,
+      "completed_handoff_count": 1,
+      "failed_or_rejected_handoff_count": 0
+    },
+    {
+      "product_id": "workbench",
+      "status": "healthy",
+      "artifact_count": 1,
+      "inbound_handoff_count": 0,
+      "outbound_handoff_count": 1,
+      "completed_handoff_count": 1,
+      "failed_or_rejected_handoff_count": 0
+    }
+  ],
+  "case_assessments": [
+    {
+      "case_id": "case_retrofit",
+      "name": "Institutional efficiency retrofit",
+      "status": "decided",
+      "readiness_score": 99.37,
+      "artifact_count": 6,
+      "approved_artifact_count": 6,
+      "governance_ready_artifact_count": 6,
+      "completed_handoff_count": 2,
+      "required_handoff_count": 2,
+      "risk_adjusted_value": 1420350.61,
+      "blocked_reasons": []
+    },
+    {
+      "case_id": "case_pricing",
+      "name": "Advisory service pricing expansion",
+      "status": "decision_ready",
+      "readiness_score": 97.3,
+      "artifact_count": 1,
+      "approved_artifact_count": 1,
+      "governance_ready_artifact_count": 1,
+      "completed_handoff_count": 1,
+      "required_handoff_count": 1,
+      "risk_adjusted_value": 159900.0,
+      "blocked_reasons": []
+    }
+  ],
+  "handoffs": {
+    "total": 6,
+    "queued": 0,
+    "accepted": 0,
+    "completed": 5,
+    "rejected": 1,
+    "failed": 0,
+    "noncompliant_handoff_ids": [
+      "handoff_pricing_library"
+    ]
+  },
+  "dependency_order": [
+    "artifact_compute",
+    "artifact_market",
+    "artifact_cashflow",
+    "artifact_comparison",
+    "artifact_pricing",
+    "artifact_sustainable",
+    "artifact_governance"
+  ],
+  "integration_manifest": {
+    "contract_version": "2.0.0",
+    "platform_id": "platform_connected_finance",
+    "product_ids": [
+      "catalyst-finance",
+      "decision-studio",
+      "knowledge-library",
+      "site-intelligence",
+      "workbench"
+    ],
+    "artifact_ids": [
+      "artifact_compute",
+      "artifact_market",
+      "artifact_cashflow",
+      "artifact_comparison",
+      "artifact_pricing",
+      "artifact_sustainable",
+      "artifact_governance"
+    ],
+    "case_ids": [
+      "case_pricing",
+      "case_retrofit"
+    ],
+    "api_routes": {
+      "evaluate": "/api/v1/platform/evaluate",
+      "models": "/api/v1/models",
+      "workspaces": "/api/v1/workspaces"
+    },
+    "handoff_contracts": [
+      "sustainable-catalyst/compute-handoff/2.0.0",
+      "sustainable-catalyst/decision-handoff/2.0.0",
+      "sustainable-catalyst/intelligence-handoff/2.0.0",
+      "sustainable-catalyst/knowledge-handoff/2.0.0"
+    ]
+  },
+  "flags": [
+    "One or more handoffs violate target classification policy.",
+    "One or more connected products require attention."
+  ],
+  "methodology": {
+    "model_id": "catalyst-finance.platform",
+    "model_version": "2.0.0",
+    "aggregation_policy": "artifact_level_no_cross_case_deduplication",
+    "risk_adjustment_policy": "adjusted_npv_x_confidence_x_inverse_downside",
+    "graph_policy": "acyclic_required_dependencies",
+    "handoff_policy": "classification_and_governance_gated"
+  },
+  "run_record": {
+    "run_id": "run_platform_3df8b40f863db9a73306c88c",
+    "generated_at": "2026-07-17T18:30:00+00:00",
+    "input_hash": "3df8b40f863db9a73306c88ca144cb1c97f39d9f195788401ba73ea5f2af90c4",
+    "output_hash": "ad342ec4f622614db78fb4b9d3e3fe22de51e7d28589bb556a9b418112136c39",
+    "dependency_head": "1b83ccf81e3240cecdcbc551aedd1e39e53a7aca34290b983172c6143f239d07",
+    "platform_id": "platform_connected_finance"
+  },
+  "metadata": {
+    "generated_at": "2026-07-17T18:30:00+00:00",
+    "version": "2.0.0",
+    "disclaimer": "Connected decision-support publication only. Institutional owners remain responsible for source systems, access control, accounting treatment, assurance, approvals, and final decisions."
+  }
+}

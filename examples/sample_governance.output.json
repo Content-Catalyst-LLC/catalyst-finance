@@ -1,8 +1,8 @@
 {
-  "contract_version": "1.9.0",
+  "contract_version": "2.0.0",
   "model_id": "catalyst-finance.governance",
   "definition": {
-    "contract_version": "1.9.0",
+    "contract_version": "2.0.0",
     "model_id": "catalyst-finance.governance",
     "governance_id": "gov_efficiency_case",
     "name": "Efficiency retrofit governed finance case",
@@ -16,7 +16,7 @@
     "artifact": {
       "artifact_id": "sustainable_efficiency",
       "model_id": "catalyst-finance.sustainable",
-      "model_version": "1.9.0",
+      "model_version": "2.0.0",
       "revision_id": "revision_8",
       "title": "Efficiency retrofit sustainable value analysis",
       "headline_metrics": {
@@ -254,7 +254,7 @@
       {
         "methodology_id": "method_sustainable_v190",
         "name": "Catalyst Finance sustainable-value methodology",
-        "version": "1.9.0",
+        "version": "2.0.0",
         "purpose": "Reconcile financial and sustainable value without double counting.",
         "model_ids": [
           "catalyst-finance.sustainable",
@@ -507,18 +507,18 @@
     }
   ],
   "run_record": {
-    "run_id": "run_670d3d33f6f93bc9b47103ce",
+    "run_id": "run_b112d943b82839227b0a0f35",
     "generated_at": "2026-07-17T00:00:00+00:00",
-    "input_hash": "aa633d81ba8801dcf43d3b78fe9afc1a8be609f045688b71d3f7114c67c2b10f",
-    "public_payload_hash": "e3ed4f481817f9d51dfe42a67087ee5661cfc780dfc75af3f4b7358076e0e6bc",
+    "input_hash": "26b7270fd1c918c8388a4afc49d2fe9c360e7424a8377b852b5ddb4914969d92",
+    "public_payload_hash": "7bb7cb7eaadbebab25f0da64ab05eeb1835a7f85c647b3f628263ba112715006",
     "audit_head_hash": "92b60b9f9607517b2d1eea6cbaf6cf975c32fd7022e984d0d8c38167ceaf82d6",
     "artifact_id": "sustainable_efficiency",
     "artifact_revision_id": "revision_8",
     "model_id": "catalyst-finance.sustainable",
-    "model_version": "1.9.0"
+    "model_version": "2.0.0"
   },
   "public_payload": {
-    "contract_version": "1.9.0",
+    "contract_version": "2.0.0",
     "model_id": "catalyst-finance.governance",
     "governance_id": "gov_efficiency_case",
     "name": "Efficiency retrofit governed finance case",
@@ -532,7 +532,7 @@
     "artifact": {
       "artifact_id": "sustainable_efficiency",
       "model_id": "catalyst-finance.sustainable",
-      "model_version": "1.9.0",
+      "model_version": "2.0.0",
       "revision_id": "revision_8",
       "title": "Efficiency retrofit sustainable value analysis",
       "headline_metrics": {
@@ -703,7 +703,7 @@
       {
         "methodology_id": "method_sustainable_v190",
         "name": "Catalyst Finance sustainable-value methodology",
-        "version": "1.9.0",
+        "version": "2.0.0",
         "purpose": "Reconcile financial and sustainable value without double counting.",
         "model_ids": [
           "catalyst-finance.sustainable",
@@ -796,12 +796,12 @@
       "decision_studio_packet_id": "packet_efficiency_retrofit"
     }
   },
-  "decision_brief_markdown": "# Efficiency Retrofit Finance Brief\n\nA governed finance brief linking headline value claims to assumptions, sources, evidence, methodology, and review history.\n\n## Governed artifact\n\n- Artifact: `sustainable_efficiency`\n- Revision: `revision_8`\n- Model: `catalyst-finance.sustainable` v1.9.0\n- Publication state: `published`\n- Review readiness: `published`\n\n## Headline metrics\n\n- **base_project_npv**: 525000.0\n- **total_sustainable_value**: 1001250.9\n- **adjusted_project_npv**: 1526250.9\n- **avoided_emissions_tco2e**: 4500.0\n\n## Reviewed claims\n\n- The governed analysis reports an adjusted project NPV of USD 1,526,250.90.\n- The project avoids 4,500 tCO2e against the stated baseline.\n\n## Limitations\n\n- Regional ecosystem-service values may not fully transfer to the project site.\n\n## Traceability\n\n2 of 2 headline claims have complete metric, assumption, source, and evidence links.\n",
-  "decision_brief_html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Efficiency Retrofit Finance Brief</title></head><body><main># Efficiency Retrofit Finance Brief<br>\n<br>\nA governed finance brief linking headline value claims to assumptions, sources, evidence, methodology, and review history.<br>\n<br>\n## Governed artifact<br>\n<br>\n- Artifact: `sustainable_efficiency`<br>\n- Revision: `revision_8`<br>\n- Model: `catalyst-finance.sustainable` v1.9.0<br>\n- Publication state: `published`<br>\n- Review readiness: `published`<br>\n<br>\n## Headline metrics<br>\n<br>\n- **base_project_npv**: 525000.0<br>\n- **total_sustainable_value**: 1001250.9<br>\n- **adjusted_project_npv**: 1526250.9<br>\n- **avoided_emissions_tco2e**: 4500.0<br>\n<br>\n## Reviewed claims<br>\n<br>\n- The governed analysis reports an adjusted project NPV of USD 1,526,250.90.<br>\n- The project avoids 4,500 tCO2e against the stated baseline.<br>\n<br>\n## Limitations<br>\n<br>\n- Regional ecosystem-service values may not fully transfer to the project site.<br>\n<br>\n## Traceability<br>\n<br>\n2 of 2 headline claims have complete metric, assumption, source, and evidence links.<br>\n</main></body></html>",
+  "decision_brief_markdown": "# Efficiency Retrofit Finance Brief\n\nA governed finance brief linking headline value claims to assumptions, sources, evidence, methodology, and review history.\n\n## Governed artifact\n\n- Artifact: `sustainable_efficiency`\n- Revision: `revision_8`\n- Model: `catalyst-finance.sustainable` v2.0.0\n- Publication state: `published`\n- Review readiness: `published`\n\n## Headline metrics\n\n- **base_project_npv**: 525000.0\n- **total_sustainable_value**: 1001250.9\n- **adjusted_project_npv**: 1526250.9\n- **avoided_emissions_tco2e**: 4500.0\n\n## Reviewed claims\n\n- The governed analysis reports an adjusted project NPV of USD 1,526,250.90.\n- The project avoids 4,500 tCO2e against the stated baseline.\n\n## Limitations\n\n- Regional ecosystem-service values may not fully transfer to the project site.\n\n## Traceability\n\n2 of 2 headline claims have complete metric, assumption, source, and evidence links.\n",
+  "decision_brief_html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Efficiency Retrofit Finance Brief</title></head><body><main># Efficiency Retrofit Finance Brief<br>\n<br>\nA governed finance brief linking headline value claims to assumptions, sources, evidence, methodology, and review history.<br>\n<br>\n## Governed artifact<br>\n<br>\n- Artifact: `sustainable_efficiency`<br>\n- Revision: `revision_8`<br>\n- Model: `catalyst-finance.sustainable` v2.0.0<br>\n- Publication state: `published`<br>\n- Review readiness: `published`<br>\n<br>\n## Headline metrics<br>\n<br>\n- **base_project_npv**: 525000.0<br>\n- **total_sustainable_value**: 1001250.9<br>\n- **adjusted_project_npv**: 1526250.9<br>\n- **avoided_emissions_tco2e**: 4500.0<br>\n<br>\n## Reviewed claims<br>\n<br>\n- The governed analysis reports an adjusted project NPV of USD 1,526,250.90.<br>\n- The project avoids 4,500 tCO2e against the stated baseline.<br>\n<br>\n## Limitations<br>\n<br>\n- Regional ecosystem-service values may not fully transfer to the project site.<br>\n<br>\n## Traceability<br>\n<br>\n2 of 2 headline claims have complete metric, assumption, source, and evidence links.<br>\n</main></body></html>",
   "handoffs": [
     {
       "target": "knowledge_library",
-      "contract_version": "1.9.0",
+      "contract_version": "2.0.0",
       "handoff_id": "handoff_kl_gov_efficiency_case",
       "source_governance_id": "gov_efficiency_case",
       "artifact_id": "sustainable_efficiency",
@@ -825,7 +825,7 @@
     },
     {
       "target": "decision_studio",
-      "contract_version": "1.9.0",
+      "contract_version": "2.0.0",
       "handoff_id": "handoff_ds_gov_efficiency_case",
       "source_governance_id": "gov_efficiency_case",
       "artifact_id": "sustainable_efficiency",
@@ -855,7 +855,7 @@
   ],
   "methodology": {
     "model_id": "catalyst-finance.governance",
-    "model_version": "1.9.0",
+    "model_version": "2.0.0",
     "trace_policy": "headline_metric_to_assumption_and_evidence",
     "review_policy": "append_only_events_and_unresolved_issue_gate",
     "redaction_policy": "private_records_excluded_from_public_payload",
@@ -863,7 +863,7 @@
   },
   "metadata": {
     "generated_at": "2026-07-17T00:00:00+00:00",
-    "version": "1.9.0",
+    "version": "2.0.0",
     "disclaimer": "Decision-support publication only. Institutional owners remain responsible for source rights, accounting treatment, assurance, approvals, redaction, and final decisions."
   }
 }

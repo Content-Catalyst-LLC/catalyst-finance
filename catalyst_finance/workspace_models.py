@@ -1,4 +1,4 @@
-"""Versioned workspace records for Catalyst Finance v1.9.0."""
+"""Versioned workspace records for Catalyst Finance v2.0.0."""
 
 from __future__ import annotations
 
@@ -20,11 +20,12 @@ from .models import (
     FinanceScenarioInput,
 )
 from .operating_models import OperatingDefinition
+from .platform_models import PlatformDefinition
 from .pricing_models import PricingDefinition
 from .sustainable_models import SustainableDefinition
 from .uncertainty_models import UncertaintyDefinition
 
-WORKSPACE_CONTRACT_VERSION: Literal["1.9.0"] = "1.9.0"
+WORKSPACE_CONTRACT_VERSION: Literal["2.0.0"] = "2.0.0"
 
 Identifier = Annotated[
     str, Field(min_length=5, max_length=100, pattern=r"^[a-z]+_[A-Za-z0-9_-]+$")
@@ -43,7 +44,7 @@ class WorkspaceDefaults(ContractModel):
     default_model_id: Literal[
         "catalyst-finance.screening", "catalyst-finance.cash-flow"
     ] = MODEL_ID
-    default_model_version: Literal["1.9.0"] = CONTRACT_VERSION
+    default_model_version: Literal["2.0.0"] = CONTRACT_VERSION
 
     @model_validator(mode="after")
     def matching_basis(self) -> WorkspaceDefaults:
@@ -82,7 +83,7 @@ class ScenarioRevision(ContractModel):
     model_id: Literal["catalyst-finance.screening", "catalyst-finance.cash-flow"] = (
         MODEL_ID
     )
-    model_version: Literal["1.9.0"] = CONTRACT_VERSION
+    model_version: Literal["2.0.0"] = CONTRACT_VERSION
     change_note: str = Field(default="", max_length=1000)
     scenario: ScenarioPayload
 
@@ -356,8 +357,45 @@ class WorkspaceGovernanceAnalysis(ContractModel):
         return self.revisions[-1]
 
 
+class PlatformRevision(ContractModel):
+    revision_id: Identifier
+    revision_number: Annotated[int, Field(ge=1)]
+    created_at: datetime
+    change_note: str = Field(default="", max_length=1000)
+    definition: PlatformDefinition
+
+
+class WorkspacePlatformAnalysis(ContractModel):
+    analysis_id: Identifier
+    name: str = Field(min_length=1, max_length=240)
+    status: Literal["draft", "active", "archived"] = "active"
+    created_at: datetime
+    updated_at: datetime
+    current_revision_id: Identifier
+    revisions: list[PlatformRevision] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def valid_revision_chain(self) -> WorkspacePlatformAnalysis:
+        revision_ids = [item.revision_id for item in self.revisions]
+        if len(revision_ids) != len(set(revision_ids)):
+            raise ValueError("platform revision IDs must be unique")
+        if [item.revision_number for item in self.revisions] != list(
+            range(1, len(self.revisions) + 1)
+        ):
+            raise ValueError("platform revision numbers must be contiguous and ordered")
+        if self.current_revision_id != self.revisions[-1].revision_id:
+            raise ValueError(
+                "platform current_revision_id must reference the latest revision"
+            )
+        return self
+
+    @property
+    def current_revision(self) -> PlatformRevision:
+        return self.revisions[-1]
+
+
 class FinanceWorkspace(ContractModel):
-    workspace_contract_version: Literal["1.9.0"] = WORKSPACE_CONTRACT_VERSION
+    workspace_contract_version: Literal["2.0.0"] = WORKSPACE_CONTRACT_VERSION
     workspace_id: Identifier
     name: str = Field(min_length=1, max_length=200)
     description: str = Field(default="", max_length=4000)
@@ -377,6 +415,7 @@ class FinanceWorkspace(ContractModel):
         default_factory=list
     )
     governance_analyses: list[WorkspaceGovernanceAnalysis] = Field(default_factory=list)
+    platform_analyses: list[WorkspacePlatformAnalysis] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def unique_identifiers(self) -> FinanceWorkspace:
@@ -388,6 +427,7 @@ class FinanceWorkspace(ContractModel):
         operating_ids = [item.analysis_id for item in self.operating_analyses]
         sustainable_ids = [item.analysis_id for item in self.sustainable_analyses]
         governance_ids = [item.analysis_id for item in self.governance_analyses]
+        platform_ids = [item.analysis_id for item in self.platform_analyses]
         if len(project_ids) != len(set(project_ids)):
             raise ValueError("workspace project IDs must be unique")
         if len(scenario_ids) != len(set(scenario_ids)):
@@ -406,6 +446,8 @@ class FinanceWorkspace(ContractModel):
             )
         if len(governance_ids) != len(set(governance_ids)):
             raise ValueError("workspace governance analysis IDs must be unique")
+        if len(platform_ids) != len(set(platform_ids)):
+            raise ValueError("workspace platform analysis IDs must be unique")
         known_projects = set(project_ids)
         for scenario in self.scenarios:
             if (
@@ -419,7 +461,7 @@ class FinanceWorkspace(ContractModel):
 
 
 class WorkspaceExport(ContractModel):
-    export_contract_version: Literal["1.9.0"] = WORKSPACE_CONTRACT_VERSION
+    export_contract_version: Literal["2.0.0"] = WORKSPACE_CONTRACT_VERSION
     exported_at: datetime
     workspace: FinanceWorkspace
 

@@ -8,6 +8,8 @@ from .engine import evaluate_payload, evaluate_scenario
 from .governance import evaluate_governance
 from .governance_models import GovernanceDefinition, GovernancePublication
 from .models import FinanceScenarioInput
+from .platform import evaluate_platform
+from .platform_models import PlatformDefinition, PlatformPublication
 from .pricing import evaluate_pricing
 from .pricing_models import PricingDefinition, PricingPublication
 from .repositories import JsonWorkspaceRepository, SQLiteWorkspaceRepository
@@ -29,6 +31,8 @@ __all__ = [
     "GovernanceDefinition",
     "GovernancePublication",
     "JsonWorkspaceRepository",
+    "PlatformDefinition",
+    "PlatformPublication",
     "PricingDefinition",
     "PricingPublication",
     "SQLiteWorkspaceRepository",
@@ -42,6 +46,7 @@ __all__ = [
     "evaluate_comparison",
     "evaluate_governance",
     "evaluate_payload",
+    "evaluate_platform",
     "evaluate_pricing",
     "evaluate_scenario",
     "evaluate_sustainable",

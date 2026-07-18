@@ -1,4 +1,4 @@
-"""Migration into the Catalyst Finance v1.9.0 screening contract."""
+"""Migration into the Catalyst Finance v2.0.0 screening contract."""
 
 from __future__ import annotations
 
@@ -105,6 +105,7 @@ def normalize_scenario(
         "1.6.0",
         "1.7.0",
         "1.8.0",
+        "1.9.0",
     }:
         return migrate_versioned(payload, str(version))
     return FinanceScenarioInput.model_validate(payload), None

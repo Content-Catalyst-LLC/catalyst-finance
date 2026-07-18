@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.0.0 — 2026-07-17
+
+- Added the Connected Financial Decision Intelligence Platform as the ninth canonical finance engine.
+- Added registered product capabilities, immutable artifact references, decision cases, dependency graphs, and governed handoff envelopes.
+- Added portfolio aggregation that includes only designated value-bearing artifacts and prevents derivative double counting.
+- Added decision-readiness, product-health, dependency-order, classification-policy, and integration-status assessments.
+- Added input, output, dependency, and run hashes plus a portable integration manifest.
+- Added platform CLI, FastAPI endpoint, schemas, reproducible examples, workspace revisions, browser parity, and a ninth WordPress studio.
+- Added complete v1.9.0 migration coverage across all finance, governance, workspace, and platform records.
+
 ## 1.9.0 — 2026-07-17
 
 - Added assumption, source, evidence, claim, methodology, review, attachment, and publication contracts.

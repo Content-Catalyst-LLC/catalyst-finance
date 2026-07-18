@@ -1,6 +1,6 @@
 (function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.CatalystFinanceGovernanceEngine=api;})(typeof self!=='undefined'?self:this,function(){
 'use strict';
-const CONTRACT_VERSION='1.9.0',MODEL_ID='catalyst-finance.governance';
+const CONTRACT_VERSION='2.0.0',MODEL_ID='catalyst-finance.governance';
 const DISCLAIMER='Decision-support publication only. Institutional owners remain responsible for source rights, accounting treatment, assurance, approvals, redaction, and final decisions.';
 function sorted(v){if(Array.isArray(v))return v.map(sorted);if(v&&typeof v==='object'){const o={};Object.keys(v).sort().forEach(k=>o[k]=sorted(v[k]));return o;}return v;}
 function canonical(v){return JSON.stringify(sorted(v));}

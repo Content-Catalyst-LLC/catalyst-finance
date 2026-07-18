@@ -91,7 +91,7 @@ def test_invalid_references_and_public_no_redaction_are_rejected() -> None:
 def test_v180_governance_definition_migrates() -> None:
     payload = json.loads((ROOT / "data/legacy_v1.8.0_governance.json").read_text())
     d = normalize_governance(payload)
-    assert d.contract_version == "1.9.0"
+    assert d.contract_version == "2.0.0"
     assert d.artifact.model_version == "1.8.0"
 
 

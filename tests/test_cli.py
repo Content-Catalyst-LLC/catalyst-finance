@@ -23,7 +23,7 @@ def test_cli_writes_reproducible_outputs(tmp_path: Path) -> None:
     )
     assert result == 0
     payload = json.loads(json_out.read_text(encoding="utf-8"))
-    assert payload["metadata"]["version"] == "1.9.0"
+    assert payload["metadata"]["version"] == "2.0.0"
     assert payload["metadata"]["migration"] is None
     assert "## Score trace" in markdown_out.read_text(encoding="utf-8")
 

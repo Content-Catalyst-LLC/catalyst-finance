@@ -4,22 +4,19 @@ Catalyst Finance is an open-source financial scenario, cash-flow, and decision-s
 
 > Educational software only. This repository does not provide investment, legal, tax, accounting, fiduciary, assurance, lending, procurement, funding, or financial advice.
 
-## v1.9.0 — Evidence, Review, Governance, and Publication
+## v2.0.0 — Connected Financial Decision Intelligence Platform
 
-The v1.9.0 release adds an eighth canonical engine that turns a versioned finance artifact into a governed institutional publication. Assumptions, sources, evidence, claims, methodologies, comments, findings, objections, approvals, attachments, and publication controls remain explicit and portable.
+The v2.0.0 release adds a ninth canonical engine that connects governed finance artifacts to decision cases, product capabilities, dependency graphs, and classification-controlled handoffs. It aggregates designated value-bearing artifacts without counting comparison, evidence, governance, or publication derivatives twice.
 
-Headline claims must trace to calculations, assumptions, sources, and evidence. Unresolved review issues block approval and publication. Review history is append-only and hash chained. Public exports exclude private records and claims that depend on them without altering the private workspace record.
+The platform contract preserves product ownership, model and contract versions, workspace and revision identifiers, artifact checksums, information classifications, governance states, and transfer outcomes. Portfolio totals, case readiness, product health, dependency order, and integration warnings are calculated from explicit records rather than hidden orchestration.
 
 ```bash
-catalyst-finance-governance data/sample_governance.json \
-  --output outputs/sample_governance.output.json \
-  --csv outputs/sample_governance.trace.csv \
-  --markdown outputs/sample_governance.brief.md \
-  --html outputs/sample_governance.brief.html \
-  --public-json outputs/sample_governance.public.json
+catalyst-finance-platform data/sample_platform.json \
+  --output outputs/sample_platform.output.json \
+  --manifest outputs/sample_platform.integration-manifest.json
 ```
 
-The API endpoint is `POST /api/v1/governance/evaluate`. The WordPress shortcode remains `[catalyst_finance_workspace]` and now includes the Governance and Publication Studio. Knowledge Library and Decision Studio handoff manifests preserve artifact, revision, evidence, review, and methodology identifiers.
+The API endpoint is `POST /api/v1/platform/evaluate`. The WordPress shortcode remains `[catalyst_finance_workspace]` and now includes the Connected Platform Studio alongside the eight established finance studios. Governed handoffs support Decision Studio, Knowledge Library, Site Intelligence, Research Lab, Workbench, Catalyst Canvas, and other registered Sustainable Catalyst products while enforcing classification and approval rules.
 
 ## Install for development
 
@@ -97,6 +94,7 @@ POST /api/v1/pricing/evaluate
 POST /api/v1/operating/evaluate
 POST /api/v1/sustainable/evaluate
 POST /api/v1/governance/evaluate
+POST /api/v1/platform/evaluate
 GET  /api/v1/templates
 GET  /api/v1/workspaces
 POST /api/v1/workspaces
@@ -125,7 +123,7 @@ Packages:
 
 ```text
 dist/catalyst-finance.zip
-dist/catalyst-finance-demo-v1.9.0.zip
+dist/catalyst-finance-demo-v2.0.0.zip
 ```
 
 Shortcodes:
@@ -136,7 +134,7 @@ Shortcodes:
 [catalyst_finance_demo mode="public"]
 ```
 
-The module includes persistent screening, capital budgeting, comparison, uncertainty, pricing, operating-economics, sustainable-finance, and governance/publication studios with contract-valid local exports.
+The module includes persistent screening, capital budgeting, comparison, uncertainty, pricing, operating-economics, sustainable-finance, governance/publication, and connected-platform studios with contract-valid local exports.
 
 ## Contracts and examples
 
@@ -158,6 +156,8 @@ The module includes persistent screening, capital budgeting, comparison, uncerta
 - `schemas/sustainable_publication.schema.json`
 - `schemas/governance_definition.schema.json`
 - `schemas/governance_publication.schema.json`
+- `schemas/platform_definition.schema.json`
+- `schemas/platform_publication.schema.json`
 - `examples/sample_cash_flow_scenario.output.json`
 - `examples/sample_cash_flow_scenario.periods.csv`
 - `examples/sample_finance_workspace.export.json`
@@ -168,6 +168,10 @@ The module includes persistent screening, capital budgeting, comparison, uncerta
 - `examples/sample_pricing.curve.csv`
 - `examples/sample_operating.output.json`
 - `examples/sample_operating.summary.csv`
+- `examples/sample_governance.output.json`
+- `examples/sample_governance.public.json`
+- `examples/sample_platform.output.json`
+- `examples/sample_platform.integration-manifest.json`
 
 ## Validation
 
@@ -175,7 +179,7 @@ The module includes persistent screening, capital budgeting, comparison, uncerta
 python scripts/check_release.py
 ```
 
-The release gate checks synchronized versions, generated schemas, reproducible screening and cash-flow fixtures, all three screening migration paths, JSON/SQLite workspace behavior, API lifecycle operations, exact Python/JavaScript parity for screening, cash-flow, comparison, uncertainty, pricing, and operating models, Ruff, formatting, strict Mypy, PHP, JavaScript, and deterministic ZIP integrity.
+The release gate checks synchronized versions, generated schemas, reproducible publications for all nine engines, complete v1.9.0 migration coverage, JSON/SQLite workspace behavior, API lifecycle operations, classification-gated handoffs, portfolio aggregation without derivative double counting, exact Python/JavaScript parity across all nine engines, Ruff, formatting, strict Mypy, PHP, JavaScript, and deterministic ZIP integrity.
 
 ## Product boundary
 

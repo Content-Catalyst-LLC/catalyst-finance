@@ -10,7 +10,7 @@ from .sustainable_models import SUSTAINABLE_CONTRACT_VERSION, SustainableDefinit
 def normalize_sustainable(payload: dict[str, Any]) -> SustainableDefinition:
     migrated = (
         _upgrade(payload)
-        if payload.get("contract_version") in {"1.7.0", "1.8.0"}
+        if payload.get("contract_version") in {"1.7.0", "1.8.0", "1.9.0"}
         else payload
     )
     return SustainableDefinition.model_validate(migrated)
@@ -19,7 +19,7 @@ def normalize_sustainable(payload: dict[str, Any]) -> SustainableDefinition:
 def _upgrade(value: Any) -> Any:
     if isinstance(value, dict):
         output = {key: _upgrade(item) for key, item in value.items()}
-        if output.get("contract_version") in {"1.7.0", "1.8.0"}:
+        if output.get("contract_version") in {"1.7.0", "1.8.0", "1.9.0"}:
             output["contract_version"] = SUSTAINABLE_CONTRACT_VERSION
         return output
     if isinstance(value, list):

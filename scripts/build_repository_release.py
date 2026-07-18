@@ -69,8 +69,13 @@ def verify(output: Path) -> None:
         required = {
             f"{RELEASE_ROOT}/VERSION",
             f"{RELEASE_ROOT}/pyproject.toml",
+            f"{RELEASE_ROOT}/catalyst_finance/platform.py",
+            f"{RELEASE_ROOT}/data/sample_platform.json",
+            f"{RELEASE_ROOT}/schemas/platform_definition.schema.json",
+            f"{RELEASE_ROOT}/examples/sample_platform.output.json",
             f"{RELEASE_ROOT}/scripts/check_release.py",
             f"{RELEASE_ROOT}/wordpress/catalyst-finance-demo/catalyst-finance-demo.php",
+            f"{RELEASE_ROOT}/wordpress/catalyst-finance-demo/assets/catalyst-finance-platform-engine.js",
         }
         missing = sorted(required.difference(names))
         if missing:

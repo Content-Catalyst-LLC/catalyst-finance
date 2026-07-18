@@ -39,8 +39,9 @@ def test_model_registry_endpoint() -> None:
         "catalyst-finance.operating",
         "catalyst-finance.governance",
         "catalyst-finance.sustainable",
+        "catalyst-finance.platform",
     ]
-    assert all(model["model_version"] == "1.9.0" for model in models)
+    assert all(model["model_version"] == "2.0.0" for model in models)
 
 
 def test_evaluate_endpoint_uses_canonical_contract() -> None:
@@ -48,7 +49,7 @@ def test_evaluate_endpoint_uses_canonical_contract() -> None:
     response = CLIENT.post("/api/v1/evaluate", json=payload)
     assert response.status_code == 200
     result = response.json()
-    assert result["contract_version"] == "1.9.0"
+    assert result["contract_version"] == "2.0.0"
     assert result["results"]["score_components"]
 
 
@@ -182,7 +183,7 @@ def test_uncertainty_endpoint() -> None:
 def test_uncertainty_endpoint_rejects_invalid_payload() -> None:
     response = CLIENT.post(
         "/api/v1/uncertainty/evaluate",
-        json={"contract_version": "1.9.0", "model_id": "catalyst-finance.uncertainty"},
+        json={"contract_version": "2.0.0", "model_id": "catalyst-finance.uncertainty"},
     )
     assert response.status_code == 422
     assert response.json()["detail"]["error"] == "invalid_uncertainty_definition"

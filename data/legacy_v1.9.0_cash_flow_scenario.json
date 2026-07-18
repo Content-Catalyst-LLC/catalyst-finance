@@ -1,0 +1,32 @@
+{
+  "contract_version": "1.9.0",
+  "model_id": "catalyst-finance.cash-flow",
+  "project": {
+    "name": "Building efficiency retrofit",
+    "category": "Capital project"
+  },
+  "context": {
+    "currency": "USD",
+    "price_basis": "nominal",
+    "discount_rate_basis": "nominal",
+    "period_frequency": "annual",
+    "time_basis": "end_of_period",
+    "rounding_policy": "half_up",
+    "monetary_decimals": 2,
+    "ratio_decimals": 4
+  },
+  "analysis_horizon_periods": 10,
+  "discount_rate_percent_annual": 6,
+  "finance_rate_percent_annual": 6,
+  "reinvestment_rate_percent_annual": 3,
+  "lines": [
+    {"flow_id": "capex", "label": "Initial capital cost", "category": "capital_cost", "amount": 250000, "start_period": 0, "price_basis": "nominal"},
+    {"flow_id": "grant", "label": "Implementation grant", "category": "grant", "amount": 40000, "start_period": 0, "price_basis": "nominal"},
+    {"flow_id": "working-capital", "label": "Initial working capital", "category": "working_capital", "amount": 15000, "start_period": 0, "price_basis": "nominal"},
+    {"flow_id": "savings", "label": "Annual energy savings", "category": "savings", "amount": 60000, "start_period": 1, "end_period": 10, "escalation_rate_percent_annual": 2, "price_basis": "nominal"},
+    {"flow_id": "operations", "label": "Annual operating cost", "category": "operating_cost", "amount": 10000, "start_period": 1, "end_period": 10, "escalation_rate_percent_annual": 2, "price_basis": "nominal"},
+    {"flow_id": "residual", "label": "Residual equipment value", "category": "residual_value", "amount": 20000, "start_period": 10, "price_basis": "nominal"},
+    {"flow_id": "working-capital-recovery", "label": "Working capital recovery", "category": "working_capital_recovery", "amount": 15000, "start_period": 10, "price_basis": "nominal"},
+    {"flow_id": "decommission", "label": "Decommissioning cost", "category": "decommissioning_cost", "amount": 5000, "start_period": 10, "price_basis": "nominal"}
+  ]
+}

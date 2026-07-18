@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Catalyst Finance Demo
  * Description: Persistent finance workspace with modeling, evidence, review, governance, redaction, and publication workflows for Sustainable Catalyst.
- * Version: 1.9.0
+ * Version: 2.0.0
  * Author: Content Catalyst LLC
  * License: MIT
  */
@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('CATALYST_FINANCE_DEMO_VERSION', '1.9.0');
+define('CATALYST_FINANCE_DEMO_VERSION', '2.0.0');
 
 function catalyst_finance_demo_assets() {
     $base = plugin_dir_url(__FILE__);
@@ -71,6 +71,13 @@ function catalyst_finance_demo_assets() {
         true
     );
     wp_enqueue_script(
+        'catalyst-finance-platform-engine',
+        $base . 'assets/catalyst-finance-platform-engine.js',
+        array(),
+        CATALYST_FINANCE_DEMO_VERSION,
+        true
+    );
+    wp_enqueue_script(
         'catalyst-finance-governance-engine',
         $base . 'assets/catalyst-finance-governance-engine.js',
         array(),
@@ -80,7 +87,7 @@ function catalyst_finance_demo_assets() {
     wp_enqueue_script(
         'catalyst-finance-demo',
         $base . 'assets/catalyst-finance-demo.js',
-        array('catalyst-finance-engine', 'catalyst-finance-cashflow-engine', 'catalyst-finance-comparison-engine', 'catalyst-finance-uncertainty-engine', 'catalyst-finance-pricing-engine', 'catalyst-finance-operating-engine', 'catalyst-finance-sustainable-engine', 'catalyst-finance-governance-engine'),
+        array('catalyst-finance-engine', 'catalyst-finance-cashflow-engine', 'catalyst-finance-comparison-engine', 'catalyst-finance-uncertainty-engine', 'catalyst-finance-pricing-engine', 'catalyst-finance-operating-engine', 'catalyst-finance-sustainable-engine', 'catalyst-finance-governance-engine', 'catalyst-finance-platform-engine'),
         CATALYST_FINANCE_DEMO_VERSION,
         true
     );
@@ -98,7 +105,7 @@ function catalyst_finance_demo_shortcode($atts = array()) {
     ?>
     <section class="scfin-demo" data-scfin-demo data-scfin-mode="<?php echo esc_attr($mode); ?>">
       <div class="scfin-demo__header">
-        <p class="scfin-demo__eyebrow">Catalyst Finance v1.9.0</p>
+        <p class="scfin-demo__eyebrow">Catalyst Finance v2.0.0</p>
         <h3><?php echo $mode === 'public' ? 'Explore a finance scenario' : 'Persistent finance scenario workspace'; ?></h3>
         <p><?php echo $mode === 'public'
             ? 'Review a read-only example using the canonical finance screening model.'
@@ -598,6 +605,47 @@ function catalyst_finance_demo_shortcode($atts = array()) {
             <ul data-scfin-governance-flags></ul>
             <details class="scfin-demo__details"><summary>Decision brief</summary><pre data-scfin-governance-brief></pre></details>
             <details class="scfin-demo__details"><summary>Versioned governance publication</summary><pre data-scfin-governance-json></pre></details>
+          </div>
+        </div>
+      </section>
+
+      <section class="scfin-platform" data-scfin-platform-studio>
+        <div class="scfin-capital__header">
+          <p class="scfin-demo__eyebrow">Connected institutional finance</p>
+          <h3>Financial decision intelligence platform</h3>
+          <p>Connect governed finance artifacts to Decision Studio, Knowledge Library, Workbench, and Site Intelligence while preserving classification, provenance, dependency order, and portfolio value.</p>
+        </div>
+        <div class="scfin-sustainable__layout">
+          <form class="scfin-sustainable__form" data-scfin-platform-form>
+            <div class="scfin-demo__two">
+              <label><span>Retrofit adjusted NPV</span><input name="retrofitNpv" type="number" step="1000" value="1526250.9"></label>
+              <label><span>Pricing adjusted NPV</span><input name="pricingNpv" type="number" step="1000" value="260000"></label>
+            </div>
+            <div class="scfin-demo__two">
+              <label><span>Retrofit confidence (%)</span><input name="retrofitConfidence" type="number" min="0" max="100" value="85"></label>
+              <label><span>Pricing confidence (%)</span><input name="pricingConfidence" type="number" min="0" max="100" value="82"></label>
+            </div>
+            <div class="scfin-demo__two">
+              <label><span>Site Intelligence status</span><select name="intelligenceStatus"><option value="online">Online</option><option value="degraded" selected>Degraded</option><option value="offline">Offline</option></select></label>
+              <label><span>Minimum case confidence (%)</span><input name="minimumConfidence" type="number" min="0" max="100" value="70"></label>
+            </div>
+            <label><input name="includeRejectedHandoff" type="checkbox" checked> Include rejected confidential Knowledge Library handoff</label>
+            <div class="scfin-demo__actions">
+              <button type="button" data-scfin-platform-run>Evaluate connected portfolio</button>
+              <button type="button" data-scfin-platform-download>Download platform publication</button>
+            </div>
+          </form>
+          <div class="scfin-sustainable__output" aria-live="polite">
+            <div class="scfin-demo__metrics">
+              <div><span>Adjusted portfolio NPV</span><strong data-scfin-platform-npv>—</strong></div>
+              <div><span>Risk-adjusted value</span><strong data-scfin-platform-risk>—</strong></div>
+              <div><span>Decision-ready cases</span><strong data-scfin-platform-cases>—</strong></div>
+              <div><span>Completed handoffs</span><strong data-scfin-platform-handoffs>—</strong></div>
+            </div>
+            <div class="scfin-capital__table-wrap"><table class="scfin-capital__table"><thead><tr><th>Decision case</th><th>Status</th><th>Readiness</th><th>Risk-adjusted value</th></tr></thead><tbody data-scfin-platform-table></tbody></table></div>
+            <ul data-scfin-platform-flags></ul>
+            <details class="scfin-demo__details"><summary>Integration manifest</summary><pre data-scfin-platform-manifest></pre></details>
+            <details class="scfin-demo__details"><summary>Versioned platform publication</summary><pre data-scfin-platform-json></pre></details>
           </div>
         </div>
       </section>

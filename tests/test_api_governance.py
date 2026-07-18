@@ -40,7 +40,7 @@ def test_governance_api_rejects_invalid_payload(tmp_path: Path) -> None:
     client = TestClient(create_app(JsonWorkspaceRepository(tmp_path)))
     response = client.post(
         "/api/v1/governance/evaluate",
-        json={"contract_version": "1.9.0", "model_id": "catalyst-finance.governance"},
+        json={"contract_version": "2.0.0", "model_id": "catalyst-finance.governance"},
     )
     assert response.status_code == 422
     assert response.json()["detail"]["error"] == "invalid_governance_definition"

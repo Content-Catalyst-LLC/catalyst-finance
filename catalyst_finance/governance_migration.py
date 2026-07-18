@@ -15,7 +15,7 @@ def normalize_governance(payload: dict[str, Any]) -> GovernanceDefinition:
 def _upgrade(value: Any) -> Any:
     if isinstance(value, dict):
         output = {key: _upgrade(item) for key, item in value.items()}
-        if output.get("contract_version") == "1.8.0":
+        if output.get("contract_version") in {"1.8.0", "1.9.0"}:
             output["contract_version"] = GOVERNANCE_CONTRACT_VERSION
         return output
     if isinstance(value, list):
