@@ -33,6 +33,8 @@ DISCLAIMER = (
 )
 
 
+# Seeded pseudorandom stream for reproducible simulations. This generator is
+# not cryptographically secure and repeated seeds reproduce the same samples.
 class XorShift32:
     def __init__(self, seed: int) -> None:
         self.state = seed & 0xFFFFFFFF or 0x6D2B79F5
@@ -75,6 +77,8 @@ def _normal_cdf(value: float) -> float:
     return 0.5 * (1.0 + _erf_approx(value / math.sqrt(2.0)))
 
 
+# Factor the supplied correlation matrix for correlated normal draws. A
+# materially negative diagonal signals an invalid covariance assumption.
 def _cholesky(matrix: list[list[float]]) -> list[list[float]]:
     size = len(matrix)
     lower = [[0.0 for _ in range(size)] for _ in range(size)]
@@ -298,6 +302,9 @@ def _stress_results(
     return output
 
 
+# Sample assumed input distributions, reject invalid model evaluations, and
+# stop after at most 20 attempts per requested valid draw. These simulated
+# probabilities are conditional on the model, not empirically validated odds.
 def evaluate_uncertainty(
     definition: UncertaintyDefinition,
     *,

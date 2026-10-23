@@ -46,6 +46,8 @@ class JsonWorkspaceRepository:
         self.directory = directory
         self.directory.mkdir(parents=True, exist_ok=True)
 
+    # The ID is interpolated into a filename without an authorization or
+    # containment check here; callers must validate IDs and access rights.
     def _path(self, workspace_id: str) -> Path:
         return self.directory / f"{workspace_id}.json"
 
@@ -62,6 +64,8 @@ class JsonWorkspaceRepository:
             FinanceWorkspace.model_validate(migrate_workspace_payload(payload)),
         )
 
+    # Replace only after flushing the temporary file to avoid partial JSON
+    # files on a normal write failure. Directory durability is not asserted.
     @staticmethod
     def _write_atomic(path: Path, workspace: FinanceWorkspace) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
